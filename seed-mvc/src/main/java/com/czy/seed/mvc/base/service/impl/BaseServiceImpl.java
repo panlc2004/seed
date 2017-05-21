@@ -1,5 +1,6 @@
-package com.czy.seed.mvc.service;
+package com.czy.seed.mvc.base.service.impl;
 
+import com.czy.seed.mvc.base.service.BaseService;
 import com.czy.seed.mybatis.base.QueryParams;
 import com.czy.seed.mybatis.base.mapper.BaseMapper;
 import com.czy.seed.mybatis.tool.NullUtil;

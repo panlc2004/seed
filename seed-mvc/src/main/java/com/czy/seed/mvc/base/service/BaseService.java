@@ -1,4 +1,4 @@
-package com.czy.seed.mvc.service;
+package com.czy.seed.mvc.base.service;
 
 import com.czy.seed.mybatis.base.QueryParams;
 import org.apache.ibatis.annotations.Param;

@@ -1,4 +1,4 @@
-package com.czy.seed.mvc.controller;
+package com.czy.seed.mvc.base.controller;
 
 /**
  * Created by PLC on 2017/5/21.
