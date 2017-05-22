@@ -3,6 +3,7 @@ package com.czy.seed.mybatis.tool;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.config.ConfigurableListableBeanFactory;
 import org.springframework.beans.factory.config.PropertyPlaceholderConfigurer;
+import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,6 +12,7 @@ import java.util.Properties;
 /**
  * 全局properties
  */
+@Component
 public class SpringPropertiesUtil extends PropertyPlaceholderConfigurer {
 
 	private static Map<String, Object> ctxPropertiesMap;
@@ -96,6 +98,7 @@ public class SpringPropertiesUtil extends PropertyPlaceholderConfigurer {
 	 */
 	public static boolean containsKey(String key) {
 		return ctxPropertiesMap.containsKey(key);
+
 	}
 
 	/**

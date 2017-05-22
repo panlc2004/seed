@@ -6,9 +6,10 @@
     <modelVersion>4.0.0</modelVersion>
 
     <parent>
-        <artifactId>seed</artifactId>
         <groupId>com.czy</groupId>
+        <artifactId>seed-dependencies</artifactId>
         <version>1.0.1</version>
+        <relativePath>../seed-dependencies</relativePath>
     </parent>
 
     <packaging>jar</packaging>
@@ -30,6 +31,9 @@
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
                     <fork>true</fork>
+                    <jvmArguments>
+                        -Xdebug -Xrunjdwp:transport=dt_socket,server=y,suspend=y,address=5005
+                    </jvmArguments>
                 </configuration>
             </plugin>
         </plugins>

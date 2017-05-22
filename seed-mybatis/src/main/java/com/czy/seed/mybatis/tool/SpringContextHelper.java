@@ -7,12 +7,14 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
+import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
 /**
  * Created by panlc on 2017-02-08.
  */
+@Component
 public class SpringContextHelper implements BeanFactoryAware {
 
     private static Logger logger = LoggerFactory.getLogger(SpringContextHelper.class);
