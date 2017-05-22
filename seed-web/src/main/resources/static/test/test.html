@@ -4,11 +4,13 @@
     <meta charset="UTF-8">
     <title>Title</title>
     <!-- 引入样式 -->
-    <link rel="stylesheet" href="../common/element-ui/lib/theme-default/index.css">
+    <!--<link rel="stylesheet" href="../common/elementui/lib/theme-default/index.css">-->
+    <link rel="stylesheet" href="../common/elementui/lib/index.css">
     <!-- 先引入 Vue -->
     <script src="../common/vue/vue.js"></script>
     <!-- 引入组件库 -->
-    <script src="../common/element-ui/lib/index.js"></script>
+    <!--<script src="../common/elementui/lib/index.js"></script>-->
+    <script src="../common/elementui/lib/index.js"></script>
 </head>
 <body>
 <div id="app">
@@ -21,7 +23,7 @@
 
 <div class="activePublic ">
     <!-- 步骤组件 -->
-    <el-steps :space="100" :active="step" class="step">
+    <el-steps :space="100" class="step">
         <el-step title="活动信息" description=""></el-step>
         <el-step title="报名签到" description=""></el-step>
         <el-step title="分享设置" description=""></el-step>
@@ -29,7 +31,7 @@
     </el-steps>
 
     <!-- 视图 -->
-    <router-view class="view"></router-view>
+    <!--<router-view class="view"></router-view>-->
 
     <div class="but-group">
         <el-button>预览</el-button>
