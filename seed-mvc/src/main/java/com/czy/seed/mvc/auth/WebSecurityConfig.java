@@ -22,16 +22,16 @@ import org.springframework.security.core.userdetails.UsernameNotFoundException;
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.authorizeRequests()
-                .antMatchers("/login").permitAll() //无需权限
-                .anyRequest().authenticated()//其他所有访问均需要权限
-                .and()
-                .formLogin()
-                .loginPage("/toLogin.html")//指定登录页是"/login"
-                .permitAll()
-                .and()
-                .logout()
-                .permitAll();//退出登录后的默认url是"/home"
+//        http.authorizeRequests()
+//                .antMatchers("/login").permitAll() //无需权限
+//                .anyRequest().authenticated()//其他所有访问均需要权限
+//                .and()
+//                .formLogin()
+//                .loginPage("/toLogin.html")//指定登录页是"/login"
+//                .permitAll()
+//                .and()
+//                .logout()
+//                .permitAll();//退出登录后的默认url是"/home"
     }
 
     @Autowired
