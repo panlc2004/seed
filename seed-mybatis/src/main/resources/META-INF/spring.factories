@@ -1,0 +1,4 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+com.czy.seed.mybatis.config.DataBaseEnvInit,\
+com.czy.seed.mybatis.config.SpringPropertiesUtilConfig,\
+com.czy.seed.mybatis.tool.SpringContextHelper

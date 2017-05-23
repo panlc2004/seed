@@ -10,7 +10,7 @@
        http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd"
 >
 
-    <context:component-scan base-package="com.czy.core"/>
+    <context:component-scan base-package="com.czy"/>
     <context:annotation-config/>
     <tx:annotation-driven/>
 
