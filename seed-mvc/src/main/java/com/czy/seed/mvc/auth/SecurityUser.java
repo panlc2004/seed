@@ -10,6 +10,7 @@ import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.Entity;
+import javax.persistence.Transient;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -23,6 +24,7 @@ public class SecurityUser extends SysUser implements UserDetails {
 
     private static final long serialVersionUID = -53674055969551571L;
 
+    @Transient
     private List<SysRole> roles;
 
     public SecurityUser(SysUser suser) {

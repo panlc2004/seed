@@ -40,7 +40,7 @@ class FreeMarkerUtil {
             TEMPLATE_MAPS.put(templateName, CONFIGURATION.getTemplate(templateName + ".ftl"));
         } catch (Exception e) {
             LOGGER.error("error occurred while load ftl file : " + templateName, e);
-            throw new RuntimeException("error occurred while load ftl file : " + templateName);
+            throw new RuntimeException("error occurred while load ftl file : " + templateName, e);
         }
         if (TEMPLATE_MAPS.containsKey(templateName)) {
             STRING_WRITER.getBuffer().delete(0, STRING_WRITER.getBuffer().length());

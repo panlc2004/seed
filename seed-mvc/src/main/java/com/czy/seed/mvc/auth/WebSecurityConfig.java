@@ -15,7 +15,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
  */
 
 @Configuration
-@EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -27,34 +26,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated()
                 .and().formLogin().loginPage("/login").failureUrl("/login?error").successHandler(loginSuccessHandler()).permitAll()
                 .and().logout().logoutSuccessUrl("/home").permitAll();
-
-
-//        http.authorizeRequests()
-//                .antMatchers("/login").permitAll() //无需权限
-//                .anyRequest().authenticated()   //其他所有访问均需要权限
-//                .and()
-//                .formLogin()
-//                .loginPage("/toLogin.html")     //指定登录页是"/login"
-//                .permitAll()
-//                .successHandler(loginSuccessHandler()) //登录成功后可使用loginSuccessHandler()存储用户信息，可选。
-//                .and()
-//                .logout()
-//                .logoutSuccessUrl("/home") //退出登录后的默认网址是”/home”
-//                .permitAll()
-//                .invalidateHttpSession(true);
-//                .and()
-//                .rememberMe()                   //登录后记住用户，下次自动登录,数据库中必须存在名为persistent_logins的表
-//                .tokenValiditySeconds(1209600);
-
-
-//        http.authorizeRequests()
-//                .antMatchers("/script/**", "/pages/**").permitAll()
-//                .and().formLogin().loginPage("/toLogin.html").successHandler(loginSuccessHandler()).permitAll();
-//                .failureUrl("/login").failureHandler(authenticationFailureHandler).permitAll()
-//                .and().logout().logoutSuccessUrl("/login").logoutSuccessHandler(logoutSuccessHandler).permitAll()
-//                .and().exceptionHandling().accessDeniedPage("/sucurityError")
-//                .and().csrf().disable();
-
     }
 
     @Autowired
