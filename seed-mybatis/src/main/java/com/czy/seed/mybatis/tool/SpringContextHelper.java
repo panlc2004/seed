@@ -37,6 +37,16 @@ public class SpringContextHelper implements BeanFactoryAware {
     }
 
     /**
+     * 根据类型得到Bean
+     * @param t 类型
+     * @param <T> 类型
+     * @return Bean
+     */
+    public static <T> T getBeanByType(Class<T> t) {
+        return beanFactory.getBean(t);
+    }
+
+    /**
      * 销毁spring容器中的bean
      *
      * @param beanName 从容器中移除对应的bean

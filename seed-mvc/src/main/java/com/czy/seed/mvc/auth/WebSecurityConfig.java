@@ -19,23 +19,29 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
-    private CustomUserDetailsService customUserDetailsService;
+    private SysUserDetailsService sysUserDetailsService;
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/login").permitAll() //无需权限
-                .anyRequest().authenticated()   //其他所有访问均需要权限
-                .and()
-                .formLogin()
-                .loginPage("/toLogin.html")     //指定登录页是"/login"
-                .permitAll()
-                .successHandler(loginSuccessHandler()) //登录成功后可使用loginSuccessHandler()存储用户信息，可选。
-                .and()
-                .logout()
-                .logoutSuccessUrl("/home") //退出登录后的默认网址是”/home”
-                .permitAll()
-                .invalidateHttpSession(true);
+                .anyRequest().authenticated()
+                .and().formLogin().loginPage("/login").failureUrl("/login?error").successHandler(loginSuccessHandler()).permitAll()
+                .and().logout().logoutSuccessUrl("/home").permitAll();
+
+
+//        http.authorizeRequests()
+//                .antMatchers("/login").permitAll() //无需权限
+//                .anyRequest().authenticated()   //其他所有访问均需要权限
+//                .and()
+//                .formLogin()
+//                .loginPage("/toLogin.html")     //指定登录页是"/login"
+//                .permitAll()
+//                .successHandler(loginSuccessHandler()) //登录成功后可使用loginSuccessHandler()存储用户信息，可选。
+//                .and()
+//                .logout()
+//                .logoutSuccessUrl("/home") //退出登录后的默认网址是”/home”
+//                .permitAll()
+//                .invalidateHttpSession(true);
 //                .and()
 //                .rememberMe()                   //登录后记住用户，下次自动登录,数据库中必须存在名为persistent_logins的表
 //                .tokenValiditySeconds(1209600);
@@ -57,7 +63,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .withUser("1").password("1").roles("USER");
         //指定密码加密所使用的加密器为passwordEncoder()
         //需要将密码加密后写入数据库
-        auth.userDetailsService(customUserDetailsService).passwordEncoder(passwordEncoder());
+        auth.userDetailsService(sysUserDetailsService).passwordEncoder(passwordEncoder());
         auth.eraseCredentials(false);
     }
 

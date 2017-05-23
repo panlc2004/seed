@@ -1,16 +1,12 @@
 package com.czy.seed.mvc.auth;
 
 import com.czy.seed.mvc.sys.entity.SysUser;
-import com.czy.seed.mvc.sys.service.impl.SysUserService;
+import com.czy.seed.mvc.sys.service.SysUserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
-
-import java.util.ArrayList;
-import java.util.Collection;
 
 /**
  * Created by PLC on 2017/5/23.

@@ -1,4 +1,4 @@
-package com.czy.seed.mvc.sys.service.impl;
+package com.czy.seed.mvc.sys.service;
 
 import com.czy.seed.mvc.sys.entity.SysUser;
 
