@@ -23,20 +23,28 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .anyRequest().authenticated()
-                .and().formLogin().loginPage("/login").failureUrl("/login?error").successHandler(loginSuccessHandler()).permitAll()
-                .and().logout().logoutSuccessUrl("/home").permitAll();
+//                .anyRequest().permitAll().and().csrf().disable();
+                .antMatchers(("/")).permitAll()
+                .antMatchers("/static/**").permitAll()
+                .and().formLogin().loginPage("/login").failureUrl("/login?error").permitAll()
+                .and().logout().logoutSuccessUrl("/home").permitAll()
+                .and().csrf().disable();
     }
 
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("1").password("1").roles("USER");
-        //指定密码加密所使用的加密器为passwordEncoder()
-        //需要将密码加密后写入数据库
-        auth.userDetailsService(sysUserDetailsService).passwordEncoder(passwordEncoder());
-        auth.eraseCredentials(false);
+    @Override
+    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+        auth.userDetailsService(sysUserDetailsService);
     }
+
+    //    @Autowired
+//    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.inMemoryAuthentication()
+//                .withUser("1").password("1").roles("USER");
+//        //指定密码加密所使用的加密器为passwordEncoder()
+//        //需要将密码加密后写入数据库
+//        auth.userDetailsService(sysUserDetailsService).passwordEncoder(passwordEncoder());
+//        auth.eraseCredentials(false);
+//    }
 
     /**
      * 设置用户密码的加密方式为MD5加密

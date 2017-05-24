@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<html lang="en">
+<head>
+    <meta charset="UTF-8"/>
+    <link rel="stylesheet" href="./common/elementui/lib/index.css"/>
+    <!-- 先引入 Vue -->
+    <script src="./common/vue/vue.js"></script>
+    <!-- 引入组件库 -->
+    <!--<script src="../common/elementui/lib/index.js"></script>-->
+    <script src="./common/elementui/lib/index.js"></script>
+    <script src="./common/vue/vue-resource.min.js"></script>
+    <title>登陆</title>
+</head>
+<style>
+    .login-box {
+        width: 295px;
+        height: 300px;
+        padding: 13px 14px 15px;
+        top: 25%;
+        left: 55%;
+        right: 30%;
+        text-align: left;
+        position: absolute;
+        z-index: 2;
+        border-left: 1px solid #e8e8e8;
+        border-right: 1px solid #e8e8e8;
+        border-bottom: 1px solid #e8e8e8;
+        border-top: 2px solid #f40;
+        background-color: #fafafa;
+    }
+
+    .login-input {
+        margin-top: 30px;
+    }
+
+    .login-btn {
+        width: 100%;
+        background: #f40;
+        border-color: #f40;
+        font-size: 16px;
+        font-weight: 700;
+        font-family: "PingFang SC";
+    }
+
+    .login-form {
+        padding-top: 40px;
+    }
+
+</style>
+<body>
+<div class="login-box">
+    <el-form class="login-form" :model="ruleForm" :rules="rules" ref="ruleForm" action="/login">
+        <el-form-item label="" prop="username">
+            <el-input placeholder="请输入账号" v-model="ruleForm.username" name="username">
+                <template slot="prepend"><i class="el-icon-edit"></i></template>
+            </el-input>
+        </el-form-item>
+        <el-form-item label="" prop="password">
+            <el-input placeholder="请输入密码" type="password" v-model="ruleForm.password" name="password">
+                <template slot="prepend"><i class="el-icon-edit"></i></template>
+            </el-input>
+        </el-form-item>
+        <el-form-item>
+            <div class="login-input">
+                <el-button class="login-btn" type="primary" @click="submitForm('ruleForm')" data-ing="正在登陆...">
+                    登&nbsp;&nbsp;陆
+                </el-button>
+            </div>
+        </el-form-item>
+    </el-form>
+</div>
+
+</body>
+
+
+<script>
+    new Vue({
+        el: '.login-box',
+        data: function () {
+            return {
+                ruleForm: {
+                    username: '',
+                    password: ''
+                },
+                rules: {
+                    username: [
+                        {required: true, message: '请填写账号', trigger: 'blur'},
+                        {min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
+                    ],
+                    password: [
+                        {required: true, message: '请填写密码', trigger: 'blur'},
+                        {min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
+                    ]
+                }
+            };
+        },
+        methods: {
+            submitForm(formName) {
+                this.$refs[formName].validate((valid) => {
+                    if (valid) {
+//                        this.$http({
+//                            method: 'post',
+//                            url:'/sys/login/login1',
+//                            timeout:10000
+//                        }).then(response => {
+//                            console.log(response)
+//                            // get body data
+////                            this.someData = response.body;
+//                        }, response => {
+//                            console.log(response)
+//                            // error callback
+//                        });
+
+
+                        // POST /someUrl
+                        this.$http.post('/sys/login/login1', {foo: 'bar'}).then(response => {
+
+                            // get status
+                            response.status;
+
+                            // get status text
+                            response.statusText;
+
+                            // get 'Expires' header
+                            response.headers.get('Expires');
+
+                            // get body data
+                            this.someData = response.body;
+
+                        }, response => {
+                            // error callback
+                        });
+
+                    }
+                });
+
+
+
+            },
+        }
+    });
+
+</script>
+
+</html>
