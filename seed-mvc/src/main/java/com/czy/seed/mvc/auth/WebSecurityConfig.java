@@ -31,10 +31,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().csrf().disable();
     }
 
-    @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(sysUserDetailsService);
-    }
+//    @Override
+//    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.userDetailsService(sysUserDetailsService);
+//    }
 
     /**
      * 取消common目录下的访问权限控制
@@ -54,10 +54,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
         auth.inMemoryAuthentication()
-                .withUser("123").password("123").roles("USER");
+                .withUser("1234").password("123").roles("USER");
         //指定密码加密所使用的加密器为passwordEncoder()
         //需要将密码加密后写入数据库
-        auth.userDetailsService(sysUserDetailsService).passwordEncoder(passwordEncoder());
+//        auth.userDetailsService(sysUserDetailsService).passwordEncoder(passwordEncoder());
 //        auth.eraseCredentials(false);
     }
 
