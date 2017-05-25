@@ -22,6 +22,11 @@
             <artifactId>seed-mvc</artifactId>
             <version>1.0.1</version>
         </dependency>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>5.1.41</version>
+        </dependency>
     </dependencies>
 
     <build>

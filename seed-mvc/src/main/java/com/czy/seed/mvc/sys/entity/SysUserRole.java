@@ -11,8 +11,8 @@ public class SysUserRole implements Serializable {
     private static final long serialVersionUID = 4511028982475620265L;
 
     private Long id;
-    private Long userId;
-    private Long roleId;
+    private Long sysUserId;
+    private Long sysRoleId;
 
     public Long getId() {
         return id;
@@ -22,19 +22,19 @@ public class SysUserRole implements Serializable {
         this.id = id;
     }
 
-    public Long getUserId() {
-        return userId;
+    public Long getSysUserId() {
+        return sysUserId;
     }
 
-    public void setUserId(Long userId) {
-        this.userId = userId;
+    public void setSysUserId(Long sysUserId) {
+        this.sysUserId = sysUserId;
     }
 
-    public Long getRoleId() {
-        return roleId;
+    public Long getSysRoleId() {
+        return sysRoleId;
     }
 
-    public void setRoleId(Long roleId) {
-        this.roleId = roleId;
+    public void setSysRoleId(Long sysRoleId) {
+        this.sysRoleId = sysRoleId;
     }
 }

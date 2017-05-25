@@ -1,14 +1,15 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd">
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:th="http://www.thymeleaf.org">
 <html lang="en">
 <head>
     <meta charset="UTF-8"/>
     <link rel="stylesheet" href="./common/elementui/lib/index.css"/>
     <!-- 先引入 Vue -->
-    <script src="./common/vue/vue.js"></script>
+    <script th:src="@{common/vue/vue.js}"></script>
     <!-- 引入组件库 -->
-    <!--<script src="../common/elementui/lib/index.js"></script>-->
-    <script src="./common/elementui/lib/index.js"></script>
-    <script src="./common/vue/vue-resource.min.js"></script>
+    <script th:src="@{common/elementui/lib/index.js}"></script>
+    <script th:src="@{common/vue/vue-resource.min.js}"></script>
     <title>登录</title>
 </head>
 <style>
@@ -48,8 +49,15 @@
 
 </style>
 <body>
+
 <div class="login-box">
-    <el-form class="login-form" :model="ruleForm" :rules="rules" ref="ruleForm" action="/login">
+    <div th:if="${param.logout}">
+        您已注销成功
+    </div>
+    <div th:if="${param.error}">
+        用户名或密码错
+    </div>
+    <el-form class="login-form" :model="ruleForm" :rules="rules" ref="ruleForm" th:action="@{/login}" method="post">
         <el-form-item label="" prop="username">
             <el-input placeholder="请输入账号" v-model="ruleForm.username" name="username">
                 <template slot="prepend"><i class="el-icon-edit"></i></template>
@@ -62,9 +70,10 @@
         </el-form-item>
         <el-form-item>
             <div class="login-input">
-                <el-button class="login-btn" @click="submitForm('ruleForm')"  type="primary" >
+                <el-button class="login-btn" @click="submitForm('ruleForm')" type="primary">
                     登&nbsp;&nbsp;录
                 </el-button>
+                <input type="submit" id="login" value="登录"/>
             </div>
         </el-form-item>
     </el-form>
@@ -98,44 +107,15 @@
             submitForm(formName) {
                 this.$refs[formName].validate((valid) => {
                     if (valid) {
-//                        this.$http({
-//                            method: 'post',
-//                            url:'/sys/login/login1',
-//                            timeout:10000
-//                        }).then(response => {
-//                            console.log(response)
-//                            // get body data
-////                            this.someData = response.body;
-//                        }, response => {
-//                            console.log(response)
-//                            // error callback
-//                        });
-
-
                         // POST /someUrl
-                        this.$http.post('/sys/login/login1', {foo: 'bar'}).then(response => {
+                        this.$http.post('/sys/login/login1', {foo: 'bar'}).then(
+                            response => {
 
-                            // get status
-                            response.status;
-
-                            // get status text
-                            response.statusText;
-
-                            // get 'Expires' header
-                            response.headers.get('Expires');
-
-                            // get body data
-                            this.someData = response.body;
-
-                        }, response => {
-                            // error callback
-                        });
-
+                            }, response => {
+                                // error callback
+                            });
                     }
                 });
-
-
-
             },
         }
     });

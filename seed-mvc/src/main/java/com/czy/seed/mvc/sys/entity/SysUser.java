@@ -16,7 +16,7 @@ public class SysUser implements Serializable {
     private String password;
     private String email;
     private boolean enable;                 //账号是否可用
-    private boolean accountNonLocked;       //账号是否锁定
+    private boolean nonLocked;       //账号是否锁定
     private boolean credentialsExpiredTime; //密码过期时间
     private boolean accountExpiredTime;     //账号过期时间
 
@@ -68,12 +68,12 @@ public class SysUser implements Serializable {
         this.enable = enable;
     }
 
-    public boolean isAccountNonLocked() {
-        return accountNonLocked;
+    public boolean isNonLocked() {
+        return nonLocked;
     }
 
-    public void setAccountNonLocked(boolean accountNonLocked) {
-        this.accountNonLocked = accountNonLocked;
+    public void setNonLocked(boolean nonLocked) {
+        this.nonLocked = nonLocked;
     }
 
     public boolean isCredentialsExpiredTime() {

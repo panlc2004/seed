@@ -27,13 +27,17 @@ public class SecurityUser extends SysUser implements UserDetails {
     @Transient
     private List<SysRole> roles;
 
+    public SecurityUser() {
+
+    }
+
     public SecurityUser(SysUser suser) {
         if (suser != null) {
             this.setId(suser.getId());
             this.setName(suser.getName());
             this.setEmail(suser.getEmail());
             this.setPassword(suser.getPassword());
-            roles = SpringContextHelper.getBeanByType(SysUserRoleMapper.class).selectByUserId(suser.getId());
+            roles = SpringContextHelper.getBeanByType(SysUserRoleMapper.class).selectRolesByUserId(suser.getId());
         }
     }
 
@@ -66,6 +70,11 @@ public class SecurityUser extends SysUser implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
+        return true;
+    }
+
+    @Override
+    public boolean isNonLocked() {
         return true;
     }
 
