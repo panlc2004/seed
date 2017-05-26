@@ -85,5 +85,17 @@
         </dependencies>
     </dependencyManagement>
 
+    <distributionManagement>
+        <repository>
+            <id>releases</id>
+            <name>Internal Releases</name>
+            <url>http://10.131.0.164:8081/nexus/content/repositories/thirdparty</url>
+        </repository>
+        <snapshotRepository>
+            <id>releases</id>
+            <name>Internal Releases</name>
+            <url>http://10.131.0.164:8081/nexus/content/repositories/thirdparty</url>
+        </snapshotRepository>
+    </distributionManagement>
 
 </project>

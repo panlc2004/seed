@@ -1,0 +1,318 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">
+
+<head>
+    <meta content="text/html;charset=UTF-8"/>
+    <link rel="stylesheet" th:href="@{/common/elementui/lib/index.css}"/>
+
+    <!-- 引入组件库 -->
+    <!-- 先引入 Vue -->
+    <script th:src="@{/common/vue/vue.js}"></script>
+    <script th:src="@{/common/vue/vue-resource.min.js}"></script>
+    <script th:src="@{/common/vue/vue-router.js}"></script>
+    <script th:src="@{/common/elementui/lib/index.js}"></script>
+
+    <title>春之翼技委会</title>
+</head>
+
+<style>
+    .container {
+        position: absolute;
+        top: 0px;
+        bottom: 0px;
+        width: 100%;
+    }
+
+    .container .header {
+        height: 60px;
+        line-height: 60px;
+        /*background: $color-primary;*/
+        color: #fff;
+
+    }
+
+    .container .header .userinfo-inner {
+        cursor: pointer;
+        color: #fff;
+
+    }
+
+    .container .header .userinfo-inner .img {
+        width: 40px;
+        height: 40px;
+        border-radius: 20px;
+        margin: 10px 0px 10px 10px;
+        float: right;
+    }
+
+    .logo {
+        /*// width: 230 px;*/
+        height: 60px;
+        font-size: 22px;
+        padding-left: 20px;
+        padding-right: 20px;
+        border-color: rgba(238, 241, 146, 0.3);
+        border-right-width: 1px;
+        border-right-style: solid;
+
+    }
+
+    logo .img {
+        width: 40px;
+        float: left;
+        margin: 10px 10px 10px 18px;
+    }
+
+    logo .txt {
+        color: #fff;
+    }
+
+    .logo-width {
+        width: 230px;
+    }
+
+    .logo-collapse-width {
+        width: 60px
+    }
+
+    .tools {
+        padding: 0px 23px;
+        width: 14px;
+        height: 60px;
+        line-height: 60px;
+        cursor: pointer;
+    }
+
+    .main {
+        display: flex;
+        /*// background: #324057;*/
+        position: absolute;
+        top: 60px;
+        bottom: 0px;
+        overflow: hidden;
+    }
+
+    .main aside {
+        flex: 0 0 230px;
+        width: 230px;
+        /*// position: absolute;*/
+        /*// top: 0 px;*/
+        /*// bottom: 0 px;*/
+    }
+
+    .main aside .el-menu {
+        height: 100%;
+    }
+
+    .main aside .collapsed {
+        width: 60px;
+    }
+
+    .main aside .collapsed .item {
+        position: relative;
+    }
+
+    .main aside .collapsed .submenu {
+        position: absolute;
+        top: 0px;
+        left: 60px;
+        z-index: 99999;
+        height: auto;
+        display: none;
+    }
+
+    .main .menu-collapsed {
+        flex: 0 0 60px;
+        width: 60px;
+    }
+
+    .main .menu-expanded {
+        flex: 0 0 230px;
+        width: 230px;
+    }
+
+    .main .content-container {
+        /*// background: #f1f2f7;*/
+        flex: 1;
+        /*// position: absolute;*/
+        /*// right: 0 px;*/
+        /*// top: 0 px;*/
+        /*// bottom: 0 px;*/
+        /*// left: 230 px;*/
+        overflow-y: scroll;
+        padding: 20px;
+    }
+
+    .main .content-container .breadcrumb-container {
+        /*margin-bottom: 15px;*/
+    }
+
+    .main .content-container .breadcrumb-container .title {
+        width: 200px;
+        float: left;
+        color: #475669;
+    }
+
+    .main .content-container .breadcrumb-container .breadcrumb-inner {
+        float: right;
+    }
+
+    .main .content-container .content-wrapper {
+        background-color: #fff;
+        box-sizing: border-box;
+    }
+
+</style>
+
+<body>
+<!--<h1 sec:authentication="name"/>-->
+<el-row class="container">
+    <!--<el-col :span="24" class="header">-->
+        <!--<el-col :span="10" class="logo" :class="collapsed ? 'logo-collapse-width' : 'logo-width'">-->
+            <!--{{collapsed?'':sysName}}-->
+        <!--</el-col>-->
+        <!--<el-col :span="10">-->
+            <!--<div class="tools" @click.prevent="collapse">-->
+                <!--<i class="fa fa-align-justify"></i>-->
+            <!--</div>-->
+        <!--</el-col>-->
+        <!--<el-col :span="4" class="userinfo">-->
+            <!--<el-dropdown trigger="hover">-->
+                <!--<span class="el-dropdown-link userinfo-inner"><img :src="this.sysUserAvatar"/> {{sysUserName}}</span>-->
+                <!--<el-dropdown-menu slot="dropdown">-->
+                    <!--<el-dropdown-item>我的消息</el-dropdown-item>-->
+                    <!--<el-dropdown-item>设置</el-dropdown-item>-->
+                    <!--<el-dropdown-item divided @click.native="logout">退出登录</el-dropdown-item>-->
+                <!--</el-dropdown-menu>-->
+            <!--</el-dropdown>-->
+        <!--</el-col>-->
+    <!--</el-col>-->
+    <!--<el-col :span="24" class="main">-->
+        <!--<aside :class="collapsed?'menu-collapsed':'menu-expanded'">-->
+            <!--<el-menu theme="dark" default-active="2" class="el-menu-vertical-demo" @open="handleOpen"-->
+                     <!--@close="handleClose">-->
+                <!--<el-submenu index="1">-->
+                    <!--<template slot="title"><i class="el-icon-message"></i>导航一</template>-->
+                    <!--<el-menu-item-group>-->
+                        <!--<template slot="title">分组一</template>-->
+                        <!--<el-menu-item index="1-1">选项1</el-menu-item>-->
+                        <!--<el-menu-item index="1-2">选项2</el-menu-item>-->
+                    <!--</el-menu-item-group>-->
+                    <!--<el-menu-item-group title="分组2">-->
+                        <!--<el-menu-item index="1-3">选项3</el-menu-item>-->
+                    <!--</el-menu-item-group>-->
+                    <!--<el-submenu index="1-4">-->
+                        <!--<template slot="title">选项4</template>-->
+                        <!--<el-menu-item index="1-4-1">选项1</el-menu-item>-->
+                    <!--</el-submenu>-->
+                <!--</el-submenu>-->
+                <!--<el-menu-item index="2"><i class="el-icon-menu"></i>导航二</el-menu-item>-->
+                <!--<el-menu-item index="3"><i class="el-icon-setting"></i>导航三</el-menu-item>-->
+            <!--</el-menu>-->
+        <!--</aside>-->
+        <!--<section class="content-container">-->
+            <!--<div class="grid-content bg-purple-light">-->
+                <!--<el-col :span="24" class="breadcrumb-container">-->
+                    <!--<strong class="title">{{$route.name}}</strong>-->
+                    <!--<el-breadcrumb separator="/" class="breadcrumb-inner">-->
+                        <!--<el-breadcrumb-item v-for="item in $route.matched" :key="item.path">-->
+                            <!--{{ item.name }}-->
+                        <!--</el-breadcrumb-item>-->
+                    <!--</el-breadcrumb>-->
+                <!--</el-col>-->
+                <!--<el-col :span="24" class="content-wrapper">-->
+                    <!--<transition name="fade" mode="out-in">-->
+                        <!--<router-view></router-view>-->
+                    <!--</transition>-->
+                <!--</el-col>-->
+            <!--</div>-->
+        <!--</section>-->
+    <!--</el-col>-->
+    <el-col :span="24">123</el-col>
+    <el-col :span="24">123</el-col>
+    <el-col :span="24">123</el-col>
+</el-row>
+<el-row>
+    <el-col :span="24">345</el-col>
+</el-row>
+<el-row>
+    <el-col :span="24"><div class="grid-content bg-purple-dark"></div></el-col>
+</el-row>
+<el-row>
+    <el-col :span="12"><div class="grid-content bg-purple"></div></el-col>
+    <el-col :span="12"><div class="grid-content bg-purple-light"></div></el-col>
+</el-row>
+
+<script>
+
+    var router = new VueRouter();
+
+    new Vue({
+        el: ".container",
+        data: function () {
+            return {
+                sysName: 'VUEADMIN',
+                collapsed: false,
+                sysUserName: '',
+                sysUserAvatar: '',
+                form: {
+                    name: '',
+                    region: '',
+                    date1: '',
+                    date2: '',
+                    delivery: false,
+                    type: [],
+                    resource: '',
+                    desc: ''
+                }
+            }
+        },
+        methods: {
+            onSubmit() {
+                console.log('submit!');
+            },
+            handleOpen(key, keyPath) {
+                console.log(key, keyPath);
+            },
+            handleClose(key, keyPath) {
+                console.log(key, keyPath);
+            },
+            handleselect: function (a, b) {
+            },
+            //退出登录
+            logout: function () {
+                var _this = this;
+                this.$confirm('确认退出吗?', '提示', {
+                    //type: 'warning'
+                }).then(() => {
+                    sessionStorage.removeItem('user');
+                    _this.$router.push('/login');
+                }).catch(() => {
+
+                });
+
+
+            },
+            //折叠导航栏
+            collapse: function () {
+                this.collapsed = !this.collapsed;
+            },
+            showMenu(i, status){
+                this.$refs.menuCollapsed.getElementsByClassName('submenu-hook-' + i)[0].style.display = status ? 'block' : 'none';
+            }
+        },
+        mounted() {
+            var user = sessionStorage.getItem('user');
+            if (user) {
+                user = JSON.parse(user);
+                this.sysUserName = user.name || '';
+                this.sysUserAvatar = user.avatar || '';
+            }
+
+        }
+    })
+</script>
+
+</body>
+</html>
