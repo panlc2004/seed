@@ -1,15 +1,6 @@
 var routes = [
     {
-        path: '/login',
-        name: '',
-        hidden: true
-    },
-    {
-        path: '/404',
-        name: '',
-        hidden: true
-    },
-    {
+        index: "10",
         path: '/',
         name: '导航一',
         iconCls: 'el-icon-message',//图标样式class
@@ -21,17 +12,19 @@ var routes = [
         ]
     },
     {
+        index: '3',
         path: '/',
         name: '导航二',
-        iconCls: 'fa fa-id-card-o',
+        iconCls: 'el-icon-date',
         children: [
             {path: '/page4', name: '页面4'},
             {path: '/page5', name: '页面5'}
         ]
     },
     {
+        index: '4',
         path: '/',
-        name: '',
+        name: '57685678',
         iconCls: 'fa fa-address-card',
         leaf: true,//只有一个节点
         children: [
@@ -39,17 +32,14 @@ var routes = [
         ]
     },
     {
+        index: '5',
         path: '/',
         name: 'Charts',
-        iconCls: 'fa fa-bar-chart',
+        iconCls: 'el-icon-message',//图标样式class
+
         children: [
             {path: '/echarts', name: 'echarts'}
         ]
-    },
-    {
-        path: '*',
-        hidden: true,
-        redirect: {path: '/404'}
     }
 ];
 
@@ -57,22 +47,46 @@ var menuItem = Vue.extend({
     name: 'menu-item',
     props: {item: {}},
     template: [
-        '<el-submenu :index="index" v-if="!item.leaf">',
-        '<template slot="title"><i :class="item.iconCls"></i>{{item.name}}</template>',
-        '<el-menu-item v-for="child in item.children" :index="child.path" :key="child.path" v-if="!child.hidden">{{child.name}}</el-menu-item>',
+        '<el-submenu :index="item.index" v-if="!item.leaf">',
+            '<template slot="title"><i :class="item.iconCls"></i>{{item.name}}</template>',
+            '<el-menu-item v-for="child in item.children" :index="child.path" :key="child.path" v-if="!child.hidden">{{child.name}}</el-menu-item>',
         '</el-submenu>',
-        '<el-menu-item v-if="item.leaf&&item.children.length>0" :index="item.children[0].path"><i :class="item.iconCls"></i>{{item.children[0].name}}</el-menu-item>'
-    ]
+        '<el-menu-item v-else-if="item.leaf && item.children.length>0" :index="item.children[0].path"><i :class="item.iconCls"></i>{{item.children[0].name}}</el-menu-item>'
+    ].join('')
+})
+
+var menuItemHide = Vue.extend({
+    name: 'menu-item-hide',
+    props: {item: {}},
+    template: [
+        '<li v-if="!item.hidden" class="el-submenu item" >',
+            '<div v-if="!item.leaf" class="el-submenu__title" @mouseover="showMenu(item.index,true)"  @mouseout="showMenu(item.index,false)"><i :class="item.iconCls"/></div>',
+            '<ul v-if="!item.leaf" class="el-menu submenu" :class="\'submenu-hook-\'+item.index" @mouseover="showMenu(item.index,true)" @mouseout="showMenu(item.index,false)">',
+                '<li v-if="!child.hidden" v-for="child in item.children" :key="child.path" class="el-menu-item" style="padding-left: 40px;">',
+            // ':class="$route.path==child.path?\'is-active\':\'\'" @click="$router.push(child.path)">{{child.name}}',
+                    '{{child.name}}',
+                '</li>',
+            '</ul>',
+            '<li v-else class="el-submenu">',
+                    '<div class="el-submenu__title el-menu-item " style="padding-left: 17px;height: 56px;line-height: 56px;padding: 0 20px;" :class="item.path==item.children[0].path ? \'is - active\':\'\'" @click="$router.push(item.children[0].path)"><i :class="item.iconCls"></i></div>',
+            '</li>',
+        '</li>'
+    ].join(''),
+    methods: {
+        showMenu(i, status){
+            console.log(home.$refs.menuCollapsed.getElementsByClassName('submenu-hook-' + i))
+            home.$refs.menuCollapsed.getElementsByClassName('submenu-hook-' + i)[0].style.display = status ? 'block' : 'none';
+        }
+    }
 })
 
 Vue.component('menuItem', menuItem);
-
-
+Vue.component('menuItemHide', menuItemHide);
 
 var home = new Vue({
     el: "#home",
     data: {
-        sysName: 'SEEDADMIN11',
+        sysName: 'SEEDADMIN',
         collapsed: false,
         sysUserName: '',
         sysUserAvatar: '',
@@ -124,7 +138,7 @@ var home = new Vue({
         }
     },
     created: function () {
-        // this.getMenuList();
+        this.getMenuList();
     },
     mounted() {
         var user = sessionStorage.getItem('user');
@@ -135,20 +149,6 @@ var home = new Vue({
         }
     }
 })
-
-test();
-function test() {
-    alert(1)
-    home.menuList=[{
-        path: '/login',
-        name: '123',
-        hidden: true
-    },{
-        path: '/login',
-        name: '345',
-        hidden: true
-    }]
-}
 
 // const router = new VueRouter({
 //     routes

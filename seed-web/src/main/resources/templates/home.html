@@ -14,21 +14,13 @@
     <script th:src="@{/common/vue/vue-router.js}"></script>
     <script th:src="@{/common/elementui/lib/index.js}"></script>
     <script th:src="@{/common/jquery/jquery-3.2.1.min.js}"></script>
-
-    <!--<script th:src="@{/home/js/home.js}"></script>-->
-
     <title>SEED</title>
 </head>
 
-<style>
-
-
-</style>
-
 <body>
 <div id="home">
-    <el-row class="header bg-purple-dark">
-        <el-col :span="24">
+    <el-row class="container" >
+        <el-col :span="24"  class="header">
             <el-col :span="10" class="logo" :class="collapsed?'logo-collapse-width':'logo-width'">
                 {{collapsed ? '' : sysName}}
             </el-col>
@@ -50,49 +42,46 @@
                 </el-dropdown>
             </el-col>
         </el-col>
-
-
-        <el-col :span="24">
+    <!--</el-row>-->
+    <!--<el-row>-->
+        <el-col :span="24" class="main">
             <aside :class="collapsed ? 'menu-collapsed' : 'menu-expanded'">
-                <!--导航菜单-->
-                <!--导航菜单-->
-                <el-menu  class="el-menu-vertical-demo"
-                         unique-opened router v-show="!collapsed">
-                    <!--<template v-for="(item,index) in $router.options.routes" v-if="!item.hidden">-->
-                        <!--<el-submenu :index="index+''" v-if="!item.leaf">-->
-                            <!--<template slot="title"><i :class="item.iconCls"></i>{{item.name}}</template>-->
-                            <!--<el-menu-item v-for="child in item.children" :index="child.path" :key="child.path" v-if="!child.hidden">{{child.name}}</el-menu-item>-->
-                        <!--</el-submenu>-->
-                        <!--<el-menu-item v-if="item.leaf&&item.children.length>0" :index="item.children[0].path"><i :class="item.iconCls"></i>{{item.children[0].name}}</el-menu-item>-->
-                    <!--</template>-->
+                <!--导航菜单-折叠前-->
+                <el-menu class="el-menu-vertical-demo" unique-opened router v-show="!collapsed" >
                     <menu-item :item="item" v-for="item in menuList" :key="item.name"></menu-item>
                 </el-menu>
 
                 <!--导航菜单-折叠后-->
-                <!--<ul class="el-menu el-menu-vertical-demo collapsed" v-show="collapsed" ref="menuCollapsed">-->
-                    <!--<li v-for="(item,index) in $router.options.routes" v-if="!item.hidden" class="el-submenu item">-->
-                        <!--<template v-if="!item.leaf">-->
-                            <!--<div class="el-submenu__title" style="padding-left: 20px;" @mouseover="showMenu(index,true)" @mouseout="showMenu(index,false)"><i :class="item.iconCls"></i></div>-->
-                            <!--<ul class="el-menu submenu" :class="'submenu-hook-'+index" @mouseover="showMenu(index,true)" @mouseout="showMenu(index,false)">-->
-                                <!--<li v-for="child in item.children" v-if="!child.hidden" :key="child.path" class="el-menu-item" style="padding-left: 40px;" :class="$route.path==child.path?'is-active':''" @click="$router.push(child.path)">{{child.name}}</li>-->
-                            <!--</ul>-->
-                        <!--</template>-->
-                        <!--<template v-else>-->
-                    <!--<li class="el-submenu">-->
-                        <!--<div class="el-submenu__title el-menu-item" style="padding-left: 20px;height: 56px;line-height: 56px;padding: 0 20px;" :class="$route.path==item.children[0].path?'is-active':''" @click="$router.push(item.children[0].path)"><i :class="item.iconCls"></i></div>-->
-                    <!--</li>-->
-                    <!--</template>-->
-                    <!--</li>-->
-                <!--</ul>-->
+                <ul class="el-menu el-menu-vertical-demo collapsed" v-show="collapsed" ref="menuCollapsed">
+                    <menu-item-hide :item="item" v-for="item in menuList" :key="item.name"></menu-item-hide>
+                </ul>
             </aside>
+
+            <section class="content-container">
+                <div class="grid-content bg-purple-light">
+                    <el-col :span="24" class="breadcrumb-container">
+                        <strong class="title">title-title-title-title-title-title-</strong>
+                        <el-breadcrumb separator="/" class="breadcrumb-inner">
+                            <!--<el-breadcrumb-item v-for="item in $route.matched" :key="item.path">-->
+                            <!--{{ item.name }}-->
+                            <!--</el-breadcrumb-item>-->
+                        </el-breadcrumb>
+                    </el-col>
+                    <el-col :span="24" class="content-wrapper">
+                        <transition name="fade" mode="out-in">
+                            <!--<router-view></router-view>-->
+                            <div>12312313444444444444444444444444444444444444444444444</div>
+                        </transition>
+                    </el-col>
+                </div>
+            </section>
+
         </el-col>
 
     </el-row>
-    <el-row class="main">
 
-    </el-row>
 </div>
+
 </body>
 <script th:src="@{/home/js/home.js}"></script>
-</body>
 </html>
