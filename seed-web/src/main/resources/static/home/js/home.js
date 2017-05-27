@@ -74,7 +74,6 @@ var menuItemHide = Vue.extend({
     ].join(''),
     methods: {
         showMenu(i, status){
-            console.log(home.$refs.menuCollapsed.getElementsByClassName('submenu-hook-' + i))
             home.$refs.menuCollapsed.getElementsByClassName('submenu-hook-' + i)[0].style.display = status ? 'block' : 'none';
         }
     }
@@ -92,8 +91,8 @@ const router = new VueRouter({
 
 var home = new Vue({
     el: "#home",
-    router,
-    render: h => h(home),
+    // router,
+    // render: h => h(home),
     data: {
         sysName: 'SEEDADMIN',
         collapsed: false,
