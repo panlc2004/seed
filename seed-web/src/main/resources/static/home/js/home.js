@@ -83,8 +83,17 @@ var menuItemHide = Vue.extend({
 Vue.component('menuItem', menuItem);
 Vue.component('menuItemHide', menuItemHide);
 
+Vue.use(VueRouter)
+
+const router = new VueRouter({
+    mode: 'history',
+    routes: routes
+})
+
 var home = new Vue({
     el: "#home",
+    router,
+    render: h => h(home),
     data: {
         sysName: 'SEEDADMIN',
         collapsed: false,
@@ -149,6 +158,9 @@ var home = new Vue({
         }
     }
 })
+
+
+
 
 
 // var router = new Router();
