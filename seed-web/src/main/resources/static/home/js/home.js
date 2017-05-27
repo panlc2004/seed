@@ -150,6 +150,9 @@ var home = new Vue({
     }
 })
 
+
+// var router = new Router();
+
 // const router = new VueRouter({
 //     routes
 // })
