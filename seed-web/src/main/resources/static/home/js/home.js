@@ -6,7 +6,7 @@ var routes = [
         iconCls: 'el-icon-message',//图标样式class
         children: [
             {path: '/main', name: '主页', hidden: true},
-            {path: '/table', name: 'Table'},
+            {path: '/index2.html', name: 'Table'},
             {path: '/form', name: 'Form'},
             {path: '/user', name: '列表'},
         ]
@@ -48,11 +48,28 @@ var menuItem = Vue.extend({
     props: {item: {}},
     template: [
         '<el-submenu :index="item.index" v-if="!item.leaf">',
-            '<template slot="title"><i :class="item.iconCls"></i>{{item.name}}</template>',
-            '<el-menu-item v-for="child in item.children" :index="child.path" :key="child.path" v-if="!child.hidden">{{child.name}}</el-menu-item>',
+        '<template slot="title"><i :class="item.iconCls"></i>{{item.name}}</template>',
+        '<el-menu-item v-for="child in item.children" :index="child.path" :key="child.path" v-if="!child.hidden" @click="toPage(\'/index2.html\')">{{child.name}}</el-menu-item>',
         '</el-submenu>',
         '<el-menu-item v-else-if="item.leaf && item.children.length>0" :index="item.children[0].path"><i :class="item.iconCls"></i>{{item.children[0].name}}</el-menu-item>'
-    ].join('')
+    ].join(''),
+    methods: {
+
+        toPage(url) {
+            // this.$http.get(url).then(
+            //     successRes => {
+            //         console.log(successRes);
+            //         home.pageContent = successRes.body
+            //     }, falseRes => {
+            //         console.log(falseRes);
+            //         home.pageContent = falseRes.body
+            //     });
+            $("#pageContent").empty();
+            $("#pageContent").load(url);
+
+        }
+    }
+
 })
 
 var menuItemHide = Vue.extend({
@@ -60,16 +77,16 @@ var menuItemHide = Vue.extend({
     props: {item: {}},
     template: [
         '<li v-if="!item.hidden" class="el-submenu item" >',
-            '<div v-if="!item.leaf" class="el-submenu__title" @mouseover="showMenu(item.index,true)"  @mouseout="showMenu(item.index,false)"><i :class="item.iconCls"/></div>',
-            '<ul v-if="!item.leaf" class="el-menu submenu" :class="\'submenu-hook-\'+item.index" @mouseover="showMenu(item.index,true)" @mouseout="showMenu(item.index,false)">',
-                '<li v-if="!child.hidden" v-for="child in item.children" :key="child.path" class="el-menu-item" style="padding-left: 40px;">',
-            // ':class="$route.path==child.path?\'is-active\':\'\'" @click="$router.push(child.path)">{{child.name}}',
-                    '{{child.name}}',
-                '</li>',
-            '</ul>',
-            '<li v-else class="el-submenu">',
-                    '<div class="el-submenu__title el-menu-item " style="padding-left: 17px;height: 56px;line-height: 56px;padding: 0 20px;" :class="item.path==item.children[0].path ? \'is - active\':\'\'" @click="$router.push(item.children[0].path)"><i :class="item.iconCls"></i></div>',
-            '</li>',
+        '<div v-if="!item.leaf" class="el-submenu__title" @mouseover="showMenu(item.index,true)"  @mouseout="showMenu(item.index,false)"><i :class="item.iconCls"/></div>',
+        '<ul v-if="!item.leaf" class="el-menu submenu" :class="\'submenu-hook-\'+item.index" @mouseover="showMenu(item.index,true)" @mouseout="showMenu(item.index,false)">',
+        '<li v-if="!child.hidden" v-for="child in item.children" :key="child.path" class="el-menu-item" style="padding-left: 40px;">',
+        // ':class="$route.path==child.path?\'is-active\':\'\'" @click="$router.push(child.path)">{{child.name}}',
+        '{{child.name}}',
+        '</li>',
+        '</ul>',
+        '<li v-else class="el-submenu">',
+        '<div class="el-submenu__title el-menu-item " style="padding-left: 17px;height: 56px;line-height: 56px;padding: 0 20px;" :class="item.path==item.children[0].path ? \'is - active\':\'\'" @click="$router.push(item.children[0].path)"><i :class="item.iconCls"></i></div>',
+        '</li>',
         '</li>'
     ].join(''),
     methods: {
@@ -82,12 +99,8 @@ var menuItemHide = Vue.extend({
 Vue.component('menuItem', menuItem);
 Vue.component('menuItemHide', menuItemHide);
 
-Vue.use(VueRouter)
+// Vue.use(VueRouter);
 
-const router = new VueRouter({
-    mode: 'history',
-    routes: routes
-})
 
 var home = new Vue({
     el: "#home",
@@ -99,6 +112,7 @@ var home = new Vue({
         sysUserName: '',
         sysUserAvatar: '',
         menuList: {},
+        pageContent: '',
         form: {
             name: '',
             region: '',
@@ -107,7 +121,8 @@ var home = new Vue({
             delivery: false,
             type: [],
             resource: '',
-            desc: ''
+            desc: '',
+            pageContent: ""
         }
     },
     methods: {
@@ -143,12 +158,32 @@ var home = new Vue({
         },
         showMenu(i, status){
             this.$refs.menuCollapsed.getElementsByClassName('submenu-hook-' + i)[0].style.display = status ? 'block' : 'none';
+        },
+        toPage(url) {
+            // Vue.get(url).then(
+            //     successRes => {
+            //         console.log(successRes);
+            //         home.pageContent = successRes
+            //     }, falseRes => {
+            //         console.log(falseRes);
+            //         home.pageContent = falseRes
+            //     });
+            alert(url);
+            $("#pageContent").load("cn.html");
+
         }
     },
     created: function () {
         this.getMenuList();
     },
-    mounted() {
+    updated: function () {
+        //路由
+        var router = new Router();
+        routerList(router, home.menuList);
+        router.start();
+    },
+    mounted()
+    {
         var user = sessionStorage.getItem('user');
         if (user) {
             user = JSON.parse(user);
@@ -158,26 +193,43 @@ var home = new Vue({
     }
 })
 
+// const router = new VueRouter();
+
+function toPage(url) {
+    // Vue.get(url).then(
+    //     successRes => {
+    //         console.log(successRes);
+    //         home.pageContent = successRes
+    //     }, falseRes => {
+    //         console.log(falseRes);
+    //         home.pageContent = falseRes
+    //     });
+
+    alert(1)
+    $("#pageContent").load("cn.html");
 
 
+}
 
+function routerList(router, menuList) {
+    for (var key in menuList) {
+        var menu = menuList[key];
+        if (menu.type == 0) {
+            routerList(router, menu.list);
+        } else if (menu.type == 1) {
+            router.add('#' + menu.url, function () {
+                var url = window.location.hash;
 
-// var router = new Router();
+                //替换iframe的url
+                vm.main = url.replace('#', '');
 
-// const router = new VueRouter({
-//     routes
-// })
-//
-// router.beforeEach((to, from, next) => {
-//     //NProgress.start();
-//     if (to.path == '/login') {
-//         sessionStorage.removeItem('user');
-//     }
-//     let user = JSON.parse(sessionStorage.getItem('user'));
-//     if (!user && to.path != '/login') {
-//         next({path: '/login'})
-//     } else {
-//         next()
-//     }
-// })
+                //导航菜单展开
+                $(".treeview-menu li").removeClass("active");
+                $("a[href='" + url + "']").parents("li").addClass("active");
+
+                vm.navTitle = $("a[href='" + url + "']").text();
+            });
+        }
+    }
+}
 

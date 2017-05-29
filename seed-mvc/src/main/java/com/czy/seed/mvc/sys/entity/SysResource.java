@@ -1,12 +1,24 @@
 package com.czy.seed.mvc.sys.entity;
 
+import javax.persistence.Transient;
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * 系统资源
  * Created by PLC on 2017/5/23.
  */
 public class SysResource implements Serializable{
+
+    public SysResource() {
+    }
+
+    public SysResource(Long parentId, Long id) {
+        this.id = id;
+        this.parentId = parentId;
+    }
+
     private static final long serialVersionUID = 8335380285204046588L;
     private Long id;
     private Long parentId;  //父级目录
@@ -14,6 +26,9 @@ public class SysResource implements Serializable{
     private String code;    //资源编码
     private String name;    //名称
     private String url;     //资源链接
+
+    @Transient
+    private List<SysResource> children; //子资源
 
     public Long getId() {
         return id;
@@ -61,5 +76,25 @@ public class SysResource implements Serializable{
 
     public void setUrl(String url) {
         this.url = url;
+    }
+
+    public List<SysResource> getChildren() {
+        if (children == null) {
+            children = new ArrayList<SysResource>(0);
+        }
+        return children;
+    }
+
+    @Override
+    public String toString() {
+        return "SysResource{" +
+                "id=" + id +
+                ", parentId=" + parentId +
+                ", type=" + type +
+                ", code='" + code + '\'' +
+                ", name='" + name + '\'' +
+                ", url='" + url + '\'' +
+                ", children=" + children +
+                '}';
     }
 }

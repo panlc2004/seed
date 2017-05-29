@@ -28,7 +28,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated() //任何请求,登录后可以访问
                 .and().formLogin().loginPage("/login").permitAll()
                 .and().logout().permitAll()
-                .and().csrf().disable();
+                .and().csrf().disable()
+                .headers().frameOptions().disable();
     }
 
     @Override
@@ -38,6 +39,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     /**
      * 取消common目录下的访问权限控制
+     *
      * @param web
      * @throws Exception
      */
@@ -48,6 +50,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     /**
      * 设置加密器
+     *
      * @param auth
      * @throws Exception
      */

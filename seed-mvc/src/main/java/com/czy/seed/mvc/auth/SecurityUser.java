@@ -27,10 +27,6 @@ public class SecurityUser extends SysUser implements UserDetails {
     @Transient
     private List<SysRole> roles;
 
-    public SecurityUser() {
-
-    }
-
     public SecurityUser(SysUser suser) {
         if (suser != null) {
             this.setId(suser.getId());
@@ -46,7 +42,7 @@ public class SecurityUser extends SysUser implements UserDetails {
         Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
         if (roles != null) {
             for (SysRole role : roles) {
-                SimpleGrantedAuthority authority = new SimpleGrantedAuthority(role.getName());
+                UserAuthority authority = new UserAuthority(role.getCode(), role.getId());
                 authorities.add(authority);
             }
         }

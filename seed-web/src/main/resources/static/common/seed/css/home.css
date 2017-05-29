@@ -37,7 +37,7 @@ body {
 
 .container .header .logo {
     /*width: 230px;*/
-    height: 55px;
+    /*height: 55px;*/
     font-size: 22px;
     padding-left: 20px;
     padding-right: 20px;
@@ -65,7 +65,7 @@ body {
 }
 
 .container .header .tools {
-    padding: 0px 23px;
+    padding: 0px 20px;
     width: 14px;
     height: 60px;
     line-height: 60px;

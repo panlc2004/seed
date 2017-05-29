@@ -1,11 +1,14 @@
 package com.czy.seed.mvc.sys.entity;
 
+import com.czy.seed.mybatis.config.mybatis.annotations.Cache;
+
 import java.io.Serializable;
 
 /**
  * 用户信息
  * Created by PLC on 2017/5/23.
  */
+@Cache
 public class SysUser implements Serializable {
 
     private static final long serialVersionUID = 6022588492678547207L;
