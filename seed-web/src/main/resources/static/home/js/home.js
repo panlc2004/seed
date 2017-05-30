@@ -21,9 +21,9 @@ var menuItem = Vue.extend({
             }
         },
         toPage(child) {
-            console.log(child)
             home.contentUrl = child.url;
             home.title=child.name
+            window.location.hash=child.url
         }
     }
 
@@ -45,7 +45,7 @@ var menuItemHide = Vue.extend({
     name: 'menu-item-hide',
     props: {item: {}},
     template: [
-        '<li>',
+        '<li  class="el-submenu item">',
         '<div class="el-submenu__title" @mouseover="showMenu(item.id,true)"  @mouseout="showMenu(item.id,false)"><i class="el-icon-message"/></div>',
         '<ul class="el-menu submenu" :class="\'submenu-hook-\'+item.id" @mouseover="showMenu(item.id,true)" @mouseout="showMenu(item.id,false)">',
         '<li v-for="child in item.children" :key="child.id" class="el-menu-item" style="padding-left: 22px;" @click="toPage(child)">',
@@ -61,9 +61,11 @@ var menuItemHide = Vue.extend({
         toPage(child) {
             home.contentUrl = child.url;
             home.title=child.name
+            window.location.hash=child.url
         }
     }
 })
+
 
 Vue.component('menuItem', menuItem);
 Vue.component('menuItemHide', menuItemHide);
@@ -97,23 +99,14 @@ var home = new Vue({
         getMenuList: function () {
             this.$http.post("sys/resource/findResourceTreeForLoginUser").then(
                 success => {
-                    console.log(success)
                     this.menuList = success.body;
                 }, failure => {
                     alert(failure.body)
                 }
             )
         },
-        onSubmit() {
-            console.log('submit!');
-        },
-        handleOpen(key, keyPath) {
-            console.log(key, keyPath);
-        },
         handleClose(key, keyPath) {
             console.log(key, keyPath);
-        },
-        handleselect: function (a, b) {
         },
         //退出登录
         logout: function () {
