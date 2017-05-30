@@ -131,21 +131,6 @@ var home = new Vue({
     },
     created: function () {
         this.getMenuList();
-    },
-    // updated: function () {
-    //     //路由
-    //     var router = new Router();
-    //     routerList(router, home.menuList);
-    //     router.start();
-    // },
-    mounted()
-    {
-        var user = sessionStorage.getItem('user');
-        if (user) {
-            user = JSON.parse(user);
-            this.sysUserName = user.name || '';
-            this.sysUserAvatar = user.avatar || '';
-        }
     }
 })
 //

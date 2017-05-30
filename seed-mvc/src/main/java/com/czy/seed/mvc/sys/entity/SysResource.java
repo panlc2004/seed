@@ -80,7 +80,7 @@ public class SysResource implements Serializable{
 
     public List<SysResource> getChildren() {
         if (children == null) {
-            children = new ArrayList<SysResource>(0);
+            children = new ArrayList<SysResource>();
         }
         return children;
     }
