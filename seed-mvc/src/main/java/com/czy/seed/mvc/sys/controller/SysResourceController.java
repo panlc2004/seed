@@ -1,13 +1,11 @@
 package com.czy.seed.mvc.sys.controller;
 
 import com.czy.seed.mvc.sys.entity.SysResource;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.core.userdetails.UserDetails;
+import com.czy.seed.mvc.sys.service.SysResourceService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import java.util.Collection;
 import java.util.List;
 
 /**
@@ -17,13 +15,15 @@ import java.util.List;
 @RequestMapping("/sys/resource")
 public class SysResourceController {
 
-    @RequestMapping("/findResourceForLoginUser")
-    public List<SysResource> findResourceForLoginUser() {
-        UserDetails principal = (UserDetails) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        Collection<? extends GrantedAuthority> authorities = SecurityContextHolder.getContext().getAuthentication().getAuthorities();
-        System.out.println(principal);
-        System.out.println(authorities);
+    @Autowired
+    private SysResourceService sysResourceService;
 
-        return null;
+    /**
+     * 查找登陆用户的资源树
+     * @return
+     */
+    @RequestMapping("/findResourceTreeForLoginUser")
+    public List<SysResource> findResourceTreeForLoginUser() {
+        return sysResourceService.selectResourceTree();
     }
 }

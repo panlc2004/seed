@@ -6,8 +6,6 @@ import org.junit.Test;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.junit.Assert.*;
-
 /**
  * Created by PLC on 2017/5/30.
  */
@@ -26,7 +24,7 @@ public class SysResourceServiceImplTest {
         sysResourceList.add(new SysResource(0L, 1L));
         sysResourceList.add(new SysResource(0L, 2L));
         SysResourceServiceImpl sysResourceService = new SysResourceServiceImpl();
-        List<SysResource> sysResources = sysResourceService.bulidTree(sysResourceList);
+        List<SysResource> sysResources = sysResourceService.buildTree(sysResourceList);
         System.out.println(sysResources);
     }
 

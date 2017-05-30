@@ -68,15 +68,12 @@
             <section class="content-container">
                 <div class="grid-content bg-purple-light">
                     <el-col :span="24" class="breadcrumb-container">
-                        <strong class="title">title-title-title-title-title-title-</strong>
+                        <strong class="title">{{title}}</strong>
                         <el-breadcrumb separator="/" class="breadcrumb-inner">
-                            <!--<el-breadcrumb-item v-for="item in $route.matched" :key="item.path">-->
-                            <!--{{ item.name }}-->
-                            <!--</el-breadcrumb-item>-->
                         </el-breadcrumb>
                     </el-col>
                     <el-col :span="24" class="content-wrapper">
-                        <div id="pageContent"></div>
+                            <iframe scrolling="yes" frameborder="0" style="width:100%;min-height:200px;overflow:visible;background:#fff;" :src="contentUrl"></iframe>
                     </el-col>
                 </div>
             </section>

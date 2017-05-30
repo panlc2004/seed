@@ -16,7 +16,7 @@ public class UserAuthority implements GrantedAuthority, Serializable {
 
     public UserAuthority(String role, Long roleId) {
         Assert.hasText(role, "A granted authority textual representation is required");
-        Assert.isNull(roleId, "A granted authority roleId representation is required");
+        Assert.notNull(roleId, "A granted authority roleId representation is required");
         this.role = role;
         this.roleId = roleId;
     }

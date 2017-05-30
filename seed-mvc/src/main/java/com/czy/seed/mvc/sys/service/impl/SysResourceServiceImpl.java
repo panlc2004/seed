@@ -4,12 +4,14 @@ import com.czy.seed.mvc.sys.entity.SysResource;
 import com.czy.seed.mvc.sys.mapper.SysResourceMapper;
 import com.czy.seed.mvc.sys.service.SysResourceService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.*;
 
 /**
  * Created by PLC on 2017/5/29.
  */
+@Service
 public class SysResourceServiceImpl implements SysResourceService {
 
     @Autowired
@@ -17,7 +19,7 @@ public class SysResourceServiceImpl implements SysResourceService {
 
     public List<SysResource> selectResourceTree() {
         List<SysResource> allResources = sysResourceMapper.selectListAll();
-        return bulidTree(allResources);
+        return buildTree(allResources);
     }
 
     /**
@@ -25,7 +27,7 @@ public class SysResourceServiceImpl implements SysResourceService {
      * @param allResources
      * @return
      */
-    public List<SysResource> bulidTree(List<SysResource> allResources) {
+    public List<SysResource> buildTree(List<SysResource> allResources) {
         List<SysResource> rootResource = findRootResource(allResources);
         findChildrenResource(allResources, rootResource);
         return rootResource;
@@ -47,9 +49,14 @@ public class SysResourceServiceImpl implements SysResourceService {
         return rootResource;
     }
 
-    public void findChildrenResource(List<SysResource> allResourcsWithoutRoot, List<SysResource> rootResourceList) {
+    /**
+     * 设置父节点的所有子节点——递归调用
+     * @param allResourcesWithoutRoot allResourcsWithoutRoot不包含父节点的所有资源列表
+     * @param rootResourceList 根节点
+     */
+    public void findChildrenResource(List<SysResource> allResourcesWithoutRoot, List<SysResource> rootResourceList) {
         List<SysResource> subResources = new ArrayList<SysResource>();  //本轮未查找到归属的节点集合
-        Iterator<SysResource> iterator = allResourcsWithoutRoot.iterator();
+        Iterator<SysResource> iterator = allResourcesWithoutRoot.iterator();
         List<SysResource> children = new ArrayList<SysResource>();  //查找到归属的节点集合
         while (iterator.hasNext()) {
             SysResource resource = iterator.next();
