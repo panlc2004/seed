@@ -8,7 +8,7 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 
     <link rel="stylesheet" th:href="@{/lib/elementui/lib/theme-default/index.css}"/>
-    <link rel="stylesheet" th:href="@{/css/common/home.css}"/>
+    <link rel="stylesheet" th:href="@{/css/common/index.css}"/>
 
     <!-- 引入组件库 -->
     <!-- 先引入 Vue -->
@@ -19,16 +19,21 @@
     <script th:src="@{/lib/jquery/jquery-3.2.1.min.js}"></script>
     <title>SEED</title>
 </head>
-<style>
-    .red{
-        color: red;
-    }
 
-</style>
+<script>
+    function iFrameHeight() {
+        var ifm = document.getElementById("mainFrame");
+        var subWeb = document.frames ? document.frames["mainFrame"].document : ifm.contentDocument;
+        if (ifm != null && subWeb != null) {
+            ifm.height = subWeb.body.scrollHeight;
+        }
+    }
+</script>
+
 <body>
 <div id="home">
-    <el-row class="container" >
-        <el-col :span="24"  class="header">
+    <el-row class="container">
+        <el-col :span="24" class="header">
             <el-col :span="10" class="logo" :class="collapsed?'logo-collapse-width':'logo-width'">
                 {{collapsed ? '' : sysName}}
             </el-col>
@@ -50,12 +55,12 @@
                 </el-dropdown>
             </el-col>
         </el-col>
-    <!--</el-row>-->
-    <!--<el-row>-->
+        <!--</el-row>-->
+        <!--<el-row>-->
         <el-col :span="24" class="main">
             <aside :class="collapsed ? 'menu-collapsed' : 'menu-expanded'">
                 <!--导航菜单-折叠前-->
-                <el-menu class="el-menu-vertical-demo" unique-opened v-show="!collapsed" >
+                <el-menu class="el-menu-vertical-demo" unique-opened v-show="!collapsed">
                     <menu-item :item="item" v-for="item in menuList" :key="item.name"></menu-item>
                 </el-menu>
 
@@ -73,9 +78,9 @@
                         </el-breadcrumb>
                     </el-col>
                     <el-col :span="24" class="content-wrapper">
-                        <section class="content" style="background:#fff;">
-                            <iframe scrolling="yes" frameborder="0" style="width:100%;min-height:200px;overflow:visible;background:#fff;" :src="contentUrl"></iframe>
-                        </section>
+                        <iframe id="mainFrame" name="iframepage" scrolling="yes" frameborder="0"
+                                style="width:100%;min-height:650px;overflow:visible;background:#fff;"
+                                :src="contentUrl" ></iframe>
                     </el-col>
                 </div>
             </section>

@@ -22,8 +22,8 @@ var menuItem = Vue.extend({
         },
         toPage(child) {
             home.contentUrl = child.url;
-            home.title=child.name
-            window.location.hash=child.url
+            home.title = child.name
+            window.location.hash = child.url
         }
     }
 
@@ -60,8 +60,8 @@ var menuItemHide = Vue.extend({
         },
         toPage(child) {
             home.contentUrl = child.url;
-            home.title=child.name
-            window.location.hash=child.url
+            home.title = child.name
+            window.location.hash = child.url
         }
     }
 })
@@ -82,7 +82,7 @@ var home = new Vue({
         sysUserAvatar: '',
         menuList: {},
         contentUrl: '',
-        title:'',
+        title: '',
         form: {
             name: '',
             region: '',
@@ -133,6 +133,10 @@ var home = new Vue({
         this.getMenuList();
     }
 })
+
+
+
+
 //
 // function routerList(router, menuList) {
 //     for (var key in menuList) {

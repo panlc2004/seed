@@ -1,5 +1,6 @@
 package com.czy.seed.mvc.sys.entity;
 
+import javax.persistence.Id;
 import javax.persistence.Transient;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -11,6 +12,7 @@ import java.util.List;
 public class SysOrg implements Serializable {
     private static final long serialVersionUID = 1172246239374961171L;
 
+    @Id
     private Long id;
     private Long parentId;
     private String code;

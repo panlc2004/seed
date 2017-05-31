@@ -1,5 +1,6 @@
 package com.czy.seed.mvc.sys.service.impl;
 
+import com.czy.seed.mvc.base.service.impl.BaseServiceImpl;
 import com.czy.seed.mvc.sys.entity.SysOrg;
 import com.czy.seed.mvc.sys.entity.SysResource;
 import com.czy.seed.mvc.sys.mapper.SysOrgMapper;
@@ -15,7 +16,7 @@ import java.util.List;
  * Created by PLC on 2017/5/30.
  */
 @Service
-public class SysOrgServiceImpl implements SysOrgService {
+public class SysOrgServiceImpl extends BaseServiceImpl<SysOrg> implements SysOrgService {
 
     @Autowired
     private SysOrgMapper sysOrgMapper;

@@ -1,8 +1,19 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <meta charset="UTF-8">
-    <script src="common/jquery/jquery-3.2.1.min.js"></script>
+    <meta content="text/html;charset=UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+    <link rel="stylesheet" th:href="@{/lib/elementui/lib/theme-default/index.css}"/>
+
+    <!-- 引入组件库 -->
+    <!-- 先引入 Vue -->
+    <script th:src="@{/lib/jquery/jquery-3.2.1.min.js}"></script>
+    <script th:src="@{/lib/vue/vue.js}"></script>
+    <script th:src="@{/lib/vue/vue-resource.min.js}"></script>
+    <script th:src="@{/lib/vue/vue-router.js}"></script>
+    <script th:src="@{/lib/elementui/lib/index.js}"></script>
     <title>Title</title>
 </head>
 <style>
@@ -29,13 +40,10 @@
     <router-view></router-view>
 </div>
 
-<script src="./common/vue/vue.js"></script>
-<script src="./common/vue/vue-router.js"></script>
-<script src="./common/vue/vue-resource.js"></script>
+
 
 <script>
-
-
+$(function () {
     function test() {
         router.push("/foo");
     }
@@ -85,48 +93,48 @@
         })
 
     var app = new Vue({
-            el:'#app',
-            data:{
-                con:'',
-                url:'www.baidu.com',
-                vhtml:'',
-                vsrc:''
+        el:'#app',
+        data:{
+            con:'',
+            url:'www.baidu.com',
+            vhtml:'',
+            vsrc:''
+        },
+        router,
+        methods:{
+            test() {
+                alert(112)
             },
-            router,
-            methods:{
-                test() {
-                    alert(112)
-                },
-                test2() {
+            test2() {
 //                    app.con = '12313';
 //                    alert(window.location);
-                    window.location.hash = '445566777';
-                    var params = {};
-                    params["_jtype"] = "html";
-                    $("#load").load("cn.html",  function (data,status) {
-                        console.log(a);
-                        console.log(status);
-                    });
+                window.location.hash = '445566777';
+                var params = {};
+                params["_jtype"] = "html";
+                $("#load").load("cn.html",  function (data,status) {
+                    console.log(a);
+                    console.log(status);
+                });
 
 
 //                    htmlobj=$.ajax({url:"cn.html",async:false});
 //                    $("#load").html(htmlobj.responseText);
 
-                },
-                test3() {
-                    alert(123);
-                    app.vsrc = "cn.html";
-                },
-                test4(){
-                    $("#load").load("cn2.html" , function (a) {
-                        console.log(a);
-                    });
+            },
+            test3() {
+                alert(123);
+                app.vsrc = "cn.html";
+            },
+            test4(){
+                $("#load").load("cn2.html" , function (a) {
+                    console.log(a);
+                });
 
-                }
             }
+        }
 
 
-        })
+    })
 
 
 
@@ -136,6 +144,10 @@
     {
         app.test2();
     }
+    
+})
+
+
 </script>
 
 </body>

@@ -5,6 +5,7 @@ import com.czy.seed.mybatis.base.QueryParams;
 import com.czy.seed.mybatis.base.mapper.BaseMapper;
 import com.czy.seed.mybatis.tool.NullUtil;
 import com.czy.seed.mybatis.tool.SpringContextHelper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import sun.reflect.generics.reflectiveObjects.TypeVariableImpl;
 
@@ -21,6 +22,7 @@ public class BaseServiceImpl<T> implements BaseService<T> {
 
     private int defaultBatchOperateLimit = 10000;
 
+    @Autowired
     private BaseMapper<T> mapper;
 
     public BaseMapper<T> getMapper() {
@@ -32,7 +34,7 @@ public class BaseServiceImpl<T> implements BaseService<T> {
      * 默认从Spring容器中查找id为：泛型实体类名 + Mapper 的mapper实例
      * 可被getMapperName()方法重定向
      */
-    @PostConstruct
+//    @PostConstruct
     public void initMapper() {
         Class<?> entityClass = getSuperClassGenricType(this.getClass(), 0);
         String mapperName = getMapperName();

@@ -120,7 +120,7 @@ body {
 .container .main .content-container {
     flex: 1;
     overflow-y: scroll;
-    padding: 20px;
+    padding: 5px;
 }
 
 .container .main .content-container .breadcrumb-container {
@@ -140,5 +140,5 @@ body {
 
 .container .main .content-wrapper {
     background-color: #fff;
-    box-sizing: border-box;
+    /*box-sizing: border-box;*/
 }
