@@ -39,40 +39,7 @@ $(document).ready(function () {
             },
             //渲染图标
             renderContent(createElement, {node, data, store}) {
-                return createElement('span', [
-                    createElement('span', node.label),
-                    createElement('span',
-                        {attrs: {style: "float: right; margin-right: 20px"}},
-                        [
-                            // createElement('el-button', {
-                            //     attrs: {size: "mini", type: "primary"}, on: {
-                            //         click: function (event) {
-                            //             event.stopPropagation();    //点击按钮时，树不自动打开
-                            //             store.append({id: null, name: 'TEST', children: []}, data);
-                            //             // openOperateWin(store);
-                            //         }
-                            //     }
-                            // }, "添加"),
-                            createElement('el-button', {
-                                attrs: {size: "mini", type: "warning"}, on: {
-                                    click: function (event) {
-                                        event.stopPropagation();    //点击按钮时，树不自动打开
-                                        openEditWin(store, data.id)
-                                    }
-                                }
-                            }, "修改"),
-                            createElement('el-button', {
-                                attrs: {size: "mini", type: "danger"}, on: {
-                                    click: function (event) {
-                                        // store.remove({id: null, name: 'TEST', children: []}, data);
-                                        event.stopPropagation();
-                                        deleteOrg(data.id);
-                                    }
-                                }
-                            }, "删除")
-                        ])
-                ]);
-
+                return buildOpeBtn(createElement, {node, data, store});
             },
             //获取选中的树节点
             //打开组织机构保存弹窗
@@ -113,6 +80,41 @@ $(document).ready(function () {
         }
     });
 
+    function buildOpeBtn(createElement, {node, data, store}) {
+        var editBtn = createElement('el-button', {
+            attrs: {size: "mini", type: "warning"}, on: {
+                click: function (event) {
+                    event.stopPropagation();    //点击按钮时，树不自动打开
+                    openEditWin(store, data.id)
+                }
+            }
+        }, "修改");
+
+        var delBtn = createElement('el-button', {
+            attrs: {size: "mini", type: "danger"}, on: {
+                click: function (event) {
+                    // store.remove({id: null, name: 'TEST', children: []}, data);
+                    event.stopPropagation();
+                    deleteOrg(data.id);
+                }
+            }
+        }, "删除");
+        var btns;
+        if(data.children.length > 0){
+            btns = [editBtn];
+        } else {
+            btns = [editBtn, delBtn];
+        }
+        return  createElement('span', [
+            createElement('span', node.label),
+            createElement(
+                'span',
+                {attrs: {style: "float: right; margin-right: 20px"}},
+                btns
+            )
+        ])
+    }
+
     function openEditWin(store, id) {
         Vue.http.get("/sys/org/loadData", {params: {id: id}}).then(
             success => {
@@ -132,11 +134,18 @@ $(document).ready(function () {
         }).then(() => {
             Vue.http.get("/sys/org/deleteOrg", {params: {id: id}}).then(
                 success => {
-                    main.loadTree();
-                    main.$message({
-                        type: 'success',
-                        message: '删除成功!'
-                    });
+                    if(success.body.code != 200) {
+                        main.$message({
+                            type: 'error',
+                            message: success.body.msg
+                        });
+                    } else {
+                        main.loadTree();
+                        main.$message({
+                            type: 'success',
+                            message: '删除成功!'
+                        });
+                    }
                 }, failure => {
                     alert(failure);
                 }
