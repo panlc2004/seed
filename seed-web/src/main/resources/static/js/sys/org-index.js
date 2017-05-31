@@ -114,7 +114,7 @@ $(document).ready(function () {
     });
 
     function openEditWin(store, id) {
-        Vue.http.post("/sys/org/loadData", {params:{id:id}}).then(
+        Vue.http.get("/sys/org/loadData", {params: {id: id}}).then(
             success => {
                 main.sysOrg = success.body;
                 main.operateDialogShow = true;
@@ -125,32 +125,27 @@ $(document).ready(function () {
     };
 
     function deleteOrg(id) {
-        main.$confirm('此操作将永久删除该文件, 是否继续?', '提示', {
+        main.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'warning'
         }).then(() => {
-            main.$message({
-                type: 'success',
-                message: '删除成功!'
-            });
+            Vue.http.get("/sys/org/deleteOrg", {params: {id: id}}).then(
+                success => {
+                    main.loadTree();
+                    main.$message({
+                        type: 'success',
+                        message: '删除成功!'
+                    });
+                }, failure => {
+                    alert(failure);
+                }
+            )
         }).catch(() => {
-            main.$message({
-                type: 'info',
-                message: '已取消删除'
-            });
+            // main.$message({
+            //     type: 'info',
+            //     message: '已取消删除'
+            // });
         });
-
-
-
-        Vue.http.post("/sys/org/deleteOrg", {params:{id:id}}).then(
-            success => {
-                main.sysOrg = success.body;
-                main.operateDialogShow = true;
-            }, failure => {
-                alert(error + failure);
-            }
-        )
-
     }
 });
