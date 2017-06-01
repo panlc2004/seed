@@ -1,6 +1,7 @@
 package com.czy.seed.mvc.base.service;
 
 import com.czy.seed.mybatis.base.QueryParams;
+import com.github.pagehelper.Page;
 import org.apache.ibatis.annotations.Param;
 
 import java.util.List;
@@ -88,6 +89,24 @@ public interface BaseService<T> {
      * @return
      */
     int selectCountByParams(QueryParams params);
+
+    /**
+     * 分页查询——只查询本表数据
+     * @param pageNo    页号
+     * @param pageLimit 分页大小
+     * @param params    查询参数
+     * @return
+     */
+    Page<T> selectPageByParams(int pageNo, int pageLimit, final QueryParams params);
+
+    /**
+     * 分页查询——查询关联表数据
+     * @param pageNo    页号
+     * @param pageLimit 分页大小
+     * @param params    查询参数
+     * @return
+     */
+    Page<T> selectPageRelativeByParams(int pageNo, int pageLimit, final QueryParams params);
 
     /**
      * 根据主键修改数据，参数中为空的字段将设置为空

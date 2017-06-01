@@ -5,6 +5,7 @@ import com.czy.seed.mybatis.config.exception.ConfigErrorException;
 import com.czy.seed.mybatis.tool.NullUtil;
 import com.czy.seed.mybatis.tool.SpringContextHelper;
 import com.czy.seed.mybatis.tool.SpringPropertiesUtil;
+import com.github.pagehelper.PageInterceptor;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -107,9 +108,18 @@ public class MybatisConfig {
         String sqlSessionFactoryName = "sqlSessionFactory-" + getDatasourceName(dataSourceName);
         try {
             DataSource dataSource = springContextHelper.getBeanById(dataSourceName);
+            String dialect = dataSourceBuilder.getDialect(dataSourceName);
             Map<String, Object> resource = new HashMap<String, Object>();
             resource.put("dataSource", dataSource);
 //            resource.put("plugins", new ProcedureSqlInt());       //TODO 添加插件
+
+            PageInterceptor interceptor = new PageInterceptor();
+            Map<String, String> pagehelper = new LinkedHashMap<String, String>();
+            Properties properties = new Properties();
+            properties.putAll(pagehelper);
+            interceptor.setProperties(properties);
+            resource.put("plugins", interceptor);
+
             //加载mybatis config文件
             String configLocation = SpringPropertiesUtil.getStringProperty("mybatis.configurationLocations");
             if (NullUtil.isEmpty(configLocation)) {
@@ -127,7 +137,10 @@ public class MybatisConfig {
             //TODO 增加插件
 
             springContextHelper.addBean(SqlSessionFactoryBean.class, sqlSessionFactoryName, resource, null, null);
-            sqlSessionDialect.put(sqlSessionFactoryName, dataSourceBuilder.getDialect(dataSourceName)); //TODO注册sqlSessionFactory类型
+            sqlSessionDialect.put(sqlSessionFactoryName, dialect); //TODO注册sqlSessionFactory类型
+
+
+
         } catch (Exception e) {
             logger.error("error occurred while register {} to spring", sqlSessionFactoryName, e);
             throw new RuntimeException("error occurred while register " + sqlSessionFactoryName + " to spring", e);

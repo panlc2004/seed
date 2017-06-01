@@ -5,15 +5,15 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
 
-    <link rel="stylesheet" th:href="@{/lib/elementui/lib/theme-default/index.css}"/>
+    <link rel="stylesheet" href="lib/elementui/lib/theme-default/index.css"/>
 
     <!-- 引入组件库 -->
     <!-- 先引入 Vue -->
-    <script th:src="@{/lib/jquery/jquery-3.2.1.min.js}"></script>
-    <script th:src="@{/lib/vue/vue.js}"></script>
-    <script th:src="@{/lib/vue/vue-resource.min.js}"></script>
-    <script th:src="@{/lib/vue/vue-router.js}"></script>
-    <script th:src="@{/lib/elementui/lib/index.js}"></script>
+    <script src="lib/jquery/jquery-3.2.1.min.js"></script>
+    <script src="lib/vue/vue.js"></script>
+    <script src="lib/vue/vue-resource.min.js"></script>
+    <script src="lib/vue/vue-router.js"></script>
+    <script src="lib/elementui/lib/index.js"></script>
     <title>Title</title>
 </head>
 <style>
@@ -24,7 +24,7 @@
 <body>
 
 <div id="app">
-    <button id="bn" onclick="app.test2()">test11</button>
+    <button id="bn" onclick="app.test2()">test112234234</button>
     <button id="bn4" onclick="app.test4()">test112222</button>
     <button id="bn1" onclick="fc()">test12</button>
     <button id="bn2" onclick="app.test3()">app.test3()</button>
@@ -108,7 +108,7 @@ $(function () {
             test2() {
 //                    app.con = '12313';
 //                    alert(window.location);
-                window.location.hash = '445566777';
+//                window.location.hash = '445566777';
                 var params = {};
                 params["_jtype"] = "html";
                 $("#load").load("cn.html",  function (data,status) {
@@ -128,8 +128,8 @@ $(function () {
             test4(){
                 $("#load").load("cn2.html" , function (a) {
                     console.log(a);
+                    console.log(a);
                 });
-
             }
         }
 
@@ -138,8 +138,8 @@ $(function () {
 
 
 
-    //循环执行，每隔3秒钟执行一次showalert（）
-    window.setInterval(showalert, 10);
+    //循环执行
+    window.setInterval(showalert, 50);
     function showalert()
     {
         app.test2();

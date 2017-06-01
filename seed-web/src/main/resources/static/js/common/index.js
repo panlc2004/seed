@@ -9,7 +9,7 @@ var menuItem = Vue.extend({
     ].join(''),
     // template:buildMenu(this.items,""),
     methods: {
-        buildMenu(item, element){
+        buildMenu: function (item, element) {
             if (item.children.length > 0) {
                 element += '<el-submenu :index="item.id + \'\'">'
                 item.children.forEach(function (child) {
@@ -20,7 +20,7 @@ var menuItem = Vue.extend({
                 element += '<el-menu-item v-for="child in item.children" :index="child.id + \'\'" :key="child.id" @click="toPage(child)">{{child.name}}</el-menu-item>';
             }
         },
-        toPage(child) {
+        toPage: function (child) {
             home.contentUrl = child.url;
             home.title = child.name
             window.location.hash = child.url
@@ -55,10 +55,10 @@ var menuItemHide = Vue.extend({
         '</li>'
     ].join(''),
     methods: {
-        showMenu(i, status){
+        showMenu: function (i, status) {
             home.$refs.menuCollapsed.getElementsByClassName('submenu-hook-' + i)[0].style.display = status ? 'block' : 'none';
         },
-        toPage(child) {
+        toPage: function (child) {
             home.contentUrl = child.url;
             home.title = child.name
             window.location.hash = child.url
@@ -98,33 +98,36 @@ var home = new Vue({
     methods: {
         getMenuList: function () {
             this.$http.post("sys/resource/findResourceTreeForLoginUser").then(
-                success => {
+                function(success) {
                     this.menuList = success.body;
-                }, failure => {
+                },
+                function(failure) {
                     alert(failure.body)
                 }
             )
         },
-        handleClose(key, keyPath) {
+        handleClose: function (key, keyPath) {
             console.log(key, keyPath);
         },
         //退出登录
-        logout: function () {
+        logout: function() {
             var _this = this;
             this.$confirm('确认退出吗?', '提示', {
-                //type: 'warning'
-            }).then(() => {
-                sessionStorage.removeItem('user');
-                _this.$router.push('/login');
-            }).catch(() => {
-
-            });
+                type: 'warning'
+            }).then(
+                function() {
+                    // sessionStorage.removeItem('user');
+                    // _this.$router.push('/login');
+                });
         },
         //折叠导航栏
         collapse: function () {
             this.collapsed = !this.collapsed;
+            if (this.collapsed) {
+                this
+            }
         },
-        showMenu(i, status){
+        showMenu: function (i, status) {
             this.$refs.menuCollapsed.getElementsByClassName('submenu-hook-' + i)[0].style.display = status ? 'block' : 'none';
         }
 
@@ -133,30 +136,4 @@ var home = new Vue({
         this.getMenuList();
     }
 })
-
-
-
-
-//
-// function routerList(router, menuList) {
-//     for (var key in menuList) {
-//         var menu = menuList[key];
-//         if (menu.type == 0) {
-//             routerList(router, menu.list);
-//         } else if (menu.type == 1) {
-//             router.add('#' + menu.url, function () {
-//                 var url = window.location.hash;
-//
-//                 //替换iframe的url
-//                 vm.main = url.replace('#', '');
-//
-//                 //导航菜单展开
-//                 $(".treeview-menu li").removeClass("active");
-//                 $("a[href='" + url + "']").parents("li").addClass("active");
-//
-//                 vm.navTitle = $("a[href='" + url + "']").text();
-//             });
-//         }
-//     }
-// }
 

@@ -167,7 +167,7 @@
     </update>
 
     <update id="updateSelectiveByParams">
-        <if test="@com.czy.core.orm.sql.util.MybatisColumnsOGNL@hasValue(record) == true">
+        <if test="@com.czy.seed.mybatis.sql.util.MybatisColumnsOGNL@hasValue(record) == true">
             update ${name}
             <trim prefix=" set " suffix=" " suffixOverrides=",">
             <#list entityClassColumns as column>
@@ -291,10 +291,10 @@
 
     <select id="selectListByParams" resultMap="BaseResultMap" parameterType="com.czy.seed.mybatis.base.QueryParams">
         select
-        <if test="@com.czy.core.orm.sql.util.MybatisColumnsOGNL@hasSelectColumns(_parameter)">
+        <if test="@com.czy.seed.mybatis.sql.util.MybatisColumnsOGNL@hasSelectColumns(_parameter)">
             <foreach collection="_parameter.selectColumns" item="selectColumn" separator=",">${name}.${r'${selectColumn}'}</foreach>
         </if>
-        <if test="@com.czy.core.orm.sql.util.MybatisColumnsOGNL@hasSelectColumns(_parameter) == false">
+        <if test="@com.czy.seed.mybatis.sql.util.MybatisColumnsOGNL@hasSelectColumns(_parameter) == false">
             <trim prefix=" " suffix=" " suffixOverrides=",">
             <#list entityClassColumns as column>
             ${name}.${column.column},
@@ -316,10 +316,10 @@
 
     <select id="selectListRelativeByParams" resultMap="BaseResultMap" parameterType="com.czy.seed.mybatis.base.QueryParams">
         select
-        <if test="@com.czy.core.orm.sql.util.MybatisColumnsOGNL@hasSelectColumns(_parameter)">
+        <if test="@com.czy.seed.mybatis.sql.util.MybatisColumnsOGNL@hasSelectColumns(_parameter)">
             <foreach collection="_parameter.selectColumns" item="selectColumn" separator=",">${name}.${r'${selectColumn}'}</foreach>
         </if>
-        <if test="@com.czy.core.orm.sql.util.MybatisColumnsOGNL@hasSelectColumns(_parameter) == false">
+        <if test="@com.czy.seed.mybatis.sql.util.MybatisColumnsOGNL@hasSelectColumns(_parameter) == false">
             <trim prefix=" " suffix=" " suffixOverrides=",">
             <#list entityClassColumns as column>
             ${name}.${column.column},
@@ -357,10 +357,10 @@
 
     <select id="selectOneByParams" resultMap="BaseResultMap" parameterType="com.czy.seed.mybatis.base.QueryParams">
         select distinct
-        <if test="@com.czy.core.orm.sql.util.MybatisColumnsOGNL@hasSelectColumns(_parameter)">
+        <if test="@com.czy.seed.mybatis.sql.util.MybatisColumnsOGNL@hasSelectColumns(_parameter)">
             <foreach collection="_parameter.selectColumns" item="selectColumn" separator=",">${name}.${r'${selectColumn}'}</foreach>
         </if>
-        <if test="@com.czy.core.orm.sql.util.MybatisColumnsOGNL@hasSelectColumns(_parameter) == false">
+        <if test="@com.czy.seed.mybatis.sql.util.MybatisColumnsOGNL@hasSelectColumns(_parameter) == false">
             <trim prefix=" " suffix=" " suffixOverrides=",">
             <#list entityClassColumns as column>
             ${name}.${column.column},
@@ -379,10 +379,10 @@
 
     <select id="selectOneRelativeByParams" resultMap="BaseResultMap" parameterType="com.czy.seed.mybatis.base.QueryParams">
         select distinct
-        <if test="@com.czy.core.orm.sql.util.MybatisColumnsOGNL@hasSelectColumns(_parameter)">
+        <if test="@com.czy.seed.mybatis.sql.util.MybatisColumnsOGNL@hasSelectColumns(_parameter)">
             <foreach collection="_parameter.selectColumns" item="selectColumn" separator=",">${name}.${r'${selectColumn}'}</foreach>
         </if>
-        <if test="@com.czy.core.orm.sql.util.MybatisColumnsOGNL@hasSelectColumns(_parameter) == false">
+        <if test="@com.czy.seed.mybatis.sql.util.MybatisColumnsOGNL@hasSelectColumns(_parameter) == false">
             <trim prefix=" " suffix=" " suffixOverrides=",">
             <#list entityClassColumns as column>
             ${name}.${column.column},

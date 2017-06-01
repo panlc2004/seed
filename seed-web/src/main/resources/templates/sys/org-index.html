@@ -48,11 +48,21 @@
         <!--员工信息-->
         <el-col :span="14">
             <el-row id="toolbar">
-            <el-col :span="14">
-            <el-button type="primary">新增111</el-button>
-            <el-button type="primary">修改</el-button>
-            <el-button type="primary">删除</el-button>
-            </el-col>
+                <el-col :span="14" style="margin-bottom: 5px">
+                    <el-button type="primary">新增</el-button>
+                    <el-button type="primary">修改</el-button>
+                    <el-button type="primary">删除</el-button>
+                </el-col>
+            </el-row>
+            <el-row>
+                <el-col :span="24">
+                    <el-table :data="tableData" :stripe="true" :border="true" style="width: 100%" >
+                        <el-table-column prop="name" label="姓名" />
+                        <el-table-column prop="email" label="邮件" />
+                        <el-table-column prop="org" label="部门" />
+                    </el-table>
+                    <el-pagination layout="prev, pager, next" :total="pageTotal"/>
+                </el-col>
             </el-row>
         </el-col>
 

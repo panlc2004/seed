@@ -5,6 +5,9 @@ import com.czy.seed.mybatis.base.QueryParams;
 import com.czy.seed.mybatis.base.mapper.BaseMapper;
 import com.czy.seed.mybatis.tool.NullUtil;
 import com.czy.seed.mybatis.tool.SpringContextHelper;
+import com.github.pagehelper.ISelect;
+import com.github.pagehelper.Page;
+import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import sun.reflect.generics.reflectiveObjects.TypeVariableImpl;
@@ -122,6 +125,26 @@ public class BaseServiceImpl<T> implements BaseService<T> {
 
     public T selectOneRelativeByParams(QueryParams params) {
         return getMapper().selectOneRelativeByParams(params);
+    }
+
+    public Page<T> selectPageByParams(int pageNo, int pageLimit, final QueryParams params) {
+        Page<T> page = PageHelper.startPage(pageNo, pageLimit).doSelectPage(new ISelect() {
+            @Override
+            public void doSelect() {
+                selectListByParams(params);
+            }
+        });
+        return page;
+    }
+
+    public Page<T> selectPageRelativeByParams(int pageNo, int pageLimit, final QueryParams params) {
+        Page<T> page = PageHelper.startPage(pageNo, pageLimit).doSelectPage(new ISelect() {
+            @Override
+            public void doSelect() {
+                selectListRelativeByParams(params);
+            }
+        });
+        return page;
     }
 
     public int selectCountByParams(QueryParams params) {

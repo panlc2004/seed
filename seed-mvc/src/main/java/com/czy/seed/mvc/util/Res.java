@@ -36,8 +36,6 @@ public class Res extends HashMap<String, Object> {
      */
 	public static final String DATA_DEFAULT = "";
 
-    private Res() {}
-
 	/**
 	 * 操作错误信息
 	 * @return 返回status=500,操作信息="未知异常，请联系管理员"，返回数据=""的结果

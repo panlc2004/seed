@@ -20,21 +20,11 @@
     <title>SEED</title>
 </head>
 
-<script>
-    function iFrameHeight() {
-        var ifm = document.getElementById("mainFrame");
-        var subWeb = document.frames ? document.frames["mainFrame"].document : ifm.contentDocument;
-        if (ifm != null && subWeb != null) {
-            ifm.height = subWeb.body.scrollHeight;
-        }
-    }
-</script>
-
 <body>
 <div id="home">
     <el-row class="container">
-        <el-col :span="24" class="header">
-            <el-col :span="10" class="logo" :class="collapsed?'logo-collapse-width':'logo-width'">
+        <el-col :span="24" class="el-col el-col-24 header">
+            <el-col :span="10" class="el-col el-col-10 logo logo-width" :class="collapsed?'logo-collapse-width':'logo-width'">
                 {{collapsed ? '' : sysName}}
             </el-col>
             <el-col :span="10">
@@ -80,7 +70,7 @@
                     <el-col :span="24" class="content-wrapper">
                         <iframe id="mainFrame" name="iframepage" scrolling="yes" frameborder="0"
                                 style="width:100%;min-height:650px;overflow:visible;background:#fff;"
-                                :src="contentUrl" ></iframe>
+                                :src="contentUrl"></iframe>
                     </el-col>
                 </div>
             </section>

@@ -14,17 +14,22 @@ $(document).ready(function () {
                 children: 'children',
                 label: 'name'
             },
-            //操作窗口
+            //组织机构录入窗口
             sysOrg: {},
             operateDialogShow: false,    //操作窗口默认不显
-            formLabelWidth: '70px'      //标题宽度
+            formLabelWidth: '70px',      //标题宽度
+            //员工信息列表
+            tableData: [],
+            pageTotal: 1
+            //员工信息录入窗口
         },
         methods: {
-            loadTree(){
+            loadTree: function () {
                 this.$http.post("/sys/org/selectOrgTree").then(
-                    success => {
-                        this.treeData = success.body;
-                    }, failure => {
+                    function (response) {
+                        this.treeData = response.body;
+                    },
+                    function (response) {
                         this.$message({
                             message: '获取机构数据失败，请联系管理员',
                             type: 'error',
@@ -34,16 +39,16 @@ $(document).ready(function () {
                 )
             },
             //机构树点击事件
-            handleNodeClick(node) {
+            handleNodeClick: function (node) {
                 console.log(node);
             },
             //渲染图标
-            renderContent(createElement, {node, data, store}) {
-                return buildOpeBtn(createElement, {node, data, store});
+            renderContent: function (createElement, param) {
+                return buildOpeBtn(createElement, param.node, param.data, param.store);
             },
             //获取选中的树节点
             //打开组织机构保存弹窗
-            openAddWin(){
+            openAddWin: function () {
                 // 获取选中的树节点
                 var selectedNode = this.$refs.orgTree.getCheckedNodes();
                 if (selectedNode.length == 0) {          //未选中
@@ -64,23 +69,38 @@ $(document).ready(function () {
             },
 
             // 保存组织机构
-            saveOrg(){
+            saveOrg: function () {
                 this.$http.post("/sys/org/save", this.sysOrg).then(
-                    success => {
+                    function (success) {
                         this.operateDialogShow = false;  //关闭窗口
                         this.loadTree();
-                    }, failure => {
+                    },
+                    function (failure) {
                         console.log(this.data);
                     }
                 )
             },
+
+            // 查询用户信息
+            loadUser: function () {
+                this.$http.post("/sys/user/selectByPage").then(
+                    function (success) {
+                        this.tableData = success.body.data.page;
+                        this.pageTotal = success.body.data.pages;
+                    },
+                    function (failure) {
+                        console.log(this.data);
+                    }
+                )
+            }
         },
         created: function () {
             this.loadTree();
+            this.loadUser();
         }
     });
 
-    function buildOpeBtn(createElement, {node, data, store}) {
+    function buildOpeBtn(createElement, node, data, store) {
         var editBtn = createElement('el-button', {
             attrs: {size: "mini", type: "warning"}, on: {
                 click: function (event) {
@@ -100,12 +120,12 @@ $(document).ready(function () {
             }
         }, "删除");
         var btns;
-        if(data.children.length > 0){
+        if (data.children.length > 0) {
             btns = [editBtn];
         } else {
             btns = [editBtn, delBtn];
         }
-        return  createElement('span', [
+        return createElement('span', [
             createElement('span', node.label),
             createElement(
                 'span',
@@ -117,10 +137,11 @@ $(document).ready(function () {
 
     function openEditWin(store, id) {
         Vue.http.get("/sys/org/loadData", {params: {id: id}}).then(
-            success => {
+            function (success) {
                 main.sysOrg = success.body;
                 main.operateDialogShow = true;
-            }, failure => {
+            },
+            function (failure) {
                 alert(error + failure);
             }
         )
@@ -131,30 +152,33 @@ $(document).ready(function () {
             confirmButtonText: '确定',
             cancelButtonText: '取消',
             type: 'warning'
-        }).then(() => {
-            Vue.http.get("/sys/org/deleteOrg", {params: {id: id}}).then(
-                success => {
-                    if(success.body.code != 200) {
-                        main.$message({
-                            type: 'error',
-                            message: success.body.msg
-                        });
-                    } else {
-                        main.loadTree();
-                        main.$message({
-                            type: 'success',
-                            message: '删除成功!'
-                        });
+        }).then(
+            function () {
+                Vue.http.get("/sys/org/deleteOrg", {params: {id: id}}).then(
+                    function (success) {
+                        if (success.body.code != 200) {
+                            main.$message({
+                                type: 'error',
+                                message: success.body.msg
+                            });
+                        } else {
+                            main.loadTree();
+                            main.$message({
+                                type: 'success',
+                                message: '删除成功!'
+                            });
+                        }
+                    },
+                    function (failure) {
+                        alert(failure);
                     }
-                }, failure => {
-                    alert(failure);
-                }
-            )
-        }).catch(() => {
-            // main.$message({
-            //     type: 'info',
-            //     message: '已取消删除'
-            // });
-        });
+                )
+            }).catch(
+            function () {
+                // main.$message({
+                //     type: 'info',
+                //     message: '已取消删除'
+                // });
+            });
     }
 });
