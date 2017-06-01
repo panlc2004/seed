@@ -1,10 +1,8 @@
 /**
  * Created by PLC on 2017/5/30.
  */
-$(document).ready(function () {
-
     //主窗口
-    var main = new Vue({
+var main = new Vue({
         el: '#main',
         data: {
             //组织结构树
@@ -91,7 +89,7 @@ $(document).ready(function () {
                     }
                 )
             },
-            addUser:function () {
+            addUser: function () {
                 main_contain.$message({
                     message: '只能指定一个所属机构',
                     type: 'error',
@@ -106,85 +104,84 @@ $(document).ready(function () {
         }
     });
 
-    function buildOpeBtn(createElement, node, data, store) {
-        var editBtn = createElement('el-button', {
-            attrs: {size: "mini", type: "warning"}, on: {
-                click: function (event) {
-                    event.stopPropagation();    //点击按钮时，树不自动打开
-                    openEditWin(store, data.id)
-                }
+function buildOpeBtn(createElement, node, data, store) {
+    var editBtn = createElement('el-button', {
+        attrs: {size: "mini", type: "warning"}, on: {
+            click: function (event) {
+                event.stopPropagation();    //点击按钮时，树不自动打开
+                openEditWin(store, data.id)
             }
-        }, "修改");
-
-        var delBtn = createElement('el-button', {
-            attrs: {size: "mini", type: "danger"}, on: {
-                click: function (event) {
-                    // store.remove({id: null, name: 'TEST', children: []}, data);
-                    event.stopPropagation();
-                    deleteOrg(data.id);
-                }
-            }
-        }, "删除");
-        var btns;
-        if (data.children.length > 0) {
-            btns = [editBtn];
-        } else {
-            btns = [editBtn, delBtn];
         }
-        return createElement('span', [
-            createElement('span', node.label),
-            createElement(
-                'span',
-                {attrs: {style: "float: right; margin-right: 20px"}},
-                btns
-            )
-        ])
-    }
+    }, "修改");
 
-    function openEditWin(store, id) {
-        Vue.http.get("/sys/org/loadData", {params: {id: id}}).then(
-            function (success) {
-                main.sysOrg = success.body;
-                main.operateDialogShow = true;
-            },
-            function (failure) {
-                alert(error + failure);
+    var delBtn = createElement('el-button', {
+        attrs: {size: "mini", type: "danger"}, on: {
+            click: function (event) {
+                // store.remove({id: null, name: 'TEST', children: []}, data);
+                event.stopPropagation();
+                deleteOrg(data.id);
             }
-        )
-    };
-
-    function deleteOrg(id) {
-        main.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
-        }).then(
-            function () {
-                Vue.http.get("/sys/org/deleteOrg", {params: {id: id}}).then(
-                    function (success) {
-                        if (success.body.code != 200) {
-                            main.$message({
-                                type: 'error',
-                                message: success.body.msg
-                            });
-                        } else {
-                            main.loadTree();
-                            main.$message({
-                                type: 'success',
-                                message: '删除成功!'
-                            });
-                        }
-                    },
-                    function (failure) {
-                        alert(failure);
-                    }
-                )
-            }).catch(
-            function () {
-                // main.$message({
-                //     type: 'info',
-                //     message: '已取消删除'
-                // });
-            });
+        }
+    }, "删除");
+    var btns;
+    if (data.children.length > 0) {
+        btns = [editBtn];
+    } else {
+        btns = [editBtn, delBtn];
     }
-});
+    return createElement('span', [
+        createElement('span', node.label),
+        createElement(
+            'span',
+            {attrs: {style: "float: right; margin-right: 20px"}},
+            btns
+        )
+    ])
+}
+
+function openEditWin(store, id) {
+    Vue.http.get("/sys/org/loadData", {params: {id: id}}).then(
+        function (success) {
+            main.sysOrg = success.body;
+            main.operateDialogShow = true;
+        },
+        function (failure) {
+            alert(error + failure);
+        }
+    )
+};
+
+function deleteOrg(id) {
+    main.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+    }).then(
+        function () {
+            Vue.http.get("/sys/org/deleteOrg", {params: {id: id}}).then(
+                function (success) {
+                    if (success.body.code != 200) {
+                        main.$message({
+                            type: 'error',
+                            message: success.body.msg
+                        });
+                    } else {
+                        main.loadTree();
+                        main.$message({
+                            type: 'success',
+                            message: '删除成功!'
+                        });
+                    }
+                },
+                function (failure) {
+                    alert(failure);
+                }
+            )
+        }).catch(
+        function () {
+            // main.$message({
+            //     type: 'info',
+            //     message: '已取消删除'
+            // });
+        });
+}
