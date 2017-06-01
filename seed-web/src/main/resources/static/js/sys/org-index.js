@@ -56,9 +56,7 @@ $(document).ready(function () {
                 } else if (selectedNode.length > 1) {    //选中超过一条
                     this.$message({
                         message: '只能指定一个所属机构',
-                        type: 'error',
-                        showClose: 'true',
-                        duration: '1000'
+                        type: 'error'
                     });
                     return;
                 } else {
@@ -92,6 +90,14 @@ $(document).ready(function () {
                         console.log(this.data);
                     }
                 )
+            },
+            addUser:function () {
+                main_contain.$message({
+                    message: '只能指定一个所属机构',
+                    type: 'error',
+                    showClose: 'true',
+                    duration: '1000'
+                });
             }
         },
         created: function () {

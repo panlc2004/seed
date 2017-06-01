@@ -21,9 +21,11 @@ var menuItem = Vue.extend({
             }
         },
         toPage: function (child) {
-            home.contentUrl = child.url;
-            home.title = child.name
-            window.location.hash = child.url
+            // home.contentUrl = child.url;
+            $(".content-wrapper").load(child.url, function (data) {
+                main_contain.title = child.name
+                window.location.hash = child.url
+            })
         }
     }
 
@@ -56,12 +58,14 @@ var menuItemHide = Vue.extend({
     ].join(''),
     methods: {
         showMenu: function (i, status) {
-            home.$refs.menuCollapsed.getElementsByClassName('submenu-hook-' + i)[0].style.display = status ? 'block' : 'none';
+            main_contain.$refs.menuCollapsed.getElementsByClassName('submenu-hook-' + i)[0].style.display = status ? 'block' : 'none';
         },
         toPage: function (child) {
-            home.contentUrl = child.url;
-            home.title = child.name
-            window.location.hash = child.url
+            // home.contentUrl = child.url;
+            $(".content-wrapper").load(child.url, function (data) {
+                main_contain.title = child.name
+                window.location.hash = child.url
+            })
         }
     }
 })
@@ -71,10 +75,8 @@ Vue.component('menuItem', menuItem);
 Vue.component('menuItemHide', menuItemHide);
 
 
-var home = new Vue({
-    el: "#home",
-    // router,
-    // render: h => h(home),
+var main_contain = new Vue({
+    el: "#main_contain",
     data: {
         sysName: 'SEEDADMIN',
         collapsed: false,
