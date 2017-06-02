@@ -18,7 +18,9 @@ var main = new Vue({
             formLabelWidth: '70px',      //标题宽度
             //员工信息列表
             tableData: [],
-            pageTotal: 1
+            pageTotal: 1,
+            pageCount:0,
+            pageSize:20
             //员工信息录入窗口
         },
         methods: {
@@ -78,29 +80,39 @@ var main = new Vue({
             },
 
             // 查询用户信息
-            loadUser: function () {
-                this.$http.post("/sys/user/selectByPage").then(
-                    function (success) {
-                        this.tableData = success.body.data.page;
-                        this.pageTotal = success.body.data.pages;
-                    },
-                    function (failure) {
-                        console.log(this.data);
+            loadUser: function (param) {
+                var main = this;
+                $.ajax({
+                    type:"POST",
+                    url:"/sys/user/selectByPage",
+                    dataType:"json",
+                    contentType:"application/json",
+                    data:JSON.stringify(param),
+                    success:function(success){
+                        main.tableData = success.data.page;
+                        main.pageTotal = success.data.total;
+                        main.pageCount = success.data.pages;
                     }
-                )
-            },
-            addUser: function () {
-                main_contain.$message({
-                    message: '只能指定一个所属机构',
-                    type: 'error',
-                    showClose: 'true',
-                    duration: '1000'
                 });
+            },
+
+            addUser: function () {
+
+            },
+            toPage: function (pageNum) {
+                var param = {}
+                param.pageNum = pageNum;
+                this.loadUser(param)
             }
         },
         created: function () {
             this.loadTree();
-            this.loadUser();
+            var a = [];
+            var param = {"pageNum":1, "pageSize":this.pageSize, "params":{"test":1}}
+            a.push(param);
+            var param2 = JSON.stringify(a);
+            console.log(param2);
+            this.loadUser(param);
         }
     });
 

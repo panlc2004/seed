@@ -2,7 +2,6 @@
 <html lang="en"
       xmlns:th="http://www.thymeleaf.org">
 
-<!--<head th:include="header::header"></head>-->
 <head>
     <script th:src="@{/js/sys/org-index.js}"></script>
 </head>
@@ -57,12 +56,18 @@
             </el-row>
             <el-row>
                 <el-col :span="24">
-                    <el-table :data="tableData" :stripe="true" :border="true" style="width: 100%" >
+                    <el-table :data="tableData" :stripe="true" :border="true" style="width: 100%"
+                              :highlight-current-row="true" max-height="100%" :page-size="pageSize">
+                        <el-table-column type="index" width="44">
+                        </el-table-column>
                         <el-table-column prop="name" label="姓名" />
                         <el-table-column prop="email" label="邮件" />
                         <el-table-column prop="org" label="部门" />
                     </el-table>
-                    <el-pagination layout="prev, pager, next" :total="pageTotal"/>
+                </el-col>
+                <el-col>
+                    <el-pagination layout="total, prev, pager, next" :total="pageTotal"
+                                   :pagec-count="pageCount"  @current-change="toPage" :page-size="pageSize"/>
                 </el-col>
             </el-row>
         </el-col>

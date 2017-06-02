@@ -1,12 +1,16 @@
 package com.czy.seed.mvc.sys.controller;
 
+import com.czy.seed.mvc.base.controller.Params;
 import com.czy.seed.mvc.sys.entity.SysUser;
 import com.czy.seed.mvc.sys.service.SysUserService;
 import com.czy.seed.mvc.util.Res;
 import com.czy.seed.mybatis.base.QueryParams;
+import com.czy.seed.mybatis.tool.NullUtil;
 import com.github.pagehelper.Page;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.HashMap;
@@ -28,19 +32,14 @@ public class SysUserController {
      * @return
      */
     @RequestMapping("/selectByPage")
-    public Res selectByPage(Integer pageNum, Map<String, Object> params) {
+    public Res selectByPage(@RequestBody Params params) {
         QueryParams queryParams = new QueryParams(SysUser.class);
-        if(pageNum == null) {
-            pageNum = 0;
-        }
-        int pageLimit = 30;
-        Page<SysUser> page = sysUserService.selectPageByParams(pageNum, pageLimit, queryParams);
+        Page<SysUser> page = sysUserService.selectPageByParams(params.getPageNum(), params.getPageSize(), queryParams);
         Map<String, Object> pageInfo = new HashMap<String, Object>();
-        pageInfo.put("pageNum", page.getPageNum());
         pageInfo.put("total", page.getTotal());
-        pageInfo.put("pages", page.getPages() * 10);
+        pageInfo.put("pages", page.getPages());
         pageInfo.put("page", page);
         return Res.ok(pageInfo);
-    }
 
+    }
 }
