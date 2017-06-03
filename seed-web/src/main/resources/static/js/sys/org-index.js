@@ -20,8 +20,12 @@ var main = new Vue({
             tableData: [],
             pageTotal: 1,
             pageCount:0,
-            pageSize:20
+            pageSize:20,
             //员工信息录入窗口
+            userDialogShow:false,
+            sysUser:{},
+            currentRow:null,
+            searchName:''
         },
         methods: {
             loadTree: function () {
@@ -81,6 +85,10 @@ var main = new Vue({
 
             // 查询用户信息
             loadUser: function (param) {
+                if(param == undefined) {
+                    param = czy.query.params()
+                }
+                param.params.name=this.searchName
                 var main = this;
                 $.ajax({
                     type:"POST",
@@ -95,23 +103,78 @@ var main = new Vue({
                     }
                 });
             },
-
-            addUser: function () {
-
-            },
             toPage: function (pageNum) {
-                var param = {}
-                param.pageNum = pageNum;
+                var param = {"pageNum":pageNum, "pageSize":this.pageSize, "params":{}}
                 this.loadUser(param)
+            },
+            selectUser:function () {
+                var param = {"pageNum":1, "pageSize":this.pageSize, "params":{}};
+                this.loadUser(param)
+            },
+            addUser: function () {
+                this.sysUser = {};
+                this.userDialogShow = true;
+            },
+            editUser: function () {
+                if(this.currentRow == null) {
+                    czy.msg.error("请先选择一条数据");
+                }
+                this.sysUser = this.currentRow;
+                this.userDialogShow = true;
+            },
+            saveUser:function () {
+                this.$http.post("/sys/user/save", this.sysUser).then(
+                    function (success) {
+                        this.userDialogShow = false;  //关闭窗口
+                        var param = {"pageNum":1, "pageSize":this.pageSize, "params":{}}
+                        this.loadUser(param);
+                    },
+                    function (failure) {
+                    }
+                )
+            },
+            delUser:function () {
+                if(this.currentRow == null) {
+                    czy.msg.error("请先选择一条数据");
+                }
+                this.$confirm('此操作将永久删除该数据, 是否继续?', '提示',{
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(
+                    function () {
+                        $.post("/sys/user/deleteByPrimary/" + main.currentRow.id, function (success, data) {
+                            if(success) {
+                                czy.msg.info("操作成功");
+                                var param = {"pageNum":1, "pageSize":this.pageSize, "params":{}};
+                                main.loadUser(param)
+                            } else {
+                                czy.msg.error(data.msg);
+                            }
+                        });
+                    }).catch(
+                    function () {
+                    });
+
+                // $.post("/sys/user/deleteByPrimary/" + this.currentRow.id, function (success, data) {
+                //     if(success) {
+                //         czy.msg.info("操作成功");
+                //         var param = {"pageNum":1, "pageSize":this.pageSize, "params":{}};
+                //         main.loadUser(param)
+                //     } else {
+                //         czy.msg.error(data.msg);
+                //     }
+                // });
+            },
+            //用户列表选择
+            handleCurrentChange:function(selectRow){
+                this.currentRow = selectRow
+                console.log(this.currentRow)
             }
         },
         created: function () {
             this.loadTree();
-            var a = [];
-            var param = {"pageNum":1, "pageSize":this.pageSize, "params":{"test":1}}
-            a.push(param);
-            var param2 = JSON.stringify(a);
-            console.log(param2);
+            var param = {"pageNum":1, "pageSize":this.pageSize, "params":{}}
             this.loadUser(param);
         }
     });

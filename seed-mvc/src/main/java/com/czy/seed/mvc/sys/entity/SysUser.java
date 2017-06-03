@@ -2,7 +2,9 @@ package com.czy.seed.mvc.sys.entity;
 
 import com.czy.seed.mybatis.config.mybatis.annotations.Cache;
 
+import javax.persistence.Id;
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * 用户信息
@@ -13,6 +15,7 @@ public class SysUser implements Serializable {
 
     private static final long serialVersionUID = 6022588492678547207L;
 
+    @Id
     private Long id;
     private String name;
     private String username;
@@ -20,8 +23,8 @@ public class SysUser implements Serializable {
     private String email;
     private boolean enable;                 //账号是否可用
     private boolean nonLocked;       //账号是否锁定
-    private boolean credentialsExpiredTime; //密码过期时间
-    private boolean accountExpiredTime;     //账号过期时间
+    private Date credentialsExpiredTime; //密码过期时间
+    private Date accountExpiredTime;     //账号过期时间
 
     public Long getId() {
         return id;
@@ -79,19 +82,19 @@ public class SysUser implements Serializable {
         this.nonLocked = nonLocked;
     }
 
-    public boolean isCredentialsExpiredTime() {
+    public Date getCredentialsExpiredTime() {
         return credentialsExpiredTime;
     }
 
-    public void setCredentialsExpiredTime(boolean credentialsExpiredTime) {
+    public void setCredentialsExpiredTime(Date credentialsExpiredTime) {
         this.credentialsExpiredTime = credentialsExpiredTime;
     }
 
-    public boolean isAccountExpiredTime() {
+    public Date getAccountExpiredTime() {
         return accountExpiredTime;
     }
 
-    public void setAccountExpiredTime(boolean accountExpiredTime) {
+    public void setAccountExpiredTime(Date accountExpiredTime) {
         this.accountExpiredTime = accountExpiredTime;
     }
 }

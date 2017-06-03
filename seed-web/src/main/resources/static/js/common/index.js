@@ -75,7 +75,7 @@ Vue.component('menuItem', menuItem);
 Vue.component('menuItemHide', menuItemHide);
 
 
-var main_contain = new Vue({
+const main_contain = new Vue({
     el: "#main_contain",
     data: {
         sysName: 'SEEDADMIN',

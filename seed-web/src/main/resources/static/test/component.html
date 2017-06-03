@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="text/html;charset=UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+    <link rel="stylesheet" href="../lib/elementui/lib/theme-default/index.css"/>
+
+    <!-- 引入组件库 -->
+    <!-- 先引入 Vue -->
+    <script src="../lib/jquery/jquery-3.2.1.min.js"></script>
+    <script src="../lib/vue/vue.js"></script>
+    <script src="../lib/vue/vue-resource.min.js"></script>
+    <script src="../lib/vue/vue-router.js"></script>
+    <script src="../lib/elementui/lib/index.js"></script>
+    <title>Title</title>
+</head>
+
+
+<body>
+
+<div id="example">
+    <my-component></my-component>
+    123
+</div>
+=================================
+<div id="parent-component">
+    <parent-component></parent-component>
+    123
+</div>
+=================================
+
+<div id="simple-parent">
+    <simple-parent>
+    </simple-parent>
+    123
+</div>
+
+
+<div id="tbn">
+    <test></test>
+    123
+</div>
+
+<div >
+    <div>
+    <el-button id="tbn2">tbn233</el-button>
+    </div>
+</div>
+=================================
+
+</body>
+
+
+<script type="text/javascript">
+
+    var MyComponent = Vue.extend({
+        template: '<div>A custom component!</div>'
+    })
+
+    Vue.component('my-component', MyComponent)
+
+    new Vue({
+        el: '#example'
+    })
+
+    // 在一个步骤中扩展与注册
+    Vue.component('my-component1', {
+        template: '<div>A custom component1!</div>'
+    })
+
+    //==========================================
+    var child = Vue.extend({
+        template: '<div>A custom component!</div>'
+    });
+    var parent = Vue.extend({
+        template: '<div>Parent Component: <child-component></child-component></div>',
+        components: {
+            'child-component': child    //局部注册
+        }
+    });
+    Vue.component("parent-component", parent);
+
+    new Vue({
+        el:"#parent-component"
+    })
+
+
+    var parent_simple = Vue.extend({
+        template:'<div>parent<my-component123></my-component123></div>',
+        components: {
+            'my-component123': {
+                template: '<div>A custom component!</div>'
+            }
+        }
+    })
+
+    Vue.component("simple-parent", parent_simple);
+    new Vue({
+        el:"#simple-parent"
+    })
+
+    //=============================================
+
+    var test = Vue.extend({
+        template:'<div><el-button>123</el-button></div>'
+    })
+
+    Vue.component("test", test);
+
+    new Vue({
+        el: "#tbn"
+    });
+
+    new Vue({
+        el: "#tbn2"
+    });
+
+    var serach_grid = Vue.extend({
+
+    })
+
+
+</script>
+
+</html>

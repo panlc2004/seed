@@ -1,0 +1,35 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<script th:src="@{/js/sys/param.js}"></script>
+
+<div id="main-panel">
+    <el-row>
+        <el-form :model="queryParam.params">
+            <el-col :span="6" style="padding-right: 5px; padding-bottom: 5px">
+                <el-input placeholder="请输入参数名称查询" v-model="queryParam.name"></el-input>
+            </el-col>
+            <el-col :span="6">
+                <el-button-group>
+                    <el-button type="info" @click="query">查询</el-button>
+                    <el-button type="primary" @click="add">新增</el-button>
+                    <el-button type="warning" @click="edit">修改</el-button>
+                </el-button-group>
+            </el-col>
+        </el-form>
+    </el-row>
+    <el-row>
+        <el-table :data="pageData" :stripe="true" :border="true" style="width: 100%"
+                  :highlight-current-row="true" max-height="100%" :page-size="queryParam.pageSize"
+                  @current-change="selectRow">
+            </el-table-column>
+            <el-table-column prop="name" label="名称"/>
+            <el-table-column prop="code" label="编码"/>
+            <el-table-column prop="value" label="值"/>
+            <el-table-column prop="active" label="状态"/>
+        </el-table>
+    </el-row>
+    <el-row>
+        <el-pagination layout="total, prev, pager, next" :total="total"
+                        @current-change="changePage" :page-size="queryParam.pageSize" :current-page="queryParam.pageNum"/>
+    </el-row>
+</div>
