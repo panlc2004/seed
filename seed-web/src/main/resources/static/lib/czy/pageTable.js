@@ -63,7 +63,7 @@ var pageGrid = Vue.extend({
         }
     },
     created: function () {
-        if (this.autoinit == undefined || this.autoinit) {
+        if (!this.autoinit) {
             this.loadData();
         }
     }
