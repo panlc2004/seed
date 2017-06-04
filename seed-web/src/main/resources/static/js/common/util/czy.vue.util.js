@@ -54,6 +54,27 @@
                 return _params;
             }
         },
+        ajax:{
+            post: function(url, param, callback) {
+                $.ajax({
+                    type:"POST",
+                    url: url,
+                    dataType:"json",
+                    contentType:"application/json",
+                    data:JSON.stringify(param),
+                    success:function(data){
+                        if(data.code == 200) {
+                            czy.msg.success(data.msg);
+                        } else {
+                            czy.msg.error(data.msg)
+                        }
+                        if (callback) {
+                            callback(data, status);
+                        }
+                    }
+                });
+            }
+        },
         // post:function(url,params,callcack){
         //     $.post(url,params,)
         // }

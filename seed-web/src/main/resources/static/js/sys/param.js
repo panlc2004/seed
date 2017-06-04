@@ -42,7 +42,10 @@ var main_panel = new Vue({
             this.editDialogShow = true;
         },
         save: function () {
-
+            czy.ajax.post("/sys/param/save", this.formData, function (data,o) {
+                main_panel.editDialogShow = false;
+                main_panel.loadData();
+            });
         },
         gridSelect: function (selectedRow) {
             this.selectedRow = selectedRow;

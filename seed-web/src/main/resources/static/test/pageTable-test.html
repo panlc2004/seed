@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta content="text/html;charset=UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+    <link rel="stylesheet" href="../lib/elementui/lib/theme-default/index.css"/>
+
+    <!-- 引入组件库 -->
+    <!-- 先引入 Vue -->
+    <script src="../lib/jquery/jquery-3.2.1.min.js"></script>
+    <script src="../lib/vue/vue.js"></script>
+    <script src="../lib/vue/vue-resource.min.js"></script>
+    <script src="../lib/vue/vue-router.js"></script>
+    <script src="../lib/elementui/lib/index.js"></script>
+
+    <script src="../lib/czy/pageTable.js"></script>
+    <title>Title</title>
+</head>
+
+
+<body>
+<div id="pageGrid">
+    <el-input></el-input>
+    <el-button @click="query">query</el-button>
+    <page-grid ref="grid" url="/sys/param/selectPageByParams">
+        <el-table-column prop="id" label="参数名称23"></el-table-column>
+        <el-table-column prop="date" label="参数名称22"></el-table-column>
+        <el-table-column prop="date" label="参数名称221"></el-table-column>
+        <el-table-column prop="date" label="参数名称222"></el-table-column>
+        <el-table-column prop="date" label="参数名称223"></el-table-column>
+        <el-table-column prop="date" label="参数名称224"></el-table-column>
+    </page-grid>
+</div>
+</body>
+
+
+<script type="text/javascript">
+    new Vue({
+        el: '#pageGrid',
+        data: {
+            name: ''
+        },
+        methods:{
+            query:function () {
+                var child = this.$refs.grid;
+
+                child.reload({name:'123',sex:456})
+
+
+
+//                var selectedRows = child.getSelectedRows();
+//                console.log(selectedRows);
+            }
+        }
+    })
+</script>
+
+</html>
