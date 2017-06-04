@@ -4,12 +4,17 @@
 (function () {
     window.czy = {
         msg: {
+            success:function (msg) {
+                main_contain.$message({
+                    type: 'success',
+                    message: msg
+                });
+            },
             error: function (msg) {
                 main_contain.$message({
                     type: 'error',
                     message: msg
                 });
-                return;
             },
             warn: function (msg) {
                 main_contain.$message({
