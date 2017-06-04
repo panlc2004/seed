@@ -3,6 +3,7 @@
 <script th:src="@{/js/sys/param.js}"></script>
 
 <div id="main-panel">
+    <!--查询工具栏-->
     <el-row>
         <el-form :model="queryParam.params">
             <el-col :span="6" style="padding-right: 5px; padding-bottom: 5px">
@@ -17,6 +18,8 @@
             </el-col>
         </el-form>
     </el-row>
+
+    <!--数据列表-->
     <el-row>
         <el-table :data="pageData" :stripe="true" :border="true" style="width: 100%"
                   :highlight-current-row="true" max-height="100%" :page-size="queryParam.pageSize"
@@ -25,11 +28,20 @@
             <el-table-column prop="name" label="名称"/>
             <el-table-column prop="code" label="编码"/>
             <el-table-column prop="value" label="值"/>
-            <el-table-column prop="active" label="状态"/>
+            <el-table-column prop="active" width="76px" label="状态">
+                <template scope="scope">
+                    <el-tag :type="scope.row.active === 1 ? 'primary' : 'danger'">
+                        {{ scope.row.active == 1 ? '启用' : '关闭'}}
+                    </el-tag>
+                </template>
+            </el-table-column>
         </el-table>
     </el-row>
+
+    <!--分页栏-->
     <el-row>
         <el-pagination layout="total, prev, pager, next" :total="total"
-                        @current-change="changePage" :page-size="queryParam.pageSize" :current-page="queryParam.pageNum"/>
+                       @current-change="changePage" :page-size="queryParam.pageSize"
+                       :current-page="queryParam.pageNum"/>
     </el-row>
 </div>

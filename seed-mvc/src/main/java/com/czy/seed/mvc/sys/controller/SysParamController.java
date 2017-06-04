@@ -38,7 +38,6 @@ public class SysParamController {
         Page<SysParam> page = sysParamService.selectPageByParams(pageNum, pageSize, queryParams);
         Map<String, Object> pageInfo = new HashMap<String, Object>();
         pageInfo.put("total", page.getTotal());
-        pageInfo.put("pages", page.getPages() + 100);
         pageInfo.put("page", page);
         return Res.ok(pageInfo);
     }

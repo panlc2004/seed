@@ -1,5 +1,9 @@
 package com.czy.seed.mvc.sys.entity;
 
+import com.czy.seed.mybatis.config.mybatis.annotations.ColumnType;
+import org.apache.ibatis.type.JdbcType;
+
+import javax.persistence.Column;
 import javax.persistence.Id;
 import java.io.Serializable;
 
@@ -15,7 +19,7 @@ public class SysParam implements Serializable {
     private String code;
     private String name;
     private String value;
-    private boolean active;
+    private Integer active;
     private String memo;
 
     public Long getId() {
@@ -50,12 +54,16 @@ public class SysParam implements Serializable {
         this.value = value;
     }
 
-    public boolean isActive() {
-        return active;
+//    public boolean isActive() {
+//        return active;
+//    }
+
+    public void setActive(Integer active) {
+        this.active = active;
     }
 
-    public void setActive(boolean active) {
-        this.active = active;
+    public Integer getActive() {
+        return active;
     }
 
     public String getMemo() {
