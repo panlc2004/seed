@@ -1,5 +1,6 @@
 package com.czy.seed.mvc.sys.entity;
 
+import javax.persistence.Id;
 import javax.persistence.Transient;
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -20,9 +21,11 @@ public class SysResource implements Serializable{
     }
 
     private static final long serialVersionUID = 8335380285204046588L;
+
+    @Id
     private Long id;
     private Long parentId;  //父级目录
-    private Integer type;   //资源类型
+    private Integer types;   //资源类型
     private String code;    //资源编码
     private String name;    //名称
     private String url;     //资源链接
@@ -46,12 +49,12 @@ public class SysResource implements Serializable{
         this.parentId = parentId;
     }
 
-    public Integer getType() {
-        return type;
+    public Integer getTypes() {
+        return types;
     }
 
-    public void setType(Integer type) {
-        this.type = type;
+    public void setTypes(Integer types) {
+        this.types = types;
     }
 
     public String getCode() {
@@ -90,7 +93,7 @@ public class SysResource implements Serializable{
         return "SysResource{" +
                 "id=" + id +
                 ", parentId=" + parentId +
-                ", type=" + type +
+                ", types=" + types +
                 ", code='" + code + '\'' +
                 ", name='" + name + '\'' +
                 ", url='" + url + '\'' +

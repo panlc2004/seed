@@ -3,7 +3,7 @@
 
 <mapper namespace="com.czy.seed.mybatis.mapper.MySqlMapper">
 
-    <resultMap id="BaseResultMap" type="com.czy.seed.mybatis.entity.TestEntity">
+    <resultMap id="BaseResultMap" types="com.czy.seed.mybatis.entity.TestEntity">
         <id column="ID"  property="id"/>
         <result column="NAME"  property="name"/>
         <association property="one" javaType="com.czy.seed.mybatis.entity.One">

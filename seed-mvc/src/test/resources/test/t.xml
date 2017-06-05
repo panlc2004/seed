@@ -1,44 +1,43 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.czy.seed.mybatis.mapper.MySqlMapper">
+<mapper namespace="com.czy.seed.mvc.sys.mapper.SysOrgMapper">
 
-    <cache eviction="LRU" flushInterval="60000" size="1024"  readOnly="false"></cache>
 
-    <resultMap id="BaseResultMap" types="com.czy.seed.mybatis.entity.TestEntity">
+    <resultMap id="BaseResultMap" types="com.czy.seed.mvc.sys.entity.SysOrg">
         <id column="ID"  property="id"/>
+        <result column="PARENT_ID"  property="parentId"/>
+        <result column="CODE" jdbcType="VARCHAR" property="code"/>
         <result column="NAME" jdbcType="VARCHAR" property="name"/>
-        <association property="one" javaType="com.czy.seed.mybatis.entity.One">
-            <id column="one_ID"  property="id"/>
-            <result column="one_TEST_ID"  property="testId"/>
-            <result column="one_MEMO" jdbcType="VARCHAR" property="memo"/>
-            <result column="one_NAME" jdbcType="VARCHAR" property="name"/>
-        </association>
-        <association property="one1" javaType="com.czy.seed.mybatis.entity.One">
-            <id column="one1_ID"  property="id"/>
-            <result column="one1_MEMO" jdbcType="VARCHAR" property="memo"/>
-            <result column="one1_NAME" jdbcType="VARCHAR" property="name"/>
-            <result column="one1_TEST_ID"  property="testId"/>
-        </association>
-        <collection property="oneList" ofType="com.czy.seed.mybatis.entity.One">
-            <id column="oneList_ID"  property="id"/>
-            <result column="oneList_MEMO" jdbcType="VARCHAR" property="memo"/>
-            <result column="oneList_TEST_ID"  property="testId"/>
-            <result column="oneList_NAME" jdbcType="VARCHAR" property="name"/>
-        </collection>
+        <result column="MEMO" jdbcType="VARCHAR" property="memo"/>
     </resultMap>
 
-    <insert id="insert" parameterType="com.czy.seed.mybatis.entity.TestEntity" useGeneratedKeys="true" keyProperty="id">
-        insert into test
+    <insert id="insert" parameterType="com.czy.seed.mvc.sys.entity.SysOrg" useGeneratedKeys="true" keyProperty="id">
+        insert into SYS_ORG
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 ID,
             </if>
+            PARENT_ID,
+            CODE,
             NAME,
+            MEMO,
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
             <if test="id != null">
                 #{id},
+            </if>
+            <if test="parentId != null">
+                #{parentId},
+            </if>
+            <if test="parentId == null">
+                DEFAULT,
+            </if>
+            <if test="code != null">
+                #{code, jdbcType=VARCHAR},
+            </if>
+            <if test="code == null">
+                DEFAULT,
             </if>
             <if test="name != null">
                 #{name, jdbcType=VARCHAR},
@@ -46,47 +45,88 @@
             <if test="name == null">
                 DEFAULT,
             </if>
+            <if test="memo != null">
+                #{memo, jdbcType=VARCHAR},
+            </if>
+            <if test="memo == null">
+                DEFAULT,
+            </if>
         </trim>
     </insert>
 
     <insert id="insertList" parameterType="java.util.ArrayList" useGeneratedKeys="true" keyProperty="id" keyColumn="id">
-        insert into test
+        insert into SYS_ORG
         <trim prefix="(" suffix=")" suffixOverrides=",">
             ID,
+            PARENT_ID,
+            CODE,
             NAME,
+            MEMO,
         </trim>
         VALUES
         <foreach collection="list" item="record" index="index" separator=",">
-            <if test="record.id != null">
-                #{record.id},
-            </if>
-            <if test="id == null">
-                DEFAULT,
-            </if>
-            <if test="record.name != null">
-                #{record.name, jdbcType=VARCHAR},
-            </if>
-            <if test="name == null">
-                DEFAULT,
-            </if>
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+                <if test="record.id != null">
+                    #{record.id},
+                </if>
+                <if test="record.id == null">
+                    DEFAULT,
+                </if>
+                <if test="record.parentId != null">
+                    #{record.parentId},
+                </if>
+                <if test="record.parentId == null">
+                    DEFAULT,
+                </if>
+                <if test="record.code != null">
+                    #{record.code, jdbcType=VARCHAR},
+                </if>
+                <if test="record.code == null">
+                    DEFAULT,
+                </if>
+                <if test="record.name != null">
+                    #{record.name, jdbcType=VARCHAR},
+                </if>
+                <if test="record.name == null">
+                    DEFAULT,
+                </if>
+                <if test="record.memo != null">
+                    #{record.memo, jdbcType=VARCHAR},
+                </if>
+                <if test="record.memo == null">
+                    DEFAULT,
+                </if>
+            </trim>
         </foreach>
     </insert>
 
-    <update id="updateByPrimaryKey" parameterType="com.czy.seed.mybatis.entity.TestEntity">
-        update test
+    <update id="updateByPrimaryKey" parameterType="com.czy.seed.mvc.sys.entity.SysOrg">
+        update SYS_ORG
         <trim prefix=" set " suffix=" " suffixOverrides=",">
+            PARENT_ID = #{parentId},
+            CODE = #{code, jdbcType=VARCHAR},
             NAME = #{name, jdbcType=VARCHAR},
+            MEMO = #{memo, jdbcType=VARCHAR},
         </trim>
         <trim prefix=" where " suffix=" " suffixOverrides="and">
             ID = #{id} and
         </trim>
     </update>
 
-    <update id="updateByPrimaryKeySelective" parameterType="com.czy.seed.mybatis.entity.TestEntity">
-        update test
+    <update id="updateByPrimaryKeySelective" parameterType="com.czy.seed.mvc.sys.entity.SysOrg">
+        update SYS_ORG
         <trim prefix=" set " suffix=" " suffixOverrides=",">
+            <if test="parentId != null">
+                PARENT_ID = #{parentId},
+            </if>
+            <if test="code != null">
+                CODE = #{code, jdbcType=VARCHAR},
+            </if>
             <if test="name != null">
                 NAME = #{name, jdbcType=VARCHAR},
+            </if>
+            <if test="memo != null">
+                MEMO = #{memo, jdbcType=VARCHAR},
             </if>
         </trim>
         <trim prefix=" where " suffix=" " suffixOverrides="and">
@@ -94,10 +134,13 @@
         </trim>
     </update>
 
-    <update id="updateByParams" parameterType="com.czy.seed.mybatis.entity.TestEntity">
-        update test
+    <update id="updateByParams" parameterType="com.czy.seed.mvc.sys.entity.SysOrg">
+        update SYS_ORG
         <trim prefix=" set " suffix=" " suffixOverrides=",">
+            PARENT_ID = #{record.parentId},
+            CODE = #{record.code,jdbcType=VARCHAR},
             NAME = #{record.name,jdbcType=VARCHAR},
+            MEMO = #{record.memo,jdbcType=VARCHAR},
         </trim>
         <if test="inParams != null">
             <where>
@@ -142,13 +185,22 @@
 
     <update id="updateSelectiveByParams">
         <if test="@com.czy.seed.mybatis.sql.util.MybatisColumnsOGNL@hasValue(record) == true">
-            update test
+            update SYS_ORG
             <trim prefix=" set " suffix=" " suffixOverrides=",">
                 <if test="record.id != null">
                     ID = #{record.id},
                 </if>
+                <if test="record.parentId != null">
+                    PARENT_ID = #{record.parentId},
+                </if>
+                <if test="record.code != null">
+                    CODE = #{record.code, jdbcType=VARCHAR},
+                </if>
                 <if test="record.name != null">
                     NAME = #{record.name, jdbcType=VARCHAR},
+                </if>
+                <if test="record.memo != null">
+                    MEMO = #{record.memo, jdbcType=VARCHAR},
                 </if>
             </trim>
             <if test="inParams != null">
@@ -193,14 +245,14 @@
     </update>
 
     <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
-        delete from test
+        delete from SYS_ORG
         <trim prefix=" where " suffix=" " suffixOverrides="and">
             ID = #{id} and
         </trim>
     </delete>
 
     <delete id="deleteByParams" parameterType="com.czy.seed.mybatis.base.QueryParams">
-        delete from test
+        delete from SYS_ORG
         <if test="_parameter != null">
             <where>
                 <foreach collection="orCriteria" item="criteria" separator="or">
@@ -219,54 +271,48 @@
     <select id="selectByPrimaryKey" resultMap="BaseResultMap" parameterType="long">
         select
         <trim prefix=" " suffix=" " suffixOverrides=",">
-            test.ID,
-            test.NAME,
+            SYS_ORG.ID,
+            SYS_ORG.PARENT_ID,
+            SYS_ORG.CODE,
+            SYS_ORG.NAME,
+            SYS_ORG.MEMO,
         </trim>
-        from test
+        from SYS_ORG
         <trim prefix=" where " suffix=" " suffixOverrides="and">
-            test.ID = #{id} and
+            SYS_ORG.ID = #{id} and
         </trim>
     </select>
 
     <select id="selectRelativeByPrimaryKey" resultMap="BaseResultMap" parameterType="long">
         select
         <trim prefix=" " suffix=" " suffixOverrides=",">
-            test.ID,
-            test.NAME,
-            ONE_one.TEST_ID as one_TEST_ID,
-            ONE_one.ID as one_ID,
-            ONE_one.MEMO as one_MEMO,
-            ONE_one.NAME as one_NAME,
-            ONE_one1.MEMO as one1_MEMO,
-            ONE_one1.NAME as one1_NAME,
-            ONE_one1.ID as one1_ID,
-            ONE_one1.TEST_ID as one1_TEST_ID,
-            ONE_oneList.MEMO as oneList_MEMO,
-            ONE_oneList.TEST_ID as oneList_TEST_ID,
-            ONE_oneList.NAME as oneList_NAME,
-            ONE_oneList.ID as oneList_ID,
+            SYS_ORG.ID,
+            SYS_ORG.PARENT_ID,
+            SYS_ORG.CODE,
+            SYS_ORG.NAME,
+            SYS_ORG.MEMO,
         </trim>
-        from test
-        LEFT JOIN ONE ONE_ONE ON TEST.ID = ONE_ONE.ID
-        LEFT JOIN ONE ONE_ONE1 ON TEST.ID = ONE_ONE1.TEST_ID
-        LEFT JOIN ONE ONE_ONELIST ON TEST.NAME = ONE_ONELIST.NAME
+        from SYS_ORG
         <trim prefix=" where " suffix=" " suffixOverrides="and">
-            test.ID = #{id} and
+            SYS_ORG.ID = #{id} and
         </trim>
     </select>
 
     <select id="selectListByParams" resultMap="BaseResultMap" parameterType="com.czy.seed.mybatis.base.QueryParams">
         select
         <if test="@com.czy.seed.mybatis.sql.util.MybatisColumnsOGNL@hasSelectColumns(_parameter)">
-            <foreach collection="_parameter.selectColumns" item="selectColumn" separator=",">test.${selectColumn}</foreach>
+            <foreach collection="_parameter.selectColumns" item="selectColumn" separator=",">SYS_ORG.${selectColumn}</foreach>
         </if>
         <if test="@com.czy.seed.mybatis.sql.util.MybatisColumnsOGNL@hasSelectColumns(_parameter) == false">
             <trim prefix=" " suffix=" " suffixOverrides=",">
-                test.ID,
-                test.NAME,
+                SYS_ORG.ID,
+                SYS_ORG.PARENT_ID,
+                SYS_ORG.CODE,
+                SYS_ORG.NAME,
+                SYS_ORG.MEMO,
             </trim>
         </if>
-        from test
+        from SYS_ORG
         <if test="_parameter != null">
             <where>
                 <foreach collection="orCriteria" item="criteria" separator="or">
@@ -282,30 +328,18 @@
     <select id="selectListRelativeByParams" resultMap="BaseResultMap" parameterType="com.czy.seed.mybatis.base.QueryParams">
         select
         <if test="@com.czy.seed.mybatis.sql.util.MybatisColumnsOGNL@hasSelectColumns(_parameter)">
-            <foreach collection="_parameter.selectColumns" item="selectColumn" separator=",">test.${selectColumn}</foreach>
+            <foreach collection="_parameter.selectColumns" item="selectColumn" separator=",">SYS_ORG.${selectColumn}</foreach>
         </if>
         <if test="@com.czy.seed.mybatis.sql.util.MybatisColumnsOGNL@hasSelectColumns(_parameter) == false">
             <trim prefix=" " suffix=" " suffixOverrides=",">
-                test.ID,
-                test.NAME,
-                ONE_one.TEST_ID as one_TEST_ID,
-                ONE_one.ID as one_ID,
-                ONE_one.MEMO as one_MEMO,
-                ONE_one.NAME as one_NAME,
-                ONE_one1.MEMO as one1_MEMO,
-                ONE_one1.NAME as one1_NAME,
-                ONE_one1.ID as one1_ID,
-                ONE_one1.TEST_ID as one1_TEST_ID,
-                ONE_oneList.MEMO as oneList_MEMO,
-                ONE_oneList.TEST_ID as oneList_TEST_ID,
-                ONE_oneList.NAME as oneList_NAME,
-                ONE_oneList.ID as oneList_ID,
+                SYS_ORG.ID,
+                SYS_ORG.PARENT_ID,
+                SYS_ORG.CODE,
+                SYS_ORG.NAME,
+                SYS_ORG.MEMO,
             </trim>
         </if>
-        from test
-        LEFT JOIN ONE ONE_ONE ON TEST.ID = ONE_ONE.ID
-        LEFT JOIN ONE ONE_ONE1 ON TEST.ID = ONE_ONE1.TEST_ID
-        LEFT JOIN ONE ONE_ONELIST ON TEST.NAME = ONE_ONELIST.NAME
+        from SYS_ORG
         <if test="_parameter != null">
             <where>
                 <foreach collection="orCriteria" item="criteria" separator="or">
@@ -321,15 +355,18 @@
     <select id="selectOneByParams" resultMap="BaseResultMap" parameterType="com.czy.seed.mybatis.base.QueryParams">
         select distinct
         <if test="@com.czy.seed.mybatis.sql.util.MybatisColumnsOGNL@hasSelectColumns(_parameter)">
-            <foreach collection="_parameter.selectColumns" item="selectColumn" separator=",">test.${selectColumn}</foreach>
+            <foreach collection="_parameter.selectColumns" item="selectColumn" separator=",">SYS_ORG.${selectColumn}</foreach>
         </if>
         <if test="@com.czy.seed.mybatis.sql.util.MybatisColumnsOGNL@hasSelectColumns(_parameter) == false">
             <trim prefix=" " suffix=" " suffixOverrides=",">
-                test.ID,
-                test.NAME,
+                SYS_ORG.ID,
+                SYS_ORG.PARENT_ID,
+                SYS_ORG.CODE,
+                SYS_ORG.NAME,
+                SYS_ORG.MEMO,
             </trim>
         </if>
-        from test
+        from SYS_ORG
         <if test="_parameter != null">
             <where>
                 <foreach collection="orCriteria" item="criteria" separator="or">
@@ -342,30 +379,18 @@
     <select id="selectOneRelativeByParams" resultMap="BaseResultMap" parameterType="com.czy.seed.mybatis.base.QueryParams">
         select distinct
         <if test="@com.czy.seed.mybatis.sql.util.MybatisColumnsOGNL@hasSelectColumns(_parameter)">
-            <foreach collection="_parameter.selectColumns" item="selectColumn" separator=",">test.${selectColumn}</foreach>
+            <foreach collection="_parameter.selectColumns" item="selectColumn" separator=",">SYS_ORG.${selectColumn}</foreach>
         </if>
         <if test="@com.czy.seed.mybatis.sql.util.MybatisColumnsOGNL@hasSelectColumns(_parameter) == false">
             <trim prefix=" " suffix=" " suffixOverrides=",">
-                test.ID,
-                test.NAME,
-                ONE_one.TEST_ID as one_TEST_ID,
-                ONE_one.ID as one_ID,
-                ONE_one.MEMO as one_MEMO,
-                ONE_one.NAME as one_NAME,
-                ONE_one1.MEMO as one1_MEMO,
-                ONE_one1.NAME as one1_NAME,
-                ONE_one1.ID as one1_ID,
-                ONE_one1.TEST_ID as one1_TEST_ID,
-                ONE_oneList.MEMO as oneList_MEMO,
-                ONE_oneList.TEST_ID as oneList_TEST_ID,
-                ONE_oneList.NAME as oneList_NAME,
-                ONE_oneList.ID as oneList_ID,
+                SYS_ORG.ID,
+                SYS_ORG.PARENT_ID,
+                SYS_ORG.CODE,
+                SYS_ORG.NAME,
+                SYS_ORG.MEMO,
             </trim>
         </if>
-        from test
-        LEFT JOIN ONE ONE_ONE ON TEST.ID = ONE_ONE.ID
-        LEFT JOIN ONE ONE_ONE1 ON TEST.ID = ONE_ONE1.TEST_ID
-        LEFT JOIN ONE ONE_ONELIST ON TEST.NAME = ONE_ONELIST.NAME
+        from SYS_ORG
         <if test="_parameter != null">
             <where>
                 <foreach collection="orCriteria" item="criteria" separator="or">
@@ -378,7 +403,7 @@
     <select id="selectCountByParams" resultType="int" parameterType="com.czy.seed.mybatis.base.QueryParams">
         select
         count(*)
-        from test
+        from SYS_ORG
         <if test="_parameter != null">
             <where>
                 <foreach collection="orCriteria" item="criteria" separator="or">
@@ -405,15 +430,15 @@
                             and ${criterion.condition}
                         </when>
                         <when test="criterion.singleValue">
-                            and test.${criterion.condition} #{criterion.value}
+                            and SYS_ORG.${criterion.condition} #{criterion.value}
                         </when>
                         <when test="criterion.betweenValue">
-                            and test.${criterion.condition} #{criterion.value} and #{criterion.secondValue}
+                            and SYS_ORG.${criterion.condition} #{criterion.value} and #{criterion.secondValue}
                         </when>
                         <when test="criterion.listValue">
                             and ${criterion.condition}
                             <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
-                                test.#{listItem}
+                                SYS_ORG.#{listItem}
                             </foreach>
                         </when>
                     </choose>

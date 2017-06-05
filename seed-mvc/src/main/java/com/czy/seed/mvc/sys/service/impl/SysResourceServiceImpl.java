@@ -1,5 +1,7 @@
 package com.czy.seed.mvc.sys.service.impl;
 
+import com.czy.seed.mvc.base.service.BaseService;
+import com.czy.seed.mvc.base.service.impl.BaseServiceImpl;
 import com.czy.seed.mvc.sys.entity.SysResource;
 import com.czy.seed.mvc.sys.mapper.SysResourceMapper;
 import com.czy.seed.mvc.sys.service.SysResourceService;
@@ -12,7 +14,7 @@ import java.util.*;
  * Created by PLC on 2017/5/29.
  */
 @Service
-public class SysResourceServiceImpl implements SysResourceService {
+public class SysResourceServiceImpl extends BaseServiceImpl<SysResource> implements SysResourceService {
 
     @Autowired
     private SysResourceMapper sysResourceMapper;

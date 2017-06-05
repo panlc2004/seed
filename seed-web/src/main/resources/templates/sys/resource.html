@@ -1,0 +1,60 @@
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+
+<script th:src="@{/js/sys/resource.js}"></script>
+
+<div id="main-panel">
+
+    <!--查询工具栏-->
+    <el-row>
+        <el-form :model="queryParam.params">
+            <el-col :span="6" style="padding-right: 5px; padding-bottom: 5px">
+                <el-input placeholder="请输入参数名称查询" v-model="queryParam.name"></el-input>
+            </el-col>
+            <el-col :span="6">
+                <el-button-group>
+                    <el-button type="info" @click="query">查询</el-button>
+                    <el-button type="primary" @click="add">新增目录</el-button>
+                    <el-button type="warning" @click="edit">修改</el-button>
+                </el-button-group>
+            </el-col>
+        </el-form>
+    </el-row>
+
+    <!--数据列表-->
+    <el-row>
+        <el-tree id="orgTree"
+                 ref="resTree"
+                 :default-expanded-keys="defaultExpandedKeys"
+                 :highlight-current="true"
+                 :data="treeData"
+                 :props="defaultProps"
+                 node-key="id"
+                 check-strictly
+                 show-checkbox
+                 @node-click="nodeClick"
+                 :render-content="renderContent">
+        </el-tree>
+    </el-row>
+    <!--维护表单-->
+    <el-dialog title="系统资源管理" :visible.sync="editDialogShow" size="small" :close-on-click-modal="false">
+        <el-form :model="formData">
+            <el-form-item label="资源名称" :label-width="formLabelWidth">
+                <el-input v-model="formData.name"></el-input>
+            </el-form-item>
+            <el-form-item label="资源编码" :label-width="formLabelWidth">
+                <el-input v-model="formData.code"></el-input>
+            </el-form-item>
+            <el-form-item label="资源路径" :label-width="formLabelWidth">
+                <el-input v-model="formData.url"></el-input>
+            </el-form-item>
+            <el-form-item label="备注" :label-width="formLabelWidth">
+                <el-input v-model="formData.memo" type="textarea" :rows="5"></el-input>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="editDialogShow = false">取 消</el-button>
+            <el-button type="primary" @click="save">确 定</el-button>
+        </div>
+    </el-dialog>
+
+</div>
