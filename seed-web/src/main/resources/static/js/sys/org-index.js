@@ -155,16 +155,6 @@ var main = new Vue({
                     }).catch(
                     function () {
                     });
-
-                // $.post("/sys/user/deleteByPrimary/" + this.currentRow.id, function (success, data) {
-                //     if(success) {
-                //         czy.msg.info("操作成功");
-                //         var param = {"pageNum":1, "pageSize":this.pageSize, "params":{}};
-                //         main.loadUser(param)
-                //     } else {
-                //         czy.msg.error(data.msg);
-                //     }
-                // });
             },
             //用户列表选择
             handleCurrentChange:function(selectRow){

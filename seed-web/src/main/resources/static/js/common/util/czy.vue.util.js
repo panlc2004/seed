@@ -30,7 +30,6 @@
             }
         },
         confirm: function (obj, msg, title, url, params, callback) {
-            debugger;
             if (params == undefined || params == null) {
                 params = {};
             }

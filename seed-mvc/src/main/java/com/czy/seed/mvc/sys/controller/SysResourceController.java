@@ -1,10 +1,10 @@
 package com.czy.seed.mvc.sys.controller;
 
-import com.czy.seed.mvc.sys.entity.SysOrg;
 import com.czy.seed.mvc.sys.entity.SysResource;
 import com.czy.seed.mvc.sys.service.SysResourceService;
 import com.czy.seed.mvc.util.Res;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -61,4 +61,14 @@ public class SysResourceController {
         return Res.ok(sysResource.getId().toString());
     }
 
+    /**
+     * 根据主键删除
+     * @param id
+     * @return
+     */
+    @RequestMapping("/deleteByPrimary/{id}")
+    public Res deleteByPrimary(@PathVariable long id) {
+        sysResourceService.deleteByPrimaryKey(id);
+        return Res.ok();
+    }
 }
