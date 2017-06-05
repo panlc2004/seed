@@ -1,31 +1,67 @@
 /*
 Navicat MySQL Data Transfer
 
-Source Server         : localhost_5.0
-Source Server Version : 50096
-Source Host           : localhost:3307
+Source Server         : localhost
+Source Server Version : 50155
+Source Host           : localhost:3306
 Source Database       : seed
 
 Target Server Type    : MYSQL
-Target Server Version : 50096
+Target Server Version : 50155
 File Encoding         : 65001
 
-Date: 2017-06-04 20:35:03
+Date: 2017-06-05 18:39:38
 */
 
 SET FOREIGN_KEY_CHECKS=0;
+
+-- ----------------------------
+-- Table structure for `sys_dict`
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_dict`;
+CREATE TABLE `sys_dict` (
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `LOGIC_DEL` int(11) NOT NULL DEFAULT '1' COMMENT '逻辑删除状态：1：未删除；2：删除',
+  `CODE` varchar(100) NOT NULL,
+  `NAME` varchar(50) NOT NULL,
+  `MEMO` varchar(2000) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of sys_dict
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `sys_dict_item`
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_dict_item`;
+CREATE TABLE `sys_dict_item` (
+  `ID` bigint(20) NOT NULL DEFAULT '0',
+  `LOGIC_DEL` int(11) NOT NULL DEFAULT '1' COMMENT '逻辑删除状态：1：未删除；2：删除',
+  `PARENT_ID` bigint(20) NOT NULL DEFAULT '0' COMMENT '父级ID，默认值为0，表示无父级数据',
+  `SYS_DICT_CODE` varchar(100) NOT NULL,
+  `ITEM_CODE` varchar(100) NOT NULL,
+  `VALUE` varchar(300) NOT NULL,
+  `MEMO` varchar(2000) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of sys_dict_item
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for `sys_org`
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_org`;
 CREATE TABLE `sys_org` (
-  `ID` bigint(20) NOT NULL auto_increment,
-  `PARENT_ID` bigint(20) NOT NULL default '0' COMMENT '为0时表示最高级组织机构',
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `PARENT_ID` bigint(20) NOT NULL DEFAULT '0' COMMENT '为0时表示最高级组织机构',
   `CODE` varchar(40) NOT NULL,
   `NAME` varchar(60) NOT NULL,
-  `MEMO` varchar(1000) default NULL,
-  PRIMARY KEY  (`ID`)
+  `MEMO` varchar(1000) DEFAULT NULL,
+  PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -41,13 +77,13 @@ INSERT INTO `sys_org` VALUES ('10', '3', '99', '99', '99');
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_param`;
 CREATE TABLE `sys_param` (
-  `ID` bigint(20) NOT NULL auto_increment,
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `CODE` varchar(300) NOT NULL COMMENT '配置项编码',
   `NAME` varchar(50) NOT NULL COMMENT '配置项名称',
   `VALUE` varchar(500) NOT NULL COMMENT '配置项值',
-  `ACTIVE` tinyint(4) NOT NULL default '1' COMMENT '是否激活：1：激活；0：不激活',
-  `MEMO` varchar(2000) default NULL COMMENT '备注',
-  PRIMARY KEY  (`ID`)
+  `ACTIVE` tinyint(4) NOT NULL DEFAULT '1' COMMENT '是否激活：1：激活；0：不激活',
+  `MEMO` varchar(2000) DEFAULT NULL COMMENT '备注',
+  PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -87,31 +123,42 @@ INSERT INTO `sys_param` VALUES ('28', '2312312', '31231231', '1231', '1', '基�
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_resource`;
 CREATE TABLE `sys_resource` (
-  `ID` bigint(20) NOT NULL auto_increment,
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `PARENT_ID` bigint(20) NOT NULL COMMENT '父级资源id',
-  `TYPES` int(11) NOT NULL default '1' COMMENT '资源类型：1.菜单、2.目录',
+  `TYPES` int(11) NOT NULL DEFAULT '1' COMMENT '资源类型：1.菜单、2.目录',
   `CODE` varchar(30) NOT NULL COMMENT '资源编码',
   `NAME` varchar(50) NOT NULL COMMENT '资源名称',
   `URL` varchar(50) NOT NULL COMMENT '资源路径',
-  PRIMARY KEY  (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8;
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sys_resource
 -- ----------------------------
 INSERT INTO `sys_resource` VALUES ('1', '0', '1', 'sys', '系统管理', '');
-INSERT INTO `sys_resource` VALUES ('2', '1', '1', 'sys_resource', '组织机构管理', 'sys/org/index');
+INSERT INTO `sys_resource` VALUES ('2', '1', '1', 'sys_org', '组织机构管理', 'sys/org/index');
 INSERT INTO `sys_resource` VALUES ('3', '1', '1', 'sys_param', '系统参数设置', 'sys/param/index');
+INSERT INTO `sys_resource` VALUES ('4', '1', '1', 'sys_resource', '菜单管理', 'sys/resource/index');
+INSERT INTO `sys_resource` VALUES ('5', '0', '1', '1234', '1234', '1234');
+INSERT INTO `sys_resource` VALUES ('6', '0', '1', '1234', '1234', '1234');
+INSERT INTO `sys_resource` VALUES ('7', '0', '1', '1234', '1234', '1234');
+INSERT INTO `sys_resource` VALUES ('8', '0', '1', '456', '456', '456');
+INSERT INTO `sys_resource` VALUES ('9', '0', '1', '476', '4567', '4567');
+INSERT INTO `sys_resource` VALUES ('10', '9', '1', '2345', '45', '234523');
+INSERT INTO `sys_resource` VALUES ('11', '10', '1', '12341', '12341234', '23412341');
+INSERT INTO `sys_resource` VALUES ('12', '11', '1', '23452', '2345', '34523452');
+INSERT INTO `sys_resource` VALUES ('13', '0', '1', '88', '88', '88');
+INSERT INTO `sys_resource` VALUES ('14', '0', '1', '99', '99', '9');
 
 -- ----------------------------
 -- Table structure for `sys_role`
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role`;
 CREATE TABLE `sys_role` (
-  `ID` bigint(20) NOT NULL auto_increment,
-  `CODE` varchar(30) default NULL COMMENT '角色编码',
-  `NAME` varchar(50) default NULL COMMENT '角色名称',
-  PRIMARY KEY  (`ID`)
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `CODE` varchar(30) DEFAULT NULL COMMENT '角色编码',
+  `NAME` varchar(50) DEFAULT NULL COMMENT '角色名称',
+  PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -124,10 +171,10 @@ INSERT INTO `sys_role` VALUES ('1', 'admin', '系统管理员');
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_role_resource`;
 CREATE TABLE `sys_role_resource` (
-  `ID` bigint(20) NOT NULL default '0',
+  `ID` bigint(20) NOT NULL DEFAULT '0',
   `SYS_ROLE_ID` bigint(20) NOT NULL,
   `SYS_RESOURCE_ID` bigint(20) NOT NULL,
-  PRIMARY KEY  (`ID`)
+  PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -139,16 +186,16 @@ CREATE TABLE `sys_role_resource` (
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_user`;
 CREATE TABLE `sys_user` (
-  `ID` bigint(20) NOT NULL auto_increment,
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `NAME` varchar(50) NOT NULL,
   `USERNAME` varchar(50) NOT NULL,
   `PASSWORD` varchar(50) NOT NULL,
-  `EMAIL` varchar(50) default NULL,
-  `ENABLE` tinyint(1) NOT NULL default '1' COMMENT '账号是否可用',
-  `NON_LOCKED` tinyint(1) NOT NULL default '1' COMMENT '账号是否锁定',
-  `CREDENTIALS_EXPIRED_TIME` datetime default NULL COMMENT '密码过期时间',
-  `ACCOUNT_EXPIRED_TIME` datetime default NULL COMMENT '账号过期时间',
-  PRIMARY KEY  (`ID`)
+  `EMAIL` varchar(50) DEFAULT NULL,
+  `ENABLE` tinyint(1) NOT NULL DEFAULT '1' COMMENT '账号是否可用',
+  `NON_LOCKED` tinyint(1) NOT NULL DEFAULT '1' COMMENT '账号是否锁定',
+  `CREDENTIALS_EXPIRED_TIME` datetime DEFAULT NULL COMMENT '密码过期时间',
+  `ACCOUNT_EXPIRED_TIME` datetime DEFAULT NULL COMMENT '账号过期时间',
+  PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=31 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -173,10 +220,10 @@ INSERT INTO `sys_user` VALUES ('30', '88', '88', '88', '88', '0', '0', null, nul
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_user_role`;
 CREATE TABLE `sys_user_role` (
-  `ID` bigint(20) NOT NULL default '0',
+  `ID` bigint(20) NOT NULL DEFAULT '0',
   `SYS_USER_ID` bigint(20) NOT NULL,
   `SYS_ROLE_ID` bigint(20) NOT NULL,
-  PRIMARY KEY  (`ID`)
+  PRIMARY KEY (`ID`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
