@@ -18,7 +18,7 @@
             },
             warn: function (msg) {
                 main_contain.$message({
-                    type: 'warn',
+                    type: 'warning',
                     message: msg
                 });
             },

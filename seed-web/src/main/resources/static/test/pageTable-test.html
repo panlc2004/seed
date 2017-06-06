@@ -26,33 +26,23 @@
     <el-input></el-input>
     <el-button @click="query">query</el-button>
     <page-grid ref="grid" url="/sys/param/selectPageByParams">
-        <el-table-column prop="name" label="参数名称23"></el-table-column>
-        <el-table-column prop="code" label="参数名称22"></el-table-column>
-        <el-table-column prop="value" label="参数名称221"></el-table-column>
-        <el-table-column prop="memo" label="参数名称222"></el-table-column>
-        <el-table-column prop="date" label="参数名称223"></el-table-column>
-        <el-table-column prop="date" label="参数名称224"></el-table-column>
+        <el-table-column prop="name" label="名称"></el-table-column>
+        <el-table-column prop="code" label="编码"></el-table-column>
+        <el-table-column prop="value" label="值"></el-table-column>
+        <el-table-column prop="memo" label="备注"></el-table-column>
+        <el-table-column prop="date" label="日期"></el-table-column>
     </page-grid>
 </div>
 </body>
 
-
 <script type="text/javascript">
     new Vue({
         el: '#pageGrid',
-        data: {
-            name: ''
-        },
+        data: { name: ''},
         methods:{
             query:function () {
                 var child = this.$refs.grid;
-
                 child.reload({name:'312',sex:456})
-
-
-
-//                var selectedRows = child.getSelectedRows();
-//                console.log(selectedRows);
             }
         }
     })
