@@ -30,7 +30,7 @@ public class SysOrgController {
      */
     @RequestMapping("/index")
     public ModelAndView index() {
-        ModelAndView mv = new ModelAndView("/sys/org-index");
+        ModelAndView mv = new ModelAndView("/sys/org");
         return mv;
     }
 

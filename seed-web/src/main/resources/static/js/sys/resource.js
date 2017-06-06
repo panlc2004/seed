@@ -22,9 +22,8 @@ var main_panel = new Vue({
         },
 
         methods: {
-            query: function () {
-                this.queryParam.pageNum = 1;
-                this.loadData();
+            query: function (val) {
+                this.$refs.resTree.filter(this.queryParam.name);
             },
             loadData: function () {
                 var _this = this;
@@ -32,8 +31,10 @@ var main_panel = new Vue({
                     _this.treeData = data.data;
                 });
             },
-            nodeClick: function () {
-
+            filterNode:function(value, data) {
+                console.log(data);
+                if (!value) return true;
+                return data.name.indexOf(value) !== -1;
             },
             add: function () {
                 this.formData = {}; //清空表单数据
@@ -79,7 +80,8 @@ var main_panel = new Vue({
                                 czy.msg.error(res.msg);
                             }
                         });
-                    }).catch(function () {});
+                    }).catch(function () {
+                });
             },
             //渲染图标
             renderContent: function (createElement, param) {
@@ -120,12 +122,12 @@ var main_panel = new Vue({
                 } else {
                     btns = [editBtn, delBtn];
                 }
-                return createElement('span',{attrs: {style: "background-color:blue"}}, [
-                    createElement('span',{attrs: {style: "background-color:blue"}}, node.label),
-                    createElement('span',{attrs: {style: "background-color:red; min-width:300px; min-height:60px"}}, data.url),
+                return createElement('span', [
+                    createElement('span', node.label),
+                    // createElement('span', {attrs: {style: "background-color:red; min-width:300px; min-height:60px"}}, data.url),
                     createElement(
                         'span',
-                        {attrs: {style: "float: right; margin-right: 20px;background-color:blue; min-width:300px"}},
+                        {attrs: {style: "float: right; margin-right: 20px;"}},
                         btns
                     )
                 ])

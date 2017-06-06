@@ -1,5 +1,6 @@
 package com.czy.seed.mvc.sys.entity;
 
+import javax.persistence.Id;
 import java.io.Serializable;
 
 /**
@@ -9,9 +10,11 @@ public class SysRole implements Serializable {
 
     private static final long serialVersionUID = 4659702439449421452L;
 
+    @Id
     private Long id;
     private String code;
     private String name;
+    private String memo;
 
     public Long getId() {
         return id;
@@ -37,12 +40,21 @@ public class SysRole implements Serializable {
         this.name = name;
     }
 
+    public String getMemo() {
+        return memo;
+    }
+
+    public void setMemo(String memo) {
+        this.memo = memo;
+    }
+
     @Override
     public String toString() {
         return "SysRole{" +
                 "id=" + id +
                 ", code='" + code + '\'' +
                 ", name='" + name + '\'' +
+                ", memo='" + memo + '\'' +
                 '}';
     }
 }

@@ -30,7 +30,7 @@
                  node-key="id"
                  check-strictly
                  show-checkbox
-                 @node-click="nodeClick"
+                 :filter-node-method="filterNode"
                  :render-content="renderContent">
         </el-tree>
     </el-row>
