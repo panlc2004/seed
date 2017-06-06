@@ -22,7 +22,7 @@ var pageGrid = Vue.extend({
     template: [
         '<el-row>',
         '<el-table :data="pageData" :stripe="true" :border="true" style="width: 100%" :highlight-current-row="true"',
-        ' max-height="100%" :page-size="queryParam.pageSize" @current-change="gridSelect">',
+        ' max-height="100%" :page-size="queryParam.pageSize" @current-change="rowSelect">',
         '<slot></slot>',
         '</el-table>',
         '<el-pagination layout="total, prev, pager, next" :total="total"',
@@ -32,7 +32,7 @@ var pageGrid = Vue.extend({
     ].join(''),
     methods: {
         reload: function (params) {
-            for(var key in params) {
+            for (var key in params) {
                 this.queryParam[key] = params[key];
             }
             console.log(this.queryParam);
@@ -43,11 +43,12 @@ var pageGrid = Vue.extend({
             this.queryParam.pageNum = this.currentPageNum;
             this.loadData();
         },
-        getSelectedRows:function () {
+        getSelectedRows: function () {
             return this.selectedRow;
         },
-        gridSelect: function (selectedRow) {
+        rowSelect: function (selectedRow) {
             this.selectedRow = selectedRow;
+            this.$emit('current-change', selectedRow)
         },
         turnPage: function (pageNum) {
             this.currentPageNum = pageNum;
