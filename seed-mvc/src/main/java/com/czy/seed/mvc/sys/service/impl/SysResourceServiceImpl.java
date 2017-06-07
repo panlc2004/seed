@@ -32,7 +32,14 @@ public class SysResourceServiceImpl extends BaseServiceImpl<SysResource> impleme
     public List<SysResource> buildTree(List<SysResource> allResources) {
         List<SysResource> rootResource = findRootResource(allResources);
         findChildrenResource(allResources, rootResource);
-        return rootResource;
+        //构造虚拟根节点：一个id为0的节点，永远展示在页面上
+        SysResource zeroNode = new SysResource();
+        zeroNode.setName("系统菜单");
+        zeroNode.setId(0L);
+        zeroNode.getChildren().addAll(rootResource);
+        List<SysResource> resources = new ArrayList<SysResource>();
+        resources.add(zeroNode);
+        return resources;
     }
 
     /**

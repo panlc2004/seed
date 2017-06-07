@@ -101,7 +101,8 @@ const main_contain = new Vue({
         getMenuList: function () {
             this.$http.post("sys/resource/findResourceTreeForLoginUser").then(
                 function(success) {
-                    this.menuList = success.body;
+                    console.log(success.body);
+                    this.menuList = success.body[0].children;
                 },
                 function(failure) {
                     alert(failure.body)

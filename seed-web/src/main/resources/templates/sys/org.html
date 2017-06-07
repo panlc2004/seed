@@ -91,7 +91,7 @@
                     用户角色
                 </div>
                 <el-row style="margin-bottom: 5px">
-                    <el-button v-if="selectedUser" type="primary" @click="saveUserRole">保存</el-button>
+                    <el-button v-if="selectedUser" type="primary" @click="saveUserRole" icon="circle-check">保存</el-button>
                 </el-row>
                 <el-row>
                     <el-table ref="roleTable" :data="roleData" :stripe="true" :border="true" style="width: 100%"
