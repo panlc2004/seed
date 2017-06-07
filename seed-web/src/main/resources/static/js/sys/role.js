@@ -23,17 +23,25 @@ var main_panel = new Vue({
                 children: 'children',
                 label: 'name'
             },
+
         },
 
         methods: {
+            // 菜单查询
+            queryResTree:function () {
+                this.$refs.resTree.filter(this.queryParam.name);
+            },
+            //角色查询
             query: function () {
                 var grid = this.$refs.grid;
                 grid.reload(this.queryParam)
             },
+            //角色新增
             add: function () {
                 this.formData = {};
                 this.editDialogShow = true;
             },
+            // 打开角色修改界面
             edit: function () {
                 var selectedRow = this.getSelectedRow();
                 if (selectedRow == null) {
@@ -43,6 +51,7 @@ var main_panel = new Vue({
                 this.formData = selectedRow;
                 this.editDialogShow = true;
             },
+            // 删除角色
             del: function () {
                 var selectedRow = this.getSelectedRow();
                 if (selectedRow == null) {
@@ -61,10 +70,12 @@ var main_panel = new Vue({
                     }).catch(function () {
                 });
             },
+            // 获取当前选中角色
             getSelectedRow: function () {
                 var grid = this.$refs.grid;
                 return grid.getSelectedRows();
             },
+            // 保存角色
             save: function () {
                 czy.ajax.post("/sys/role/save", this.formData, function (data, o) {
                     main_panel.editDialogShow = false;
@@ -75,6 +86,7 @@ var main_panel = new Vue({
             getCheckedResource: function () {
                 return this.$refs.resTree.getCheckedKeys();
             },
+            // 保存用户角色
             saveRoleResource: function () {
                 var resources = this.getCheckedResource();
                 var roleId = this.getSelectedRow().id;
@@ -93,6 +105,7 @@ var main_panel = new Vue({
                     }
                 });
             },
+            // 用户列表选中事件
             roleGridClick: function (row) {
                 var _this = this;
                 $.post("sys/roleResource/selectResourceForRole/" + row.id,
@@ -103,13 +116,11 @@ var main_panel = new Vue({
                         result.data.forEach(function (item) {   //开始选中
                             existResourceId.push(item.sysResource.id);
                         })
-                        console.log(existResourceId);
                         resTree.setCheckedKeys(existResourceId);
                     }
                 )
             }
         },
-
         created: function () {
             var _this = this;
             $.post("/sys/resource/selectResourceTree", this.queryParam, function (data) {

@@ -1,9 +1,7 @@
 package com.czy.seed.mvc.sys.controller;
 
 import com.czy.seed.mvc.sys.entity.SysOrg;
-import com.czy.seed.mvc.sys.entity.SysParam;
 import com.czy.seed.mvc.sys.entity.SysRole;
-import com.czy.seed.mvc.sys.entity.SysUser;
 import com.czy.seed.mvc.sys.service.SysRoleService;
 import com.czy.seed.mvc.util.Res;
 import com.czy.seed.mybatis.base.QueryParams;
@@ -14,6 +12,7 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -62,5 +61,13 @@ public class SysRoleController {
         sysRoleService.deleteByPrimaryKey(id);
         return Res.ok();
     }
+
+    @RequestMapping("/selectList")
+    public Res selectList() {
+        QueryParams queryParams = new QueryParams(SysRole.class);
+        List<SysRole> sysRoles = sysRoleService.selectListByParams(queryParams);
+        return Res.ok(sysRoles);
+    }
+
 
 }

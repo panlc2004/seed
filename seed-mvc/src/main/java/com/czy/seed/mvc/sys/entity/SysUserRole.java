@@ -1,5 +1,7 @@
 package com.czy.seed.mvc.sys.entity;
 
+import com.czy.seed.mybatis.config.mybatis.annotations.One2One;
+
 import java.io.Serializable;
 
 /**
@@ -13,6 +15,9 @@ public class SysUserRole implements Serializable {
     private Long id;
     private Long sysUserId;
     private Long sysRoleId;
+
+    @One2One(columns = "sys_role_id = id")
+    private SysRole sysRole;
 
     public Long getId() {
         return id;
@@ -36,5 +41,13 @@ public class SysUserRole implements Serializable {
 
     public void setSysRoleId(Long sysRoleId) {
         this.sysRoleId = sysRoleId;
+    }
+
+    public SysRole getSysRole() {
+        return sysRole;
+    }
+
+    public void setSysRole(SysRole sysRole) {
+        this.sysRole = sysRole;
     }
 }

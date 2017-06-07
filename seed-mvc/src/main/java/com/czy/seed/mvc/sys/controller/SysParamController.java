@@ -2,7 +2,6 @@ package com.czy.seed.mvc.sys.controller;
 
 import com.czy.seed.mvc.sys.entity.SysOrg;
 import com.czy.seed.mvc.sys.entity.SysParam;
-import com.czy.seed.mvc.sys.entity.SysUser;
 import com.czy.seed.mvc.sys.service.SysParamService;
 import com.czy.seed.mvc.util.Res;
 import com.czy.seed.mybatis.base.QueryParams;

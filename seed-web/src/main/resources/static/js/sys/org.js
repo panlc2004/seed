@@ -5,27 +5,30 @@
 var main = new Vue({
         el: '#main',
         data: {
-            //组织结构树
+            //组织结构树属性
             treeData: [],   //机构树数据
             defaultExpandedKeys: [0],
             defaultProps: {
                 children: 'children',
                 label: 'name'
             },
-            //组织机构录入窗口
+            //组织机构录入窗口属性
             sysOrg: {},
             operateDialogShow: false,    //操作窗口默认不显
             formLabelWidth: '70px',      //标题宽度
-            //员工信息列表
+            //员工信息列表属性
             tableData: [],
             pageTotal: 1,
-            pageCount:0,
-            pageSize:20,
-            //员工信息录入窗口
-            userDialogShow:false,
-            sysUser:{},
-            currentRow:null,
-            searchName:''
+            pageCount: 0,
+            pageSize: 20,
+            //员工信息录入窗口属性
+            userDialogShow: false,
+            sysUser: {},
+            selectedUser: null,
+            searchName: '',
+            // 角色列表属性
+            roleData: [],
+            roleSelectedData: []
         },
         methods: {
             loadTree: function () {
@@ -85,30 +88,31 @@ var main = new Vue({
 
             // 查询用户信息
             loadUser: function (param) {
-                if(param == undefined) {
+                if (param == undefined) {
                     param = czy.query.params()
                 }
-                param.params.name=this.searchName
+                param.params.name = this.searchName
                 var main = this;
                 $.ajax({
-                    type:"POST",
-                    url:"/sys/user/selectByPage",
-                    dataType:"json",
-                    contentType:"application/json",
-                    data:JSON.stringify(param),
-                    success:function(success){
+                    type: "POST",
+                    url: "/sys/user/selectByPage",
+                    dataType: "json",
+                    contentType: "application/json",
+                    data: JSON.stringify(param),
+                    success: function (success) {
                         main.tableData = success.data.page;
                         main.pageTotal = success.data.total;
                         main.pageCount = success.data.pages;
+                        main.loadRoleData();
                     }
                 });
             },
             toPage: function (pageNum) {
-                var param = {"pageNum":pageNum, "pageSize":this.pageSize, "params":{}}
+                var param = {"pageNum": pageNum, "pageSize": this.pageSize, "params": {}}
                 this.loadUser(param)
             },
-            selectUser:function () {
-                var param = {"pageNum":1, "pageSize":this.pageSize, "params":{}};
+            selectUser: function () {
+                var param = {"pageNum": 1, "pageSize": this.pageSize, "params": {}};
                 this.loadUser(param)
             },
             addUser: function () {
@@ -116,37 +120,37 @@ var main = new Vue({
                 this.userDialogShow = true;
             },
             editUser: function () {
-                if(this.currentRow == null) {
+                if (this.selectedUser == null) {
                     czy.msg.error("请先选择一条数据");
                 }
-                this.sysUser = this.currentRow;
+                this.sysUser = this.selectedUser;
                 this.userDialogShow = true;
             },
-            saveUser:function () {
+            saveUser: function () {
                 this.$http.post("/sys/user/save", this.sysUser).then(
                     function (success) {
                         this.userDialogShow = false;  //关闭窗口
-                        var param = {"pageNum":1, "pageSize":this.pageSize, "params":{}}
+                        var param = {"pageNum": 1, "pageSize": this.pageSize, "params": {}}
                         this.loadUser(param);
                     },
                     function (failure) {
                     }
                 )
             },
-            delUser:function () {
-                if(this.currentRow == null) {
+            delUser: function () {
+                if (this.selectedUser == null) {
                     czy.msg.error("请先选择一条数据");
                 }
-                this.$confirm('此操作将永久删除该数据, 是否继续?', '提示',{
+                this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(
                     function () {
-                        $.post("/sys/user/deleteByPrimary/" + main.currentRow.id, function (success, data) {
-                            if(success) {
+                        $.post("/sys/user/deleteByPrimary/" + main.selectedUser.id, function (success, data) {
+                            if (success) {
                                 czy.msg.info("操作成功");
-                                var param = {"pageNum":1, "pageSize":this.pageSize, "params":{}};
+                                var param = {"pageNum": 1, "pageSize": this.pageSize, "params": {}};
                                 main.loadUser(param)
                             } else {
                                 czy.msg.error(data.msg);
@@ -157,14 +161,57 @@ var main = new Vue({
                     });
             },
             //用户列表选择
-            handleCurrentChange:function(selectRow){
-                this.currentRow = selectRow
-                console.log(this.currentRow)
+            userSelected: function (selectRow) {
+                if(selectRow == null) {
+                    return;
+                }
+                var _this = this;
+                this.selectedUser = selectRow   //初始化选中行
+                //查询用户现有角色，并设置页面选中
+                $.post("sys/userRole/selectListForUser/" + selectRow.id, function (result) {
+                    _this.$refs.roleTable.clearSelection();     //清除选中项
+                    result.data.forEach(function (sysUserRole) {
+                        _this.roleData.forEach(function (tableData) {
+                            if (tableData.id == sysUserRole.sysRoleId) {
+                                _this.$refs.roleTable.toggleRowSelection(tableData);    //选中现有角色行
+                            }
+                        })
+                    });
+                })
+            },
+            // 角色列表选中行事件
+            roleDataSelect: function (selection) {
+                this.roleSelectedData = selection;
+            },
+            loadRoleData: function () {
+                var _this = this;
+                $.post("sys/role/selectList", function (result) {
+                    _this.roleData = result.data;
+                })
+            },
+            saveUserRole: function () {
+                var userId = this.selectedUser.id;
+                var param = [];
+                this.roleSelectedData.forEach(function (data) {
+                    param.push({"sysUserId": userId, "sysRoleId": data.id})
+                })
+
+                $.ajax({
+                    type: "POST",
+                    url: "sys/userRole/saveUserRole",
+                    dataType: "json",
+                    contentType: "application/json",
+                    data: JSON.stringify(param),
+                    success: function (result) {
+                        czy.msg.success(result.msg);
+                    }
+                });
+
             }
         },
         created: function () {
             this.loadTree();
-            var param = {"pageNum":1, "pageSize":this.pageSize, "params":{}}
+            var param = {"pageNum": 1, "pageSize": this.pageSize, "params": {}}
             this.loadUser(param);
         }
     });

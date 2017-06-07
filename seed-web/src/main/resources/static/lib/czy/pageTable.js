@@ -35,7 +35,6 @@ var pageGrid = Vue.extend({
             for (var key in params) {
                 this.queryParam[key] = params[key];
             }
-            console.log(this.queryParam);
             this.queryParam.pageNum = 1;
             this.loadData();
         },
