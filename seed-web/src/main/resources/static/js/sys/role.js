@@ -6,8 +6,8 @@ var main_panel = new Vue({
         data: {
             selectedRow: null,      //列表选中行
             queryParam: {           //查询参数
-                pageNum: 1,
-                pageSize: 10
+                // pageNum: 1,
+                // pageSize: 10
             },
             pageData: null,         //分页数据
             total: 0,               //数据总量

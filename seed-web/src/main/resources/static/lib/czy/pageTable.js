@@ -6,7 +6,8 @@ var pageGrid = Vue.extend({
         url: '',
         autoinit: true,
         pageBar:null,
-        pageBarSmall:true
+        pageBarSmall:true,
+        width:'100'
     },
 
     data: function () {
@@ -49,6 +50,9 @@ var pageGrid = Vue.extend({
             this.loadData();
         },
         refresh: function (params) {
+            for (var key in params) {
+                this.queryParam[key] = params[key];
+            }
             this.queryParam.pageNum = this.currentPageNum;
             this.loadData();
         },
@@ -82,4 +86,4 @@ var pageGrid = Vue.extend({
     }
 });
 
-Vue.component("page-grid", pageGrid)
+Vue.component("czy-page-grid", pageGrid)

@@ -22,11 +22,13 @@
         </el-row>
 
         <!--数据列表-->
-        <page-grid ref="grid" url="/sys/role/selectPageByParams" @current-change="roleGridClick">
+        <czy-page-grid ref="grid" url="/sys/role/selectPageByParams" @current-change="roleGridClick">
+            <el-table-column type="index" width="55px" ></el-table-column>
+
             <el-table-column prop="name" label="角色名称"></el-table-column>
             <el-table-column prop="code" label="角色编码"></el-table-column>
             <el-table-column prop="memo" label="备注"></el-table-column>
-        </page-grid>
+        </czy-page-grid>
 
         <!--维护表单-->
         <el-dialog title="角色管理" :visible.sync="editDialogShow" size="miny" :close-on-click-modal="false">
