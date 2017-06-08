@@ -68,37 +68,52 @@
         /**
          * 遮罩
          */
-        loading: window.ELEMENT.Loading,
         mask: {
-            open: function () {
-                czy.loading.service({fullscreen: true, text: '拼命加载中...'});
+            loading : window.ELEMENT.Loading,
+            mask:null,  //打开后的遮罩对象
+            target:null,//打开遮罩的DOM对象
+            settings:{fullscreen: true, text: '拼命加载中...'},  //遮罩设置
+            open: function () { //打开遮罩
+                this.mask = this.loading.service(this.settings);
             },
-            close: function () {
-                czy.loading.service({fullscreen: false, text: '拼命加载中...'});
+            close: function () {//关闭遮罩
+                if(this.mask) {
+                    this.mask.close();
+                }
             }
         },
         /**
          * ajax请求，参数为json格式数据
          */
-        ajax: function (options, success, error) {
+        ajax: function (options) {
             var defaults = {
                 contentType: "application/json;charset=UTF-8",
             };
             var callbackOption = {
+                beforeSend:function (XMLHttpRequest) {
+                    czy.mask.open();   //打开遮罩
+                    if(options.beforeSend && typeof options.beforeSend == 'function') {
+                        options.beforeSend(XMLHttpRequest);
+                    }
+                },
                 success: function (result) {
                     czy.mask.close();   //取消遮罩
-                    success(result);
+                    if(options.success && typeof options.success == 'function') {
+                        options.success(result);
+                    }
                 },
                 error: function (XMLHttpRequest, textStatus, errorThrown) {
                     czy.mask.close();   //取消遮罩
-                    error(XMLHttpRequest, textStatus, errorThrown);
+                    if(options.error && typeof options.error == 'function') {
+                        options.error(XMLHttpRequest, textStatus, errorThrown);
+                    }
                     //跳转登陆页面    toDo
                     //展示错误信息    toDo
                 }
             }
-            var options = $.extend(defaults, options, callbackOption);
-            czy.mask.open();   //打开遮罩
-            $.ajax(options);
+            var _options = $.extend({},defaults, options);
+            var settings = $.extend({},_options, callbackOption);
+            $.ajax(settings);
         },
         operateWin: function (id, url) {
             var operateWin = new Vue({
