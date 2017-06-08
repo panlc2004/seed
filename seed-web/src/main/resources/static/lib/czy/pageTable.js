@@ -47,7 +47,9 @@ var pageGrid = Vue.extend({
         },
         rowSelect: function (selectedRow) {
             this.selectedRow = selectedRow;
-            this.$emit('current-change', selectedRow)
+            if (selectedRow) {   //有选中数据时才触发该事件
+                this.$emit('current-change', selectedRow);
+            }
         },
         turnPage: function (pageNum) {
             this.currentPageNum = pageNum;
