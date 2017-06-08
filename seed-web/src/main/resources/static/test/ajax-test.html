@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:v-bind="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta content="text/html;charset=UTF-8"/>
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+
+    <link rel="stylesheet" href="../lib/elementui/lib/theme-default/index.css"/>
+
+    <!-- 引入组件库 -->
+    <!-- 先引入 Vue -->
+    <script src="../lib/jquery/jquery-3.2.1.min.js"></script>
+    <script src="../lib/vue/vue.js"></script>
+    <script src="../lib/vue/vue-resource.min.js"></script>
+    <script src="../lib/vue/vue-router.js"></script>
+    <script src="../lib/elementui/lib/index.js"></script>
+    <script src="../js/common/util/czy.vue.util.js"></script>
+
+    <title>Title</title>
+</head>
+
+
+<body>
+
+<div id="test">
+    <el-button @click="print">print</el-button>
+</div>
+
+</body>
+
+
+<script types="text/javascript">
+
+    var test = new Vue({
+        el: "#test",
+        data: {
+            td: [{name: 123}, {name: 456}, {name: 789}]
+        },
+        methods: {
+            print: function () {
+                czy.ajax({
+                    url: 'sys/role/selectList',
+                    success: function (result) {
+                        console.log(result);
+                    },
+                    error: function (result) {
+                        console.log(result);
+                        alert(123123)
+                    }
+                })
+            }
+        }
+    });
+
+
+</script>
+
+</html>
