@@ -3,8 +3,11 @@
  */
 (function () {
     window.czy = {
+        /**
+         *弹出消息工具方法
+         */
         msg: {
-            success:function (msg) {
+            success: function (msg) {
                 main_contain.$message({
                     type: 'success',
                     message: msg
@@ -29,6 +32,15 @@
                 });
             }
         },
+        /**
+         * 确认弹窗并执行任务——临时，不要使用
+         * @param obj
+         * @param msg
+         * @param title
+         * @param url
+         * @param params
+         * @param callback
+         */
         confirm: function (obj, msg, title, url, params, callback) {
             if (params == undefined || params == null) {
                 params = {};
@@ -53,30 +65,41 @@
                 return _params;
             }
         },
-        ajax:{
-            post: function(url, param, callback) {
-                $.ajax({
-                    type:"POST",
-                    url: url,
-                    dataType:"json",
-                    contentType:"application/json",
-                    data:JSON.stringify(param),
-                    success:function(data){
-                        if(data.code == 200) {
-                            czy.msg.success(data.msg);
-                        } else {
-                            czy.msg.error(data.msg)
-                        }
-                        if (callback) {
-                            callback(data, status);
-                        }
-                    }
-                });
+        /**
+         * 遮罩
+         */
+        loading: window.ELEMENT.Loading,
+        mask: {
+            open: function () {
+                czy.loading.service({fullscreen: true, text: '拼命加载中...'});
+            },
+            close: function () {
+                czy.loading.service({fullscreen: false, text: '拼命加载中...'});
             }
         },
-        // post:function(url,params,callcack){
-        //     $.post(url,params,)
-        // }
+        /**
+         * ajax请求，参数为json格式数据
+         */
+        ajax: function (options, success, error) {
+            var defaults = {
+                contentType: "application/json;charset=UTF-8",
+            };
+            var callbackOption = {
+                success: function (result) {
+                    czy.mask.close();   //取消遮罩
+                    success(result);
+                },
+                error: function (XMLHttpRequest, textStatus, errorThrown) {
+                    czy.mask.close();   //取消遮罩
+                    error(XMLHttpRequest, textStatus, errorThrown);
+                    //跳转登陆页面    toDo
+                    //展示错误信息    toDo
+                }
+            }
+            var options = $.extend(defaults, options, callbackOption);
+            czy.mask.open();   //打开遮罩
+            $.ajax(options);
+        },
         operateWin: function (id, url) {
             var operateWin = new Vue({
                 el: id,
