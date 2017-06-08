@@ -75,7 +75,6 @@ var pageGrid = Vue.extend({
         }
     },
     created: function () {
-        console.log('pageBar:' + this._pageBar)
         this.maxHeight = document.body.scrollHeight - 172;
         if (!this.autoinit) {
             this.loadData();
