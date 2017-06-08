@@ -40,15 +40,16 @@
         methods: {
             print: function () {
                 czy.ajax({
-                    url: 'sys/role/selectList',
+                    url: 'sys/role/selectList/',
                     success: function (result) {
                         console.log(result);
                     },
-                    error: function (result) {
-                        console.log(result);
-                        alert(123123)
+                    error: function (XMLHttpRequest,code,errorThrown) {
+                        console.log(XMLHttpRequest);
+                        console.log(code);
+                        console.log(errorThrown);
                     }
-                })
+                });
             }
         }
     });

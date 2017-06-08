@@ -83,11 +83,13 @@
             }
         },
         /**
-         * ajax请求，参数为json格式数据
+         * 带遮罩的ajax请求
          */
         ajax: function (options) {
             var defaults = {
-                contentType: "application/json;charset=UTF-8",
+                type: "POST",
+                contentType: "application/json",
+                dataType: "json"
             };
             var callbackOption = {
                 beforeSend:function (XMLHttpRequest) {
@@ -113,7 +115,28 @@
             }
             var _options = $.extend({},defaults, options);
             var settings = $.extend({},_options, callbackOption);
+            settings.data = JSON.stringify(options.data);
             $.ajax(settings);
+        },
+
+        // type: "POST",
+        // url: "/sys/user/selectByPage",
+        // dataType: "json",
+        // contentType: "application/json",
+        // data: JSON.stringify(param),
+
+        /**
+         * 加载页面到主显示div内去
+         * @param url
+         * @param params
+         * @param callback
+         */
+        loadToMainDiv:function(url, params, callback){
+            $(".content-wrapper").load(url, params, function (result) {
+                if(typeof callback == 'function') {
+                    callback(result);
+                }
+            })
         },
         operateWin: function (id, url) {
             var operateWin = new Vue({

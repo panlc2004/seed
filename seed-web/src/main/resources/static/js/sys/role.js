@@ -77,9 +77,17 @@ var main_panel = new Vue({
             },
             // 保存角色
             save: function () {
-                czy.ajax.post("/sys/role/save", this.formData, function (data, o) {
-                    main_panel.editDialogShow = false;
-                    main_panel.query();
+                // czy.ajax.post("/sys/role/save", this.formData, function (data, o) {
+                //     main_panel.editDialogShow = false;
+                //     main_panel.query();
+                // });
+                czy.ajax({
+                    url: '/sys/role/save',
+                    data:this.formData,
+                    success:function(result){
+                        main_panel.editDialogShow = false;
+                        main_panel.query();
+                    }
                 });
             },
             //获取选中的菜单id
