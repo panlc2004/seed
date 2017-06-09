@@ -27,8 +27,6 @@ public class BaseController<T extends BaseEntity> {
     @Autowired
     private BaseService<T> service;
 
-
-
     @RequestMapping("/index")
     public ModelAndView index() {
         String className = this.getClass().getSimpleName();
@@ -133,6 +131,41 @@ public class BaseController<T extends BaseEntity> {
     public Res selectListByParams(@RequestBody QueryParams params) {
         List<T> list = service.selectListByParams(params);
         return Res.ok(list);
+    }
+
+    /**
+     * 新增
+     * @return 返回新增数据的主键
+     */
+    @RequestMapping("/insert")
+    public Res insert(T record) {
+        int num = service.insert(record);
+        return Res.ok(record.getId());
+    }
+
+    public Res insertList(List<T> records) {
+        int num = service.insertList(records);
+        return Res.ok(num);
+    }
+
+    public Res updateList(List<T> records) {
+        return Res.ok();
+    }
+
+    /**
+     * 修改
+     * @return 修改成功的条数
+     */
+    @RequestMapping("/update")
+    public Res update(T record) {
+        int num = service.updateByPrimaryKeySelective(record);
+        return Res.ok(num);
+    }
+
+    @RequestMapping("/logicDelete")
+    public Res logicDelete() {
+
+        return Res.ok();
     }
 
 
