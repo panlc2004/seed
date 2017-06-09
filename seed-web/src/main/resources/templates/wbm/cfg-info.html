@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<script th:src="@{/js/wbm/cfg-info.js}"></script>
+
+
+<div id="dt-grid" style="margin: 10px 10px 10px 10px">
+    <div class="block">
+        <el-button type="primary" icon="search"></el-button>
+        <el-button type="primary" icon="plus"></el-button>
+        <el-button type="primary" icon="edit"></el-button>
+        <el-button type="primary" icon="delete"></el-button>
+    </div>
+    <el-table
+            ref="multipleTable"
+            :data="tableData"
+            border
+            tooltip-effect="dark"
+            style="width: 100%">
+        <el-table-column
+                type="selection"
+                width="55">
+        </el-table-column>
+        <el-table-column
+                prop="flightType"
+                label="机型"
+                width="120">
+        </el-table-column>
+        <el-table-column
+                prop="seatNum"
+                label="最大座位数"
+                show-overflow-tooltip>
+        </el-table-column>
+        <el-table-column
+                prop="harm"
+                label="基准力臂"
+                show-overflow-tooltip>
+        </el-table-column>
+        <el-table-column
+                prop="c"
+                label="c"
+                show-overflow-tooltip>
+        </el-table-column>
+        <el-table-column
+                prop="k"
+                label="k"
+                show-overflow-tooltip>
+        </el-table-column>
+        <el-table-column
+                prop="lemac"
+                label="lemac"
+                show-overflow-tooltip>
+        </el-table-column>
+        <el-table-column
+                prop="datum"
+                label="datum"
+                show-overflow-tooltip>
+        </el-table-column>
+        <el-table-column
+                prop="mac"
+                label="mac"
+                show-overflow-tooltip>
+        </el-table-column>
+    </el-table>
+
+    <el-form ref="fcForm" :model="fcForm" label-width="110px">
+        <el-card class="box-card">
+            <div slot="header" class="clearfix">
+                <span style="line-height: 36px;">航班配置</span>
+                <el-button style="float: right" type="primary" @click="submitFcForm('fcForm')">提交
+                </el-button>
+            </div>
+            <el-row>
+                <el-col :span="4">
+                    <el-form-item label="出厂序号" :prop="num" required>
+                        <el-input size="small" v-model="fcForm.num"></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="4">
+                    <el-form-item label="机号" :prop="msn"  required>
+                        <el-input size="small" v-model="fcForm.msn"></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="4">
+                    <el-form-item label="基本重量" :prop="baseWeight"  required>
+                        <el-input size="small" v-model="fcForm.baseWeight"></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="4">
+                    <el-form-item label="基本指数" :prop="baseIndex"  required>
+                        <el-input size="small" v-model="fcForm.baseIndex"></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="4">
+                    <el-form-item label="起飞油量" :prop="takeOffFuel"  required>
+                        <el-input size="small" v-model="fcForm.takeOffFuel"></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="4">
+                    <el-form-item label="航班用油" :prop="tripFuel"  required>
+                        <el-input size="small" v-model="fcForm.tripFuel"></el-input>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+            <el-row>
+                <el-col :span="4">
+                    <el-form-item label="最大起飞重量" :prop="limitedMtow"  required>
+                        <el-input size="small" v-model="fcForm.limitedMtow"></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="4">
+                    <el-form-item label="最大落地重量" :prop="limitedMdlw"  required>
+                        <el-input size="small" v-model="fcForm.limitedMdlw"></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="4">
+                    <el-form-item label="最大无油重量" :prop="limitedMzfw"  required>
+                        <el-input size="small" v-model="fcForm.limitedMzfw"></el-input>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+        </el-card>
+    </el-form>
+
+    <el-form ref="form" :model="form" label-width="110px">
+
+        <el-card class="box-card">
+            <div slot="header" class="clearfix">
+                <span style="line-height: 36px;">航班总体参数配置</span>
+                <el-button style="float: right" type="primary" @click="submitFcForm('fcForm')">提交</el-button>
+            </div>
+            <el-row>
+                <el-col :span="4">
+                    <el-form-item label="航班号" required>
+                        <el-input size="small" v-model="form.flightNo"></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="4">
+                    <el-form-item label="航段" required>
+                        <el-input size="small" v-model="form.segment"></el-input>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+        </el-card>
+    </el-form>
+    <el-form ref="form" :model="form" label-width="110px">
+        <el-card class="box-card">
+            <div slot="header" class="clearfix">
+                <span style="line-height: 36px;">偏差设置</span>
+                <el-button style="float: right" type="primary" @click="submitFcForm('fcForm')">提交</el-button>
+            </div>
+            <el-row>
+                <el-col :span="4">
+                    <el-form-item label="类型" required>
+                        <el-input size="small" v-model="form.indexConfigType"></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="4">
+                    <el-form-item label="最小值" required>
+                        <el-input size="small" v-model="form.minMileage"></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="4">
+                    <el-form-item label="最大值" required>
+                        <el-input size="small" v-model="form.maxMileage"></el-input>
+                    </el-form-item>
+                </el-col>
+                <el-col :span="4">
+                    <el-form-item label="偏差值" required>
+                        <el-input size="small" v-model="form.indexConfigNum"></el-input>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+        </el-card>
+    </el-form>
+    <el-form ref="ggForm" :model="ggForm" label-width="110px">
+        <el-card class="box-card">
+            <div slot="header" class="clearfix">
+                <span style="line-height: 36px;">机供品配置</span>
+                <el-button style="float: right" type="primary" @click="submitGgForm('ggForm')">提交</el-button>
+            </div>
+            <div v-for="(galleyGood,index) in ggForm.galleyGoods">
+                <el-row>
+                    <el-col :span="2">
+                        <el-form-item :label="'舱位(' + ggForm.configuration[galleyGood.positionCode]+')'">
+                            <el-input size="small" type="hidden" v-model="galleyGood.positionCode"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="4">
+                        <el-form-item label="标准重量"
+                                      :prop="'galleyGoods.' + index + '.standardWeight'"
+                                      :rules="[{
+                                         required: true, message: '字段不能为空',
+                                      },{ type: 'number', message: '必须为数字值',trigger: 'blur'}]">
+                            <el-input size="small" v-model.number="galleyGood.standardWeight"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="4">
+                        <el-form-item label="预警重量"
+                                      :prop="'galleyGoods.' + index + '.alarmWeight'"
+                                      :rules="[{
+                                         required: true, message: '字段不能为空',
+                                      },{ type: 'number', message: '必须为数字值',trigger: 'blur'}]">
+                            <el-input size="small" v-model.number="galleyGood.alarmWeight"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="4">
+                        <el-form-item label="标准指数"
+                                      :prop="'galleyGoods.' + index + '.standardIndex'"
+                                      :rules="[{
+                                         required: true, message: '字段不能为空',
+                                      },{ type: 'number', message: '必须为数字值',trigger: 'blur'}]">
+                            <el-input size="small" v-model.number="galleyGood.standardIndex"></el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+            </div>
+        </el-card>
+    </el-form>
+</div>
+
+</body>
+</html>

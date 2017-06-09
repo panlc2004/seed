@@ -1,6 +1,7 @@
 package com.czy.seed.mvc.sys.service.impl;
 
 import com.czy.seed.mvc.sys.entity.SysResource;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.ArrayList;
@@ -10,7 +11,7 @@ import java.util.List;
  * Created by PLC on 2017/5/30.
  */
 public class SysResourceServiceImplTest {
-    @Test
+    @Ignore
     public void buildResourceTree() throws Exception {
         List<SysResource> sysResourceList = new ArrayList<SysResource>();
         sysResourceList.add(new SysResource(1L, 3L));
@@ -28,7 +29,7 @@ public class SysResourceServiceImplTest {
         System.out.println(sysResources);
     }
 
-    @Test
+    @Ignore
     public void findResourceForLoginUser() throws Exception {
         List<SysResource> sysResourceList = new ArrayList<SysResource>();
 //        sysResourceList.add(new SysResource(0L, 1L));

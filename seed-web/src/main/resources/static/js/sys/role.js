@@ -77,13 +77,17 @@ var main_panel = new Vue({
             },
             // 保存角色
             save: function () {
-                // czy.ajax.post("/sys/role/save", this.formData, function (data, o) {
+                // $.post("/sys/role/save", this.formData, function (data, o) {
                 //     main_panel.editDialogShow = false;
                 //     main_panel.query();
                 // });
                 czy.ajax({
                     url: '/sys/role/save',
                     data:this.formData,
+                    // data:JSON.stringify(this.formData),
+                    type: "POST",
+                    contentType: "application/json",
+                    dataType: "json",
                     success:function(result){
                         main_panel.editDialogShow = false;
                         main_panel.query();

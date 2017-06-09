@@ -1,0 +1,667 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<script th:src="@{/js/wbm/cfg-type.js}"></script>
+
+
+<div id="dt-grid" style="margin: 10px 10px 10px 10px">
+
+    <div v-if="showTable">
+        <div class="block">
+            <el-button type="primary" style="float: right;margin-bottom: 10px;margin-right: 5px;" icon="delete">删除
+            </el-button>
+            <el-button type="primary" @click="typeConfEdit" style="float: right;margin-bottom: 10px;margin-right: 5px;"
+                       icon="edit">类型配置编辑
+            </el-button>
+            <el-button type="primary" @click="typeConfAdd" style="float: right;margin-bottom: 10px;margin-right: 5px;"
+                       icon="plus">类型配置新增
+            </el-button>
+            <el-button type="primary" @click="infoConfEdit" style="float: right;margin-bottom: 10px;margin-right: 5px;"
+                       icon="edit">架次配置编辑
+            </el-button>
+            <el-button type="primary" @click="infoConfAdd" style="float: right;margin-bottom: 10px;margin-right: 5px;"
+                       icon="plus">架次配置新增
+            </el-button>
+            <el-button type="primary" style="float: right;margin-bottom: 10px;margin-right: 5px;" icon="search">查阅
+            </el-button>
+        </div>
+        <el-table
+                ref="multipleTable"
+                :data="tableData"
+                border
+                tooltip-effect="dark"
+                style="width: 100%;
+                margin-bottom: 10px;"
+                @cell-click="rowClick"
+                @select="getSelectRows"
+        >
+            <el-table-column
+                    type="selection"
+                    width="55">
+            </el-table-column>
+            <el-table-column
+                    prop="flightType"
+                    label="机型"
+                    width="120">
+            </el-table-column>
+            <el-table-column
+                    prop="seatNum"
+                    label="最大座位数"
+                    show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column
+                    prop="harm"
+                    label="基准力臂"
+                    show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column
+                    prop="c"
+                    label="c"
+                    show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column
+                    prop="k"
+                    label="k"
+                    show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column
+                    prop="lemac"
+                    label="lemac"
+                    show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column
+                    prop="datum"
+                    label="datum"
+                    show-overflow-tooltip>
+            </el-table-column>
+            <el-table-column
+                    prop="mac"
+                    label="mac"
+                    show-overflow-tooltip>
+            </el-table-column>
+        </el-table>
+    </div>
+    <div v-if="showForm">
+        <el-form ref="ftcForm" :model="ftcForm" :rules="ftcRules" label-width="110px" :inline="true">
+            <el-card class="box-card">
+                <div slot="header" class="clearfix">
+                    <span style="line-height: 36px;">航班类型参数配置</span>
+                    <el-button ref="ftcSubmit" style="float: right" type="primary" @click="submitFtcForm('ftcForm')">提交
+                    </el-button>
+                </div>
+                <el-row>
+                    <el-col :span="6">
+                        <el-form-item label="机型" prop="flightType" required>
+                            <el-input size="small" v-model="ftcForm.flightType"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="6">
+                        <el-form-item label="最大座位数" prop="seatNum" required>
+                            <el-input size="small" v-model.number="ftcForm.seatNum"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="6">
+                        <el-form-item label="基准力臂" prop="harm" required>
+                            <el-input size="small" v-model.number="ftcForm.harm"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="6">
+                        <el-form-item label="c" prop="c" required>
+                            <el-input size="small" v-model.number="ftcForm.c"></el-input>
+                        </el-form-item>
+                    </el-col>
+
+                </el-row>
+                <el-row>
+                    <el-col :span="6">
+                        <el-form-item label="k" prop="k" required>
+                            <el-input size="small" v-model.number="ftcForm.k"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="6">
+                        <el-form-item label="lemac" prop="lemac" required>
+                            <el-input size="small" v-model.number="ftcForm.lemac"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="6">
+                        <el-form-item label="datum" prop="datum" required>
+                            <el-input size="small" v-model.number="ftcForm.datum"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="6">
+                        <el-form-item label="mac" prop="mac" required>
+                            <el-input size="small" v-model.number="ftcForm.mac"></el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+            </el-card>
+        </el-form>
+
+        <el-form :model="passengerCabinForm" ref="passengerCabinForm" label-width="110px">
+            <el-card class="box-card">
+                <div slot="header" class="clearfix">
+                    <span style="line-height: 36px;">客舱信息配置</span>
+                    <el-button style="float: right" type="primary" @click="submitPcForm('passengerCabinForm')">提交
+                    </el-button>
+                </div>
+                <div v-for="(passengerCabin,index) in passengerCabinForm.passengerCabins">
+                    <!--<el-row style="margin-top: 10px;">-->
+                    <el-col :span="11">
+                        <el-card class="box-card">
+                            <el-row style="margin-top: 10px;">
+                                <el-col :span="8">
+                                    <el-form-item label="客舱"
+                                                  :prop="'passengerCabins.' + index + '.name'"
+                                                  :rules="[{
+                                         required: true, message: '不能为空', trigger: 'blur'
+                                      },{
+                                         min:1, max:5, message:'必须3-5个字符', trigger:'blur'
+                                      }]">
+                                        <el-input size="small" v-model="passengerCabin.name"></el-input>
+                                    </el-form-item>
+                                    <el-form-item label="开始排数"
+                                                  :prop="'passengerCabins.' + index + '.startRow'"
+                                                  :rules="[{
+                                         required: true, message: '不能为空'
+                                      },{ type: 'number', message: '必须为数字值',trigger: 'blur'}
+                                      ]">
+                                        <el-input size="small" v-model.number="passengerCabin.startRow"
+                                                  auto-complete="off"></el-input>
+                                    </el-form-item>
+                                    <el-form-item label="结束排数"
+                                                  :prop="'passengerCabins.' + index + '.endRow'"
+                                                  :rules="[{
+                                         required: true, message: '字段不能为空',
+                                      },{ type: 'number', message: '必须为数字值',trigger: 'blur'}]">
+                                        <el-input size="small" v-model.number="passengerCabin.endRow"></el-input>
+                                    </el-form-item>
+                                    <el-form-item label="载客人数上限"
+                                                  :prop="'passengerCabins.' + index + '.numLimit'"
+                                                  :rules="[{
+                                         required: true, message: '字段不能为空',
+                                      },{ type: 'number', message: '必须为数字值',trigger: 'blur'}]">
+                                        <el-input size="small" v-model.number="passengerCabin.numLimit"></el-input>
+                                    </el-form-item>
+                                    <el-form-item label="指数"
+                                                  :prop="'passengerCabins.' + index + '.indes'"
+                                                  :rules="[{
+                                         required: true, message: '不能为空',
+                                      },{ type: 'number', message: '必须为数字值',trigger: 'blur'}]">
+                                        <el-input size="small" v-model.number="passengerCabin.indes"></el-input>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col :span="14" style="margin-left:10px;">
+                                    <span style="line-height: 36px;">指数配置</span>
+                                    <el-button @click="icpcAddClick(index)" type="primary" icon="plus"
+                                               style="float: right;margin-bottom: 10px;margin-left: 10px;"></el-button>
+                                    <el-button @click="pcDelClick(passengerCabin)"
+                                               style="float: right;margin-left: 10px;"
+                                               type="danger"
+                                               icon="delete"></el-button>
+                                    <el-table
+                                            :data="passengerCabin.icTableData"
+                                            border
+                                            style="width: 100%">
+                                        <el-table-column
+                                                label="重量"
+                                                width="120">
+                                            <template scope="scope">
+                                                <el-form-item label-width="1px"
+                                                              :prop="'passengerCabins.' + index + '.icTableData.'+scope.$index+'.weight'"
+                                                              :rules="[{
+                                                     required: true, message: '不能为空',
+                                                  },{ type: 'number', message: '必须为数字值',trigger: 'blur'}]">
+                                                    <el-input size="small"
+                                                              v-model.number="passengerCabinForm.passengerCabins[index].icTableData[scope.$index].weight"></el-input>
+                                                </el-form-item>
+                                            </template>
+                                        </el-table-column>
+                                        <el-table-column
+                                                label="指数"
+                                                width="120">
+                                            <template scope="scope">
+                                                <el-form-item label-width="1px"
+                                                              :prop="'passengerCabins.' + index + '.icTableData.'+scope.$index+'.indes'"
+                                                              :rules="[{
+                                                     required: true, message: '不能为空',
+                                                  },{ type: 'number', message: '必须为数字值',trigger: 'blur'}]">
+                                                    <el-input size="small"
+                                                              v-model.number="passengerCabinForm.passengerCabins[index].icTableData[scope.$index].indes"></el-input>
+                                                </el-form-item>
+                                            </template>
+                                        </el-table-column>
+                                        <el-table-column label="操作">
+                                            <template scope="scope">
+                                                <el-form-item label-width="1px">
+                                                    <el-button
+                                                            size="small"
+                                                            type="danger"
+                                                            icon="delete"
+                                                            @click="icpcDelClick(scope.$index, passengerCabin.icTableData)">
+                                                    </el-button>
+                                                </el-form-item>
+                                            </template>
+                                        </el-table-column>
+                                    </el-table>
+                                </el-col>
+                            </el-row>
+                        </el-card>
+                    </el-col>
+
+                    <!--</el-row>-->
+                </div>
+                <el-button @click="pcAddClick(passengerCabinForm)" type="primary" icon="plus"
+                           style="float: right;margin-bottom: 10px;margin-top: 10px;"></el-button>
+            </el-card>
+        </el-form>
+
+        <el-form :model="cargoHoldForm" ref="cargoHoldForm" label-width="110px">
+            <el-card class="box-card">
+                <div slot="header" class="clearfix">
+                    <span style="line-height: 36px;">货舱信息配置</span>
+                    <el-button style="float: right" type="primary" @click="submitChForm('cargoHoldForm')">提交</el-button>
+                </div>
+                <div v-for="(cargoHold,index) in cargoHoldForm.cargoHolds">
+                    <el-col :span="11">
+                        <el-card class="box-card">
+                            <el-row style="margin-top: 10px;">
+                                <el-col :span="8">
+                                    <el-form-item label="货仓代码"
+                                                  :prop="'cargoHolds.' + index + '.code'"
+                                                  :rules="[{
+                                         required: true, message: '货仓代码字段不能为空'
+                                      },{
+                                         min:1, max:5, message:'必须1-5个字符', trigger:'blur'
+                                      }]">
+                                        <el-input size="small" v-model="cargoHold.code"></el-input>
+                                    </el-form-item>
+                                    <el-form-item label="货仓名称"
+                                                  :prop="'cargoHolds.' + index + '.name'"
+                                                  :rules="[{
+                                         required: true, message: '货仓名称字段不能为空'
+                                      },{
+                                         min:1, max:5, message:'必须1-5个字符', trigger:'blur'
+                                      }]">
+                                        <el-input size="small" v-model="cargoHold.name"
+                                                  auto-complete="off"></el-input>
+                                    </el-form-item>
+                                    <el-form-item label="载重上限"
+                                                  :prop="'cargoHolds.' + index + '.maxLimit'"
+                                                  :rules="[{
+                                         required: true, message: '载重上限字段不能为空',
+                                      },{ type: 'number', message: '载重上限必须为数字值',trigger: 'blur'}]">
+                                        <el-input size="small" v-model.number="cargoHold.maxLimit"></el-input>
+                                    </el-form-item>
+                                    <el-form-item label="指数"
+                                                  :prop="'cargoHolds.' + index + '.weightIndex'"
+                                                  :rules="[{
+                                         required: true, message: '重量指数字段不能为空',
+                                      },{ type: 'number', message: '重量指数必须为数字值',trigger: 'blur'}]">
+                                        <el-input size="small" v-model.number="cargoHold.weightIndex"></el-input>
+                                    </el-form-item>
+                                </el-col>
+                                <el-col :span="14" style="margin-left:10px;">
+                                    <span style="line-height: 36px;">指数配置</span>
+                                    <el-button @click="icchAddClick(index)" type="primary" icon="plus"
+                                               style="float: right;margin-bottom: 10px;margin-left: 10px;"></el-button>
+                                    <el-button @click="chDelClick(cargoHold)" style="float: right;margin-left: 10px;"
+                                               type="danger"
+                                               icon="delete"></el-button>
+                                    <el-table
+                                            :data="cargoHold.icTableData"
+                                            border
+                                            style="width: 100%">
+                                        <el-table-column
+                                                label="重量"
+                                                width="120">
+                                            <template scope="scope">
+                                                <el-form-item label-width="1px"
+                                                              :prop="'cargoHolds.' + index + '.icTableData.'+scope.$index+'.weight'"
+                                                              :rules="[{
+                                                     required: true, message: '不能为空',
+                                                  },{ type: 'number', message: '必须为数字值',trigger: 'blur'}]">
+                                                    <el-input size="small"
+                                                              v-model.number="cargoHoldForm.cargoHolds[index].icTableData[scope.$index].weight"></el-input>
+                                                </el-form-item>
+                                            </template>
+                                        </el-table-column>
+                                        <el-table-column
+                                                label="指数"
+                                                width="120">
+                                            <template scope="scope">
+                                                <el-form-item label-width="1px"
+                                                              :prop="'cargoHolds.' + index + '.icTableData.'+scope.$index+'.indes'"
+                                                              :rules="[{
+                                                     required: true, message: '不能为空',
+                                                  },{ type: 'number', message: '必须为数字值',trigger: 'blur'}]">
+                                                    <el-input size="small"
+                                                              v-model.number="cargoHoldForm.cargoHolds[index].icTableData[scope.$index].indes"></el-input>
+                                                </el-form-item>
+                                            </template>
+                                        </el-table-column>
+                                        <el-table-column label="操作">
+                                            <template scope="scope">
+                                                <el-form-item label-width="1px">
+                                                    <el-button
+                                                            size="small"
+                                                            type="danger"
+                                                            icon="delete"
+                                                            @click="icchDelClick(scope.$index, cargoHold.icTableData)">
+                                                    </el-button>
+                                                </el-form-item>
+                                            </template>
+                                        </el-table-column>
+                                    </el-table>
+                                </el-col>
+                            </el-row>
+                        </el-card>
+                    </el-col>
+                </div>
+                <el-button @click="chAddClick(cargoHoldForm)" type="primary" icon="plus"
+                           style="float: right;margin-bottom: 10px;"></el-button>
+            </el-card>
+        </el-form>
+
+        <el-form :model="fuelIndexConfigForm" ref="fuelIndexConfigForm" label-width="110px">
+            <el-card class="box-card">
+                <div slot="header" class="clearfix">
+                    <span style="line-height: 36px;">燃油指数配置</span>
+                    <el-button style="float: right" type="primary" @click="submitFuelForm('fuelIndexConfigForm')">提交
+                    </el-button>
+                </div>
+                <div v-for="(fuel,index) in fuelIndexConfigForm.fuels">
+                    <el-col :span="8" style="margin-left:10px;">
+                        <el-button @click="fuelAddClick(index)" type="primary" icon="plus"
+                                   style="float: right;margin-bottom: 10px;margin-left: 10px;"></el-button>
+                        <el-table
+                                :data="fuel.icTableData"
+                                border
+                                style="width: 100%">
+                            <el-table-column
+                                    label="重量"
+                                    width="120">
+                                <template scope="scope">
+                                    <el-form-item label-width="1px" label=""
+                                                  :prop="'fuels.'+index+'.icTableData.'+scope.$index+'.weight'"
+                                                  :rules="[{
+                        required: true, message: '不能为空',
+                        },{ type: 'number', message: '必须为数字值',trigger: 'blur'}]">
+                                        <el-input size="small"
+                                                  v-model.number="fuelIndexConfigForm.fuels[index].icTableData[scope.$index].weight"></el-input>
+                                    </el-form-item>
+                                </template>
+                            </el-table-column>
+                            <el-table-column
+                                    label="指数"
+                                    width="120">
+                                <template scope="scope">
+                                    <el-form-item label-width="1px" label=""
+                                                  :prop="'fuels.'+index+'.icTableData.'+scope.$index+'.indes'"
+                                                  :rules="[{
+                                        required: true, message: '不能为空',
+                                        },{ type: 'number', message: '必须为数字值',trigger: 'blur'}]">
+                                        <el-input size="small"
+                                                  v-model.number="fuelIndexConfigForm.fuels[index].icTableData[scope.$index].indes"></el-input>
+                                    </el-form-item>
+                                </template>
+                            </el-table-column>
+                            <el-table-column label="操作">
+                                <template scope="scope">
+                                    <el-form-item label-width="1px">
+                                        <el-button
+                                                size="small"
+                                                type="danger"
+                                                icon="delete"
+                                                @click="fuelIcDelClick(scope.$index, fuelIndexConfigForm.icTableData)">
+                                        </el-button>
+                                    </el-form-item>
+                                </template>
+                            </el-table-column>
+                        </el-table>
+                    </el-col>
+                </div>
+            </el-card>
+        </el-form>
+
+
+        <el-form :model="passengerForm" ref="passengerForm" label-width="110px">
+            <el-card class="box-card">
+                <div slot="header" class="clearfix">
+                    <span style="line-height: 36px;">乘客信息配置</span>
+                    <el-button style="float: right" type="primary" @click="submitPassengerForm('passengerForm')">提交
+                    </el-button>
+                </div>
+                <div v-for="(passenger,index) in passengerForm.passengers">
+                    <el-row>
+                        <el-col :span="2">
+                            <el-form-item :label="'类型(' + passengerForm.configuration[passenger.passengerTypeCode]+')'">
+                                <el-input size="small" type="hidden" v-model="passenger.passengerTypeCode"></el-input>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="4">
+                            <el-form-item label="标准重量"
+                                          :prop="'passengers.' + index + '.standardWeight'"
+                                          :rules="[{
+                                         required: true, message: '字段不能为空',
+                                      },{ type: 'number', message: '必须为数字值',trigger: 'blur'}]">
+                                <el-input size="small" v-model.number="passenger.standardWeight"></el-input>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                </div>
+            </el-card>
+        </el-form>
+
+
+        <el-form :model="crewForm" ref="crewForm" label-width="110px">
+            <el-card class="box-card">
+                <div slot="header" class="clearfix">
+                    <span style="line-height: 36px;">乘务信息信息配置</span>
+                    <el-button style="float: right" type="primary" @click="submitCrewForm('crewForm')">提交
+                    </el-button>
+                </div>
+                <div v-for="(crew,index) in crewForm.crews">
+                    <el-row>
+                        <el-col :span="2">
+                            <el-form-item :label="'舱位(' + crewForm.configuration[crew.positionCode]+')'">
+                                <el-input size="small" type="hidden" v-model="crew.positionCode"></el-input>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="4">
+                            <el-form-item label="重量"
+                                          :prop="'crews.' + index + '.weight'"
+                                          :rules="[{
+                                         required: true, message: '字段不能为空',
+                                      },{ type: 'number', message: '必须为数字值',trigger: 'blur'}]">
+                                <el-input size="small" v-model.number="crew.weight"></el-input>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="4">
+                            <el-form-item label="标准人数"
+                                          :prop="'crews.' + index + '.standardNum'"
+                                          :rules="[{
+                                         required: true, message: '字段不能为空',
+                                      },{ type: 'number', message: '必须为数字值',trigger: 'blur'}]">
+                                <el-input size="small" v-model.number="crew.standardNum"></el-input>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="4">
+                            <el-form-item label="重量指数"
+                                          :prop="'crews.' + index + '.standardIndex'"
+                                          :rules="[{
+                                         required: true, message: '字段不能为空',
+                                      },{ type: 'number', message: '必须为数字值',trigger: 'blur'}]">
+                                <el-input size="small" v-model.number="crew.standardIndex"></el-input>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                </div>
+            </el-card>
+        </el-form>
+    </div>
+
+
+    <div v-if="showInfoForm">
+        <el-form ref="fcForm" :model="fcForm" label-width="110px">
+            <el-card class="box-card">
+                <div slot="header" class="clearfix">
+                    <span style="line-height: 36px;">航班配置</span>
+                    <el-button style="float: right" type="primary" @click="submitFcForm('fcForm')">提交
+                    </el-button>
+                </div>
+                <el-row>
+                    <el-col :span="4">
+                        <el-form-item label="出厂序号" :prop="fcForm.num" required>
+                            <el-input size="small" v-model="fcForm.num"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="4">
+                        <el-form-item label="机号" :prop="fcForm.msn" required>
+                            <el-input size="small" v-model="fcForm.msn"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="4">
+                        <el-form-item label="基本重量" :prop="fcForm.baseWeight" required>
+                            <el-input size="small" v-model="fcForm.baseWeight"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="4">
+                        <el-form-item label="基本指数" :prop="fcForm.baseIndex" required>
+                            <el-input size="small" v-model="fcForm.baseIndex"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="4">
+                        <el-form-item label="起飞油量" :prop="fcForm.takeOffFuel" required>
+                            <el-input size="small" v-model="fcForm.takeOffFuel"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="4">
+                        <el-form-item label="航班用油" :prop="fcForm.tripFuel" required>
+                            <el-input size="small" v-model="fcForm.tripFuel"></el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+                <el-row>
+                    <el-col :span="4">
+                        <el-form-item label="最大起飞重量" :prop="fcForm.limitedMtow" required>
+                            <el-input size="small" v-model="fcForm.limitedMtow"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="4">
+                        <el-form-item label="最大落地重量" :prop="fcForm.limitedMdlw" required>
+                            <el-input size="small" v-model="fcForm.limitedMldw"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="4">
+                        <el-form-item label="最大无油重量" :prop="fcForm.limitedMzfw" required>
+                            <el-input size="small" v-model="fcForm.limitedMzfw"></el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+            </el-card>
+        </el-form>
+
+        <el-form ref="flightInfoForm" :model="flightInfoForm" label-width="110px">
+
+            <el-card class="box-card">
+                <div slot="header" class="clearfix">
+                    <span style="line-height: 36px;">航班总体参数配置</span>
+                    <el-button style="float: right" type="primary" @click="submitFlightInfoForm('flightInfoForm')">提交</el-button>
+                </div>
+                <el-row>
+                    <el-col :span="4">
+                        <el-form-item label="航班号" required>
+                            <el-input size="small" v-model="flightInfoForm.flightNo"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="4">
+                        <el-form-item label="航段" required>
+                            <el-input size="small" v-model="flightInfoForm.segment"></el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+            </el-card>
+        </el-form>
+        <el-form ref="offsetForm" :model="offsetForm" label-width="110px">
+            <el-card class="box-card">
+                <div slot="header" class="clearfix">
+                    <span style="line-height: 36px;">偏差设置</span>
+                    <el-button style="float: right" type="primary" @click="submitOffsetForm('offsetForm')">提交</el-button>
+                </div>
+                <el-row>
+                    <el-col :span="4">
+                        <el-form-item label="类型" required>
+                            <el-input size="small" v-model="offsetForm.type"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="4">
+                        <el-form-item label="最小值" required>
+                            <el-input size="small" v-model="offsetForm.minMileage"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="4">
+                        <el-form-item label="最大值" required>
+                            <el-input size="small" v-model="offsetForm.maxMileage"></el-input>
+                        </el-form-item>
+                    </el-col>
+                    <el-col :span="4">
+                        <el-form-item label="偏差值" required>
+                            <el-input size="small" v-model="offsetForm.num"></el-input>
+                        </el-form-item>
+                    </el-col>
+                </el-row>
+            </el-card>
+        </el-form>
+        <el-form ref="ggForm" :model="ggForm" label-width="110px">
+            <el-card class="box-card">
+                <div slot="header" class="clearfix">
+                    <span style="line-height: 36px;">机供品配置</span>
+                    <el-button style="float: right" type="primary" @click="submitGgForm('ggForm')">提交</el-button>
+                </div>
+                <div v-for="(galleyGood,index) in ggForm.galleyGoods">
+                    <el-row>
+                        <el-col :span="2">
+                            <el-form-item :label="'舱位(' + ggForm.configuration[galleyGood.positionCode]+')'">
+                                <el-input size="small" type="hidden" v-model="galleyGood.positionCode"></el-input>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="4">
+                            <el-form-item label="标准重量"
+                                          :prop="'galleyGoods.' + index + '.standardWeight'"
+                                          :rules="[{
+                                         required: true, message: '字段不能为空',
+                                      },{ type: 'number', message: '必须为数字值',trigger: 'blur'}]">
+                                <el-input size="small" v-model.number="galleyGood.standardWeight"></el-input>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="4">
+                            <el-form-item label="预警重量"
+                                          :prop="'galleyGoods.' + index + '.alarmWeight'"
+                                          :rules="[{
+                                         required: true, message: '字段不能为空',
+                                      },{ type: 'number', message: '必须为数字值',trigger: 'blur'}]">
+                                <el-input size="small" v-model.number="galleyGood.alarmWeight"></el-input>
+                            </el-form-item>
+                        </el-col>
+                        <el-col :span="4">
+                            <el-form-item label="标准指数"
+                                          :prop="'galleyGoods.' + index + '.standardIndex'"
+                                          :rules="[{
+                                         required: true, message: '字段不能为空',
+                                      },{ type: 'number', message: '必须为数字值',trigger: 'blur'}]">
+                                <el-input size="small" v-model.number="galleyGood.standardIndex"></el-input>
+                            </el-form-item>
+                        </el-col>
+                    </el-row>
+                </div>
+            </el-card>
+        </el-form>
+
+    </div>
+
+</div>
+
+
+</body>
+</html>

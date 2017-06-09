@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<script th:src="@{/js/wbm/flight-cfg.js}"></script>
+
+
+<div id="dt-grid" style="margin: 10px 10px 10px 10px">
+    <div class="block">
+        <el-button type="primary" style="float: right;margin-bottom: 10px;margin-right: 5px;" icon="delete">删除
+        </el-button>
+        <el-button type="primary" @click="typeConfEdit" style="float: right;margin-bottom: 10px;margin-right: 5px;"
+                   icon="edit">编辑
+        </el-button>
+        <el-button type="primary" style="float: right;margin-bottom: 10px;margin-right: 5px;" icon="plus">新增</el-button>
+        <el-button type="primary" style="float: right;margin-bottom: 10px;margin-right: 5px;" icon="search">查阅
+        </el-button>
+    </div>
+    <el-table
+            ref="multipleTable"
+            :data="tableData"
+            border
+            tooltip-effect="dark"
+            style="width: 100%"
+            @cell-click="rowClick"
+            @select="getSelectRows"
+    >
+        <el-table-column
+                type="selection"
+                width="55">
+        </el-table-column>
+        <el-table-column
+                prop="flightType"
+                label="机型"
+                width="120">
+        </el-table-column>
+        <el-table-column
+                prop="seatNum"
+                label="最大座位数"
+                show-overflow-tooltip>
+        </el-table-column>
+        <el-table-column
+                prop="harm"
+                label="基准力臂"
+                show-overflow-tooltip>
+        </el-table-column>
+        <el-table-column
+                prop="c"
+                label="c"
+                show-overflow-tooltip>
+        </el-table-column>
+        <el-table-column
+                prop="k"
+                label="k"
+                show-overflow-tooltip>
+        </el-table-column>
+        <el-table-column
+                prop="lemac"
+                label="lemac"
+                show-overflow-tooltip>
+        </el-table-column>
+        <el-table-column
+                prop="datum"
+                label="datum"
+                show-overflow-tooltip>
+        </el-table-column>
+        <el-table-column
+                prop="mac"
+                label="mac"
+                show-overflow-tooltip>
+        </el-table-column>
+    </el-table>
+</div>
+
+
+</body>
+</html>
