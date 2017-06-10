@@ -111,8 +111,13 @@ public class BaseServiceImpl<T> implements BaseService<T> {
         return getMapper().updateByPrimaryKey(record);
     }
 
+    @Deprecated
     public int updateByPrimaryKeySelective(T record) {
         return getMapper().updateByPrimaryKeySelective(record);
+    }
+
+    public int updateSelectiveByPrimaryKey(T record) {
+        return getMapper().updateSelectiveByPrimaryKey(record);
     }
 
     public int updateByParams(T record, QueryParams params) {

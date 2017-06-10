@@ -32,38 +32,24 @@ var main_panel = new Vue({
                 });
             },
             filterNode: function (value, data) {
-                console.log(data);
                 if (!value) return true;
                 return data.name.indexOf(value) !== -1;
             },
-            // add: function () {
-            //     this.formData = {}; //清空表单数据
-            //     // 获取选中的树节点
-            //     var selectedNode = this.$refs.resTree.getCheckedNodes();
-            //     if (selectedNode.length == 0) {          //未选中
-            //         this.formData.parentId = 0;          //未选中时默认增加最高级菜单：parentId = 0
-            //     } else if (selectedNode.length > 1) {    //选中超过一条
-            //         this.$message({
-            //             message: '只能指定一个父级菜单',
-            //             type: 'error'
-            //         });
-            //         return;
-            //     } else {
-            //         this.formData.parentId = selectedNode[0].id
-            //     }
-            //     ;
-            //     // 将选中的节点的id值做为新增机构的parentId
-            //     this.editDialogShow = true;
-            // },
             edit: function (data) {
                 this.formData = data;
                 this.editDialogShow = true;
             },
             save: function () {
-                czy.ajax.post("/sys/resource/save", this.formData, function (data, o) {
-                    main_panel.editDialogShow = false;
-                    main_panel.loadData();
-                });
+                var _this = this;
+                czy.ajax.postJson({
+                    url: "/sys/resource/save",
+                    data:_this.formData,
+                    success: function (result) {
+                        main_panel.loadData();
+                        main_panel.editDialogShow = false;
+                        czy.msg.success(result.msg);
+                    }
+                })
             },
             delete: function (data, store) {
                 this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
@@ -122,7 +108,7 @@ var main_panel = new Vue({
                     }
                 }, "删除");
                 var btns = [];
-                if(data.id == 0) {  //是虚拟根节点
+                if (data.id == 0) {  //是虚拟根节点
                     btns = [addBtn]
                 } else {    //是数据库中的正常节点
                     if (data.children.length > 0) {

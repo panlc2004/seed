@@ -2,7 +2,9 @@ package com.czy.seed.mvc.base.controller;
 
 import com.czy.seed.mvc.base.entity.BaseEntity;
 import com.czy.seed.mvc.base.exception.IllegalleControllerNameException;
+import com.czy.seed.mvc.base.param.Param;
 import com.czy.seed.mvc.base.service.BaseService;
+import com.czy.seed.mvc.util.GenricUtil;
 import com.czy.seed.mvc.util.Res;
 import com.czy.seed.mybatis.base.QueryParams;
 import com.github.pagehelper.Page;
@@ -22,7 +24,13 @@ import java.util.Map;
  */
 public class BaseController<T extends BaseEntity> {
 
+    public BaseController() {
+        entityClass = GenricUtil.getGenericClass(this.getClass(), 0);
+    }
+
     public static final String URL_PATH_SEPRATOR = "/";
+    private Class entityClass;  //泛型T的类型
+
 
     @Autowired
     private BaseService<T> service;
@@ -77,30 +85,14 @@ public class BaseController<T extends BaseEntity> {
     }
 
     /**
-     * 保存数据:当传入数据有id时，进行修改操作，无id时，进行新增操作
+     * 根据主键查询数据——查询关联表数据
      *
-     * @param record 数据实体
-     * @return 新增/修改数据的id值
-     */
-    public Res save(@RequestBody T record) {
-        if (record.getId() != null) {
-            service.insert(record);
-        } else {
-            service.updateByPrimaryKey(record);
-        }
-        return Res.ok(record.getId());
-    }
-
-    /**
-     * 根据主键物理删除数据
-     *
-     * @param id 要删除数据的主键
+     * @param id 主键
      * @return
      */
-    @RequestMapping("/deleteByPrimaryKey/{id}/{obj}")
-    public Res deleteByPrimaryKey(@PathVariable Long id) {
-        int num = service.deleteByPrimaryKey(id);
-        return Res.ok(num);
+    public Res selectRelativeByPrimaryKey(long id) {
+        T record = service.selectRelativeByPrimaryKey(id);
+        return Res.ok(record);
     }
 
     /**
@@ -108,12 +100,13 @@ public class BaseController<T extends BaseEntity> {
      *
      * @param pageNum  查询页号
      * @param pageSize 分页大小
-     * @param params   查询参数
+     * @param param   查询参数
      * @return 返回分页数据
      */
     @RequestMapping("/selectPageByParams")
-    public Res selectPageByParams(int pageNum, int pageSize, @RequestBody QueryParams params) {
-        Page<T> page = service.selectPageByParams(pageNum, pageSize, params);
+    public Res selectPageByParams(int pageNum, int pageSize, @RequestBody Param param) {
+        QueryParams queryParams = param.toQueryParams(entityClass);
+        Page<T> page = service.selectPageByParams(pageNum, pageSize, queryParams);
         Map<String, Object> pageInfo = new HashMap<String, Object>();
         pageInfo.put("total", page.getTotal());
         pageInfo.put("pages", page.getPages());
@@ -124,50 +117,113 @@ public class BaseController<T extends BaseEntity> {
     /**
      * 查询所有数据
      *
-     * @param params 查询参数
+     * @param param 查询参数
      * @return 所有数据
      */
     @RequestMapping("/selectListByParams")
-    public Res selectListByParams(@RequestBody QueryParams params) {
-        List<T> list = service.selectListByParams(params);
+    public Res selectListByParams(@RequestBody Param param) {
+        QueryParams queryParams = param.toQueryParams(entityClass);
+        List<T> list = service.selectListByParams(queryParams);
         return Res.ok(list);
     }
 
     /**
      * 新增
-     * @return 返回新增数据的主键
+     * @return 新增数据的主键
      */
     @RequestMapping("/insert")
     public Res insert(T record) {
-        int num = service.insert(record);
+        service.insert(record);
         return Res.ok(record.getId());
     }
 
+    /**
+     * 批量新增
+     * @param records 新增数据列表
+     * @return 新增成功的条数
+     */
     public Res insertList(List<T> records) {
         int num = service.insertList(records);
         return Res.ok(num);
     }
 
-    public Res updateList(List<T> records) {
-        return Res.ok();
+    /**
+     * 修改
+     * @return 修改数据的id
+     */
+    @RequestMapping("/updateSelectiveByPrimaryKey")
+    public Res updateSelectiveByPrimaryKey(T record) {
+        service.updateSelectiveByPrimaryKey(record);
+        return Res.ok(record.getId());
+    }
+
+    /**
+     * 修改
+     * @return 修改数据的id
+     */
+    @RequestMapping("/updateByPrimaryKey")
+    public Res updateByPrimaryKey(T record) {
+        service.updateByPrimaryKey(record);
+        return Res.ok(record.getId());
     }
 
     /**
      * 修改
      * @return 修改成功的条数
      */
-    @RequestMapping("/update")
-    public Res update(T record) {
-        int num = service.updateByPrimaryKeySelective(record);
+    @RequestMapping("/updateByParams")
+    public Res updateByParams(T record, @RequestBody Param param) {
+        QueryParams queryParams = param.toQueryParams(entityClass);
+        int num = service.updateByParams(record, queryParams);
         return Res.ok(num);
     }
 
-    @RequestMapping("/logicDelete")
-    public Res logicDelete() {
-
-        return Res.ok();
+    /**
+     * 修改
+     * @return 修改成功的条数
+     */
+    @RequestMapping("/updateSelectiveByParams")
+    public Res updateSelectiveByParams(T record, @RequestBody Param param) {
+        QueryParams queryParams = param.toQueryParams(entityClass);
+        int num = service.updateSelectiveByParams(record, queryParams);
+        return Res.ok(num);
     }
 
+    /**
+     * 根据主键物理删除数据
+     *
+     * @param id 要删除数据的主键
+     * @return 删除成功的条数
+     */
+    @RequestMapping("/deleteByPrimaryKey/{id}/{obj}")
+    public Res deleteByPrimaryKey(@PathVariable Long id) {
+        int num = service.deleteByPrimaryKey(id);
+        return Res.ok(num);
+    }
 
+    /**
+     * 根据参数物理删除
+     * @return 删除成功的条数
+     */
+    @RequestMapping("/deleteByParams")
+    public Res deleteByParams(@RequestBody Param param) {
+        QueryParams queryParams = param.toQueryParams(entityClass);
+        int num = service.deleteByParams(queryParams);
+        return Res.ok(num);
+    }
+
+    /**
+     * 保存数据:当传入数据有id时，进行修改操作，无id时，进行新增操作
+     *
+     * @param record 数据实体
+     * @return 新增/修改数据的id值
+     */
+    public Res save(@RequestBody T record) {
+        if (record.getId() != null) {
+            return this.insert(record);
+        } else {
+            return updateSelectiveByPrimaryKey(record);
+        }
+    }
 
 }

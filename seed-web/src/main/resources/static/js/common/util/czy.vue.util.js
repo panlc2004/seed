@@ -85,45 +85,61 @@
         /**
          * 带遮罩的ajax请求
          */
-        ajax: function (options) {
-            var defaults = {
-                type: "POST",
-                contentType: "application/json",
-                dataType: "json"
-            };
-            var callbackOption = {
-                beforeSend:function (XMLHttpRequest) {
-                    czy.mask.open();   //打开遮罩
-                    if(options.beforeSend && typeof options.beforeSend == 'function') {
-                        options.beforeSend(XMLHttpRequest);
+        ajax: {
+            postJson:function (options) {
+                var defaults = {
+                    type: "POST",
+                    contentType: "application/json",
+                    dataType: "json"
+                };
+                var _options = $.extend({}, defaults, options);
+                _options.data = JSON.stringify(options.data);
+                $.ajax(_options);
+            },
+            postWithMask:function (options) {
+                var defaults = {};
+                var callbackOption = {
+                    beforeSend: function (XMLHttpRequest) {
+                        czy.mask.open();   //打开遮罩
+                        if (options.beforeSend && typeof options.beforeSend == 'function') {
+                            options.beforeSend(XMLHttpRequest);
+                        }
+                    },
+                    success: function (result) {
+                        czy.mask.close();   //取消遮罩
+                        if (options.success && typeof options.success == 'function') {
+                            options.success(result);
+                        }
+                    },
+                    error: function (XMLHttpRequest, textStatus, errorThrown) {
+                        czy.mask.close();   //取消遮罩
+                        if (options.error && typeof options.error == 'function') {
+                            options.error(XMLHttpRequest, textStatus, errorThrown);
+                        }
+                        //跳转登陆页面    toDo
+                        //展示错误信息    toDo
                     }
-                },
-                success: function (result) {
-                    czy.mask.close();   //取消遮罩
-                    if(options.success && typeof options.success == 'function') {
-                        options.success(result);
-                    }
-                },
-                error: function (XMLHttpRequest, textStatus, errorThrown) {
-                    czy.mask.close();   //取消遮罩
-                    if(options.error && typeof options.error == 'function') {
-                        options.error(XMLHttpRequest, textStatus, errorThrown);
-                    }
-                    //跳转登陆页面    toDo
-                    //展示错误信息    toDo
                 }
-            }
-            var _options = $.extend({},defaults, options);
-            var settings = $.extend({},_options, callbackOption);
-            settings.data = JSON.stringify(options.data);
-            $.ajax(settings);
-        },
+                var _options = $.extend({}, defaults, options);
+                var settings = $.extend({}, _options, callbackOption);
+                $.ajax(settings);
+            },
 
-        // type: "POST",
-        // url: "/sys/user/selectByPage",
-        // dataType: "json",
-        // contentType: "application/json",
-        // data: JSON.stringify(param),
+            /**
+             *
+             * @param options
+             */
+            postJsonWithMask:function (options) {
+                var defaults = {
+                    type: "POST",
+                    contentType: "application/json",
+                    dataType: "json"
+                };
+                var _options = $.extend({}, defaults, options);
+                _options.data = JSON.stringify(options.data);
+                czy.ajax.postWithMask(_options);
+            }
+        },
 
         /**
          * 加载页面到主显示div内去
