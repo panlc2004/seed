@@ -45,22 +45,11 @@ public class BaseController<T extends BaseEntity> {
      * 跳转至指定页面
      *
      * @param viewPath 要跳转的页面路径
-     * @return 参数指定页面视图
-     */
-    @RequestMapping("/toPage")
-    public ModelAndView toView(String viewPath) {
-        return new ModelAndView(viewPath);
-    }
-
-    /**
-     * 跳转至指定页面
-     *
-     * @param viewPath 要跳转的页面路径
      * @param viewPath params 要跳转时带入的参数
      * @return 参数指定页面视图
      */
-    @RequestMapping("/toPage")
-    public ModelAndView toView(String viewPath, @RequestParam Map<String, Object> params) {
+    @RequestMapping("/toView/{viewPath}")
+    public ModelAndView toView(@PathVariable String viewPath, @RequestParam Map<String, Object> params) {
         ModelAndView model = new ModelAndView(viewPath);
         model.addAllObjects(params);
         return model;
