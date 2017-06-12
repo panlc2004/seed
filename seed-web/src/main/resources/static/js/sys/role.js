@@ -81,13 +81,9 @@ var main_panel = new Vue({
                 //     main_panel.editDialogShow = false;
                 //     main_panel.query();
                 // });
-                czy.ajax({
+                czy.ajax.postJson({
                     url: '/sys/role/save',
                     data:this.formData,
-                    // data:JSON.stringify(this.formData),
-                    type: "POST",
-                    contentType: "application/json",
-                    dataType: "json",
                     success:function(result){
                         main_panel.editDialogShow = false;
                         main_panel.query();

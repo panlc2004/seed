@@ -39,7 +39,7 @@
         },
         methods: {
             print: function () {
-                czy.ajax({
+                $.ajax({
                     url: 'sys/role/selectList/',
                     success: function (result) {
                         console.log(result);
