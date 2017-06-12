@@ -1,4 +1,4 @@
-package com.czy.seed.mvc.conf.log;
+package com.czy.seed.mvc.annotation;
 
 import java.lang.annotation.*;
 
@@ -10,4 +10,7 @@ import java.lang.annotation.*;
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
 public @interface AutoLog {
+
+    String value() default "";
+
 }

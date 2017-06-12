@@ -77,15 +77,11 @@ var main_panel = new Vue({
             },
             // 保存角色
             save: function () {
-                // $.post("/sys/role/save", this.formData, function (data, o) {
-                //     main_panel.editDialogShow = false;
-                //     main_panel.query();
-                // });
+                main_panel.editDialogShow = false;
                 czy.ajax.postJson({
                     url: '/sys/role/save',
                     data:this.formData,
                     success:function(result){
-                        main_panel.editDialogShow = false;
                         main_panel.query();
                         czy.msg.success(result.msg);
                     }

@@ -31,7 +31,6 @@ public class BaseController<T extends BaseEntity> {
     public static final String URL_PATH_SEPRATOR = "/";
     private Class entityClass;  //泛型T的类型
 
-
     @Autowired
     private BaseService<T> service;
 

@@ -46,6 +46,13 @@ $.ajaxSetup({
                     type: 'info',
                     message: msg
                 });
+            },
+            /**
+             * 自动判断提示类型，与后台方法绑定
+             * @param msg
+             */
+            auto:function (msg) {
+
             }
         },
         /**
