@@ -87,6 +87,7 @@ var main_panel = new Vue({
                     success:function(result){
                         main_panel.editDialogShow = false;
                         main_panel.query();
+                        czy.msg.success(result.msg);
                     }
                 });
             },

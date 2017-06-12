@@ -29,7 +29,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .and().formLogin().loginPage("/login").permitAll()
                 .and().logout().permitAll()
                 .and().csrf().disable()
-                .headers().frameOptions().disable();
+                .headers().frameOptions().disable()
+                .and().exceptionHandling().authenticationEntryPoint(ajaxAuthenticationEntryPoint());
     }
 
     @Override
@@ -45,7 +46,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
      */
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/js/**","/css/**","/lib/**");
+        web.ignoring().antMatchers("/js/**", "/css/**", "/lib/**");
     }
 
     /**
@@ -77,6 +78,12 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public LoginSuccessHandler loginSuccessHandler() {
         return new LoginSuccessHandler();
+    }
+
+    @Bean
+    public AjaxAuthenticationEntryPoint ajaxAuthenticationEntryPoint() {
+        AjaxAuthenticationEntryPoint point = new AjaxAuthenticationEntryPoint("/login");
+        return point;
     }
 
 }
