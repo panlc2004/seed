@@ -32,6 +32,8 @@ public class BaseEntity implements Serializable {
      */
     private Long updateBy;
 
+    public boolean autoGen; //是否自动生成操作人、操作时间、修改时间、修改人、版本号等记录
+
     /**
      * 乐观锁版本
      */
@@ -83,5 +85,13 @@ public class BaseEntity implements Serializable {
 
     public void setVersion(Integer version) {
         this.version = version;
+    }
+
+    public boolean isAutoGen() {
+        return autoGen;
+    }
+
+    public void setAutoGen(boolean autoGen) {
+        this.autoGen = autoGen;
     }
 }
