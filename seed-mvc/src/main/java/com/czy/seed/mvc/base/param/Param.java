@@ -21,8 +21,10 @@ public class Param {
 
     public QueryParams toQueryParams(Class clazz) {
         QueryParams queryParams = new QueryParams(clazz);
-        for (Group or : this.getOr()) {
-            or.appendParamGroup(queryParams);
+        if (this.getOr() != null) {
+            for (Group or : this.getOr()) {
+                or.appendParamGroup(queryParams);
+            }
         }
         return queryParams;
     }

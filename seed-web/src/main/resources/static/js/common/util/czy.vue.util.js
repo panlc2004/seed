@@ -51,7 +51,7 @@ $.ajaxSetup({
              * 自动判断提示类型，与后台方法绑定
              * @param msg
              */
-            auto:function (msg) {
+            auto: function (msg) {
 
             }
         },
@@ -112,7 +112,7 @@ $.ajaxSetup({
             postJson: function (options) {
                 var defaults = {
                     type: "POST",
-                    contentType: "application/json",
+                    contentType: "application/json;charset=utf-8",
                     dataType: "json"
                 };
                 var _options = $.extend({}, defaults, options);
@@ -155,7 +155,7 @@ $.ajaxSetup({
             postJsonWithMask: function (options) {
                 var defaults = {
                     type: "POST",
-                    contentType: "application/json",
+                    contentType: "application/json;charset=utf-8",
                     dataType: "json"
                 };
                 var _options = $.extend({}, defaults, options);

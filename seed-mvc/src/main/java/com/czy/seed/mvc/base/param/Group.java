@@ -1,6 +1,7 @@
 package com.czy.seed.mvc.base.param;
 
 import com.czy.seed.mybatis.base.QueryParams;
+import com.czy.seed.mybatis.tool.NullUtil;
 
 import java.io.Serializable;
 import java.util.List;
@@ -15,55 +16,79 @@ public class Group implements Serializable {
 
     /**
      * 查询参数对象转换
+     *
      * @param queryParams 查询参数对象
      */
     public void appendParamGroup(QueryParams queryParams) {
         QueryParams.Criteria criteria = queryParams.or();
         if (this.getLike() != null) {
             for (Map.Entry<String, Object> like : this.getLike().entrySet()) {
-                criteria.andLike(like.getKey(), like.getValue().toString());
+                String value = like.getValue().toString();
+                if (NullUtil.isNotEmpty(value)) {
+                    criteria.andLike(like.getKey(), "%" + value + "%");
+                }
             }
         }
 
         if (this.getNotLike() != null) {
             for (Map.Entry<String, Object> notLike : this.getNotLike().entrySet()) {
-                criteria.andNotLike(notLike.getKey(), notLike.getValue().toString());
+                String value = notLike.getValue().toString();
+                if (NullUtil.isNotEmpty(value)) {
+                    criteria.andNotLike(notLike.getKey(), "%" + value + "%");
+                }
             }
         }
 
         if (this.getIn() != null) {
             for (Map.Entry<String, List<Object>> in : this.getIn().entrySet()) {
-                criteria.andIn(in.getKey(), in.getValue());
+                List value = in.getValue();
+                if (value != null && value.size() > 0) {
+                    criteria.andIn(in.getKey(), value);
+                }
             }
         }
 
         if (this.getNotIn() != null) {
             for (Map.Entry<String, List<Object>> notIn : this.getNotIn().entrySet()) {
-                criteria.andNotIn(notIn.getKey(), notIn.getValue());
+                List value = notIn.getValue();
+                if (value != null && value.size() > 0) {
+                    criteria.andNotIn(notIn.getKey(), value);
+                }
             }
         }
 
         if (this.getBetween() != null) {
             for (Map.Entry<String, Between> between : this.getBetween().entrySet()) {
-                criteria.andBetween(between.getKey(), between.getValue().getBengin(), between.getValue().getEnd());
+                Between value = between.getValue();
+                if (value != null && NullUtil.isNotEmpty(value.getBengin()) && NullUtil.isNotEmpty(value.getEnd()))
+                    criteria.andBetween(between.getKey(), value.getBengin(), value.getEnd());
             }
         }
 
         if (this.getNotBetween() != null) {
             for (Map.Entry<String, Between> notBetween : this.getNotBetween().entrySet()) {
-                criteria.andNotBetween(notBetween.getKey(), notBetween.getValue().getBengin(), notBetween.getValue().getEnd());
+                Between value = notBetween.getValue();
+                if (value != null && NullUtil.isNotEmpty(value.getBengin()) && NullUtil.isNotEmpty(value.getEnd())) {
+                    criteria.andNotBetween(notBetween.getKey(), value.getBengin(), value.getEnd());
+                }
             }
         }
 
         if (this.getEqualTo() != null) {
             for (Map.Entry<String, Object> equalTo : this.getEqualTo().entrySet()) {
-                criteria.andEqualTo(equalTo.getKey(), equalTo.getValue());
+                Object value = equalTo.getValue();
+                if (NullUtil.isNotEmpty(value)) {
+                    criteria.andEqualTo(equalTo.getKey(), value);
+                }
             }
         }
 
         if (this.getNotEqualTo() != null) {
             for (Map.Entry<String, Object> notEqualTo : this.getNotEqualTo().entrySet()) {
-                criteria.andNotEqualTo(notEqualTo.getKey(), notEqualTo.getValue());
+                Object value = notEqualTo.getValue();
+                if (NullUtil.isNotEmpty(value)) {
+                    criteria.andNotEqualTo(notEqualTo.getKey(), value);
+                }
             }
         }
 
@@ -73,25 +98,37 @@ public class Group implements Serializable {
 
         if (this.getGreatThan() != null) {
             for (Map.Entry<String, Object> greatThan : this.getGreatThan().entrySet()) {
-                criteria.andGreaterThan(greatThan.getKey(), greatThan.getValue());
+                Object value = greatThan.getValue();
+                if (NullUtil.isNotEmpty(value)) {
+                    criteria.andGreaterThan(greatThan.getKey(), value);
+                }
             }
         }
 
         if (this.getGreatThanOrEqualTo() != null) {
             for (Map.Entry<String, Object> greatThanOrEqualTo : this.getGreatThanOrEqualTo().entrySet()) {
-                criteria.andNotEqualTo(greatThanOrEqualTo.getKey(), greatThanOrEqualTo.getValue());
+                Object value = greatThanOrEqualTo.getValue();
+                if (NullUtil.isNotEmpty(value)) {
+                    criteria.andNotEqualTo(greatThanOrEqualTo.getKey(), value);
+                }
             }
         }
 
         if (this.getLessThan() != null) {
             for (Map.Entry<String, Object> lessThan : this.getLessThan().entrySet()) {
-                criteria.andNotEqualTo(lessThan.getKey(), lessThan.getValue());
+                Object value = lessThan.getValue();
+                if (NullUtil.isNotEmpty(value)) {
+                    criteria.andNotEqualTo(lessThan.getKey(), value);
+                }
             }
         }
 
         if (this.getLessThanOrEqualTo() != null) {
             for (Map.Entry<String, Object> lessThanOrEqualTo : this.getLessThanOrEqualTo().entrySet()) {
-                criteria.andNotEqualTo(lessThanOrEqualTo.getKey(), lessThanOrEqualTo.getValue());
+                Object value = lessThanOrEqualTo.getValue();
+                if (NullUtil.isNotEmpty(value)) {
+                    criteria.andNotEqualTo(lessThanOrEqualTo.getKey(), value);
+                }
             }
         }
 
@@ -255,22 +292,22 @@ public class Group implements Serializable {
     }
 
     static class Between {
-        private String bengin;
-        private String end;
+        private Object bengin;
+        private Object end;
 
-        public String getBengin() {
+        public Object getBengin() {
             return bengin;
         }
 
-        public void setBengin(String bengin) {
+        public void setBengin(Object bengin) {
             this.bengin = bengin;
         }
 
-        public String getEnd() {
+        public Object getEnd() {
             return end;
         }
 
-        public void setEnd(String end) {
+        public void setEnd(Object end) {
             this.end = end;
         }
     }

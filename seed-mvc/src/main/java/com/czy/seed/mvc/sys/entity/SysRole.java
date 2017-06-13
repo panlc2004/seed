@@ -1,28 +1,20 @@
 package com.czy.seed.mvc.sys.entity;
 
+import com.czy.seed.mvc.base.entity.BaseEntity;
+
 import javax.persistence.Id;
 import java.io.Serializable;
 
 /**
  * Created by PLC on 2017/5/23.
  */
-public class SysRole implements Serializable {
+public class SysRole extends BaseEntity {
 
     private static final long serialVersionUID = 4659702439449421452L;
 
-    @Id
-    private Long id;
     private String code;
     private String name;
     private String memo;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
 
     public String getCode() {
         return code;
@@ -51,8 +43,8 @@ public class SysRole implements Serializable {
     @Override
     public String toString() {
         return "SysRole{" +
-                "id=" + id +
-                ", code='" + code + '\'' +
+                super.toString() + '\'' +
+                "code='" + code + '\'' +
                 ", name='" + name + '\'' +
                 ", memo='" + memo + '\'' +
                 '}';

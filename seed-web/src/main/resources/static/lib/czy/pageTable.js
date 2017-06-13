@@ -4,7 +4,7 @@
 var pageGrid = Vue.extend({
     props: {
         url: '',
-        autoinit: true,
+        autoInit: true,
         pageBar: null,
         pageBarSmall: true,
         tableHeight: ''    //设置表格高度百分比
@@ -12,13 +12,14 @@ var pageGrid = Vue.extend({
 
     data: function () {
         return {
-            tableStyle:'',  //表格样式
-            maxHeight:'400',
+            tableStyle: '',  //表格样式
+            maxHeight: '400',
             loading: true,
             pageData: null,
             queryParam: {
                 pageSize: 20,
-                pageNum: 1
+                pageNum: 1,
+                param: {}
             },
             total: 0,
             currentPageNum: 1,
@@ -75,23 +76,34 @@ var pageGrid = Vue.extend({
         loadData: function () {
             var _this = this;
             _this.loading = true;
-            $.post(this.url, this.queryParam, function (data) {
-                _this.loading = false;
-                _this.pageData = data.data.page;
-                _this.total = data.data.total;
+            czy.ajax.postJson({
+                url:this.url + "/" + this.queryParam.pageNum + "/" + this.queryParam.pageSize,
+                data:this.queryParam,
+                success:function (response) {
+                    _this.loading = false;
+                    _this.pageData = response.data.page;
+                    _this.total = response.data.total;
+                },
+                error:function (response) {
+                    czy.msg.error("未知异常，请联系管理员");
+                    _this.loading = false;
+                }
             })
         }
     },
     created: function () {
-        console.log(this.tableHeight);
         //动态计算表格高度
         var tableHeight = this.tableHeight == undefined ? '100%' : this.tableHeight;
-        var percent = tableHeight.replace("%","")/100;
+        var percent = tableHeight.replace("%", "") / 100;
         var autoTableHeight = document.body.scrollHeight * percent;
         this.maxHeight = autoTableHeight;
-        this.tableStyle = 'width:100%;height:' + autoTableHeight +  'px';
-        if (!this.autoinit) {
+        this.tableStyle = 'width:100%;height:' + autoTableHeight + 'px';
+        if (this.autoInit == undefined || this.autoInit == true) {
             this.loadData();
+        } else {
+            this.loading = false;
+            this.pageData = [];
+            this.total = 0;
         }
     }
 });

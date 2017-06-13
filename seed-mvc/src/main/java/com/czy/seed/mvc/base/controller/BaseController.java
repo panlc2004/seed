@@ -78,7 +78,8 @@ public class BaseController<T extends BaseEntity> {
      * @param id 主键
      * @return
      */
-    public Res selectRelativeByPrimaryKey(long id) {
+    @RequestMapping("/selectRelativeByPrimaryKey/{id}")
+    public Res selectRelativeByPrimaryKey(@PathVariable long id) {
         T record = service.selectRelativeByPrimaryKey(id);
         return Res.ok(record);
     }
@@ -91,8 +92,8 @@ public class BaseController<T extends BaseEntity> {
      * @param param   查询参数
      * @return 返回分页数据
      */
-    @RequestMapping("/selectPageByParams")
-    public Res selectPageByParams(int pageNum, int pageSize, @RequestBody Param param) {
+    @RequestMapping("/selectPageByParams/{pageNum}/{pageSize}")
+    public Res selectPageByParams(@PathVariable int pageNum, @PathVariable int pageSize, @RequestBody Param param) {
         QueryParams queryParams = param.toQueryParams(entityClass);
         Page<T> page = service.selectPageByParams(pageNum, pageSize, queryParams);
         Map<String, Object> pageInfo = new HashMap<String, Object>();
@@ -183,7 +184,7 @@ public class BaseController<T extends BaseEntity> {
      * @param id 要删除数据的主键
      * @return 删除成功的条数
      */
-    @RequestMapping("/deleteByPrimaryKey/{id}/{obj}")
+    @RequestMapping("/deleteByPrimaryKey/{id}")
     public Res deleteByPrimaryKey(@PathVariable Long id) {
         int num = service.deleteByPrimaryKey(id);
         return Res.ok(num);
@@ -206,8 +207,9 @@ public class BaseController<T extends BaseEntity> {
      * @param record 数据实体
      * @return 新增/修改数据的id值
      */
+    @RequestMapping("/save")
     public Res save(@RequestBody T record) {
-        if (record.getId() != null) {
+        if (record.getId() == null) {
             return this.insert(record);
         } else {
             return updateSelectiveByPrimaryKey(record);

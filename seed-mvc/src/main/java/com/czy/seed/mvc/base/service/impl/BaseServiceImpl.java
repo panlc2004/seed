@@ -1,14 +1,19 @@
 package com.czy.seed.mvc.base.service.impl;
 
+import com.czy.seed.mvc.auth.SecurityUser;
+import com.czy.seed.mvc.base.entity.PrepareEntity;
 import com.czy.seed.mvc.base.service.BaseService;
+import com.czy.seed.mvc.util.PrincipalUtil;
 import com.czy.seed.mybatis.base.QueryParams;
 import com.czy.seed.mybatis.base.mapper.BaseMapper;
 import com.github.pagehelper.ISelect;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -36,6 +41,14 @@ public class BaseServiceImpl<T> implements BaseService<T> {
     }
 
     public int insert(T record) {
+        if (record instanceof PrepareEntity) {
+            SecurityUser loginUser = PrincipalUtil.getLoginUser();
+
+            PrepareEntity preparedRecord = (PrepareEntity) record;
+            preparedRecord.setCreateDt(new Date());
+            preparedRecord.setCreateBy(loginUser.getId());
+            preparedRecord.setVersion(1);
+        }
         return getMapper().insert(record);
     }
 
@@ -108,24 +121,50 @@ public class BaseServiceImpl<T> implements BaseService<T> {
     }
 
     public int updateByPrimaryKey(T record) {
+        beforeUpdate(record);
         return getMapper().updateByPrimaryKey(record);
     }
 
     @Deprecated
     public int updateByPrimaryKeySelective(T record) {
+        beforeUpdate(record);
         return getMapper().updateByPrimaryKeySelective(record);
     }
 
     public int updateSelectiveByPrimaryKey(T record) {
+        beforeUpdate(record);
         return getMapper().updateSelectiveByPrimaryKey(record);
     }
 
     public int updateByParams(T record, QueryParams params) {
+        beforeUpdate(record);
         return getMapper().updateByParams(record, params);
     }
 
     public int updateSelectiveByParams(T record, QueryParams params) {
+        beforeUpdate(record);
         return getMapper().updateSelectiveByParams(record, params);
+    }
+
+    private void beforeUpdate(T record) {
+        if (record instanceof PrepareEntity) {
+            SecurityUser loginUser = PrincipalUtil.getLoginUser();
+
+            PrepareEntity preparedRecord = (PrepareEntity) record;
+            preparedRecord.setUpdateDt(new Date());
+            preparedRecord.setUpdateBy(loginUser.getId());
+            updateVersion(preparedRecord);
+        }
+    }
+
+    /**
+     * 更新版本号，下个版本将移至sql中计算，不采用加锁方式
+     * @param record
+     */
+    private void updateVersion(PrepareEntity record) {
+        synchronized (record.getClass().getName().intern()) {
+            record.setVersion(record.getVersion() + 1);
+        }
     }
 
     public int deleteByPrimaryKey(long id) {

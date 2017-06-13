@@ -6,11 +6,8 @@ var main_panel = new Vue({
         data: {
             selectedRow: null,      //列表选中行
             queryParam: {           //查询参数
-                // pageNum: 1,
-                // pageSize: 10
+                name:''
             },
-            pageData: null,         //分页数据
-            total: 0,               //数据总量
             // 表单数据
             formData: {},            //表单数据
             editDialogShow: false,   //新增、修改表单是否显示
@@ -23,18 +20,20 @@ var main_panel = new Vue({
                 children: 'children',
                 label: 'name'
             },
-
         },
 
         methods: {
-            // 菜单查询
-            queryResTree:function () {
-                this.$refs.resTree.filter(this.queryParam.name);
-            },
+            // // 菜单查询
+            // queryResTree:function () {
+            //     this.$refs.resTree.filter(this.queryParam.name);
+            // },
             //角色查询
             query: function () {
                 var grid = this.$refs.grid;
-                grid.reload(this.queryParam)
+                var param = {or:[]};
+                var or = {like: {name: this.queryParam.name}};
+                param.or.push(or);
+                grid.reload(param)
             },
             //角色新增
             add: function () {

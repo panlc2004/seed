@@ -1,5 +1,6 @@
 package com.czy.seed.mvc.sys.controller;
 
+import com.czy.seed.mvc.base.controller.BaseController;
 import com.czy.seed.mvc.sys.entity.SysOrg;
 import com.czy.seed.mvc.sys.entity.SysRole;
 import com.czy.seed.mvc.sys.service.SysRoleService;
@@ -20,7 +21,7 @@ import java.util.Map;
  */
 @RestController
 @RequestMapping("/sys/role")
-public class SysRoleController {
+public class SysRoleController extends BaseController<SysRole> {
 
     @Autowired
     private SysRoleService sysRoleService;
@@ -28,32 +29,6 @@ public class SysRoleController {
     @RequestMapping("/index")
     public ModelAndView index() {
         return new ModelAndView("/sys/role");
-    }
-
-    @RequestMapping("/selectPageByParams")
-    public Res selectPageByParams(@RequestParam Map<String, Object> params) {
-        Integer pageNum = Integer.parseInt(params.get("pageNum").toString());
-        Integer pageSize = Integer.parseInt(params.get("pageSize").toString());
-        QueryParams queryParams = new QueryParams(SysOrg.class);
-        if (params.containsKey("name") && NullUtil.isNotEmpty(params.get("name"))) {
-            QueryParams.Criteria criteria = queryParams.createCriteria();
-            criteria.andLike("name", "%" + params.get("name") + "%");
-        }
-        Page<SysRole> page = sysRoleService.selectPageByParams(pageNum, pageSize, queryParams); Map<String, Object> pageInfo = new HashMap<String, Object>();
-        pageInfo.put("total", page.getTotal());
-        pageInfo.put("pages", page.getPages());
-        pageInfo.put("page", page);
-        return Res.ok(pageInfo);
-    }
-
-    @RequestMapping("/save")
-    public Res save(@RequestBody SysRole sysRole) {
-        if (sysRole.getId() == null) {
-            sysRoleService.insert(sysRole);
-        } else {
-            sysRoleService.updateByPrimaryKeySelective(sysRole);
-        }
-        return Res.ok(sysRole.getId());
     }
 
     @RequestMapping("/deleteByPrimary/{id}")
