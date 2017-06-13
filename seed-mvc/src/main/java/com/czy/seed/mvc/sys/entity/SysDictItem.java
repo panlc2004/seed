@@ -6,22 +6,11 @@ import com.czy.seed.mvc.base.entity.PrepareEntity;
  * Created by 003914[panlc] on 2017-06-13.
  */
 public class SysDictItem extends PrepareEntity {
-    private Integer logicDel;
     private Long parentId;
-    private String SysDictCode;
+    private String sysDictCode;
     private String itemCode;
     private String value;
     private String memo;
-
-    @Override
-    public Integer getLogicDel() {
-        return logicDel;
-    }
-
-    @Override
-    public void setLogicDel(Integer logicDel) {
-        this.logicDel = logicDel;
-    }
 
     public Long getParentId() {
         return parentId;
@@ -32,11 +21,11 @@ public class SysDictItem extends PrepareEntity {
     }
 
     public String getSysDictCode() {
-        return SysDictCode;
+        return sysDictCode;
     }
 
     public void setSysDictCode(String sysDictCode) {
-        SysDictCode = sysDictCode;
+        this.sysDictCode = sysDictCode;
     }
 
     public String getItemCode() {

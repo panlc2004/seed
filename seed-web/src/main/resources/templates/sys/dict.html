@@ -37,23 +37,23 @@
                 <span>字典值</span>
             </div>
             <div>
-                <el-button-group>
-                    <el-button type="primary" icon="plus">新增</el-button>
-                    <el-button type="warning" icon="edit">修改</el-button>
-                    <el-button type="danger" icon="delete">删除</el-button>
+                <el-button-group v-if="showItemOperateBtn == true">
+                    <el-button type="primary" icon="plus" @click="addItem">新增</el-button>
+                    <el-button type="warning" icon="edit" @click="editItem">修改</el-button>
+                    <el-button type="danger" icon="delete" @click="delItem">删除</el-button>
                 </el-button-group>
             </div>
-            <czy-page-grid ref="dictItemGrid" url="/sys/dictItem/selectPageByParams"
+            <czy-page-grid ref="itemGrid" url="/sys/dictItem/selectPageByParams"
                            table-height="80%" auto-init="false">
                 <el-table-column type="index" width="55px" ></el-table-column>
-                <el-table-column prop="code" label="编码"></el-table-column>
+                <el-table-column prop="itemCode" label="编码"></el-table-column>
                 <el-table-column prop="value" label="值"></el-table-column>
                 <el-table-column prop="memo" label="备注"></el-table-column>
             </czy-page-grid>
         </el-card>
     </el-col>
 
-    <!--维护表单-->
+    <!--维护字典项表单-->
     <el-dialog title="字典项管理" :visible.sync="dictFormShow" size="miny" :close-on-click-modal="false">
         <el-form :model="dictForm">
             <el-form-item label="字典项名称" :label-width="dictFormLabelWidth">
@@ -69,6 +69,25 @@
         <div slot="footer" class="dialog-footer">
             <el-button @click="editDialogShow = false">取 消</el-button>
             <el-button type="primary" @click="saveDict">确 定</el-button>
+        </div>
+    </el-dialog>
+
+    <!--维护字典值表单-->
+    <el-dialog title="字典值管理" :visible.sync="itemFormShow" size="miny" :close-on-click-modal="false">
+        <el-form :model="itemForm">
+            <el-form-item label="字典项键" :label-width="itemFormLabelWidth">
+                <el-input v-model="itemForm.itemCode"></el-input>
+            </el-form-item>
+            <el-form-item label="字典项值" :label-width="itemFormLabelWidth">
+                <el-input v-model="itemForm.value"></el-input>
+            </el-form-item>
+            <el-form-item label="备注" :label-width="itemFormLabelWidth">
+                <el-input v-model="itemForm.memo" type="textarea" :rows="5"></el-input>
+            </el-form-item>
+        </el-form>
+        <div slot="footer" class="dialog-footer">
+            <el-button @click="editDialogShow = false">取 消</el-button>
+            <el-button type="primary" @click="saveItem">确 定</el-button>
         </div>
     </el-dialog>
 

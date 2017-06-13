@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50155
 File Encoding         : 65001
 
-Date: 2017-06-09 18:06:46
+Date: 2017-06-13 19:18:30
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -34,35 +34,69 @@ CREATE TABLE `sys_account` (
 DROP TABLE IF EXISTS `sys_dict`;
 CREATE TABLE `sys_dict` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `CREATE_BY` bigint(20) NOT NULL,
+  `CREATE_DT` datetime NOT NULL,
+  `UPDATE_BY` bigint(20) DEFAULT NULL COMMENT '更新人',
+  `UPDATE_DT` datetime DEFAULT NULL,
+  `VERSION` int(11) NOT NULL DEFAULT '1' COMMENT '逻辑删除状态：1.未删除；2.删除',
   `LOGIC_DEL` int(11) NOT NULL DEFAULT '1' COMMENT '逻辑删除状态：1：未删除；2：删除',
   `CODE` varchar(100) NOT NULL,
   `NAME` varchar(50) NOT NULL,
   `MEMO` varchar(2000) DEFAULT NULL,
+  `PARENT_ID` bigint(20) NOT NULL DEFAULT '0' COMMENT '父级字典项ID,0表示没有父级字典项',
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sys_dict
 -- ----------------------------
+INSERT INTO `sys_dict` VALUES ('3', '0', '2017-06-13 13:34:06', '1', '2017-06-13 16:15:01', '2', '1', 'test', 'test', 'test123123', '0');
+INSERT INTO `sys_dict` VALUES ('4', '1', '2017-06-13 16:02:29', '1', '2017-06-13 17:39:53', '4', '1', 'sex', '性别', '', '0');
 
 -- ----------------------------
 -- Table structure for `sys_dict_item`
 -- ----------------------------
 DROP TABLE IF EXISTS `sys_dict_item`;
 CREATE TABLE `sys_dict_item` (
-  `ID` bigint(20) NOT NULL DEFAULT '0',
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `CREATE_BY` bigint(20) NOT NULL,
+  `CREATE_DT` datetime NOT NULL,
+  `UPDATE_BY` bigint(20) DEFAULT NULL,
+  `UPDATE_DT` datetime DEFAULT NULL,
+  `VERSION` int(11) NOT NULL DEFAULT '1',
   `LOGIC_DEL` int(11) NOT NULL DEFAULT '1' COMMENT '逻辑删除状态：1：未删除；2：删除',
-  `PARENT_ID` bigint(20) NOT NULL DEFAULT '0' COMMENT '父级ID，默认值为0，表示无父级数据',
+  `PARENT_ID` bigint(20) NOT NULL DEFAULT '0' COMMENT '父级数据值项ID，默认值为0，表示无父级数据',
   `SYS_DICT_CODE` varchar(100) NOT NULL,
   `ITEM_CODE` varchar(100) NOT NULL,
   `VALUE` varchar(300) NOT NULL,
   `MEMO` varchar(2000) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sys_dict_item
 -- ----------------------------
+INSERT INTO `sys_dict_item` VALUES ('3', '1', '2017-06-13 18:53:41', null, null, '1', '1', '0', 'test', '1234', '1324', '1341');
+INSERT INTO `sys_dict_item` VALUES ('4', '1', '2017-06-13 18:53:58', '1', '2017-06-13 19:07:51', '2', '1', '0', 'test', '123', '41234', '1234134312341324');
+INSERT INTO `sys_dict_item` VALUES ('7', '1', '2017-06-13 18:55:13', null, null, '1', '1', '0', 'test', '245243', '524524', '52435245');
+INSERT INTO `sys_dict_item` VALUES ('10', '1', '2017-06-13 19:08:01', '1', '2017-06-13 19:08:11', '2', '1', '0', 'sex', '1341', '123412341234', '23412341234');
+
+-- ----------------------------
+-- Table structure for `sys_log`
+-- ----------------------------
+DROP TABLE IF EXISTS `sys_log`;
+CREATE TABLE `sys_log` (
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `OPER_ID` bigint(20) NOT NULL COMMENT '操作人',
+  `OPER_TIME` datetime NOT NULL COMMENT '操作时间',
+  `OPERATION` varchar(500) NOT NULL COMMENT '操作内容',
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of sys_log
+-- ----------------------------
+INSERT INTO `sys_log` VALUES ('1', '1', '0000-00-00 00:00:00', '');
 
 -- ----------------------------
 -- Table structure for `sys_org`
@@ -144,7 +178,7 @@ CREATE TABLE `sys_resource` (
   `URL` varchar(50) NOT NULL COMMENT '资源路径',
   `ORDER_BY` int(11) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sys_resource
@@ -159,6 +193,8 @@ INSERT INTO `sys_resource` VALUES ('10', '9', '1', '2345', '45', '234523', null)
 INSERT INTO `sys_resource` VALUES ('11', '10', '1', '12341', '12341234', '23412341', null);
 INSERT INTO `sys_resource` VALUES ('15', '1', '1', 'sys_role', '角色管理', 'sys/role/index', null);
 INSERT INTO `sys_resource` VALUES ('16', '5', '1', 'asset', '资产管理', '123123', null);
+INSERT INTO `sys_resource` VALUES ('17', '1', '1', 'sys_dict', '数据字典', 'sys/dict/index', null);
+INSERT INTO `sys_resource` VALUES ('18', '1', '1', 'sys_attachment', '附件管理', 'sys/attachment/index', null);
 
 -- ----------------------------
 -- Table structure for `sys_role`
@@ -176,11 +212,10 @@ CREATE TABLE `sys_role` (
 -- Records of sys_role
 -- ----------------------------
 INSERT INTO `sys_role` VALUES ('1', 'admin', '系统管理员', '系统管理员');
-INSERT INTO `sys_role` VALUES ('2', '134', '1341234', '123123');
+INSERT INTO `sys_role` VALUES ('2', '134', '1341234234234', '123123');
 INSERT INTO `sys_role` VALUES ('3', '3123', '12234234', '123');
 INSERT INTO `sys_role` VALUES ('4', '123', '123345', '123');
-INSERT INTO `sys_role` VALUES ('5', '234', '123', '523456');
-INSERT INTO `sys_role` VALUES ('8', 'tyui', 'tui', 'tui');
+INSERT INTO `sys_role` VALUES ('8', 'tyuiasdfasdf', 'tui', 'tui');
 INSERT INTO `sys_role` VALUES ('9', 'fh', 'fhj', 'jfhjfhj');
 INSERT INTO `sys_role` VALUES ('11', 'adf', '12341', 'adf');
 INSERT INTO `sys_role` VALUES ('12', '356', '3456', '3456');
@@ -204,7 +239,7 @@ CREATE TABLE `sys_role_resource` (
   `SYS_ROLE_ID` bigint(20) NOT NULL,
   `SYS_RESOURCE_ID` bigint(20) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=52 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sys_role_resource
@@ -215,9 +250,10 @@ INSERT INTO `sys_role_resource` VALUES ('42', '2', '3');
 INSERT INTO `sys_role_resource` VALUES ('43', '2', '4');
 INSERT INTO `sys_role_resource` VALUES ('44', '2', '5');
 INSERT INTO `sys_role_resource` VALUES ('45', '2', '15');
-INSERT INTO `sys_role_resource` VALUES ('49', '11', '9');
-INSERT INTO `sys_role_resource` VALUES ('50', '11', '10');
-INSERT INTO `sys_role_resource` VALUES ('51', '11', '11');
+INSERT INTO `sys_role_resource` VALUES ('52', '13', '3');
+INSERT INTO `sys_role_resource` VALUES ('53', '11', '9');
+INSERT INTO `sys_role_resource` VALUES ('54', '11', '10');
+INSERT INTO `sys_role_resource` VALUES ('55', '11', '11');
 
 -- ----------------------------
 -- Table structure for `sys_user`
@@ -262,7 +298,7 @@ CREATE TABLE `sys_user_role` (
   `SYS_USER_ID` bigint(20) NOT NULL,
   `SYS_ROLE_ID` bigint(20) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sys_user_role
@@ -270,6 +306,8 @@ CREATE TABLE `sys_user_role` (
 INSERT INTO `sys_user_role` VALUES ('1', '1', '2');
 INSERT INTO `sys_user_role` VALUES ('2', '1', '1');
 INSERT INTO `sys_user_role` VALUES ('3', '2', '2');
-INSERT INTO `sys_user_role` VALUES ('4', '10', '1');
 INSERT INTO `sys_user_role` VALUES ('5', '21', '2');
 INSERT INTO `sys_user_role` VALUES ('6', '22', '2');
+INSERT INTO `sys_user_role` VALUES ('7', '10', '1');
+INSERT INTO `sys_user_role` VALUES ('8', '10', '3');
+INSERT INTO `sys_user_role` VALUES ('10', '13', '3');
