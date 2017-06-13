@@ -5,6 +5,7 @@ import com.alibaba.fastjson.JSON;
 import com.czy.seed.mvc.annotation.AutoLog;
 import com.czy.seed.mvc.sys.entity.SysLog;
 import com.czy.seed.mvc.sys.service.SysLogService;
+import com.czy.seed.mvc.util.PrincipalUtil;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -19,6 +20,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.http.HttpServletRequest;
 import java.lang.reflect.Method;
+import java.util.Date;
 
 
 /**
@@ -46,6 +48,8 @@ public class SysLogAspect {
         Method method = signature.getMethod();
 
         SysLog sysLog = new SysLog();
+        sysLog.setOpeTime(new Date());
+        sysLog.setOpeId(PrincipalUtil.getLoginUser().getId());
 
 //		解释注解
         AutoLog autoLog = method.getAnnotation(AutoLog.class);

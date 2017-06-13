@@ -4,6 +4,7 @@ package com.czy.seed.mvc.sys.entity;
 import com.czy.seed.mvc.base.entity.BaseEntity;
 
 import java.io.Serializable;
+import java.util.Date;
 
 /**
  * Created by 003914[panlc] on 2017-06-12.
@@ -15,7 +16,8 @@ public class SysLog extends BaseEntity implements Serializable {
     private String method;
     private String params;
     private String ip;
-
+    private Long opeId;
+    private Date opeTime;
 
     public String getOperation() {
         return operation;
@@ -47,5 +49,21 @@ public class SysLog extends BaseEntity implements Serializable {
 
     public void setIp(String ip) {
         this.ip = ip;
+    }
+
+    public Long getOpeId() {
+        return opeId;
+    }
+
+    public void setOpeId(Long opeId) {
+        this.opeId = opeId;
+    }
+
+    public Date getOpeTime() {
+        return opeTime;
+    }
+
+    public void setOpeTime(Date opeTime) {
+        this.opeTime = opeTime;
     }
 }
