@@ -60,6 +60,7 @@ var mainPanel = new Vue({
             }).then(
                 function () {
                     $.post("/sys/dict/deleteByPrimaryKey/" + selectedRow.id, function (response) {
+                        czy.msg.success(response.msg);
                         mainPanel.queryDict();
                     });
                 }).catch(function () {});
@@ -73,6 +74,9 @@ var mainPanel = new Vue({
                 success: function (result) {
                     mainPanel.queryDict();
                     czy.msg.success(result.msg);
+                },
+                error:function (result) {
+                    czy.msg.error("系统异常，请联系管理员");
                 }
             });
         },
@@ -125,6 +129,7 @@ var mainPanel = new Vue({
             }).then(
                 function () {
                     $.post("/sys/dictItem/deleteByPrimaryKey/" + selectedRow.id, function (response) {
+                        czy.msg.success(response.msg);
                         mainPanel.dictGridClick(mainPanel.getDictSelectedRow());
                     });
                 }).catch(function () {});

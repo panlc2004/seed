@@ -75,10 +75,10 @@
     <!--维护字典值表单-->
     <el-dialog title="字典值管理" :visible.sync="itemFormShow" size="miny" :close-on-click-modal="false">
         <el-form :model="itemForm">
-            <el-form-item label="字典项键" :label-width="itemFormLabelWidth">
+            <el-form-item label="字典值键" :label-width="itemFormLabelWidth">
                 <el-input v-model="itemForm.itemCode"></el-input>
             </el-form-item>
-            <el-form-item label="字典项值" :label-width="itemFormLabelWidth">
+            <el-form-item label="字典值值" :label-width="itemFormLabelWidth">
                 <el-input v-model="itemForm.value"></el-input>
             </el-form-item>
             <el-form-item label="备注" :label-width="itemFormLabelWidth">

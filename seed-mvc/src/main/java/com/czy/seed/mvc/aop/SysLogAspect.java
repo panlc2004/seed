@@ -51,7 +51,7 @@ public class SysLogAspect {
         sysLog.setOpeTime(new Date());
         sysLog.setOpeId(PrincipalUtil.getLoginUser().getId());
 
-//		解释注解
+//		解析注解
         AutoLog autoLog = method.getAnnotation(AutoLog.class);
         if (autoLog != null) {
             //注解上的描述
