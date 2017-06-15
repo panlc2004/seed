@@ -3,6 +3,7 @@ package com.czy.seed.mybatis.sql.entity;
 import com.czy.seed.mybatis.config.mybatis.annotations.Join;
 import com.czy.seed.mybatis.entity.One;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
@@ -12,7 +13,7 @@ import static org.junit.Assert.*;
  */
 public class MybatisAssociationTest {
 
-    @Test
+    @Ignore
     public void testNewInstance() {
         MybatisAssociation one = new MybatisAssociation("testRollback", "one",
                 One.class, "name, id", "id=test_id,name=test_name", Join.LEFT);

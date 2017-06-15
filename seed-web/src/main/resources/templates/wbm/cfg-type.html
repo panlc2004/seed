@@ -503,7 +503,7 @@
 
 
     <div v-if="showInfoForm">
-        <el-form ref="fcForm" :model="fcForm" label-width="110px">
+        <el-form :model="fcForm" ref="fcForm" :rules="fcRules" label-width="110px">
             <el-card class="box-card">
                 <div slot="header" class="clearfix">
                     <span style="line-height: 36px;">航班配置</span>
@@ -512,50 +512,50 @@
                 </div>
                 <el-row>
                     <el-col :span="4">
-                        <el-form-item label="出厂序号" :prop="fcForm.num" required>
+                        <el-form-item label="出厂序号" prop="num" required>
                             <el-input size="small" v-model="fcForm.num"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="4">
-                        <el-form-item label="机号" :prop="fcForm.msn" required>
+                        <el-form-item label="机号" prop="msn" required>
                             <el-input size="small" v-model="fcForm.msn"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="4">
-                        <el-form-item label="基本重量" :prop="fcForm.baseWeight" required>
-                            <el-input size="small" v-model="fcForm.baseWeight"></el-input>
+                        <el-form-item label="基本重量" prop="baseWeight" required>
+                            <el-input size="small" v-model.number="fcForm.baseWeight"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="4">
-                        <el-form-item label="基本指数" :prop="fcForm.baseIndex" required>
-                            <el-input size="small" v-model="fcForm.baseIndex"></el-input>
+                        <el-form-item label="基本指数" prop="baseIndex" required>
+                            <el-input size="small" v-model.number="fcForm.baseIndex"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="4">
-                        <el-form-item label="起飞油量" :prop="fcForm.takeOffFuel" required>
-                            <el-input size="small" v-model="fcForm.takeOffFuel"></el-input>
+                        <el-form-item label="起飞油量" prop="takeOffFuel" required>
+                            <el-input size="small" v-model.number="fcForm.takeOffFuel"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="4">
-                        <el-form-item label="航班用油" :prop="fcForm.tripFuel" required>
-                            <el-input size="small" v-model="fcForm.tripFuel"></el-input>
+                        <el-form-item label="航班用油" prop="tripFuel" required>
+                            <el-input size="small" v-model.number="fcForm.tripFuel"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
                 <el-row>
                     <el-col :span="4">
-                        <el-form-item label="最大起飞重量" :prop="fcForm.limitedMtow" required>
-                            <el-input size="small" v-model="fcForm.limitedMtow"></el-input>
+                        <el-form-item label="最大起飞重量" prop="limitedMtow" required>
+                            <el-input size="small" v-model.number="fcForm.limitedMtow"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="4">
-                        <el-form-item label="最大落地重量" :prop="fcForm.limitedMdlw" required>
-                            <el-input size="small" v-model="fcForm.limitedMldw"></el-input>
+                        <el-form-item label="最大落地重量" prop="limitedMldw" required>
+                            <el-input size="small" v-model.number="fcForm.limitedMldw"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="4">
-                        <el-form-item label="最大无油重量" :prop="fcForm.limitedMzfw" required>
-                            <el-input size="small" v-model="fcForm.limitedMzfw"></el-input>
+                        <el-form-item label="最大无油重量" prop="limitedMzfw" required>
+                            <el-input size="small" v-model.number="fcForm.limitedMzfw"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>
@@ -563,20 +563,26 @@
         </el-form>
 
         <el-form ref="flightInfoForm" :model="flightInfoForm" label-width="110px">
-
             <el-card class="box-card">
                 <div slot="header" class="clearfix">
                     <span style="line-height: 36px;">航班总体参数配置</span>
-                    <el-button style="float: right" type="primary" @click="submitFlightInfoForm('flightInfoForm')">提交</el-button>
+                    <el-button style="float: right" type="primary" @click="submitFlightInfoForm('flightInfoForm')">提交
+                    </el-button>
                 </div>
                 <el-row>
                     <el-col :span="4">
-                        <el-form-item label="航班号" required>
+                        <el-form-item label="航班号" prop="flightNo"
+                                      :rules="[
+                            { required: true, message: '航班号不能为空'}
+                            ]">
                             <el-input size="small" v-model="flightInfoForm.flightNo"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="4">
-                        <el-form-item label="航段" required>
+                        <el-form-item label="航段" prop="segment"
+                                      :rules="[
+                                        { required: true, message: '航段不能为空'}
+                                      ]">
                             <el-input size="small" v-model="flightInfoForm.segment"></el-input>
                         </el-form-item>
                     </el-col>
@@ -587,27 +593,43 @@
             <el-card class="box-card">
                 <div slot="header" class="clearfix">
                     <span style="line-height: 36px;">偏差设置</span>
-                    <el-button style="float: right" type="primary" @click="submitOffsetForm('offsetForm')">提交</el-button>
+                    <el-button style="float: right" type="primary" @click="submitOffsetForm('offsetForm')">提交
+                    </el-button>
                 </div>
                 <el-row>
                     <el-col :span="4">
-                        <el-form-item label="类型" required>
+                        <el-form-item label="类型" prop="type"
+                                      :rules="[
+                                        { required: true, message: '类型不能为空'}
+                                      ]">
                             <el-input size="small" v-model="offsetForm.type"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="4">
-                        <el-form-item label="最小值" required>
-                            <el-input size="small" v-model="offsetForm.minMileage"></el-input>
+                        <el-form-item label="最小值" prop="minMileage"
+                                      :rules="[
+                                        { required: true, message: '最小值不能为空'}
+                                        ,{ type: 'number', message: '必须为数字值',trigger: 'blur'}
+                                      ]">
+                            <el-input size="small" v-model.number="offsetForm.minMileage"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="4">
-                        <el-form-item label="最大值" required>
-                            <el-input size="small" v-model="offsetForm.maxMileage"></el-input>
+                        <el-form-item label="最大值" prop="maxMileage"
+                                      :rules="[
+                                        { required: true, message: '最大值不能为空'}
+                                        ,{ type: 'number', message: '必须为数字值',trigger: 'blur'}
+                                      ]">
+                            <el-input size="small" v-model.number="offsetForm.maxMileage"></el-input>
                         </el-form-item>
                     </el-col>
                     <el-col :span="4">
-                        <el-form-item label="偏差值" required>
-                            <el-input size="small" v-model="offsetForm.num"></el-input>
+                        <el-form-item label="偏差值" prop="num"
+                                      :rules="[
+                                        { required: true, message: '偏差值不能为空'}
+                                        ,{ type: 'number', message: '必须为数字值',trigger: 'blur'}
+                                      ]">
+                            <el-input size="small" v-model.number="offsetForm.num"></el-input>
                         </el-form-item>
                     </el-col>
                 </el-row>

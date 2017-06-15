@@ -4,6 +4,7 @@ import com.czy.seed.mybatis.config.mybatis.annotations.One2Many;
 import com.czy.seed.mybatis.config.mybatis.annotations.One2One;
 import com.czy.seed.mybatis.entity.TestEntity;
 import org.junit.Assert;
+import org.junit.Ignore;
 import org.junit.Test;
 
 import java.lang.annotation.Annotation;
@@ -14,7 +15,7 @@ import java.lang.reflect.Field;
  */
 public class MybatisColumnsOGNLTest {
 
-    @Test
+    @Ignore
     public void hasValue() throws Exception {
         TestEntity record = new TestEntity();
         boolean b = MybatisColumnsOGNL.hasValue(record);
@@ -24,7 +25,7 @@ public class MybatisColumnsOGNLTest {
         Assert.assertTrue(c);
     }
 
-    @Test
+    @Ignore
     public void test() throws NoSuchFieldException {
         TestEntity t = new TestEntity();
         Field one = t.getClass().getDeclaredField("one");

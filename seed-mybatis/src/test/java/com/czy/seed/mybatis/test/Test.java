@@ -26,7 +26,7 @@ public class Test {
 //        System.out.println(456);
 //    }
 
-    @org.junit.Test
+    @org.junit.Ignore
     public void test2() {
 
         System.out.println("test2");
@@ -34,7 +34,7 @@ public class Test {
 
 
 
-    @org.junit.Test
+    @org.junit.Ignore
     public void test3() {
         System.out.println("test3");
 

@@ -4,6 +4,79 @@
  *     galleyGoods ==> gg
  *     flightTypeConfig ==> ftc
  */
+var defaults = {
+    ftcForm: {//航班类型配置
+        id: null,
+        flightType: '',
+        seatNum: '',
+        harm: '',
+        c: '',
+        k: '',
+        lemac: '',
+        datum: '',
+        mac: ''
+    },
+    fcForm: {//航班配置flightConfig
+        id: '',
+        num: '',
+        msn: '',
+        baseWeight: '',
+        baseIndex: '',
+        takeOffFuel: '',
+        tripFuel: '',
+        limitedMtow: '',
+        limitedMldw: '',
+        limitedMzfw: ''
+    },
+    ggForm: {//机供品配置
+        galleyGoods: [
+            {positionCode: "FWD"},// 前舱
+            {positionCode: "AFT"}// 后舱
+        ],
+        configuration: {"FWD": "前舱", "AFT": "后舱"}
+    },
+    passengerForm: {
+        passengers: [
+            {passengerTypeCode: "AUDLT"},// 成人
+            {passengerTypeCode: "CHILD"},// 小孩
+            {passengerTypeCode: "INFANT"}// 婴儿
+        ],
+        configuration: {"AUDLT": "成人", "CHILD": "小孩", "INFANT": "婴儿"}
+    },
+    crewForm: {
+        crews: [
+            {positionCode: "COCKPIT"},// 驾驶舱
+            {positionCode: "FWD"},// 前舱
+            {positionCode: "MID"},// 中舱
+            {positionCode: "AFT"}// 后舱
+        ],
+        configuration: {"COCKPIT": "驾驶舱", "FWD": "前舱", "MID": "中舱", "AFT": "后舱"}
+    },
+    flightInfoForm: {//航班总体参数配置
+        flightNo: '',
+        segment: ''
+    },
+    offsetForm: {//偏差设置
+        id: '',
+        type: '',
+        minMileage: '',
+        maxMileage: '',
+        num: ''
+    },
+    passengerCabinForm: {
+        passengerCabins: [{key: Date.now(), icTableData: [{key: Date.now()}]}]
+    },
+    cargoHoldForm: {
+        cargoHolds: [{key: Date.now(), icTableData: [{key: Date.now()}]}]
+    },
+    fuelIndexConfigForm: {
+        //做数据值初始化aircraftCabinId 舱位关联ID 在燃油参数配置中没有舱位关联设置默认值为-1
+        //types:3 表示燃油参数指数设置
+        fuels: [{key: Date.now(), icTableData: [{aircraftCabinId: -1, types: 3, key: Date.now()}]}]
+    },
+}
+
+
 var cfg_index = new Vue({
     el: "#dt-grid",
     data: function () {
@@ -12,65 +85,16 @@ var cfg_index = new Vue({
             showTable: true,//是否显示航班类型列表
             showForm: false,//是否显示航班类型配置页
             showInfoForm: false,//是否显示架次配置页
-            fcForm: {//航班配置flightConfig
-                num: '',
-                msn: '',
-                baseWeight: '',
-                baseIndex: '',
-                takeOffFuel: '',
-                tripFuel: '',
-                limitedMtow: '',
-                limitedMdlw: '',
-                limitedMzfw: ''
-            },
-            offsetForm: {},//偏差设置
-            flightInfoForm: {}, //航班配置
-            ggForm: {//机供品配置
-                galleyGoods: [
-                    {positionCode: "FWD"},// 前舱
-                    {positionCode: "AFT"}// 后舱
-                ],
-                configuration: {"FWD": "前舱", "AFT": "后舱"}
-            },
-            ftcForm: {//航班类型配置
-                id: null,
-                flightType: '',
-                seatNum: '',
-                harm: '',
-                c: '',
-                k: '',
-                lemac: '',
-                datum: '',
-                mac: ''
-            },
-            passengerCabinForm: {
-                passengerCabins: [{key: Date.now(), icTableData: [{key: Date.now()}]}]
-            },
-            cargoHoldForm: {
-                cargoHolds: [{key: Date.now(), icTableData: [{key: Date.now()}]}]
-            },
-            fuelIndexConfigForm: {
-                //做数据值初始化aircraftCabinId 舱位关联ID 在燃油参数配置中没有舱位关联设置默认值为-1
-                //types:3 表示燃油参数指数设置
-                fuels: [{key: Date.now(), icTableData: [{aircraftCabinId: -1, types: 3, key: Date.now()}]}]
-            },
-            passengerForm: {
-                passengers: [
-                    {passengerTypeCode: "AUDLT"},// 成人
-                    {passengerTypeCode: "CHILD"},// 小孩
-                    {passengerTypeCode: "INFANT"}// 婴儿
-                ],
-                configuration: {"AUDLT": "成人", "CHILD": "小孩", "INFANT": "婴儿"}
-            },
-            crewForm: {
-                crews: [
-                    {positionCode: "COCKPIT"},// 驾驶舱
-                    {positionCode: "FWD"},// 前舱
-                    {positionCode: "MID"},// 中舱
-                    {positionCode: "AFT"}// 后舱
-                ],
-                configuration: {"COCKPIT": "驾驶舱", "FWD": "前舱", "MID": "中舱", "AFT": "后舱"}
-            },
+            fcForm: defaults.fcForm,
+            flightInfoForm: defaults.flightInfoForm,
+            offsetForm: defaults.offsetForm,
+            ggForm: defaults.ggForm,
+            ftcForm: defaults.ftcForm,
+            passengerCabinForm: defaults.passengerCabinForm,
+            cargoHoldForm: defaults.cargoHoldForm,
+            fuelIndexConfigForm: defaults.fuelIndexConfigForm,
+            passengerForm: defaults.passengerForm,
+            crewForm: defaults.crewForm,
             //航班类型参数配置验证规则
             ftcRules: {
                 flightType: [
@@ -114,45 +138,48 @@ var cfg_index = new Vue({
                 ]
             },
             //航班类型参数配置验证规则
-            ftcRules: {
-                flightType: [
-                    {required: true, message: '请输入机型', trigger: 'blur'},
+            fcRules: {
+                num: [
+                    {required: true, message: '请输出厂序号', trigger: 'blur'},
                     {min: 3, max: 8, message: '长度在 3 到 8 个字符', trigger: 'blur'}
                 ],
-                seatNum: [
-                    {required: true, message: '请输入最大座位数'},
-                    // {min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'},
-                    {type: 'number', message: '最大座位数必须为数字值', trigger: 'blur'}
+                msn: [
+                    {required: true, message: '请输入机号'}
                 ],
-                harm: [
-                    {required: true, message: '请输入基准力臂'},
+                baseWeight: [
+                    {required: true, message: '请输入基本重量'},
                     // {min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'},
-                    {type: 'number', message: '基准力臂必须为数字值', trigger: 'blur'}
+                    {type: 'number', message: '必须为数字值', trigger: 'blur'}
                 ],
-                c: [
-                    {required: true, message: '请输入c'},
+                baseIndex: [
+                    {required: true, message: '请输入基本指数'},
                     // {min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'},
-                    {type: 'number', message: 'c必须为数字值', trigger: 'blur'}
+                    {type: 'number', message: '必须为数字值', trigger: 'blur'}
                 ],
-                k: [
-                    {required: true, message: '请输入k'},
+                takeOffFuel: [
+                    {required: true, message: '请输入起飞油量'},
                     // {min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'},
-                    {type: 'number', message: 'k必须为数字值', trigger: 'blur'}
+                    {type: 'number', message: '必须为数字值', trigger: 'blur'}
                 ],
-                lemac: [
-                    {required: true, message: '请输入lemac'},
+                tripFuel: [
+                    {required: true, message: '请输入航班用油'},
                     // {min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'},
-                    {type: 'number', message: '最大座位数必须为数字值', trigger: 'blur'}
+                    {type: 'number', message: '必须为数字值', trigger: 'blur'}
                 ],
-                datum: [
-                    {required: true, message: '请输入datum'},
+                limitedMtow: [
+                    {required: true, message: '请输入起飞重量'},
                     // {min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'},
-                    {type: 'number', message: 'datum必须为数字值', trigger: 'blur'}
+                    {type: 'number', message: '必须为数字值', trigger: 'blur'}
                 ],
-                mac: [
-                    {required: true, message: '请输入mac'},
+                limitedMldw: [
+                    {required: true, message: '请输入落地重量'},
                     // {min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'},
-                    {type: 'number', message: 'mac必须为数字值', trigger: 'blur'}
+                    {type: 'number', message: '必须为数字值', trigger: 'blur'}
+                ],
+                limitedMzfw: [
+                    {required: true, message: '请输入无油重量'},
+                    // {min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'},
+                    {type: 'number', message: '必须为数字值', trigger: 'blur'}
                 ]
 
             }
@@ -214,8 +241,12 @@ var cfg_index = new Vue({
         },
         //架次参数配置新增按钮
         infoConfAdd: function () {
-            this.showTable = false;
-            this.showInfoForm = true;
+            if (this.ftcForm.id != null) {
+                this.showTable = false;
+                this.showInfoForm = true;
+                return;
+            }
+            czy.msg.warn("请选择一条数航班类型配置参数!")
         },
         //航班类型参数配置提交function
         submitFtcForm: function (formName) {
@@ -575,7 +606,7 @@ var cfg_index = new Vue({
             }
 
             if (!cfg_index.fcForm.id || "" == cfg_index.fcForm.id) {
-                //在提交客舱之前必须先提交航班类型参数
+                //在提交航班总体参数之前必须先提交航班类型参数
                 czy.msg.error("fcForm 为空不能提交");
                 return;
             }
@@ -583,7 +614,7 @@ var cfg_index = new Vue({
             this.$refs[flightInfoForm].validate(function (result) {
                 if (result) {
                     var flightInfo = cfg_index.flightInfoForm;
-                    flightInfo.flightTypeConfigId = cfg_index.ftcForm.id;
+                    flightInfo.flightConfigId = cfg_index.fcForm.id;
                     var params = JSON.stringify(flightInfo);
                     $.ajax({
                         url: "/cfg/flightInfo/add",
@@ -606,15 +637,16 @@ var cfg_index = new Vue({
 
             //提交客舱信息参数
             this.$refs[fcForm].validate(function (result) {
-                var flightConfigId = cfg_index.fcForm.id;
+                var flightConfigId = cfg_index.ftcForm.id;
+                debugger;
                 if (!flightConfigId || "" == flightConfigId) {
-                    //在提交客舱之前必须先提交航班类型参数
-                    this.submitFcForm("fcForm");
+                    czy.msg.error("航班类型配置ID");
+                    return;
                 }
-                fcForm
+
                 if (result) {
                     var flightConfig = cfg_index.fcForm;
-                    flightConfig.flightConfigId = cfg_index.fcForm.id;
+                    flightConfig.flightTypeConfigId = cfg_index.ftcForm.id;
                     var params = JSON.stringify(flightConfig);
                     $.ajax({
                         url: "/cfg/flightCfg/add",
@@ -704,9 +736,30 @@ var cfg_index = new Vue({
             });
 
         },
-
+        //架次参数配置回显数据
         aboutInfoConfEcho: function () {
+            $.ajax({
+                url: "/cfg/flightCfg/queryFlightConfList",
+                data: {flightTypeConfigId: cfg_index.ftcForm.id},
+                type: 'POST',
+                async: false,//需要添加这个参数使用同步功能
+                success: function (result) {
+                    //机供品
+                    var galleyGoodsList = result.data.galleyGoodsList;
+                    //偏差设置
+                    var offset = result.data.offsets;
+                    // 航班架次配置数据对象
+                    var flightConfig = result.data.flightConfig;
+                    //航班总体参数数据对象
+                    var flightInfo = result.data.flightInfo;
 
+                    cfg_index.fcForm = flightConfig == null ? defaults.fcForm : flightConfig;
+                    cfg_index.offsetForm = offset == null ? defaults.offsetForm : offset;
+                    cfg_index.flightInfoForm = flightInfo == null ? defaults.flightInfoForm : flightInfo;
+                    cfg_index.ggForm.galleyGoods = galleyGoodsList == null || galleyGoodsList.length == 0 ? defaults.ggForm.galleyGoods : galleyGoodsList;
+
+                }
+            });
         }
     }
 })

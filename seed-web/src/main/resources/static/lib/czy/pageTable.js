@@ -6,18 +6,18 @@ var pageGrid = Vue.extend({
         url: '',
         autoInit: true,
         pageBar: null,
-        pageBarSmall: true,
+        pageBarSmall: false,
         tableHeight: ''    //设置表格高度百分比
     },
 
     data: function () {
         return {
             tableStyle: '',  //表格样式
-            maxHeight: '400',
+            maxHeight: '100%',
             loading: true,
             pageData: null,
             queryParam: {
-                pageSize: 20,
+                pageSize: 10,
                 pageNum: 1,
                 param: {}
             },
@@ -43,6 +43,8 @@ var pageGrid = Vue.extend({
     methods: {
         sizeChange: function (size) {
             this.queryParam.pageSize = size;
+            // var autoTableHeight = 40 * (this.queryParam.pageSize + 1);
+            // this.tableStyle = 'width:100%;height:' + autoTableHeight + 'px';
             this.loadData();
         },
         reload: function (params) {
@@ -77,14 +79,14 @@ var pageGrid = Vue.extend({
             var _this = this;
             _this.loading = true;
             czy.ajax.postJson({
-                url:this.url + "/" + this.queryParam.pageNum + "/" + this.queryParam.pageSize,
-                data:this.queryParam,
-                success:function (response) {
+                url: this.url + "/" + this.queryParam.pageNum + "/" + this.queryParam.pageSize,
+                data: this.queryParam,
+                success: function (response) {
                     _this.loading = false;
                     _this.pageData = response.data.page;
                     _this.total = response.data.total;
                 },
-                error:function (response) {
+                error: function (response) {
                     czy.msg.error("未知异常，请联系管理员");
                     _this.loading = false;
                 }
@@ -95,9 +97,11 @@ var pageGrid = Vue.extend({
         //动态计算表格高度
         var tableHeight = this.tableHeight == undefined ? '100%' : this.tableHeight;
         var percent = tableHeight.replace("%", "") / 100;
-        var autoTableHeight = document.body.scrollHeight * percent;
-        this.maxHeight = autoTableHeight;
-        this.tableStyle = 'width:100%;height:' + autoTableHeight + 'px';
+        // var autoTableHeight = document.body.scrollHeight * percent;
+        // this.maxHeight = autoTableHeight;
+        // var autoTableHeight = 40 * (this.queryParam.pageSize + 1);
+        // this.tableStyle = 'width:100%;height:' + autoTableHeight + 'px';
+
         if (this.autoInit == undefined || this.autoInit == true) {
             this.loadData();
         } else {

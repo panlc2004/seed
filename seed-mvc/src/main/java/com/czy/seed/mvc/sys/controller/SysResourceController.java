@@ -33,7 +33,7 @@ public class SysResourceController {
      */
     @RequestMapping("/findResourceTreeForLoginUser")
     public List<SysResource> findResourceTreeForLoginUser() {
-        return sysResourceService.selectResourceTree();
+        return sysResourceService.findResourceTreeForLoginUser();
     }
 
     /**

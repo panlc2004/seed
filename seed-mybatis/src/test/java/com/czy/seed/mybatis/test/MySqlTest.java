@@ -6,6 +6,7 @@ import com.czy.seed.mybatis.mapper.MySqlMapper;
 import com.czy.seed.mybatis.service.MysqlService;
 import org.junit.Assert;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +28,7 @@ public class MySqlTest {
         mySqlMapper = ctx.getBean(MySqlMapper.class);
     }
 
-    @Test
+    @Ignore
     public void testInsertAndDeleteByPrimaryKeyAndUpdate() {
         TestEntity testEntity = new TestEntity();
 //        testEntity.setName("tsetest");
@@ -41,7 +42,7 @@ public class MySqlTest {
         int delete = mySqlMapper.deleteByPrimaryKey(testEntity.getId());
     }
 
-    @Test
+    @Ignore
     public void testInsertList() {
         List<TestEntity> tList = new ArrayList<TestEntity>(2);
 
@@ -61,7 +62,7 @@ public class MySqlTest {
         System.out.println(2);
     }
 
-    @Test
+    @Ignore
     public void testSelectByPrimaryKey() {
         TestEntity testEntity = new TestEntity();
         testEntity.setName("tsetest");
@@ -71,7 +72,7 @@ public class MySqlTest {
         Assert.assertTrue(id == testEntity1.getId());
     }
 
-    @Test
+    @Ignore
     public void testSelectListByParams() {
         QueryParams queryParams = new QueryParams(TestEntity.class);
         queryParams.orderBy("id").asc().orderBy("name").desc();
@@ -86,7 +87,7 @@ public class MySqlTest {
         System.out.println(testEntities);
     }
 
-    @Test
+    @Ignore
     public void testSelectOneByParams() {
         QueryParams queryParams = new QueryParams(TestEntity.class);
 //        queryParams.selectProperties("name");
@@ -96,7 +97,7 @@ public class MySqlTest {
         System.out.println(testEntity.getId());
     }
 
-    @Test
+    @Ignore
     public void testDeleteByParams() {
         QueryParams queryParams = new QueryParams(TestEntity.class);
         QueryParams.Criteria criteria = queryParams.createCriteria();
@@ -105,7 +106,7 @@ public class MySqlTest {
         Assert.assertTrue(i == 0);
     }
 
-    @Test
+    @Ignore
     public void testUpdateSelectiveByParams() {
         QueryParams queryParams = new QueryParams(TestEntity.class);
         QueryParams.Criteria criteria = queryParams.createCriteria();
@@ -115,7 +116,7 @@ public class MySqlTest {
         int i = mySqlMapper.updateSelectiveByParams(testEntity, null);
     }
 
-    @Test
+    @Ignore
     public void testUpdateByParams() {
         QueryParams queryParams = new QueryParams(TestEntity.class);
         QueryParams.Criteria criteria = queryParams.createCriteria();
@@ -124,7 +125,7 @@ public class MySqlTest {
         int i = mySqlMapper.updateByParams(testEntity, queryParams);
     }
 
-    @Test
+    @Ignore
     public void testSelectCountByParams() {
         QueryParams queryParams = new QueryParams(TestEntity.class);
         QueryParams.Criteria criteria = queryParams.createCriteria();
@@ -133,13 +134,13 @@ public class MySqlTest {
         System.out.println(i);
     }
 
-    @Test
+    @Ignore
     public void testSelect() {
         TestEntity testEntity = mySqlMapper.selectByPrimaryKey1(1);
         System.out.println(testEntity);
     }
 
-    @Test
+    @Ignore
     public void testSelectRelativeByPrimaryKey() {
         TestEntity testEntity = mySqlMapper.selectRelativeByPrimaryKey(2);
         System.out.println(testEntity);
@@ -148,7 +149,7 @@ public class MySqlTest {
 
     }
 
-    @Test
+    @Ignore
     @Transactional()
     public void testSelectListRelativeByParams() {
         QueryParams queryParams = new QueryParams(TestEntity.class);
@@ -161,7 +162,7 @@ public class MySqlTest {
         System.out.println(testEntities);
     }
 
-    @Test
+    @Ignore
     public void testSelectOneRelativeByParams() {
         QueryParams queryParams = new QueryParams(TestEntity.class);
         QueryParams.Criteria criteria = queryParams.createCriteria();
@@ -171,13 +172,13 @@ public class MySqlTest {
         System.out.println(testEntity);
     }
 
-    @Test
+    @Ignore
     public void testSelectRelativeByPrimaryKey2() {
         TestEntity testEntity = mySqlMapper.selectRelativeByPrimaryKey2(2);
         System.out.println(testEntity);
     }
 
-    @Test
+    @Ignore
     public void testCallPro() {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("a", 1);
@@ -185,7 +186,7 @@ public class MySqlTest {
         System.out.println(i);
     }
 
-    @Test
+    @Ignore
     public void testCallPro3() {
         Map<String, Object> map = new HashMap<String, Object>();
         map.put("a", 1);
@@ -193,20 +194,20 @@ public class MySqlTest {
         System.out.println(i);
     }
 
-    @Test
+    @Ignore
     public void testRollback() throws Exception {
         MysqlService mysqlService = (MysqlService) ctx.getBean("mysqlService");
         mysqlService.testRollback();
 
     }
 
-    @Test
+    @Ignore
     public void tset4() throws Exception {
         List<TestEntity> testEntities = mySqlMapper.selectListByParams(null);
         System.out.println(testEntities);
     }
 
-    @Test
+    @Ignore
     public void insertList() throws Exception {
         Date start = new Date();
         System.out.println(start);
@@ -232,7 +233,7 @@ public class MySqlTest {
         System.out.println("user:" + (start.getTime() - end.getTime()));    //-568
     }
 
-    @Test
+    @Ignore
     public void insertList2() throws Exception {
         Date start = new Date();
         System.out.println(start);
@@ -270,7 +271,7 @@ public class MySqlTest {
         //list.size = 10000 -> simple:-7849 ; batch:-7525
     }
 
-    @Test
+    @Ignore
     public void test3() {
         MysqlService mysqlService = (MysqlService) ctx.getBean("mysqlService");
         int size = 1000000;
@@ -295,7 +296,7 @@ public class MySqlTest {
         System.out.println("user:" + (start.getTime() - end.getTime()));
     }
 
-    @Test
+    @Ignore
     public void test4() {
         int size = 3;
         List<TestEntity> testEntities = new ArrayList<TestEntity>(size);

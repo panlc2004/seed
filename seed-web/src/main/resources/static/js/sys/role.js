@@ -93,6 +93,8 @@ var main_panel = new Vue({
             // 保存用户角色
             saveRoleResource: function () {
                 var resources = this.getCheckedResource();
+                console.log(resources);
+                return false;
                 var roleId = this.getSelectedRow().id;
                 var param = [];
                 resources.forEach(function (id) {

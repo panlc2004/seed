@@ -466,9 +466,9 @@
                             and ${name}.${r'${criterion.condition} #{criterion.value} and #{criterion.secondValue}'}
                         </when>
                         <when test="criterion.listValue">
-                            and ${r'${criterion.condition}'}
+                            and ${name}.${r'${criterion.condition}'}
                             <foreach close=")" collection="criterion.value" item="listItem" open="(" separator=",">
-                            ${name}.${r'#{listItem}'}
+                            ${r'#{listItem}'}
                             </foreach>
                         </when>
                     </choose>

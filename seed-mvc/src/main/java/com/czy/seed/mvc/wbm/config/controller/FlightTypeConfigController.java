@@ -1,3 +1,14 @@
+/*
+ * 文 件 名 : FlightTypeConfigController.java
+ * 版    权 : CZYSOFT TECHNOLOGY CO.,LTD.Copyright 2017-2030.All rights reserved
+ * 描    述 : <航班类型配置控制器>
+ * 修 改 人 : <011424>zhangyang@inner.czy.com
+ * 修改时间 : 2017年6月10日 上午10:53:25
+ * 需求单号 : <需求Redmine单号>
+ * 变更单号 : <变更Redmine单号>
+ * 修改内容 : <修改内容>
+ * Version : V1.0
+ */
 package com.czy.seed.mvc.wbm.config.controller;
 
 import com.czy.seed.mvc.util.Res;
@@ -14,7 +25,14 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * Created by Administrator on 2017/5/19.
+ * <一句话功能简介><br>
+ *
+ * @author [011424]zhangyang@inner.czy.com
+ * @version [版本号, 2017年6月10日]
+ * @Description: <航班类型配置控制器>
+ * @ClassName:CargoHoldController
+ * @see [相关类/方法]
+ * @since [产品/模块]
  */
 @RestController
 @RequestMapping("/cfg/flightTypeConfig")
@@ -34,11 +52,17 @@ public class FlightTypeConfigController {
     private PassengerService passengerServiceImpl;
 
 
-    @RequestMapping("/view")
-    public FlightTypeConfig view(FlightTypeConfig flightTypeConfig) {
-        return flightTypeConfigServiceImpl.selectByPrimaryKey(flightTypeConfig.getId());
-    }
+//    @RequestMapping("/view")
+//    public FlightTypeConfig view(FlightTypeConfig flightTypeConfig) {
+//        return flightTypeConfigServiceImpl.selectByPrimaryKey(flightTypeConfig.getId());
+//    }
 
+    /**
+     * 新增航班类型配置
+     *
+     * @param flightTypeConfig 航班类型配置实体参数
+     * @return
+     */
     @RequestMapping("/add")
     public Res add(@RequestBody FlightTypeConfig flightTypeConfig) {
         flightTypeConfigServiceImpl.insert(flightTypeConfig);
@@ -46,14 +70,16 @@ public class FlightTypeConfigController {
 
     }
 
+    /**
+     * 修改航班类型实体
+     *
+     * @param flightTypeConfig 航班类型配置实体参数
+     * @return
+     */
     @RequestMapping("/update")
-    public Integer update(FlightTypeConfig flightTypeConfig) {
+    public Res update(FlightTypeConfig flightTypeConfig) {
         int result = flightTypeConfigServiceImpl.updateByPrimaryKey(flightTypeConfig);
-        if (result > 0) {
-            return 200;
-        } else {
-            return 500;
-        }
+        return Res.ok(result);
     }
 
     @RequestMapping("/list")
@@ -109,30 +135,30 @@ public class FlightTypeConfigController {
     }
 
 
-    @RequestMapping("/del")
-    public int del(FlightTypeConfig flightTypeConfig) {
-        int result = flightTypeConfigServiceImpl.deleteByPrimaryKey(flightTypeConfig.getId());
-        if (result > 0) {
-            return 200;
-        } else {
-            return 500;
-        }
-    }
+//    @RequestMapping("/del")
+//    public int del(FlightTypeConfig flightTypeConfig) {
+//        int result = flightTypeConfigServiceImpl.deleteByPrimaryKey(flightTypeConfig.getId());
+//        if (result > 0) {
+//            return 200;
+//        } else {
+//            return 500;
+//        }
+//    }
 
 
-    @RequestMapping("/check")
-    public Integer check(FlightTypeConfig flightTypeConfig) {
-        QueryParams queryParams = new QueryParams(FlightTypeConfig.class);
-        QueryParams.Criteria criteria = queryParams.createCriteria();
-        criteria.andEqualTo("flightType", flightTypeConfig.getFlightType());
-        FlightTypeConfig result = flightTypeConfigServiceImpl.selectOneByParams(queryParams);
-        if (result == null) {
-            return 200;
-        } else {
-            return 500;
-        }
-
-    }
+//    @RequestMapping("/check")
+//    public Integer check(FlightTypeConfig flightTypeConfig) {
+//        QueryParams queryParams = new QueryParams(FlightTypeConfig.class);
+//        QueryParams.Criteria criteria = queryParams.createCriteria();
+//        criteria.andEqualTo("flightType", flightTypeConfig.getFlightType());
+//        FlightTypeConfig result = flightTypeConfigServiceImpl.selectOneByParams(queryParams);
+//        if (result == null) {
+//            return 200;
+//        } else {
+//            return 500;
+//        }
+//
+//    }
 
     /**
      * 组装航班类型组装回显对象

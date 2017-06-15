@@ -1,3 +1,14 @@
+/*
+ * 文 件 名 : CrewController.java
+ * 版    权 : CZYSOFT TECHNOLOGY CO.,LTD.Copyright 2017-2030.All rights reserved
+ * 描    述 : <乘务信息控制器>
+ * 修 改 人 : <011424>zhangyang@inner.czy.com
+ * 修改时间 : 2017年6月10日 上午10:53:25
+ * 需求单号 : <需求Redmine单号>
+ * 变更单号 : <变更Redmine单号>
+ * 修改内容 : <修改内容>
+ * Version : V1.0
+ */
 package com.czy.seed.mvc.wbm.config.controller;
 
 
@@ -14,7 +25,14 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * Created by Administrator on 2017/5/19.
+ * <一句话功能简介><br>
+ *
+ * @author [011424]zhangyang@inner.czy.com
+ * @version [版本号, 2017年6月9日]
+ * @Description: <乘务信息配置控制器>
+ * @ClassName:CargoHoldController
+ * @see [相关类/方法]
+ * @since [产品/模块]
  */
 @RestController
 @RequestMapping("/cfg/crew")
@@ -26,40 +44,46 @@ public class CrewController {
     @Resource
     private FlightTypeConfigService configService;
 
-    @RequestMapping("/add")
-    public Integer add(Crew crew) {
-        int result = crewServiceImpl.insert(crew);
-        if (result > 0) {
-            return 200;
-        } else {
-            return 500;
-        }
+//    @RequestMapping("/add")
+//    public Integer add(Crew crew) {
+//        int result = crewServiceImpl.insert(crew);
+//        if (result > 0) {
+//            return 200;
+//        } else {
+//            return 500;
+//        }
+//
+//    }
 
-    }
-
+    /**
+     * 批量添加乘务信息
+     * @param crews 乘务新信息配置
+     * @return
+     */
     @RequestMapping("/addList")
     public Res addList(@RequestBody List<Crew> crews) {
         crewServiceImpl.insertList(crews);
         return Res.ok();
     }
 
+    /**
+     * 修改乘务信息配置
+     * @param crew
+     * @return
+     */
     @RequestMapping("/update")
-    public Integer update(Crew crew) {
+    public Res update(Crew crew) {
         int result = crewServiceImpl.updateByPrimaryKey(crew);
-        if (result > 0) {
-            return 200;
-        } else {
-            return 500;
-        }
+        return Res.ok(result);
     }
 
-    @RequestMapping("/view")
-    public Crew view(Crew crew) {
-        Crew crew1 = crewServiceImpl.selectRelativeByPrimaryKey(crew.getId());
-        if (crew1 != null)
-            crew1.setFlightTypeConfig(configService.selectByPrimaryKey(crew1.getFlightTypeConfigId()));
-        return crew1;
-    }
+//    @RequestMapping("/view")
+//    public Crew view(Crew crew) {
+//        Crew crew1 = crewServiceImpl.selectRelativeByPrimaryKey(crew.getId());
+//        if (crew1 != null)
+//            crew1.setFlightTypeConfig(configService.selectByPrimaryKey(crew1.getFlightTypeConfigId()));
+//        return crew1;
+//    }
 
     @RequestMapping("/list")
     public List<Crew> list(Crew crew) {
@@ -79,13 +103,13 @@ public class CrewController {
         return list;
     }
 
-    @RequestMapping("/del")
-    public int del(Crew crew) {
-        int result = crewServiceImpl.deleteByPrimaryKey(crew.getId());
-        if (result > 0) {
-            return 200;
-        } else {
-            return 500;
-        }
-    }
+//    @RequestMapping("/del")
+//    public int del(Crew crew) {
+//        int result = crewServiceImpl.deleteByPrimaryKey(crew.getId());
+//        if (result > 0) {
+//            return 200;
+//        } else {
+//            return 500;
+//        }
+//    }
 }

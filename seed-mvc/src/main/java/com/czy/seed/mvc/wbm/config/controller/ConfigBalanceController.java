@@ -1,21 +1,30 @@
-package com.czy.seed.mvc.wbm.config.controller;/*
+/*
  * 文 件 名 : ConfigBalanceController
  * 版    权 : CZYSOFT TECHNOLOGY CO.,LTD.Copyright 2017-2030.All rights reserved
  * 描    述 : <描述>
- * 修 改 人 : <工号>xu.yang22@zte.com.cn
- * 修改时间 : 2017/6/1 16:40
+ * 修 改 人 : <011424>zhangyang@inner.czy.com
+ * 修改时间 : 2017/6/10 14:13
  * 需求单号 : <需求Redmine单号>
  * 变更单号 : <变更Redmine单号>
  * 修改内容 : <修改内容>
  * Version : V1.0
  */
+package com.czy.seed.mvc.wbm.config.controller;
 
 
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
-
+/**
+ * <一句话功能简介><br>
+ *
+ * @author [011424]zhangyang@inner.czy.com
+ * @version [版本号, 2017年6月9日]
+ * @Description: <配载平衡页面跳转控制器>
+ * @ClassName:CargoHoldController
+ * @see [相关类/方法]
+ * @since [产品/模块]
+ */
 @RestController
 @RequestMapping("/wbm/cfg")
 public class ConfigBalanceController {
@@ -31,16 +40,6 @@ public class ConfigBalanceController {
         return mv;
     }
 
-    /**
-     * 类型配载列表页
-     *
-     * @return
-     */
-    @RequestMapping("/confTableList")
-    public ModelAndView confTableList() {
-        ModelAndView mv = new ModelAndView("/wbm/flight-cfg");
-        return mv;
-    }
 
     /**
      * 架次参数配载页
@@ -52,17 +51,14 @@ public class ConfigBalanceController {
         ModelAndView mv = new ModelAndView("/wbm/cfg-info");
         return mv;
     }
-
     /**
-     * 从航班类型列表选取一条数据进行跳转到对应的列表页面中
+     * 电子舱单配置页
      *
-     * @param flightTypeConfigId 航班类型主键ID
      * @return
      */
-    @RequestMapping("/turnTypeConfig")
-    public ModelAndView turnTypeConfig(@RequestParam Long flightTypeConfigId) {
-        ModelAndView mv = new ModelAndView("/wbm/cfg-type");
-        mv.addObject("flightTypeConfigId", flightTypeConfigId);
+    @RequestMapping("/manifest")
+    public ModelAndView manifest() {
+        ModelAndView mv = new ModelAndView("/wbm/manifest");
         return mv;
     }
 

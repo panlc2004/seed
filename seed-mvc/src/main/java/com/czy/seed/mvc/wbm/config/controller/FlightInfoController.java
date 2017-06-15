@@ -1,5 +1,17 @@
+/*
+ * 文 件 名 : FlightInfoController.java
+ * 版    权 : CZYSOFT TECHNOLOGY CO.,LTD.Copyright 2017-2030.All rights reserved
+ * 描    述 : <航班总体参数控制器>
+ * 修 改 人 : <011424>zhangyang@inner.czy.com
+ * 修改时间 : 2017年6月10日 上午10:53:25
+ * 需求单号 : <需求Redmine单号>
+ * 变更单号 : <变更Redmine单号>
+ * 修改内容 : <修改内容>
+ * Version : V1.0
+ */
 package com.czy.seed.mvc.wbm.config.controller;
 
+import com.czy.seed.mvc.util.Res;
 import com.czy.seed.mvc.wbm.config.entity.flight.FlightConfig;
 import com.czy.seed.mvc.wbm.config.entity.flight.FlightInfo;
 import com.czy.seed.mvc.wbm.config.service.FlightInfoService;
@@ -13,7 +25,14 @@ import javax.annotation.Resource;
 import java.util.List;
 
 /**
- * Created by Administrator on 2017/5/19.
+ * <一句话功能简介><br>
+ *
+ * @author [011424]zhangyang@inner.czy.com
+ * @version [版本号, 2017年6月9日]
+ * @Description: <航班总体参数配置控制器>
+ * @ClassName:CargoHoldController
+ * @see [相关类/方法]
+ * @since [产品/模块]
  */
 @RestController
 @RequestMapping("/cfg/flightInfo")
@@ -49,11 +68,24 @@ public class FlightInfoController {
     public FlightInfo searchByNo(FlightInfo flightInfo) {
         QueryParams queryParams = new QueryParams(FlightInfo.class);
         QueryParams.Criteria criteria = queryParams.createCriteria();
-        criteria.andEqualTo("flightNo",flightInfo.getFlightNo());
+        criteria.andEqualTo("flightNo", flightInfo.getFlightNo());
         FlightInfo info = flightInfoServiceImpl.selectOneRelativeByParams(queryParams);
         if (info != null)
             info.setFlightTypeConfig(configService.selectRelativeByPrimaryKey(info.getFlightConfig().getFlightTypeConfigId()));
         return info;
+    }
+
+    @RequestMapping("/searchFlightInfo")
+    public Res searchFlightInfo() {
+        List<FlightInfo> infoList = flightInfoServiceImpl.selectListRelativeByParams(new QueryParams(FlightInfo.class));
+        if (infoList != null) {
+            for (FlightInfo flightInfo : infoList) {
+                if (flightInfo != null) {
+                    flightInfo.setFlightTypeConfig(configService.selectRelativeByPrimaryKey(flightInfo.getFlightConfig().getFlightTypeConfigId()));
+                }
+            }
+        }
+        return Res.ok(infoList);
     }
 
 

@@ -24,11 +24,13 @@ public class SysResource implements Serializable{
 
     @Id
     private Long id;
-    private Long parentId;  //父级目录
+    private Long parentId;   //父级目录
     private Integer types;   //资源类型
-    private String code;    //资源编码
-    private String name;    //名称
-    private String url;     //资源链接
+    private String code;     //资源编码
+    private String name;     //资源名称
+    private String url;      //资源链接
+    private Integer orderBy;
+    private String icon;     //资源图标
 
     @Transient
     private List<SysResource> children; //子资源
@@ -81,6 +83,22 @@ public class SysResource implements Serializable{
         this.url = url;
     }
 
+    public Integer getOrderBy() {
+        return orderBy;
+    }
+
+    public void setOrderBy(Integer orderBy) {
+        this.orderBy = orderBy;
+    }
+
+    public String getIcon() {
+        return icon;
+    }
+
+    public void setIcon(String icon) {
+        this.icon = icon;
+    }
+
     public List<SysResource> getChildren() {
         if (children == null) {
             children = new ArrayList<SysResource>();
@@ -97,6 +115,8 @@ public class SysResource implements Serializable{
                 ", code='" + code + '\'' +
                 ", name='" + name + '\'' +
                 ", url='" + url + '\'' +
+                ", orderBy=" + orderBy +
+                ", icon='" + icon + '\'' +
                 ", children=" + children +
                 '}';
     }

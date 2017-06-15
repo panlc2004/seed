@@ -3,7 +3,7 @@ package com.czy.seed.mybatis.sql.helper;
 import com.czy.seed.mybatis.entity.Many;
 import com.czy.seed.mybatis.entity.One;
 import com.czy.seed.mybatis.entity.TestEntity;
-import org.junit.Test;
+import org.junit.Ignore;
 import sun.reflect.generics.reflectiveObjects.TypeVariableImpl;
 
 import java.lang.reflect.GenericDeclaration;
@@ -15,14 +15,14 @@ import java.lang.reflect.Type;
  */
 public class EntityHelperTest {
 
-    @Test
+    @Ignore
     public void getEntityClass() throws Exception {
         Class<?> entityClass = EntityHelper.getEntityClass(B.class);
         System.out.println(entityClass.getName());
 
     }
 
-    @Test
+    @Ignore
     public void test2() {
         Class<Object> superClassGenricType = getSuperClassGenricType(E.class, 0);
         System.out.println(superClassGenricType.getName());
@@ -31,12 +31,10 @@ public class EntityHelperTest {
     /**
      * 通过反射, 获得定义Class时声明的父类的泛型参数的类型. 如无法找到, 返回Object.class.
      *
-     *@param clazz
-     *            clazz The class to introspect
-     * @param index
-     *            the Index of the generic ddeclaration,start from 0.
+     * @param clazz clazz The class to introspect
+     * @param index the Index of the generic ddeclaration,start from 0.
      * @return the index generic declaration, or Object.class if cannot be
-     *         determined
+     * determined
      */
     public Class<Object> getSuperClassGenricType(final Class clazz, final int index) {
 
@@ -62,7 +60,7 @@ public class EntityHelperTest {
 //        GenericDeclaration genericDeclaration = ((TypeVariableImpl) params[index]).getGenericDeclaration();
 //        Class a = (Class) genericDeclaration;
 //        System.out.println(a.getName());
-        return (Class)params[index];
+        return (Class) params[index];
     }
 
 
@@ -74,8 +72,11 @@ public class EntityHelperTest {
 
     }
 
-    class C<T, M> {}
-    class D<Mane, One> extends C<TestEntity, Many> {}
+    class C<T, M> {
+    }
+
+    class D<Mane, One> extends C<TestEntity, Many> {
+    }
 
     class E extends D<One, TestEntity> {
 

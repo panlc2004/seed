@@ -14,5 +14,7 @@ public interface SysResourceService extends BaseService<SysResource> {
      * 查找资源树
      * @return
      */
+    List<SysResource> findResourceTreeForLoginUser();
+
     List<SysResource> selectResourceTree();
 }

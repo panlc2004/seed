@@ -21,25 +21,31 @@
 
 <body>
 
-<el-form id="dt-grid" :model="formData" ref="passengerCabins" label-width="110px">
-    <el-card class="box-card">
-        <div slot="header" class="clearfix">
-            <span style="line-height: 36px;">客舱信息配置</span>
-            <el-button type="primary" @click="submitPcForm('passengerCabins')">提交</el-button>
-        </div>
-            <el-form-item v-for="(passengerCabin, index) in formData.passengerCabins" :label="'客舱' + index"
-                          :prop="'passengerCabins.' + index + '.name'"
-                          :key="passengerCabin.key"
-                          :rules="{
-      required: true, message: '域名不能为空', trigger: 'blur,change'
-    }">
-                <el-input size="small" v-model="passengerCabin.name"></el-input>
-                <el-button @click="pcDelClick(passengerCabin)" type="primary"
-                           icon="delete"></el-button>
-            </el-form-item>
-
-        <el-button @click="pcAddClick(passengerCabins)" type="primary" icon="plus"></el-button>
-    </el-card>
+<el-form id="gg" :model="dynamicValidateForm" ref="dynamicValidateForm" label-width="100px" class="demo-dynamic">
+    <el-form-item
+            prop="email"
+            label="邮箱"
+            :rules="[
+      { required: true, message: '请输入邮箱地址', trigger: 'blur' },
+      { type: 'email', message: '请输入正确的邮箱地址', trigger: 'blur,change' }
+    ]"
+    >
+        <el-input v-model="dynamicValidateForm.email"></el-input>
+    </el-form-item>
+    <el-form-item
+            v-for="(domain, index) in dynamicValidateForm.domains"
+            :label="'域名' + index"
+            :key="domain.key"
+            :prop="'domains.' + index + '.value'"
+            :rules="rules(index)">
+        <el-input v-model.number="domain.value"></el-input>
+        <el-button @click.prevent="removeDomain(domain)">删除</el-button>
+    </el-form-item>
+    <el-form-item>
+        <el-button type="primary" @click="submitForm('dynamicValidateForm')">提交</el-button>
+        <el-button @click="addDomain">新增域名</el-button>
+        <el-button @click="resetForm('dynamicValidateForm')">重置</el-button>
+    </el-form-item>
 </el-form>
 
 
@@ -47,94 +53,71 @@
 
 
 <script types="text/javascript">
-
     new Vue({
-        el: "#dt-grid",
+        el: "#gg",
         data: function () {
             return {
-                tableData: this.loadData(),
-                form: {
-                    name: '',
-                    region: '',
-                    date1: '',
-                    date2: '',
-                    delivery: false,
-                    type: [],
-                    resource: '',
-                    desc: ''
+                dynamicValidateForm: {
+                    domains: [{
+                        value: ''
+                    }],
+                    email: ''
                 },
-                galleyGoods: [{}],
-                formData:{
-                    passengerCabins: [{}]
-
-                },
-            }
+                opts: {}
+            };
         },
         methods: {
-            loadData: function () {
-                var data = {};//组装的data数据
-                $.ajax({
-                    url: "/cfg/flightTypeConfig/list",
-                    data: {},
-                    type: 'POST',
-                    async: false,//需要添加这个参数使用同步功能
-                    success: function (result) {
-                        data = result;
-                    }
-                });
-                return data;
-            },
-            rowClick: function (row, event, column) {
-                debugger;
-                for (var key in row) {
-                    //alert(row.id);
-                }
-            },
-            pcAddClick: function () {
-                this.passengerCabins.push({key: Date.now()});
-            },
-            pcDelClick: function (passengerCabin) {
-                var indexOf = this.passengerCabins.indexOf(passengerCabin);
-                if (indexOf !== -1 && indexOf !== 0) {
-                    this.passengerCabins.splice(indexOf, 1)
-                } else {
-                    // this.$message({
-                    //     message: '不能删除第一个元素',
-                    //     type: 'warning'
-                    // });
-                }
-            },
-            submitPcForm: function (passengerForm) {
-                this.$refs[passengerForm].validate(function (result) {
-                    if (result) {
-                        debugger
-                        var params = JSON.stringify(this.passengerCabins);
-                        debugger
-                        $.ajax({
-                            url: "/cfg/passengerCabin/addList",
-                            data: params,
-                            type: 'POST',
-                            contentType: 'application/json;charset=UTF-8',
-                            success: function (result) {
-                                alert(result);
-                            }
-                        });
-                    } else {
-                        // this.$message({
-                        //     message: '校验不通过!',
-                        //     type: 'warning'
-                        // });
-                    }
-                });
+            submitForm: function (formName) {
+                this.$refs[formName].validate(function (valid) {
 
-                // this.$refs[passengerForm].validateField(function (prop,callback) {
-                //     debugger
-                //        alert(prop);
-                // });
+                    if (valid) {
+                        alert('submit!');
+                    } else {
+                        console.log('error submit!!');
+                        return false;
+                    }
+                });
+            },
+            resetForm: function (formName) {
+                this.$refs[formName].resetFields();
+            },
+            removeDomain: function (item) {
+                var index = this.dynamicValidateForm.domains.indexOf(item)
+                if (index !== -1) {
+                    this.dynamicValidateForm.domains.splice(index, 1)
+                }
+            },
+            addDomain: function () {
+                this.dynamicValidateForm.domains.push({
+                    value: '',
+                    key: Date.now()
+                });
+            },
+            rules: function () {
+                return [
+                    {required: true, validator: this.checkAge, trigger: 'blur'}
+                ];
+            },
+            checkAge: function (rule, value, callback) {
+                if (!value) {
+                    return callback(new Error('年龄不能为空'));
+                }
+                var index = rule.field;
+                var split = index.split(".");
+                var obj = this.dynamicValidateForm.domains[split[1]];
+                if (!Number.isInteger(value)) {
+                    alert(obj.value);
+                    callback(new Error('请输入数字值'));
+                } else {
+                    if (value < 18) {
+                        callback(new Error('必须年满18岁'));
+                    } else {
+                        callback();
+                    }
+                }
             }
         }
-    })
-
+    });
 
 </script>
 

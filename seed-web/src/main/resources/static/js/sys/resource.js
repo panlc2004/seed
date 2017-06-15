@@ -4,7 +4,6 @@
 var main_panel = new Vue({
         el: '#main-panel',
         data: {
-            formData: 1231231,
             queryParam: {
                 params: {}
             },
@@ -36,14 +35,14 @@ var main_panel = new Vue({
                 return data.name.indexOf(value) !== -1;
             },
             edit: function (data) {
-                this.formData = data;
+                this.formData = $.extend({},data);
                 this.editDialogShow = true;
             },
             save: function () {
                 var _this = this;
                 czy.ajax.postJson({
                     url: "/sys/resource/save",
-                    data:_this.formData,
+                    data: _this.formData,
                     success: function (result) {
                         main_panel.loadData();
                         main_panel.editDialogShow = false;
@@ -61,7 +60,7 @@ var main_panel = new Vue({
                         $.post("/sys/resource/deleteByPrimary/" + data.id, function (res) {
                             if (res.code == 200) {
                                 czy.msg.info(res.msg);
-                                store.remove(data);
+                                this.loadData();
                             } else {
                                 czy.msg.error(res.msg);
                             }
@@ -86,7 +85,7 @@ var main_panel = new Vue({
                         click: function (event) {
                             event.stopPropagation();                //点击按钮时，树不自动打开
                             main_panel.formData.parentId = data.id  // 将选中的节点的id值做为新增机构的parentId
-                            this.formData = {};                     //清空表单数据
+                            main_panel.formData = {};                     //清空表单数据
                             main_panel.editDialogShow = true;
                         }
                     }
@@ -111,14 +110,27 @@ var main_panel = new Vue({
                 if (data.id == 0) {  //是虚拟根节点
                     btns = [addBtn]
                 } else {    //是数据库中的正常节点
-                    if (data.children.length > 0) {
-                        btns = [addBtn, editBtn];
-                    } else {
-                        btns = [addBtn, editBtn, delBtn];
+                    if (data.children.length > 0) {    //有子节点，不生成删除按钮
+                        if (data.types == 2) {       //是目录，才生成“新增”按钮
+                            btns.push(addBtn);
+                        }
+                        btns.push(editBtn);
+                    } else {                        //无子节点，生成删除按钮
+                        if (data.types == 2) {       //是目录，才生成“新增”按钮
+                            btns.push(addBtn);
+                        }
+                        btns.push([editBtn, delBtn]);
+                        // btns.push(delBtn);
                     }
                 }
-                return createElement('span', [
-                    createElement('span', node.label),
+                return createElement('span',  [
+                    createElement('span',
+                        {attrs:{style:"vertical-align: middle"}},
+                        [
+                        createElement('li',
+                            {
+                                attrs:{class:data.icon == null ? "el-icon-menu" : data.icon,style:"font-size:3px;padding-bottom:12px;"},
+                            }), node.label]),
                     // createElement('span', {attrs: {style: "background-color:red; min-width:300px; min-height:60px"}}, data.url),
                     createElement(
                         'span',

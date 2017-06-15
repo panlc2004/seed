@@ -5,6 +5,7 @@ import com.czy.seed.mybatis.entity.TestEntity;
 import com.czy.seed.mybatis.mapper.SqlServerMapper;
 import org.junit.Assert;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -18,14 +19,14 @@ public class SqlServerTest {
     static ClassPathXmlApplicationContext ctx;
     static SqlServerMapper sqlMapper;
 
-    @BeforeClass
+    @Ignore
     public static void beforeClass() {
         ctx = new ClassPathXmlApplicationContext(new String[]{"classpath:applicationContext.xml"});
         ctx.start();
         sqlMapper = ctx.getBean(SqlServerMapper.class);
     }
 
-    @Test
+    @Ignore
     public void testInsertAndDeleteByPrimaryKeyAndUpdate() {
         TestEntity testEntity = new TestEntity();
         testEntity.setName("tsetest");
@@ -35,7 +36,7 @@ public class SqlServerTest {
         int delete = sqlMapper.deleteByPrimaryKey(testEntity.getId());
     }
 
-    @Test
+    @Ignore
     public void testSelectByPrimaryKey() {
         TestEntity testEntity = new TestEntity();
         testEntity.setName("tsetest");
@@ -45,7 +46,7 @@ public class SqlServerTest {
         Assert.assertTrue(id == testEntity1.getId());
     }
 
-    @Test
+    @Ignore
     public void testSelectListByParams() {
         QueryParams queryParams = new QueryParams(TestEntity.class);
         queryParams.selectProperties("name");
@@ -58,7 +59,7 @@ public class SqlServerTest {
         System.out.println(testEntities);
     }
 
-    @Test
+    @Ignore
     public void testSelectOneByParams() {
         QueryParams queryParams = new QueryParams(TestEntity.class);
 //        queryParams.selectProperties("name");
@@ -68,7 +69,7 @@ public class SqlServerTest {
         System.out.println(testEntity.getId());
     }
 
-    @Test
+    @Ignore
     public void testDeleteByParams() {
         QueryParams queryParams = new QueryParams(TestEntity.class);
         QueryParams.Criteria criteria = queryParams.createCriteria();
@@ -77,7 +78,7 @@ public class SqlServerTest {
         Assert.assertTrue(i == 0);
     }
 
-    @Test
+    @Ignore
     public void testUpdateSelectiveByParams() {
         QueryParams queryParams = new QueryParams(TestEntity.class);
         QueryParams.Criteria criteria = queryParams.createCriteria();
@@ -87,7 +88,7 @@ public class SqlServerTest {
         int i = sqlMapper.updateSelectiveByParams(testEntity, queryParams);
     }
 
-    @Test
+    @Ignore
     public void testUpdateByParams() {
         QueryParams queryParams = new QueryParams(TestEntity.class);
         QueryParams.Criteria criteria = queryParams.createCriteria();
@@ -96,7 +97,7 @@ public class SqlServerTest {
         int i = sqlMapper.updateByParams(testEntity, queryParams);
     }
 
-    @Test
+    @Ignore
     public void testSelectCountByParams() {
         QueryParams queryParams = new QueryParams(TestEntity.class);
         QueryParams.Criteria criteria = queryParams.createCriteria();
@@ -106,7 +107,7 @@ public class SqlServerTest {
     }
 
 
-    @Test
+    @Ignore
     public void testSelectListRelativeByParams() {
         QueryParams queryParams = new QueryParams(TestEntity.class);
         QueryParams.Criteria criteria = queryParams.createCriteria();
@@ -115,7 +116,7 @@ public class SqlServerTest {
         System.out.println(testEntities);
     }
 
-    @Test
+    @Ignore
     public void testSelectOneRelativeByParams() {
         QueryParams queryParams = new QueryParams(TestEntity.class);
         QueryParams.Criteria criteria = queryParams.createCriteria();

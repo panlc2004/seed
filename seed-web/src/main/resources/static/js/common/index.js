@@ -3,11 +3,11 @@ var menuItem = Vue.extend({
     props: {item: {}},
     template: [
         '<el-submenu :index="item.id + \'\'">',
-        '<template slot="title"><i :class="item.iconCls"></i>{{item.name}}</template>',
-        '<el-menu-item v-for="child in item.children" :index="child.id + \'\'" :key="child.id" @click="toPage(child)">{{child.name}}</el-menu-item>',
+        '<template slot="title"><i :class="item.icon == null ? \'el-icon-menu\' : item.icon"></i>{{item.name}}</template>',
+        '<el-menu-item v-if="child.children.length == 0" v-for="child in item.children" :index="child.id + \'\'" :key="child.id" @click="toPage(child)">{{child.name}}</el-menu-item>',
+        '<menu-item v-if="subChild.children.length > 0" :item="subChild" v-for="subChild in item.children" :key="subChild.name"></menu-item>',
         '</el-submenu>',
     ].join(''),
-    // template:buildMenu(this.items,""),
     methods: {
         buildMenu: function (item, element) {
             if (item.children.length > 0) {
@@ -30,18 +30,6 @@ var menuItem = Vue.extend({
     }
 
 })
-
-// function buildMenu(item, element) {
-//     if (item.children.length > 0) {
-//         element += '<el-submenu :index="item.id + \'\'">'
-//         item.children.forEach(function (child) {
-//             this.buildMenu(child, element);
-//         })
-//         element += '</el-submenu>'
-//     } else {
-//         element += '<el-menu-item v-for="child in item.children" :index="child.id + \'\'" :key="child.id" @click="toPage(item.url)">{{child.name}}</el-menu-item>';
-//     }
-// }
 
 var menuItemHide = Vue.extend({
     name: 'menu-item-hide',
@@ -101,8 +89,8 @@ const main_contain = new Vue({
         getMenuList: function () {
             this.$http.post("sys/resource/findResourceTreeForLoginUser").then(
                 function(success) {
-                    console.log(success.body);
                     this.menuList = success.body[0].children;
+                    console.log(this.menuList);
                 },
                 function(failure) {
                     alert(failure.body)

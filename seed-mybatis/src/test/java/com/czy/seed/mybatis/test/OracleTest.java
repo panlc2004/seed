@@ -5,6 +5,7 @@ import com.czy.seed.mybatis.entity.TestEntity;
 import com.czy.seed.mybatis.mapper.OracleMapper;
 import org.junit.Assert;
 import org.junit.BeforeClass;
+import org.junit.Ignore;
 import org.junit.Test;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
@@ -18,14 +19,14 @@ public class OracleTest {
     static ClassPathXmlApplicationContext ctx;
     static OracleMapper oracleMapper;
 
-    @BeforeClass
+    @Ignore
     public static void beforeClass() {
         ctx = new ClassPathXmlApplicationContext(new String[]{"classpath:applicationContext.xml"});
         ctx.start();
         oracleMapper = ctx.getBean(OracleMapper.class);
     }
 
-    @Test
+    @Ignore
     public void testInsertAndDeleteByPrimaryKeyAndUpdate() {
         TestEntity testEntity = new TestEntity();
 //        testEntity.setName("tsetest");
@@ -37,7 +38,7 @@ public class OracleTest {
         Assert.assertEquals(1, delete);
     }
 
-    @Test
+    @Ignore
     public void testSelectByPrimaryKey() {
         TestEntity testEntity = new TestEntity();
         testEntity.setName("tsetest");
@@ -47,7 +48,7 @@ public class OracleTest {
         Assert.assertTrue(id == testEntity1.getId());
     }
 
-    @Test
+    @Ignore
     public void testSelectListByParams() {
         QueryParams queryParams = new QueryParams(TestEntity.class);
         queryParams.orderBy("id").asc().orderBy("name").desc();
@@ -61,7 +62,7 @@ public class OracleTest {
         System.out.println(testEntities);
     }
 
-    @Test
+    @Ignore
     public void testSelectOneByParams() {
         QueryParams queryParams = new QueryParams(TestEntity.class);
 //        queryParams.selectProperties("name");
@@ -71,7 +72,7 @@ public class OracleTest {
         System.out.println(testEntity);
     }
 
-    @Test
+    @Ignore
     public void testDeleteByParams() {
         QueryParams queryParams = new QueryParams(TestEntity.class);
         QueryParams.Criteria criteria = queryParams.createCriteria();
@@ -80,7 +81,7 @@ public class OracleTest {
         Assert.assertTrue(i == 0);
     }
 
-    @Test
+    @Ignore
     public void testUpdateSelectiveByParams() {
         QueryParams queryParams = new QueryParams(TestEntity.class);
         QueryParams.Criteria criteria = queryParams.createCriteria();
@@ -90,7 +91,7 @@ public class OracleTest {
         int i = oracleMapper.updateSelectiveByParams(testEntity, null);
     }
 
-    @Test
+    @Ignore
     public void testUpdateByParams() {
         QueryParams queryParams = new QueryParams(TestEntity.class);
         QueryParams.Criteria criteria = queryParams.createCriteria();
@@ -99,7 +100,7 @@ public class OracleTest {
         int i = oracleMapper.updateByParams(testEntity, queryParams);
     }
 
-    @Test
+    @Ignore
     public void testSelectCountByParams() {
         QueryParams queryParams = new QueryParams(TestEntity.class);
         QueryParams.Criteria criteria = queryParams.createCriteria();
@@ -110,13 +111,13 @@ public class OracleTest {
 
 
 
-    @Test
+    @Ignore
     public void testSelectRelativeByPrimaryKey() {
         TestEntity testEntity = oracleMapper.selectRelativeByPrimaryKey(2);
         System.out.println(testEntity);
     }
 
-    @Test
+    @Ignore
     public void testSelectListRelativeByParams() {
         QueryParams queryParams = new QueryParams(TestEntity.class);
         queryParams.orderBy("id").asc().orderBy("name").desc();
@@ -128,7 +129,7 @@ public class OracleTest {
         System.out.println(testEntities);
     }
 
-    @Test
+    @Ignore
     public void testSelectOneRelativeByParams() {
         QueryParams queryParams = new QueryParams(TestEntity.class);
         QueryParams.Criteria criteria = queryParams.createCriteria();

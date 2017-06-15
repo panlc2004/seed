@@ -15,17 +15,17 @@ import static org.junit.Assert.*;
 /**
  * Created by 003914[panlc] on 2017-05-25.
  */
-@RunWith(SpringRunner.class)
-@SpringBootTest
+//@RunWith(SpringRunner.class)
+//@SpringBootTest
 public class SysUserRoleMapperTest {
 
-    @Autowired
-    private SysUserRoleMapper sysUserRoleMapper;
-
-    @Ignore
-    public void selectRolesByUserId() throws Exception {
-        List<SysRole> sysRoles = sysUserRoleMapper.selectRolesByUserId(1L);
-        System.out.println(sysRoles);
-    }
+//    @Autowired
+//    private SysUserRoleMapper sysUserRoleMapper;
+//
+//    @Ignore
+//    public void selectRolesByUserId() throws Exception {
+//        List<SysRole> sysRoles = sysUserRoleMapper.selectRolesByUserId(1L);
+//        System.out.println(sysRoles);
+//    }
 
 }
