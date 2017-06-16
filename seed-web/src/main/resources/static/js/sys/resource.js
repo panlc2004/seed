@@ -15,7 +15,7 @@ var main_panel = new Vue({
                 label: 'name'
             },
             // 表单数据
-            formData: {},            //表单数据
+            formData: {},
             editDialogShow: false,   //新增、修改表单是否显示
             formLabelWidth: '70px'   //表单标题宽度
         },
@@ -35,7 +35,7 @@ var main_panel = new Vue({
                 return data.name.indexOf(value) !== -1;
             },
             edit: function (data) {
-                this.formData = $.extend({},data);
+                this.formData = $.extend({}, data);
                 this.editDialogShow = true;
             },
             save: function () {
@@ -72,12 +72,14 @@ var main_panel = new Vue({
             renderContent: function (createElement, param) {
                 return this.buildOpeBtn(createElement, param.node, param.data, param.store);
             },
+            //翻页
             changePage: function (pageNum) {
                 this.queryParam.pageNum = pageNum;
                 this.loadData();
             },
-            getSelectedRow: function () {
-
+            //换选类型时，清空资源路径
+            typesChange: function (label) {
+                this.formData.url = "";
             },
             buildOpeBtn: function (createElement, node, data, store) {
                 var addBtn = createElement('el-button', {
@@ -85,7 +87,7 @@ var main_panel = new Vue({
                         click: function (event) {
                             event.stopPropagation();                //点击按钮时，树不自动打开
                             main_panel.formData.parentId = data.id  // 将选中的节点的id值做为新增机构的parentId
-                            main_panel.formData = {};                     //清空表单数据
+                            main_panel.formData = {types: 1};                     //清空表单数据
                             main_panel.editDialogShow = true;
                         }
                     }
@@ -123,14 +125,17 @@ var main_panel = new Vue({
                         // btns.push(delBtn);
                     }
                 }
-                return createElement('span',  [
+                return createElement('span', [
                     createElement('span',
-                        {attrs:{style:"vertical-align: middle"}},
+                        {attrs: {style: "vertical-align: middle"}},
                         [
-                        createElement('li',
-                            {
-                                attrs:{class:data.icon == null ? "el-icon-menu" : data.icon,style:"font-size:3px;padding-bottom:12px;"},
-                            }), node.label]),
+                            createElement('li',
+                                {
+                                    attrs: {
+                                        class: data.icon == null ? "el-icon-menu" : data.icon,
+                                        style: "font-size:3px;padding-bottom:12px;"
+                                    },
+                                }), node.label]),
                     // createElement('span', {attrs: {style: "background-color:red; min-width:300px; min-height:60px"}}, data.url),
                     createElement(
                         'span',

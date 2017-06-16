@@ -37,8 +37,17 @@
             <el-form-item label="资源编码" :label-width="formLabelWidth">
                 <el-input v-model="formData.code"></el-input>
             </el-form-item>
-            <el-form-item label="资源路径" :label-width="formLabelWidth">
+            <el-form-item label="资源类型" :label-width="formLabelWidth">
+                <el-radio-group v-model="formData.types" @change="typesChange">
+                    <el-radio class="radio" :label="1">菜单</el-radio>
+                    <el-radio class="radio" :label="2">目录</el-radio>
+                </el-radio-group>
+            </el-form-item>
+            <el-form-item v-if="formData.types == 1" label="资源路径" :label-width="formLabelWidth">
                 <el-input v-model="formData.url"></el-input>
+            </el-form-item>
+            <el-form-item label="资源图标" :label-width="formLabelWidth">
+                <el-input v-model="formData.icon"></el-input>
             </el-form-item>
             <el-form-item label="备注" :label-width="formLabelWidth">
                 <el-input v-model="formData.memo" type="textarea" :rows="5"></el-input>
