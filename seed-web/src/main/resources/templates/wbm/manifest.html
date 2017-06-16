@@ -1,0 +1,479 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<script th:src="@{/js/wbm/manifest.js}"></script>
+<style>
+    .time {
+        font-size: 13px;
+        color: #999;
+    }
+
+    .bottom {
+        margin-top: 13px;
+        line-height: 12px;
+    }
+
+    .button {
+        padding: 0;
+        float: right;
+    }
+
+    .image {
+        width: 100%;
+        display: block;
+    }
+
+    .clearfix:before,
+    .clearfix:after {
+        display: table;
+        content: "";
+
+    }
+
+    .clearfix:after {
+        align-content: center;
+        clear: both
+    }
+
+    .span-font {
+        background-color: #fbfdff;
+        color: #97a8be;
+        vertical-align: middle;
+        display: table-cell;
+        position: relative;
+        width: 1%;
+        font-size: 13px;
+        text-align: right;
+        padding-right: 5px;
+        white-space: nowrap;
+    }
+
+    .span-font-center {
+        background-color: #fbfdff;
+        color: #97a8be;
+        vertical-align: middle;
+        display: table-cell;
+        position: relative;
+        width: 1%;
+        font-size: 13px;
+        text-align: center;
+        white-space: nowrap;
+    }
+
+    .span-size-center {
+        background-color: #fbfdff;
+        color: #97a8be;
+        vertical-align: middle;
+        display: table-cell;
+        position: relative;
+        width: 1%;
+        font-size: 13px;
+        text-align: right;
+        padding-right: 5px;
+        white-space: nowrap;
+        height: 30px;
+    }
+</style>
+
+<div id="manifest" style="margin: 10px 10px 10px 10px">
+    <el-col :span="20">
+        <el-row>
+            <el-form :model="infoForm" ref="infoForm" label-width="110px">
+                <el-col :span="8">
+                    <el-card :body-style="{ padding: '0px' }">
+                        <div slot="header" class="clearfix">
+                            <span> Routing Config</span>
+                        </div>
+                        <div style="padding: 14px;">
+                            <el-col :span="18">
+                                <el-radio-group v-model="radio2">
+                                    <el-row>
+                                        <el-radio :label="1">A=>B</el-radio>
+                                    </el-row>
+                                    <el-row style="margin-top: 20px;">
+                                        <el-radio :label="2">A=>B</el-radio>
+                                        <el-radio :label="3">B=>C</el-radio>
+                                    </el-row>
+                                    <el-row style="margin-top: 20px;">
+                                        <el-radio :label="4">A=>B</el-radio>
+                                        <el-radio :label="5">B=>C</el-radio>
+                                        <el-radio :label="6">C=>D</el-radio>
+                                    </el-row>
+                                </el-radio-group>
+                            </el-col>
+                            <el-col :span="6">
+                                <el-row>
+                                    <el-input size="small"
+                                              v-model="infoForm.name">
+                                        <template slot="prepend">A</template>
+                                    </el-input>
+                                </el-row>
+                                <el-row style="margin-top: 5px;">
+                                    <el-input size="small"
+                                              v-model="infoForm.name">
+                                        <template slot="prepend">B</template>
+                                    </el-input>
+                                </el-row>
+                                <el-row style="margin-top: 5px;">
+                                    <el-input size="small"
+                                              v-model="infoForm.name">
+                                        <template slot="prepend">C</template>
+                                    </el-input>
+                                </el-row>
+                                <el-row style="margin-top: 5px;margin-bottom: 5px;">
+                                    <el-input size="small"
+                                              v-model="infoForm.name">
+                                        <template slot="prepend">D</template>
+                                    </el-input>
+                                </el-row>
+                            </el-col>
+                        </div>
+                    </el-card>
+                </el-col>
+            </el-form>
+            <el-col :span="16">
+                <el-card :body-style="{ padding: '0px' }" style="margin-left: 10px;">
+                    <div slot="header" class="clearfix">
+                        <span>航班信息配置</span>
+                    </div>
+                    <div style="padding: 14px;">
+                        <el-form :model="infoForm" ref="infoForm" label-width="110px">
+                            <el-row>
+                                <el-col :span="10">
+                                    <el-row>
+                                        <el-col :span="8">
+                                            <span class="span-size-center">Flight NO</span>
+                                        </el-col>
+                                        <el-col :span="16">
+                                                <el-autocomplete size="small"
+                                                        v-model="flightNo"
+                                                        :fetch-suggestions="querySearchAsync"
+                                                        placeholder="请输入内容"
+                                                        @select="handleSelect"
+                                                ></el-autocomplete>
+                                            </el-input>
+                                        </el-col>
+                                    </el-row>
+                                    <el-row style="margin-top: 5px;">
+                                        <el-col :span="8">
+                                            <span class="span-size-center">Route Name</span>
+                                        </el-col>
+                                        <el-col :span="16">
+                                            <el-input size="small"
+                                                      v-model="infoForm.segment">
+                                            </el-input>
+                                        </el-col>
+                                    </el-row>
+                                    <el-row style="margin-top: 5px;">
+                                        <el-col :span="8">
+                                            <span class="span-size-center">Route Name</span>
+                                        </el-col>
+                                        <el-col :span="16">
+                                            <el-input size="small"
+                                                      v-model="infoForm.segment">
+                                            </el-input>
+                                        </el-col>
+                                    </el-row>
+                                    <el-row style="margin-top: 5px;margin-bottom: 5px;">
+                                        <el-col :span="8">
+                                            <span class="span-size-center">Crew</span>
+                                        </el-col>
+                                        <el-col :span="4">
+                                            <el-input size="small"
+                                                      v-model="infoForm.name">
+                                            </el-input>
+                                        </el-col>
+                                        <el-col :span="4">
+                                            <el-input size="small"
+                                                      v-model="infoForm.name">
+                                            </el-input>
+                                        </el-col>
+                                        <el-col :span="4">
+                                            <el-input size="small"
+                                                      v-model="infoForm.name">
+                                            </el-input>
+                                        </el-col>
+                                        <el-col :span="4">
+                                            <el-input size="small"
+                                                      v-model="infoForm.name">
+                                            </el-input>
+                                        </el-col>
+                                    </el-row>
+                                    <el-row style="margin-top: 5px;margin-bottom: 5px;">
+                                        <el-col :span="8">
+                                            <span class="span-size-center">Galley Goods</span>
+                                        </el-col>
+                                        <el-col :span="8">
+                                            <el-input size="small"
+                                                      v-model="infoForm.name"></el-input>
+                                        </el-col>
+                                        <el-col :span="8">
+                                            <el-input size="small"
+                                                      v-model="infoForm.name">
+                                            </el-input>
+                                        </el-col>
+                                    </el-row>
+                                </el-col>
+                                <el-col :span="7">
+                                    <el-row>
+                                        <el-col :span="12">
+                                            <span class="span-size-center">AC Reg</span>
+                                        </el-col>
+                                        <el-col :span="12">
+                                            <el-input size="small"
+                                                      v-model="infoForm.name">
+                                            </el-input>
+                                        </el-col>
+                                    </el-row>
+                                    <el-row style="margin-top: 5px;">
+                                        <el-col :span="12">
+                                            <span class="span-size-center">AC type</span>
+                                        </el-col>
+                                        <el-col :span="12">
+                                            <el-input size="small"
+                                                      v-model="infoForm.name">
+                                            </el-input>
+                                        </el-col>
+                                    </el-row>
+                                    <el-row style="margin-top: 5px;">
+                                        <el-col :span="12">
+                                            <span class="span-size-center">SeatNum Type</span>
+                                        </el-col>
+                                        <el-col :span="12">
+                                            <el-input size="small"
+                                                      v-model="infoForm.name">
+                                            </el-input>
+                                        </el-col>
+                                    </el-row>
+                                    <el-row style="margin-top: 5px;">
+                                        <el-col :span="12">
+                                            <span class="span-size-center">Basic Weight</span>
+                                        </el-col>
+                                        <el-col :span="12">
+                                            <el-input size="small"
+                                                      v-model="infoForm.baseWeight">
+                                            </el-input>
+                                        </el-col>
+                                    </el-row>
+                                    <el-row style="margin-top: 5px;margin-bottom: 5px;">
+                                        <el-col :span="12">
+                                            <span class="span-size-center">Basic Index</span>
+                                        </el-col>
+                                        <el-col :span="12">
+                                            <el-input size="small"
+                                                      v-model="infoForm.baseIndex">
+                                            </el-input>
+                                        </el-col>
+                                    </el-row>
+                                </el-col>
+                                <el-col :span="7">
+                                    <el-row style="margin-left: 5px;">
+                                        <el-col :span="12">
+                                            <span class="span-size-center">Limited MTOW</span>
+                                        </el-col>
+                                        <el-col :span="12">
+                                            <el-input size="small"
+                                                      v-model="infoForm.limitedMtow">
+                                            </el-input>
+                                        </el-col>
+                                    </el-row>
+                                    <el-row style="margin-top: 5px;">
+                                        <el-col :span="12">
+                                            <span class="span-size-center">Limited MLDW</span>
+                                        </el-col>
+                                        <el-col :span="12">
+                                            <el-input size="small"
+                                                      v-model="infoForm.limitedMldw">
+                                            </el-input>
+                                        </el-col>
+                                    </el-row>
+                                    <el-row style="margin-top: 5px;">
+                                        <el-col :span="12">
+                                            <span class="span-size-center">Limited MZFW</span>
+                                        </el-col>
+                                        <el-col :span="12">
+                                            <el-input size="small"
+                                                      v-model="infoForm.limitedMzfw">
+                                            </el-input>
+                                        </el-col>
+                                    </el-row>
+                                    <el-row style="margin-top: 5px;">
+                                        <el-col :span="12">
+                                            <span class="span-size-center">Takeoff Fuel</span>
+                                        </el-col>
+                                        <el-col :span="12">
+                                            <el-input size="small"
+                                                      v-model="infoForm.name">
+                                            </el-input>
+                                        </el-col>
+                                    </el-row>
+                                    <el-row style="margin-top: 5px;margin-bottom: 5px;">
+                                        <el-col :span="12">
+                                            <span class="span-size-center">Trip Fuel</span>
+                                        </el-col>
+                                        <el-col :span="12">
+                                            <el-input size="small"
+                                                      v-model="infoForm.name">
+                                            </el-input>
+                                        </el-col>
+                                    </el-row>
+                                </el-col>
+                            </el-row>
+                        </el-form>
+                    </div>
+                </el-card>
+            </el-col>
+
+        </el-row>
+        <el-row style="margin-top: 10px;">
+            <el-col :span="24">
+                <el-card :body-style="{ padding: '0px' }" style="margin-left: 10px;">
+                    <div style="padding: 14px;">
+                        <el-form :model="cabinsForm" ref="cabinsForm" label-width="110px">
+                            <el-row>
+                                <el-col :span="6" v-for="segment in cabinsForm.segments">
+                                    <el-card :body-style="{ padding: '0px' }" style="margin-left: 10px;">
+                                        <el-row v-for="(passengerType,typeIndex) in cabinsForm.passengerTypes">
+                                            <el-col :span="6"
+                                                    v-for="(passengerCabin,cabinIndex) in cabinsForm.passengerCabins">
+                                                <span class="span-font" v-if="typeIndex==0&&cabinIndex==0">
+                                                    &nbsp;
+                                                </span>
+                                                <span class="span-font-center" v-else-if="typeIndex==0&&cabinIndex!=0">
+                                                    {{passengerCabin.name}}
+                                                </span>
+                                                <span class="span-font" v-else-if="typeIndex!=0&&cabinIndex==0">
+                                                    {{passengerType.key}}
+                                                </span>
+                                                <el-input size="small" v-model="cabinsForm.name" v-else>
+                                                </el-input>
+                                            </el-col>
+                                        </el-row>
+                                    </el-card>
+                                </el-col>
+                            </el-row>
+                        </el-form>
+                    </div>
+                </el-card>
+            </el-col>
+        </el-row>
+        <el-row>
+            <el-col :span="24">
+                <el-card :body-style="{ padding: '0px' }" style="margin-left: 10px;">
+                    <el-form :model="cargoHoldForm" ref="cargoHoldForm" label-width="110px">
+                        <el-row>
+                            <el-col :span="6" v-for="segment in cargoHoldForm.segments">
+                                <el-card :body-style="{ padding: '0px' }" style="margin-left: 10px;margin-top: 10px;">
+                                    <el-row v-for="(cargoType,typeIndex) in cargoHoldForm.cargoTypes">
+                                        <el-col :span="4"
+                                                v-for="(cargo,cargoIndex) in cargoHoldForm.cargos">
+                                                <span class="span-font" v-if="typeIndex==0&&cargoIndex==0">
+                                                    &nbsp;
+                                                </span>
+                                            <span class="span-font-center" v-else-if="typeIndex==0&&cargoIndex!=0">
+                                                    {{cargo.name}}
+                                                </span>
+                                            <span class="span-font" v-else-if="typeIndex!=0&&cargoIndex==0">
+                                                    {{cargoType.key}}
+                                                </span>
+                                            <el-input size="small" v-model="cargoHoldForm.name" v-else>
+                                            </el-input>
+                                        </el-col>
+                                        <el-col :span="4" v-if="typeIndex==0">
+                                                <span class="span-font" v-if="typeIndex==0">
+                                                    FS
+                                                </span>
+                                        </el-col>
+                                        <el-col :span="4" v-else>
+                                            <el-input size="small" v-model="cargoHoldForm.name">
+                                            </el-input>
+                                        </el-col>
+                                    </el-row>
+                                </el-card>
+                            </el-col>
+                        </el-row>
+                    </el-form>
+                </el-card>
+            </el-col>
+        </el-row>
+        <el-row>
+            <el-card :body-style="{ padding: '0px' }" style="margin-left: 10px;height: 500px;">
+                <div slot="header" class="clearfix">
+                    <span>区域</span>
+                </div>
+                <div style="padding: 14px; margin-left: 1%">
+
+                </div>
+            </el-card>
+        </el-row>
+    </el-col>
+
+    <el-col :span="4">
+        <el-card :body-style="{ padding: '0px' }" style="margin-left: 10px;">
+            <div slot="header" class="clearfix">
+                <span>区域</span>
+            </div>
+            <div style="padding: 14px; margin-left: 1%">
+                <span>好吃的汉堡</span>
+                <div class="bottom clearfix">
+                    <time class="time">{{ currentDate }}</time>
+                    <el-button type="text" class="button">操作按钮</el-button>
+                </div>
+            </div>
+        </el-card>
+
+        <el-card :body-style="{ padding: '0px' }" style="margin-left: 10px;">
+            <div slot="header" class="clearfix">
+                <span>区域</span>
+            </div>
+            <div style="padding: 14px; margin-left: 1%">
+                <span>好吃的汉堡</span>
+                <div class="bottom clearfix">
+                    <time class="time">{{ currentDate }}</time>
+                    <el-button type="text" class="button">操作按钮</el-button>
+                </div>
+            </div>
+        </el-card>
+        <el-card :body-style="{ padding: '0px' }" style="margin-left: 10px;">
+            <div slot="header" class="clearfix">
+                <span>区域</span>
+            </div>
+            <div style="padding: 14px; margin-left: 1%">
+                <span>好吃的汉堡</span>
+                <div class="bottom clearfix">
+                    <time class="time">{{ currentDate }}</time>
+                    <el-button type="text" class="button">操作按钮</el-button>
+                </div>
+            </div>
+        </el-card>
+        <el-card :body-style="{ padding: '0px' }" style="margin-left: 10px;">
+            <div slot="header" class="clearfix">
+                <span>区域</span>
+            </div>
+            <div style="padding: 14px; margin-left: 1%">
+                <span>好吃的汉堡</span>
+                <div class="bottom clearfix">
+                    <time class="time">{{ currentDate }}</time>
+                    <el-button type="text" class="button">操作按钮</el-button>
+                </div>
+            </div>
+        </el-card>
+        <el-card :body-style="{ padding: '0px' }" style="margin-left: 10px;">
+            <div slot="header" class="clearfix">
+                <span>区域</span>
+            </div>
+            <div style="padding: 14px; margin-left: 1%">
+                <span>好吃的汉堡</span>
+                <div class="bottom clearfix">
+                    <time class="time">{{ currentDate }}</time>
+                    <el-button type="text" class="button">操作按钮</el-button>
+                </div>
+            </div>
+        </el-card>
+    </el-col>
+
+</div>
+
+</body>
+</html>

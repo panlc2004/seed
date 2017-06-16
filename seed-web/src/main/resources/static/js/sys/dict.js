@@ -27,7 +27,8 @@ var mainPanel = new Vue({
         },
         //字典项查询
         queryDict: function () {
-            this.getDictGrid().reload(this.queryParam)
+            var param = {or: [{like: {name:this.queryParam.name}}]};
+            this.getDictGrid().reload(param)
             this.showItemOperateBtn = false;
         },
         //新增字典项

@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50155
 File Encoding         : 65001
 
-Date: 2017-06-13 19:18:30
+Date: 2017-06-16 17:40:40
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -45,13 +45,13 @@ CREATE TABLE `sys_dict` (
   `MEMO` varchar(2000) DEFAULT NULL,
   `PARENT_ID` bigint(20) NOT NULL DEFAULT '0' COMMENT '父级字典项ID,0表示没有父级字典项',
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sys_dict
 -- ----------------------------
-INSERT INTO `sys_dict` VALUES ('3', '0', '2017-06-13 13:34:06', '1', '2017-06-13 16:15:01', '2', '1', 'test', 'test', 'test123123', '0');
-INSERT INTO `sys_dict` VALUES ('4', '1', '2017-06-13 16:02:29', '1', '2017-06-13 17:39:53', '4', '1', 'sex', '性别', '', '0');
+INSERT INTO `sys_dict` VALUES ('3', '0', '2017-06-13 13:34:06', '1', '2017-06-16 13:14:24', '7', '1', 'test', 'test', 'test123123', '0');
+INSERT INTO `sys_dict` VALUES ('4', '1', '2017-06-13 16:02:29', '1', '2017-06-14 13:32:05', '9', '1', 'sex', '性别', '354365', '0');
 
 -- ----------------------------
 -- Table structure for `sys_dict_item`
@@ -71,15 +71,14 @@ CREATE TABLE `sys_dict_item` (
   `VALUE` varchar(300) NOT NULL,
   `MEMO` varchar(2000) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sys_dict_item
 -- ----------------------------
-INSERT INTO `sys_dict_item` VALUES ('3', '1', '2017-06-13 18:53:41', null, null, '1', '1', '0', 'test', '1234', '1324', '1341');
-INSERT INTO `sys_dict_item` VALUES ('4', '1', '2017-06-13 18:53:58', '1', '2017-06-13 19:07:51', '2', '1', '0', 'test', '123', '41234', '1234134312341324');
-INSERT INTO `sys_dict_item` VALUES ('7', '1', '2017-06-13 18:55:13', null, null, '1', '1', '0', 'test', '245243', '524524', '52435245');
-INSERT INTO `sys_dict_item` VALUES ('10', '1', '2017-06-13 19:08:01', '1', '2017-06-13 19:08:11', '2', '1', '0', 'sex', '1341', '123412341234', '23412341234');
+INSERT INTO `sys_dict_item` VALUES ('3', '1', '2017-06-13 18:53:41', '1', '2017-06-14 13:34:25', '2', '1', '0', 'test', '1234', '1324', '1341');
+INSERT INTO `sys_dict_item` VALUES ('10', '1', '2017-06-13 19:08:01', '1', '2017-06-14 13:32:16', '3', '1', '0', 'sex', '1341', '123412341234', '23412341234');
+INSERT INTO `sys_dict_item` VALUES ('13', '1', '2017-06-14 13:34:34', null, null, '1', '1', '0', 'test', '1234', '1234', '1234');
 
 -- ----------------------------
 -- Table structure for `sys_log`
@@ -87,16 +86,38 @@ INSERT INTO `sys_dict_item` VALUES ('10', '1', '2017-06-13 19:08:01', '1', '2017
 DROP TABLE IF EXISTS `sys_log`;
 CREATE TABLE `sys_log` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
-  `OPER_ID` bigint(20) NOT NULL COMMENT '操作人',
-  `OPER_TIME` datetime NOT NULL COMMENT '操作时间',
+  `OPE_ID` bigint(20) NOT NULL COMMENT '操作人',
+  `OPE_TIME` datetime NOT NULL COMMENT '操作时间',
   `OPERATION` varchar(500) NOT NULL COMMENT '操作内容',
+  `METHOD` varchar(200) NOT NULL COMMENT '调用方法',
+  `PARAMS` varchar(5000) NOT NULL COMMENT '调用参数',
+  `IP` varchar(30) NOT NULL COMMENT '用户IP',
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sys_log
 -- ----------------------------
-INSERT INTO `sys_log` VALUES ('1', '1', '0000-00-00 00:00:00', '');
+INSERT INTO `sys_log` VALUES ('1', '1', '0000-00-00 00:00:00', '', '', '', '');
+INSERT INTO `sys_log` VALUES ('2', '1', '2017-06-13 19:35:38', '保存', 'com.czy.seed.mvc.sys.controller.SysDictController.save()', '{\"code\":\"test\",\"createBy\":0,\"createDt\":1497332046000,\"id\":3,\"logicDel\":1,\"memo\":\"test123123\",\"name\":\"test\",\"parentId\":0,\"updateBy\":1,\"updateDt\":1497341701000,\"version\":2}', '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_log` VALUES ('3', '1', '2017-06-13 19:36:59', '保存', 'com.czy.seed.mvc.sys.controller.SysDictController.save()', '{\"code\":\"test\",\"createBy\":0,\"createDt\":1497332046000,\"id\":3,\"logicDel\":1,\"memo\":\"test123123\",\"name\":\"test\",\"parentId\":0,\"updateBy\":1,\"updateDt\":1497353746000,\"version\":3}', '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_log` VALUES ('4', '1', '2017-06-14 13:24:59', '新增/修改数据字典项', 'com.czy.seed.mvc.sys.controller.SysDictController.save()', '{}', '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_log` VALUES ('5', '1', '2017-06-14 13:25:09', '新增/修改数据字典项', 'com.czy.seed.mvc.sys.controller.SysDictController.save()', '{}', '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_log` VALUES ('6', '1', '2017-06-14 13:25:32', '新增/修改数据字典项', 'com.czy.seed.mvc.sys.controller.SysDictController.save()', '{}', '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_log` VALUES ('7', '1', '2017-06-14 13:25:41', '新增/修改数据字典项', 'com.czy.seed.mvc.sys.controller.SysDictController.save()', '{}', '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_log` VALUES ('8', '1', '2017-06-14 13:26:26', '新增/修改数据字典项', 'com.czy.seed.mvc.sys.controller.SysDictController.save()', '{}', '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_log` VALUES ('9', '1', '2017-06-14 13:26:50', '新增/修改数据字典项', 'com.czy.seed.mvc.sys.controller.SysDictController.save()', '{}', '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_log` VALUES ('10', '1', '2017-06-14 13:28:33', '新增/修改数据字典项', 'com.czy.seed.mvc.sys.controller.SysDictController.save()', '{}', '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_log` VALUES ('11', '1', '2017-06-14 13:28:53', '新增/修改数据字典项', 'com.czy.seed.mvc.sys.controller.SysDictController.save()', '{}', '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_log` VALUES ('12', '1', '2017-06-14 13:30:28', '新增/修改数据字典项', 'com.czy.seed.mvc.sys.controller.SysDictController.save()', '{}', '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_log` VALUES ('13', '1', '2017-06-14 13:30:37', '新增/修改数据字典项', 'com.czy.seed.mvc.sys.controller.SysDictController.save()', '{}', '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_log` VALUES ('14', '1', '2017-06-14 13:31:23', '新增/修改数据字典项', 'com.czy.seed.mvc.sys.controller.SysDictController.save()', '{\"code\":\"sex\",\"createBy\":1,\"createDt\":1497340949000,\"id\":4,\"logicDel\":1,\"memo\":\"354365\",\"name\":\"性别\",\"parentId\":0,\"updateBy\":1,\"updateDt\":1497405526000,\"version\":8}', '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_log` VALUES ('15', '1', '2017-06-14 13:31:41', '新增/修改数据字典项', 'com.czy.seed.mvc.sys.controller.SysDictController.save()', '{\"code\":\"sex\",\"createBy\":1,\"createDt\":1497340949000,\"id\":4,\"logicDel\":1,\"memo\":\"354365\",\"name\":\"性别\",\"parentId\":0,\"updateBy\":1,\"updateDt\":1497405526000,\"version\":8}', '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_log` VALUES ('16', '1', '2017-06-14 13:32:05', '新增/修改数据字典项', 'com.czy.seed.mvc.sys.controller.SysDictController.save()', '{\"code\":\"sex\",\"createBy\":1,\"createDt\":1497340949000,\"id\":4,\"logicDel\":1,\"memo\":\"354365\",\"name\":\"性别\",\"parentId\":0,\"updateBy\":1,\"updateDt\":1497405526000,\"version\":8}', '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_log` VALUES ('17', '1', '2017-06-14 13:32:08', '新增/修改数据字典项', 'com.czy.seed.mvc.sys.controller.SysDictController.save()', '{\"code\":\"test\",\"createBy\":0,\"createDt\":1497332046000,\"id\":3,\"logicDel\":1,\"memo\":\"test123123\",\"name\":\"test\",\"parentId\":0,\"updateBy\":1,\"updateDt\":1497353864000,\"version\":4}', '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_log` VALUES ('18', '1', '2017-06-14 13:35:20', '新增/修改数据字典项', 'com.czy.seed.mvc.sys.controller.SysDictController.save()', '{\"code\":\"134\",\"memo\":\"134\",\"name\":\"1234\"}', '0:0:0:0:0:0:0:1');
+INSERT INTO `sys_log` VALUES ('19', '1', '2017-06-14 16:34:30', '新增/修改数据字典项', 'com.czy.seed.mvc.sys.controller.SysDictController.save()', '{\"code\":\"test\",\"createBy\":0,\"createDt\":1497332046000,\"id\":3,\"logicDel\":1,\"memo\":\"test123123\",\"name\":\"test\",\"parentId\":0,\"updateBy\":1,\"updateDt\":1497418328000,\"version\":5}', '10.131.11.53');
+INSERT INTO `sys_log` VALUES ('20', '1', '2017-06-16 13:14:24', '新增/修改数据字典项', 'com.czy.seed.mvc.sys.controller.SysDictController.save()', '{\"code\":\"test\",\"createBy\":0,\"createDt\":1497332046000,\"id\":3,\"logicDel\":1,\"memo\":\"test123123\",\"name\":\"test\",\"parentId\":0,\"updateBy\":1,\"updateDt\":1497429270000,\"version\":6}', '0:0:0:0:0:0:0:1');
 
 -- ----------------------------
 -- Table structure for `sys_org`
@@ -115,8 +136,8 @@ CREATE TABLE `sys_org` (
 -- Records of sys_org
 -- ----------------------------
 INSERT INTO `sys_org` VALUES ('1', '0', 'CZY', '春之翼', null);
-INSERT INTO `sys_org` VALUES ('2', '1', 'depart1', '研发一部', null);
-INSERT INTO `sys_org` VALUES ('3', '1', '123123', '1231231', '23123123');
+INSERT INTO `sys_org` VALUES ('2', '1', 'depart_fir', '研发一部', null);
+INSERT INTO `sys_org` VALUES ('3', '1', 'depart_sec', '研发二部', '');
 INSERT INTO `sys_org` VALUES ('10', '3', '99', '99', '99');
 
 -- ----------------------------
@@ -176,25 +197,28 @@ CREATE TABLE `sys_resource` (
   `CODE` varchar(30) NOT NULL COMMENT '资源编码',
   `NAME` varchar(50) NOT NULL COMMENT '资源名称',
   `URL` varchar(50) NOT NULL COMMENT '资源路径',
-  `ORDER_BY` int(11) DEFAULT NULL,
+  `ORDER_BY` int(11) NOT NULL DEFAULT '999' COMMENT '排序号',
+  `ICON` varchar(50) DEFAULT NULL COMMENT '菜单图标',
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=21 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sys_resource
 -- ----------------------------
-INSERT INTO `sys_resource` VALUES ('1', '0', '1', 'sys', '系统管理', '', null);
-INSERT INTO `sys_resource` VALUES ('2', '1', '1', 'sys_org', '机构用户管理', 'sys/org/index', null);
-INSERT INTO `sys_resource` VALUES ('3', '1', '1', 'sys_param', '系统参数设置', 'sys/param/index', null);
-INSERT INTO `sys_resource` VALUES ('4', '1', '1', 'sys_resource', '菜单管理', 'sys/resource/index', null);
-INSERT INTO `sys_resource` VALUES ('5', '0', '1', '1234', '综合办公', '1234', null);
-INSERT INTO `sys_resource` VALUES ('9', '0', '1', '476', '4567', '4567', null);
-INSERT INTO `sys_resource` VALUES ('10', '9', '1', '2345', '45', '234523', null);
-INSERT INTO `sys_resource` VALUES ('11', '10', '1', '12341', '12341234', '23412341', null);
-INSERT INTO `sys_resource` VALUES ('15', '1', '1', 'sys_role', '角色管理', 'sys/role/index', null);
-INSERT INTO `sys_resource` VALUES ('16', '5', '1', 'asset', '资产管理', '123123', null);
-INSERT INTO `sys_resource` VALUES ('17', '1', '1', 'sys_dict', '数据字典', 'sys/dict/index', null);
-INSERT INTO `sys_resource` VALUES ('18', '1', '1', 'sys_attachment', '附件管理', 'sys/attachment/index', null);
+INSERT INTO `sys_resource` VALUES ('1', '0', '2', 'sys', '系统管理', '', '999', null);
+INSERT INTO `sys_resource` VALUES ('2', '1', '1', 'sys_org', '机构用户管理', 'sys/org/index', '2', 'el-icon-star-off');
+INSERT INTO `sys_resource` VALUES ('3', '1', '1', 'sys_param', '系统参数设置', 'sys/param/index', '1', null);
+INSERT INTO `sys_resource` VALUES ('4', '1', '1', 'sys_resource', '菜单管理', 'sys/resource/index', '999', null);
+INSERT INTO `sys_resource` VALUES ('5', '0', '2', '1234', '综合办公', '', '999', null);
+INSERT INTO `sys_resource` VALUES ('9', '0', '2', '476', '4567', '4567', '999', null);
+INSERT INTO `sys_resource` VALUES ('10', '9', '1', '2345', '45', '234523', '999', null);
+INSERT INTO `sys_resource` VALUES ('11', '10', '1', '12341', '12341234', '23412341', '999', null);
+INSERT INTO `sys_resource` VALUES ('15', '1', '1', 'sys_role', '角色管理', 'sys/role/index', '999', null);
+INSERT INTO `sys_resource` VALUES ('16', '5', '1', 'asset', '资产管理', '123123', '999', null);
+INSERT INTO `sys_resource` VALUES ('17', '1', '1', 'sys_dict', '数据字典', 'sys/dict/index', '999', null);
+INSERT INTO `sys_resource` VALUES ('18', '1', '1', 'sys_attachment', '附件管理', 'sys/attachment/index', '999', null);
+INSERT INTO `sys_resource` VALUES ('19', '11', '1', '2345', '2345', '23452', '999', null);
+INSERT INTO `sys_resource` VALUES ('20', '10', '2', '134188', '13488', '234188', '999', null);
 
 -- ----------------------------
 -- Table structure for `sys_role`
@@ -206,7 +230,7 @@ CREATE TABLE `sys_role` (
   `NAME` varchar(100) DEFAULT NULL COMMENT '角色名称',
   `MEMO` varchar(2000) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sys_role
@@ -219,7 +243,6 @@ INSERT INTO `sys_role` VALUES ('8', 'tyuiasdfasdf', 'tui', 'tui');
 INSERT INTO `sys_role` VALUES ('9', 'fh', 'fhj', 'jfhjfhj');
 INSERT INTO `sys_role` VALUES ('11', 'adf', '12341', 'adf');
 INSERT INTO `sys_role` VALUES ('12', '356', '3456', '3456');
-INSERT INTO `sys_role` VALUES ('13', 'fg', '4567', 's245');
 INSERT INTO `sys_role` VALUES ('14', 'fgs', 'kjukj', 'dfgsfg');
 INSERT INTO `sys_role` VALUES ('15', 'jkl;jlk;', '[pou;l', ';jl;');
 INSERT INTO `sys_role` VALUES ('17', '6yhn', '7uhjn', '6yhb');
@@ -229,6 +252,8 @@ INSERT INTO `sys_role` VALUES ('21', '34esdc', '34erdf', '4ed');
 INSERT INTO `sys_role` VALUES ('22', '7ythgn', '6yuhj', '56tygh');
 INSERT INTO `sys_role` VALUES ('23', '23wesd', '23we', '23wed');
 INSERT INTO `sys_role` VALUES ('24', '134', '1234', '134');
+INSERT INTO `sys_role` VALUES ('25', '1234', '1324', '1234');
+INSERT INTO `sys_role` VALUES ('26', '1234', '124', '1234');
 
 -- ----------------------------
 -- Table structure for `sys_role_resource`
@@ -239,21 +264,43 @@ CREATE TABLE `sys_role_resource` (
   `SYS_ROLE_ID` bigint(20) NOT NULL,
   `SYS_RESOURCE_ID` bigint(20) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=56 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=137 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sys_role_resource
 -- ----------------------------
-INSERT INTO `sys_role_resource` VALUES ('40', '1', '4');
-INSERT INTO `sys_role_resource` VALUES ('41', '1', '15');
 INSERT INTO `sys_role_resource` VALUES ('42', '2', '3');
 INSERT INTO `sys_role_resource` VALUES ('43', '2', '4');
 INSERT INTO `sys_role_resource` VALUES ('44', '2', '5');
 INSERT INTO `sys_role_resource` VALUES ('45', '2', '15');
 INSERT INTO `sys_role_resource` VALUES ('52', '13', '3');
-INSERT INTO `sys_role_resource` VALUES ('53', '11', '9');
-INSERT INTO `sys_role_resource` VALUES ('54', '11', '10');
-INSERT INTO `sys_role_resource` VALUES ('55', '11', '11');
+INSERT INTO `sys_role_resource` VALUES ('56', '11', '9');
+INSERT INTO `sys_role_resource` VALUES ('57', '11', '10');
+INSERT INTO `sys_role_resource` VALUES ('58', '11', '11');
+INSERT INTO `sys_role_resource` VALUES ('59', '11', '19');
+INSERT INTO `sys_role_resource` VALUES ('60', '11', '20');
+INSERT INTO `sys_role_resource` VALUES ('90', '3', '5');
+INSERT INTO `sys_role_resource` VALUES ('91', '3', '9');
+INSERT INTO `sys_role_resource` VALUES ('92', '3', '10');
+INSERT INTO `sys_role_resource` VALUES ('93', '3', '11');
+INSERT INTO `sys_role_resource` VALUES ('94', '3', '16');
+INSERT INTO `sys_role_resource` VALUES ('95', '3', '19');
+INSERT INTO `sys_role_resource` VALUES ('96', '3', '20');
+INSERT INTO `sys_role_resource` VALUES ('97', '4', '9');
+INSERT INTO `sys_role_resource` VALUES ('98', '4', '10');
+INSERT INTO `sys_role_resource` VALUES ('99', '4', '11');
+INSERT INTO `sys_role_resource` VALUES ('100', '4', '19');
+INSERT INTO `sys_role_resource` VALUES ('101', '4', '20');
+INSERT INTO `sys_role_resource` VALUES ('104', '8', '5');
+INSERT INTO `sys_role_resource` VALUES ('105', '8', '16');
+INSERT INTO `sys_role_resource` VALUES ('129', '1', '1');
+INSERT INTO `sys_role_resource` VALUES ('130', '1', '2');
+INSERT INTO `sys_role_resource` VALUES ('131', '1', '3');
+INSERT INTO `sys_role_resource` VALUES ('132', '1', '4');
+INSERT INTO `sys_role_resource` VALUES ('133', '1', '15');
+INSERT INTO `sys_role_resource` VALUES ('134', '1', '17');
+INSERT INTO `sys_role_resource` VALUES ('135', '1', '18');
+INSERT INTO `sys_role_resource` VALUES ('136', '1', '20');
 
 -- ----------------------------
 -- Table structure for `sys_user`
@@ -298,16 +345,23 @@ CREATE TABLE `sys_user_role` (
   `SYS_USER_ID` bigint(20) NOT NULL,
   `SYS_ROLE_ID` bigint(20) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=27 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of sys_user_role
 -- ----------------------------
-INSERT INTO `sys_user_role` VALUES ('1', '1', '2');
-INSERT INTO `sys_user_role` VALUES ('2', '1', '1');
-INSERT INTO `sys_user_role` VALUES ('3', '2', '2');
-INSERT INTO `sys_user_role` VALUES ('5', '21', '2');
 INSERT INTO `sys_user_role` VALUES ('6', '22', '2');
 INSERT INTO `sys_user_role` VALUES ('7', '10', '1');
 INSERT INTO `sys_user_role` VALUES ('8', '10', '3');
-INSERT INTO `sys_user_role` VALUES ('10', '13', '3');
+INSERT INTO `sys_user_role` VALUES ('15', '13', '1');
+INSERT INTO `sys_user_role` VALUES ('16', '13', '2');
+INSERT INTO `sys_user_role` VALUES ('17', '2', '1');
+INSERT INTO `sys_user_role` VALUES ('18', '2', '2');
+INSERT INTO `sys_user_role` VALUES ('19', '21', '1');
+INSERT INTO `sys_user_role` VALUES ('20', '21', '2');
+INSERT INTO `sys_user_role` VALUES ('21', '24', '4');
+INSERT INTO `sys_user_role` VALUES ('22', '24', '8');
+INSERT INTO `sys_user_role` VALUES ('23', '24', '9');
+INSERT INTO `sys_user_role` VALUES ('24', '23', '3');
+INSERT INTO `sys_user_role` VALUES ('25', '23', '4');
+INSERT INTO `sys_user_role` VALUES ('26', '1', '1');
