@@ -28,7 +28,8 @@ public interface SysResourceMapper extends BaseMapper<SysResource> {
      * 查找所有资源列表
      * @return 所有资源列表
      */
-    @Select("select id,parent_id as parentId, types, code, name, url, order_by as orderBy, icon from sys_resource")
+    @Select("select id,parent_id as parentId, types, code, name, url, order_by as orderBy, icon " +
+            "from sys_resource")
     List<SysResource> selectListAll();
 
 }

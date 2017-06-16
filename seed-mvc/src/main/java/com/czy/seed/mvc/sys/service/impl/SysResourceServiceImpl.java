@@ -122,10 +122,35 @@ public class SysResourceServiceImpl extends BaseServiceImpl<SysResource> impleme
         SysResource zeroNode = new SysResource();
         zeroNode.setName("系统菜单");
         zeroNode.setId(0L);
+        zeroNode.setParentId(-1L);
         zeroNode.getChildren().addAll(rootResource);
         List<SysResource> resources = new ArrayList<SysResource>();
         resources.add(zeroNode);
+
+        //排序
+        orderBy(resources);
         return resources;
+    }
+
+    private void orderBy(List<SysResource> resources) {
+        resources.sort(new Comparator<SysResource>() {
+            @Override
+            public int compare(SysResource o1, SysResource o2) {
+                int orderByDiff = o1.getOrderBy() - o2.getOrderBy();
+                if (orderByDiff != 0) {
+                    return orderByDiff;
+                } else {
+                    String idDiff = o1.getId() - o2.getId() + "";
+                    return Integer.parseInt(idDiff);
+                }
+            }
+        });
+        for (SysResource resource : resources) {
+            List<SysResource> children = resource.getChildren();
+            if (children != null && children.size() > 0) {
+                orderBy(children);
+            }
+        }
     }
 
     /**
@@ -136,21 +161,12 @@ public class SysResourceServiceImpl extends BaseServiceImpl<SysResource> impleme
      */
     private List<SysResource> findRootResource(List<SysResource> allResources) {
         List<SysResource> rootResource = new ArrayList<SysResource>();
-        List<Integer> remove = new ArrayList<Integer>();
         for (SysResource resource : allResources) {
             if (0 == resource.getParentId()) {
                 rootResource.add(resource);
             }
         }
-        Iterator<SysResource> iterator = allResources.iterator();
-        while (iterator.hasNext()) {
-            SysResource next = iterator.next();
-            for (SysResource root : rootResource) {
-                if (next.getId() == root.getId()) {
-                    allResources.remove(next);
-                }
-            }
-        }
+        allResources.removeAll(rootResource);
         return rootResource;
     }
 

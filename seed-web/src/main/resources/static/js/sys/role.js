@@ -90,15 +90,15 @@ var main_panel = new Vue({
             getCheckedResource: function () {
                 return this.$refs.resTree.getCheckedKeys();
             },
-            // 保存用户角色
+            // 保存角色菜单
             saveRoleResource: function () {
                 var resources = this.getCheckedResource();
-                console.log(resources);
-                return false;
                 var roleId = this.getSelectedRow().id;
                 var param = [];
                 resources.forEach(function (id) {
-                    param.push({"sysRoleId": roleId, "sysResourceId": id});
+                    if(id != 0) {
+                        param.push({"sysRoleId": roleId, "sysResourceId": id});
+                    }
                 });
                 $.ajax({
                     type: "POST",
