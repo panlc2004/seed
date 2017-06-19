@@ -51,7 +51,8 @@ public class PassengerCabinServiceImpl extends BaseServiceImpl<PassengerCabin> i
                 QueryParams queryParams = new QueryParams(IndexConfig.class);
                 QueryParams.Criteria queryParamsCriteria = queryParams.createCriteria();
                 queryParamsCriteria.andEqualTo("flightTypeConfigId", flightTypeConfigId)
-                        .andEqualTo("aircraftCabinId", cabin.getId());
+                        .andEqualTo("aircraftCabinId", cabin.getId())
+                        .andEqualTo("types", 1);
                 List<IndexConfig> indexConfigs = indexConfigMapper.selectListByParams(queryParams);
                 AboutIndexConfigBean bean = new AboutIndexConfigBean();
                 bean.setCabin(cabin);

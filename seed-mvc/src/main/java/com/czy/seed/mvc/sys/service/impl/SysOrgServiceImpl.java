@@ -37,9 +37,22 @@ public class SysOrgServiceImpl extends BaseServiceImpl<SysOrg> implements SysOrg
      * @return
      */
     public List<SysOrg> buildTree(List<SysOrg> sysOrgs) {
+        List<SysOrg> res = new ArrayList<SysOrg>();
+
         List<SysOrg> rootOrg = findRootOrg(sysOrgs);
         findChildrenResource(sysOrgs, rootOrg);
-        return rootOrg;
+
+        //构建id为0的虚拟节点
+        SysOrg zeroOrg = new SysOrg();
+        zeroOrg.setId(0L);
+        zeroOrg.setParentId(-1L);
+        zeroOrg.setCode("zero");
+        zeroOrg.setName("组织机构");
+        zeroOrg.getChildren().addAll(rootOrg);
+
+        res.add(zeroOrg);
+
+        return res;
     }
 
     /**

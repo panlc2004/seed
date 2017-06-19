@@ -51,7 +51,8 @@ public class CargoHoldServiceImpl extends BaseServiceImpl<CargoHold> implements 
                 QueryParams queryParams = new QueryParams(IndexConfig.class);
                 QueryParams.Criteria queryParamsCriteria = queryParams.createCriteria();
                 queryParamsCriteria.andEqualTo("flightTypeConfigId", flightTypeConfigId)
-                        .andEqualTo("aircraftCabinId", cargoHold.getId());
+                        .andEqualTo("aircraftCabinId", cargoHold.getId())
+                        .andEqualTo("types", 2);
                 List<IndexConfig> indexConfigs = indexConfigMapper.selectListByParams(queryParams);
                 AboutIndexConfigBean bean = new AboutIndexConfigBean();
                 bean.setCargoHold(cargoHold);

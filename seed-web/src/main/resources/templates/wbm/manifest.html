@@ -87,7 +87,7 @@
                         </div>
                         <div style="padding: 14px;">
                             <el-col :span="18">
-                                <el-radio-group v-model="radio2">
+                                <el-radio-group :disabled="disabled" v-model="radio2" @change="radioChange">
                                     <el-row>
                                         <el-radio :label="1">A=>B</el-radio>
                                     </el-row>
@@ -104,26 +104,26 @@
                             </el-col>
                             <el-col :span="6">
                                 <el-row>
-                                    <el-input size="small"
-                                              v-model="infoForm.name">
+                                    <el-input v-if="showSegmentA_B" size="small"
+                                              v-model="infoForm.segmentA">
                                         <template slot="prepend">A</template>
                                     </el-input>
                                 </el-row>
-                                <el-row style="margin-top: 5px;">
-                                    <el-input size="small"
-                                              v-model="infoForm.name">
+                                <el-row>
+                                    <el-input v-if="showSegmentA_B" size="small"
+                                              v-model="infoForm.segmentB">
                                         <template slot="prepend">B</template>
                                     </el-input>
                                 </el-row>
-                                <el-row style="margin-top: 5px;">
-                                    <el-input size="small"
-                                              v-model="infoForm.name">
+                                <el-row>
+                                    <el-input v-if="showSegmentA_B_C" size="small"
+                                              v-model="infoForm.segmentC">
                                         <template slot="prepend">C</template>
                                     </el-input>
                                 </el-row>
-                                <el-row style="margin-top: 5px;margin-bottom: 5px;">
-                                    <el-input size="small"
-                                              v-model="infoForm.name">
+                                <el-row>
+                                    <el-input v-if="showSegmentA_B_C_D" size="small"
+                                              v-model="infoForm.segmentD">
                                         <template slot="prepend">D</template>
                                     </el-input>
                                 </el-row>
@@ -146,12 +146,12 @@
                                             <span class="span-size-center">Flight NO</span>
                                         </el-col>
                                         <el-col :span="16">
-                                                <el-autocomplete size="small"
-                                                        v-model="flightNo"
-                                                        :fetch-suggestions="querySearchAsync"
-                                                        placeholder="请输入内容"
-                                                        @select="handleSelect"
-                                                ></el-autocomplete>
+                                            <el-autocomplete size="small"
+                                                             v-model="flightNo"
+                                                             :fetch-suggestions="querySearchAsync"
+                                                             placeholder="请输入内容"
+                                                             @select="handleSelect"
+                                            ></el-autocomplete>
                                             </el-input>
                                         </el-col>
                                     </el-row>
@@ -179,24 +179,9 @@
                                         <el-col :span="8">
                                             <span class="span-size-center">Crew</span>
                                         </el-col>
-                                        <el-col :span="4">
+                                        <el-col :span="4" v-for="crew in infoForm.crews">
                                             <el-input size="small"
-                                                      v-model="infoForm.name">
-                                            </el-input>
-                                        </el-col>
-                                        <el-col :span="4">
-                                            <el-input size="small"
-                                                      v-model="infoForm.name">
-                                            </el-input>
-                                        </el-col>
-                                        <el-col :span="4">
-                                            <el-input size="small"
-                                                      v-model="infoForm.name">
-                                            </el-input>
-                                        </el-col>
-                                        <el-col :span="4">
-                                            <el-input size="small"
-                                                      v-model="infoForm.name">
+                                                      v-model="crew.standardNum" readonly>
                                             </el-input>
                                         </el-col>
                                     </el-row>
@@ -204,14 +189,9 @@
                                         <el-col :span="8">
                                             <span class="span-size-center">Galley Goods</span>
                                         </el-col>
-                                        <el-col :span="8">
+                                        <el-col :span="8" v-for="galleyGood in infoForm.galleyGoods">
                                             <el-input size="small"
-                                                      v-model="infoForm.name"></el-input>
-                                        </el-col>
-                                        <el-col :span="8">
-                                            <el-input size="small"
-                                                      v-model="infoForm.name">
-                                            </el-input>
+                                                      v-model="galleyGood.standardWeight" readonly></el-input>
                                         </el-col>
                                     </el-row>
                                 </el-col>
@@ -222,7 +202,7 @@
                                         </el-col>
                                         <el-col :span="12">
                                             <el-input size="small"
-                                                      v-model="infoForm.name">
+                                                      v-model="infoForm.name" readonly>
                                             </el-input>
                                         </el-col>
                                     </el-row>
@@ -232,7 +212,7 @@
                                         </el-col>
                                         <el-col :span="12">
                                             <el-input size="small"
-                                                      v-model="infoForm.name">
+                                                      v-model="infoForm.name" readonly>
                                             </el-input>
                                         </el-col>
                                     </el-row>
@@ -242,7 +222,7 @@
                                         </el-col>
                                         <el-col :span="12">
                                             <el-input size="small"
-                                                      v-model="infoForm.name">
+                                                      v-model="infoForm.seatNum" readonly>
                                             </el-input>
                                         </el-col>
                                     </el-row>
@@ -252,7 +232,7 @@
                                         </el-col>
                                         <el-col :span="12">
                                             <el-input size="small"
-                                                      v-model="infoForm.baseWeight">
+                                                      v-model="infoForm.baseWeight" readonly>
                                             </el-input>
                                         </el-col>
                                     </el-row>
@@ -262,7 +242,7 @@
                                         </el-col>
                                         <el-col :span="12">
                                             <el-input size="small"
-                                                      v-model="infoForm.baseIndex">
+                                                      v-model="infoForm.baseIndex" readonly>
                                             </el-input>
                                         </el-col>
                                     </el-row>
@@ -274,7 +254,7 @@
                                         </el-col>
                                         <el-col :span="12">
                                             <el-input size="small"
-                                                      v-model="infoForm.limitedMtow">
+                                                      v-model="infoForm.limitedMtow" readonly>
                                             </el-input>
                                         </el-col>
                                     </el-row>
@@ -284,7 +264,7 @@
                                         </el-col>
                                         <el-col :span="12">
                                             <el-input size="small"
-                                                      v-model="infoForm.limitedMldw">
+                                                      v-model="infoForm.limitedMldw" readonly>
                                             </el-input>
                                         </el-col>
                                     </el-row>
@@ -294,7 +274,7 @@
                                         </el-col>
                                         <el-col :span="12">
                                             <el-input size="small"
-                                                      v-model="infoForm.limitedMzfw">
+                                                      v-model="infoForm.limitedMzfw" readonly>
                                             </el-input>
                                         </el-col>
                                     </el-row>
@@ -304,7 +284,7 @@
                                         </el-col>
                                         <el-col :span="12">
                                             <el-input size="small"
-                                                      v-model="infoForm.name">
+                                                      v-model="infoForm.takeOffFuel" readonly>
                                             </el-input>
                                         </el-col>
                                     </el-row>
@@ -314,7 +294,7 @@
                                         </el-col>
                                         <el-col :span="12">
                                             <el-input size="small"
-                                                      v-model="infoForm.name">
+                                                      v-model="infoForm.tripFuel" readonly>
                                             </el-input>
                                         </el-col>
                                     </el-row>
@@ -328,12 +308,35 @@
         </el-row>
         <el-row style="margin-top: 10px;">
             <el-col :span="24">
-                <el-card :body-style="{ padding: '0px' }" style="margin-left: 10px;">
+                <el-card :body-style="{ padding: '0px' }" style="margin-left: 10px;" v-if="showcargoAndCabin">
                     <div style="padding: 14px;">
                         <el-form :model="cabinsForm" ref="cabinsForm" label-width="110px">
-                            <el-row>
-                                <el-col :span="6" v-for="segment in cabinsForm.segments">
+                            <el-row v-if="showcargoAndCabin">
+                                <el-col :span="6" v-for="(segm,index) in cabinsForm.segments">
                                     <el-card :body-style="{ padding: '0px' }" style="margin-left: 10px;">
+                                        <el-tag v-if="index==0" type="danger">
+                                            <span v-if="radio2==1">{{infoForm.segmentA}}-{{infoForm.segmentB}}</span>
+                                            <span v-if="radio2==2">{{infoForm.segmentA}}-{{infoForm.segmentB}}</span>
+                                            <span v-if="radio2==3">{{infoForm.segmentA}}-{{infoForm.segmentC}}</span>
+                                            <span v-if="radio2==4">{{infoForm.segmentA}}-{{infoForm.segmentB}}</span>
+                                            <span v-if="radio2==5">{{infoForm.segmentA}}-{{infoForm.segmentC}}</span>
+                                            <span v-if="radio2==6">{{infoForm.segmentA}}-{{infoForm.segmentD}}</span>
+                                        </el-tag>
+                                        <el-tag v-else-if="index==1" type="danger">
+                                            <span v-if="radio2==2">{{infoForm.segmentA}}-{{infoForm.segmentC}}</span>
+                                            <span v-if="radio2==3">{{infoForm.segmentB}}-{{infoForm.segmentC}}</span>
+                                            <span v-if="radio2==4">{{infoForm.segmentA}}-{{infoForm.segmentC}}</span>
+                                            <span v-if="radio2==5">{{infoForm.segmentA}}-{{infoForm.segmentD}}</span>
+                                            <span v-if="radio2==6">{{infoForm.segmentB}}-{{infoForm.segmentD}}</span>
+                                        </el-tag>
+                                        <el-tag v-else-if="index==2" type="danger">
+                                            <span v-if="radio2==4">{{infoForm.segmentA}}-{{infoForm.segmentD}}</span>
+                                            <span v-if="radio2==5">{{infoForm.segmentB}}-{{infoForm.segmentC}}</span>
+                                            <span v-if="radio2==6">{{infoForm.segmentC}}-{{infoForm.segmentD}}</span>
+                                        </el-tag>
+                                        <el-tag v-else-if="index==3" type="danger">
+                                            <span v-if="radio2==5">{{infoForm.segmentB}}-{{infoForm.segmentD}}</span>
+                                        </el-tag>
                                         <el-row v-for="(passengerType,typeIndex) in cabinsForm.passengerTypes">
                                             <el-col :span="6"
                                                     v-for="(passengerCabin,cabinIndex) in cabinsForm.passengerCabins">
@@ -360,11 +363,34 @@
         </el-row>
         <el-row>
             <el-col :span="24">
-                <el-card :body-style="{ padding: '0px' }" style="margin-left: 10px;">
+                <el-card :body-style="{ padding: '0px' }" style="margin-left: 10px;" v-if="showcargoAndCabin">
                     <el-form :model="cargoHoldForm" ref="cargoHoldForm" label-width="110px">
                         <el-row>
-                            <el-col :span="6" v-for="segment in cargoHoldForm.segments">
+                            <el-col :span="6" v-for="(segment,index) in cargoHoldForm.segments">
                                 <el-card :body-style="{ padding: '0px' }" style="margin-left: 10px;margin-top: 10px;">
+                                    <el-tag v-if="index==0" type="danger">
+                                        <span v-if="radio2==1">{{infoForm.segmentA}}-{{infoForm.segmentB}}</span>
+                                        <span v-if="radio2==2">{{infoForm.segmentA}}-{{infoForm.segmentB}}</span>
+                                        <span v-if="radio2==3">{{infoForm.segmentA}}-{{infoForm.segmentC}}</span>
+                                        <span v-if="radio2==4">{{infoForm.segmentA}}-{{infoForm.segmentB}}</span>
+                                        <span v-if="radio2==5">{{infoForm.segmentA}}-{{infoForm.segmentC}}</span>
+                                        <span v-if="radio2==6">{{infoForm.segmentA}}-{{infoForm.segmentD}}</span>
+                                    </el-tag>
+                                    <el-tag v-else-if="index==1" type="danger">
+                                        <span v-if="radio2==2">{{infoForm.segmentA}}-{{infoForm.segmentC}}</span>
+                                        <span v-if="radio2==3">{{infoForm.segmentB}}-{{infoForm.segmentC}}</span>
+                                        <span v-if="radio2==4">{{infoForm.segmentA}}-{{infoForm.segmentC}}</span>
+                                        <span v-if="radio2==5">{{infoForm.segmentA}}-{{infoForm.segmentD}}</span>
+                                        <span v-if="radio2==6">{{infoForm.segmentB}}-{{infoForm.segmentD}}</span>
+                                    </el-tag>
+                                    <el-tag v-else-if="index==2" type="danger">
+                                        <span v-if="radio2==4">{{infoForm.segmentA}}-{{infoForm.segmentD}}</span>
+                                        <span v-if="radio2==5">{{infoForm.segmentB}}-{{infoForm.segmentC}}</span>
+                                        <span v-if="radio2==6">{{infoForm.segmentC}}-{{infoForm.segmentD}}</span>
+                                    </el-tag>
+                                    <el-tag v-else-if="index==3" type="danger">
+                                        <span v-if="radio2==5">{{infoForm.segmentB}}-{{infoForm.segmentD}}</span>
+                                    </el-tag>
                                     <el-row v-for="(cargoType,typeIndex) in cargoHoldForm.cargoTypes">
                                         <el-col :span="4"
                                                 v-for="(cargo,cargoIndex) in cargoHoldForm.cargos">
@@ -377,7 +403,7 @@
                                             <span class="span-font" v-else-if="typeIndex!=0&&cargoIndex==0">
                                                     {{cargoType.key}}
                                                 </span>
-                                            <el-input size="small" v-model="cargoHoldForm.name" v-else>
+                                            <el-input size="small" v-model="cargoHoldForm.cargos[index].inputData[typeIndex]" v-else>
                                             </el-input>
                                         </el-col>
                                         <el-col :span="4" v-if="typeIndex==0">
@@ -415,60 +441,31 @@
                 <span>区域</span>
             </div>
             <div style="padding: 14px; margin-left: 1%">
-                <span>好吃的汉堡</span>
-                <div class="bottom clearfix">
-                    <time class="time">{{ currentDate }}</time>
-                    <el-button type="text" class="button">操作按钮</el-button>
-                </div>
+                <el-row :span="4">
+                    <el-input size="small" v-model="cargoHoldForm.name">
+                    </el-input>
+                </el-row>
+                <el-row :span="4">
+                    <el-input size="small" v-model="cargoHoldForm.name">
+                    </el-input>
+                </el-row>
             </div>
         </el-card>
 
-        <el-card :body-style="{ padding: '0px' }" style="margin-left: 10px;">
+        <el-card :body-style="{ padding: '0px' }" style="margin-left: 10px;margin-top: 20px;">
             <div slot="header" class="clearfix">
                 <span>区域</span>
             </div>
             <div style="padding: 14px; margin-left: 1%">
-                <span>好吃的汉堡</span>
-                <div class="bottom clearfix">
-                    <time class="time">{{ currentDate }}</time>
-                    <el-button type="text" class="button">操作按钮</el-button>
-                </div>
+                <span>Spring V1.0.0</span>
             </div>
         </el-card>
-        <el-card :body-style="{ padding: '0px' }" style="margin-left: 10px;">
+        <el-card :body-style="{ padding: '0px' }" style="margin-left: 10px;margin-top: 20px;">
             <div slot="header" class="clearfix">
-                <span>区域</span>
+                <span>操作</span>
             </div>
             <div style="padding: 14px; margin-left: 1%">
-                <span>好吃的汉堡</span>
-                <div class="bottom clearfix">
-                    <time class="time">{{ currentDate }}</time>
-                    <el-button type="text" class="button">操作按钮</el-button>
-                </div>
-            </div>
-        </el-card>
-        <el-card :body-style="{ padding: '0px' }" style="margin-left: 10px;">
-            <div slot="header" class="clearfix">
-                <span>区域</span>
-            </div>
-            <div style="padding: 14px; margin-left: 1%">
-                <span>好吃的汉堡</span>
-                <div class="bottom clearfix">
-                    <time class="time">{{ currentDate }}</time>
-                    <el-button type="text" class="button">操作按钮</el-button>
-                </div>
-            </div>
-        </el-card>
-        <el-card :body-style="{ padding: '0px' }" style="margin-left: 10px;">
-            <div slot="header" class="clearfix">
-                <span>区域</span>
-            </div>
-            <div style="padding: 14px; margin-left: 1%">
-                <span>好吃的汉堡</span>
-                <div class="bottom clearfix">
-                    <time class="time">{{ currentDate }}</time>
-                    <el-button type="text" class="button">操作按钮</el-button>
-                </div>
+                <el-button type="primary" @click="submitManifest" icon="search">提交</el-button>
             </div>
         </el-card>
     </el-col>

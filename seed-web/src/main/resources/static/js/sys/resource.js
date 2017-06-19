@@ -59,8 +59,8 @@ var main_panel = new Vue({
                     function () {
                         $.post("/sys/resource/deleteByPrimary/" + data.id, function (res) {
                             if (res.code == 200) {
-                                czy.msg.info(res.msg);
-                                this.loadData();
+                                czy.msg.success(res.msg);
+                                main_panel.loadData();
                             } else {
                                 czy.msg.error(res.msg);
                             }
@@ -86,8 +86,8 @@ var main_panel = new Vue({
                     attrs: {size: "mini", type: "primary"}, on: {
                         click: function (event) {
                             event.stopPropagation();                //点击按钮时，树不自动打开
-                            main_panel.formData.parentId = data.id  // 将选中的节点的id值做为新增机构的parentId
-                            main_panel.formData = {types: 1};                     //清空表单数据
+                            // main_panel.formData.parentId = data.id  // 将选中的节点的id值做为新增机构的parentId
+                            main_panel.formData = {types: 1, parentId: data.id};                     //清空表单数据
                             main_panel.editDialogShow = true;
                         }
                     }

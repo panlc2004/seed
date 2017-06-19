@@ -41,6 +41,13 @@ public class SysUserController {
                     criteria.andLike("name", "%" + name + "%");
                 }
             }
+            if (paramsForQuery.containsKey("orgId")) {
+                Object name = paramsForQuery.get("name");
+                if (NullUtil.isNotEmpty(name)) {
+                    QueryParams.Criteria criteria = queryParams.createCriteria();
+                    criteria.andLike("name", "%" + name + "%");
+                }
+            }
         }
         Page<SysUser> page = sysUserService.selectPageByParams(params.getPageNum(), params.getPageSize(), queryParams);
         Map<String, Object> pageInfo = new HashMap<String, Object>();

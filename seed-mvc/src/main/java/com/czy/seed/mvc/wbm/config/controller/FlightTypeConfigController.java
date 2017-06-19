@@ -112,7 +112,8 @@ public class FlightTypeConfigController {
         QueryParams.Criteria criteria = fuelQueryParams.createCriteria();
         criteria.andEqualTo("flightTypeConfigId", flightTypeConfigId)
                 //燃油参数没有对应的舱位信息使用默认值-1,数据库中没有自动做默认值
-                .andEqualTo("aircraftCabinId", -1);
+                .andEqualTo("aircraftCabinId", -1)
+                .andEqualTo("types", 3);
         List<IndexConfig> fuelList = indexConfigServiceImpl.selectListByParams(fuelQueryParams);
         //乘务配置信息
         QueryParams crewQueryParams = new QueryParams(Crew.class);

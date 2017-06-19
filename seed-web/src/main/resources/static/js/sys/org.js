@@ -48,6 +48,9 @@ var main = new Vue({
             //机构树点击事件
             handleNodeClick: function (node) {
                 console.log(node);
+                var param = {"pageNum": 1, "pageSize": this.pageSize, "params": {}};
+                this.loadUser(param)
+
             },
             //渲染图标
             renderContent: function (createElement, param) {
@@ -81,7 +84,7 @@ var main = new Vue({
                         this.loadTree();
                     },
                     function (failure) {
-                        console.log(this.data);
+                        czy.msg.error("系统异常，请联系管理员")
                     }
                 )
             },
@@ -89,9 +92,9 @@ var main = new Vue({
             // 查询用户信息
             loadUser: function (param) {
                 if (param == undefined) {
-                    param = czy.query.params()
+                    param = czy.query.params();
                 }
-                param.params.name = this.searchName
+                param.params.name = this.searchName;
                 var main = this;
                 $.ajax({
                     type: "POST",
@@ -162,7 +165,7 @@ var main = new Vue({
             },
             //用户列表选择
             userSelected: function (selectRow) {
-                if(selectRow == null) {
+                if (selectRow == null) {
                     return;
                 }
                 var _this = this;
@@ -217,6 +220,17 @@ var main = new Vue({
     });
 
 function buildOpeBtn(createElement, node, data, store) {
+    var addBtn = createElement('el-button', {
+        attrs: {size: "mini", type: "primary"}, on: {
+            click: function (event) {
+                event.stopPropagation();    //点击按钮时，树不自动打开
+                main.sysOrg = {parentId:data.id}
+                // 将选中的节点的id值做为新增机构的parentId
+                main.operateDialogShow = true;
+            }
+        }
+    }, "新增");
+
     var editBtn = createElement('el-button', {
         attrs: {size: "mini", type: "warning"}, on: {
             click: function (event) {
@@ -237,9 +251,9 @@ function buildOpeBtn(createElement, node, data, store) {
     }, "删除");
     var btns;
     if (data.children.length > 0) {
-        btns = [editBtn];
+        btns = [addBtn, editBtn];
     } else {
-        btns = [editBtn, delBtn];
+        btns = [addBtn, editBtn, delBtn];
     }
     return createElement('span', [
         createElement('span', node.label),

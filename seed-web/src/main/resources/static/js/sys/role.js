@@ -120,7 +120,9 @@ var main_panel = new Vue({
                         var existResourceId = [];           //用户现有资源ID
                         resTree.setCheckedKeys([])          //取消现有选中项
                         result.data.forEach(function (item) {   //开始选中
-                            existResourceId.push(item.sysResource.id);
+                            if(item.sysResource.types != 2) {           //目录不执行选中，依靠树形控件节点关联关系自动选中
+                                existResourceId.push(item.sysResource.id);
+                            }
                         })
                         resTree.setCheckedKeys(existResourceId);
                     }

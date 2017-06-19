@@ -1,14 +1,16 @@
-package com.czy.seed.mvc.wbm.util;/*
+/*
  * 文 件 名 : IdWorker
  * 版    权 : CZYSOFT TECHNOLOGY CO.,LTD.Copyright 2017-2030.All rights reserved
  * 描    述 : <描述>
- * 修 改 人 : <工号>xu.yang22@zte.com.cn
+ * 修 改 人 : <011424>zhangyang@inner.czy.com
  * 修改时间 : 2017/6/1 14:21
  * 需求单号 : <需求Redmine单号>
  * 变更单号 : <变更Redmine单号>
  * 修改内容 : <修改内容>
  * Version : V1.0
  */
+package com.czy.seed.mvc.wbm.util;
+
 
 /**
  * Twitter_Snowflake<br>
