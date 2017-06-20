@@ -57,7 +57,7 @@ body {
 }
 
 .container .header .logo-width {
-    width: 190px;
+    width: 220px;
 }
 
 .container .header .logo-collapse-width {
@@ -82,8 +82,8 @@ body {
 }
 
 .container .main aside {
-    flex: 0 0 190px;
-    width: 190px;
+    flex: 0 0 220px;
+    width: 220px;
 }
 
 .container .main aside .el-menu {
@@ -113,8 +113,8 @@ body {
 }
 
 .container .main .menu-expanded {
-    flex: 0 0 190px;
-    width: 190px;
+    flex: 0 0 220px;
+    width: 220px;
 }
 
 .container .main .content-container {

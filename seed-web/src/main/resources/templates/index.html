@@ -10,7 +10,8 @@
 <div id="main_contain">
     <el-row class="container">
         <el-col :span="24" class="el-col el-col-24 header">
-            <el-col :span="10" class="el-col el-col-10 logo logo-width" :class="collapsed?'logo-collapse-width':'logo-width'">
+            <el-col :span="10" class="el-col el-col-10 logo logo-width"
+                    :class="collapsed?'logo-collapse-width':'logo-width'">
                 {{collapsed ? '' : sysName}}
             </el-col>
             <el-col :span="10">
@@ -31,8 +32,6 @@
                 </el-dropdown>
             </el-col>
         </el-col>
-        <!--</el-row>-->
-        <!--<el-row>-->
         <el-col :span="24" class="main">
             <aside :class="collapsed ? 'menu-collapsed' : 'menu-expanded'">
                 <!--导航菜单-折叠前-->
@@ -46,23 +45,23 @@
                 </ul>
             </aside>
 
+            <!--内容展示区域-->
             <section class="content-container">
-                <div class="grid-content bg-purple-light">
-                    <el-col :span="24" class="breadcrumb-container">
-                        <strong class="title">{{title}}</strong>
-                        <el-breadcrumb separator="/" class="breadcrumb-inner">
-                        </el-breadcrumb>
-                    </el-col>
-                    <el-col :span="24" class="content-wrapper">
-                        <!--<iframe id="mainFrame" name="iframepage" scrolling="yes" frameborder="0"-->
-                                <!--style="width:100%;min-height:650px;overflow:visible;background:#fff;"-->
-                                <!--:src="contentUrl"></iframe>-->
-                    </el-col>
-                </div>
+                <el-col v-if="!pageLoadInTag" :span="24" class="breadcrumb-container">
+                    <strong class="title">{{title}}</strong>
+                    <el-breadcrumb separator="/" class="breadcrumb-inner">
+                    </el-breadcrumb>
+                </el-col>
+                <el-col :span="24" class="content-wrapper">
+                    <el-tabs v-if="pageLoadInTag" v-model="editableTabsValue" type="card" closable @tab-remove="removeTab">
+                        <el-tab-pane v-for="(tab, index) in editableTabs" :key="tab.id" :label="tab.name" :name="tab.id + ''">
+                            123123
+                        </el-tab-pane>
+                    </el-tabs>
+                </el-col>
             </section>
 
         </el-col>
-
     </el-row>
 
 </div>

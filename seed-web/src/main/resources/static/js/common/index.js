@@ -1,3 +1,9 @@
+/**
+ *点击菜单时，对应页面加载模式
+ */
+const pageLoadInTag = true;
+
+// 主菜单栏
 var menuItem = Vue.extend({
     name: 'menu-item',
     props: {item: {}},
@@ -22,15 +28,17 @@ var menuItem = Vue.extend({
         },
         toPage: function (child) {
             // home.contentUrl = child.url;
-            $(".content-wrapper").load(child.url, function (data) {
-                main_contain.title = child.name
-                window.location.hash = child.url
-            })
+            // $(".content-wrapper").load(child.url, function (data) {
+            //     main_contain.title = child.name
+            //     window.location.hash = child.url
+            // })
+            loadPage(child, pageLoadInTag);
         }
     }
 
 })
 
+// 隐藏菜单栏
 var menuItemHide = Vue.extend({
     name: 'menu-item-hide',
     props: {item: {}},
@@ -58,14 +66,50 @@ var menuItemHide = Vue.extend({
     }
 })
 
+/**
+ * 加载页面
+ * @param child 菜单对象；
+ * @param pageLoadInTag 加载模式：false.整页加载；true.tab加载；
+ */
+function loadPage(child, pageLoadInTag) {
+    if (!pageLoadInTag) {
+        $(".content-wrapper").load(child.url, function (data) {
+            main_contain.title = child.name
+            window.location.hash = child.url
+        });
+    } else {
+        //判断当前页面是否已经打开，如果打开，就焦点至对应tab，不再重复打开
+        var existTagId; //已经打开的tabID
+        for(var i = 0; i < main_contain.editableTabs.length; i++) {
+            var tab = main_contain.editableTabs[i];
+            if(tab.id == child.id) {
+                existTagId = child.id + '';
+                break;
+            }
+        }
+        if(existTagId) {
+            main_contain.editableTabsValue = existTagId;
+        } else {
+            main_contain.editableTabs.push(child);
+            main_contain.editableTabsValue = child.id + '';
+        }
+    }
+};
 
 Vue.component('menuItem', menuItem);
 Vue.component('menuItemHide', menuItemHide);
 
-
+// 主页面
 const main_contain = new Vue({
     el: "#main_contain",
     data: {
+        //tab方式加载页面设置
+        pageLoadInTag: pageLoadInTag,
+        editableTabs: [],
+        editableTabsValue: '1',
+        tabIndex: 1,
+
+        //菜单及登陆标识设置
         sysName: 'SEEDADMIN',
         collapsed: false,
         sysUserName: '',
@@ -86,14 +130,38 @@ const main_contain = new Vue({
         }
     },
     methods: {
+        // 移除标签
+        removeTab: function (targetName) {
+            var tabs = this.editableTabs;
+            var activeName = this.editableTabsValue;
+            if (activeName == targetName) {
+                tabs.forEach(function (tab, index) {
+                    if (tab.id == targetName) {
+                        var nextTab = tabs[index + 1] || tabs[index - 1];
+                        if (nextTab) {
+                            activeName = nextTab.id + '';
+                        }
+                    }
+                });
+            }
+            this.editableTabs = tabs.filter(function (tab) {
+                return tab.id != targetName
+            });
+            this.editableTabsValue = activeName;
+        },
         getMenuList: function () {
-            this.$http.post("sys/resource/findResourceTreeForLoginUser").then(
-                function(success) {
-                    this.menuList = success.body[0].children;
-                    console.log(this.menuList);
-                },
-                function(failure) {
-                    alert(failure.body)
+            var _this = this;
+            $.post("sys/resource/findResourceTreeForLoginUser",
+                function (result, status) {
+                    console.log(status);
+                    if (status) {
+                        _this.menuList = result[0].children;
+                    } else {
+                        _this.$message({
+                            type: 'error',
+                            message: "系统异常，请联系管理员"
+                        });
+                    }
                 }
             )
         },
@@ -101,12 +169,12 @@ const main_contain = new Vue({
             console.log(key, keyPath);
         },
         //退出登录
-        logout: function() {
+        logout: function () {
             var _this = this;
             this.$confirm('确认退出吗?', '提示', {
                 type: 'warning'
             }).then(
-                function() {
+                function () {
                     // sessionStorage.removeItem('user');
                     // _this.$router.push('/login');
                 });
@@ -114,10 +182,8 @@ const main_contain = new Vue({
         //折叠导航栏
         collapse: function () {
             this.collapsed = !this.collapsed;
-            if (this.collapsed) {
-                this
-            }
         },
+        //展示菜单
         showMenu: function (i, status) {
             this.$refs.menuCollapsed.getElementsByClassName('submenu-hook-' + i)[0].style.display = status ? 'block' : 'none';
         }
