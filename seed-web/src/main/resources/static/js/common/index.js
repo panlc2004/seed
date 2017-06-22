@@ -94,8 +94,12 @@ function loadPage(child, pageLoadInTag) {
             var tabLoader = window.setInterval(function () {
                 var tabContent = $("#" + tabContentId);
                 if (tabContent) {
-                    tabContent.load(child.url, function (status, data) {
-                        window.location.hash = child.url
+                    tabContent.load(child.url, function (data, status) {
+                        if(status) {
+                            window.location.hash = child.url
+                        } else {
+                            czy.msg.error("系统异常，请联系管理员");
+                        }
                     })
                     window.clearInterval(tabLoader);
                 }
@@ -161,7 +165,6 @@ const main_contain = new Vue({
             var _this = this;
             $.post("sys/resource/findResourceTreeForLoginUser",
                 function (result, status) {
-                    console.log(status);
                     if (status) {
                         _this.menuList = result[0].children;
                     } else {
@@ -174,7 +177,6 @@ const main_contain = new Vue({
             )
         },
         handleClose: function (key, keyPath) {
-            console.log(key, keyPath);
         },
         //退出登录
         logout: function () {
