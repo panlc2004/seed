@@ -91,13 +91,13 @@ function loadPage(child, pageLoadInTag) {
             main_contain.editableTabsValue = child.id + '';
             // 加载页面
             var tabContentId = 'tab-content-' + child.id;
-            var t = window.setInterval(function () {
+            var tabLoader = window.setInterval(function () {
                 var tabContent = $("#" + tabContentId);
                 if (tabContent) {
                     tabContent.load(child.url, function (status, data) {
                         window.location.hash = child.url
                     })
-                    window.clearInterval(t);
+                    window.clearInterval(tabLoader);
                 }
             }, 100);
         }
