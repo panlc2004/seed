@@ -1,8 +1,8 @@
 /**
  * Created by PLC on 2017/6/3.
  */
-var main_panel = new Vue({
-    el: '#main-panel',
+var param_panel = new Vue({
+    el: '#param-panel',
     data: {
         selectedRow: null,      //列表选中行
         queryParam: {           //查询参数
@@ -46,8 +46,8 @@ var main_panel = new Vue({
                 utl:"/sys/param/save",
                 data:this.formData,
                 success:function (result) {
-                main_panel.editDialogShow = false;
-                main_panel.loadData();
+                param_panel.editDialogShow = false;
+                param_panel.loadData();
             }});
         },
         gridSelect: function (selectedRow) {

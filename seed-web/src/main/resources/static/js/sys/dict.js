@@ -1,8 +1,8 @@
 /**
  * Created by lenovo on 2017-06-12.
  */
-var mainPanel = new Vue({
-    el: "#main-panel",
+var dictPanel = new Vue({
+    el: "#dict-panel",
     data:{
         queryParam:{},
         dictForm:{},
@@ -62,18 +62,18 @@ var mainPanel = new Vue({
                 function () {
                     $.post("/sys/dict/deleteByPrimaryKey/" + selectedRow.id, function (response) {
                         czy.msg.success(response.msg);
-                        mainPanel.queryDict();
+                        dictPanel.queryDict();
                     });
                 }).catch(function () {});
         },
         // 保存字典项
         saveDict: function () {
-            mainPanel.dictFormShow = false;
+            dictPanel.dictFormShow = false;
             czy.ajax.postJson({
                 url: '/sys/dict/save',
                 data: this.dictForm,
                 success: function (result) {
-                    mainPanel.queryDict();
+                    dictPanel.queryDict();
                     czy.msg.success(result.msg);
                 },
                 error:function (result) {
@@ -131,7 +131,7 @@ var mainPanel = new Vue({
                 function () {
                     $.post("/sys/dictItem/deleteByPrimaryKey/" + selectedRow.id, function (response) {
                         czy.msg.success(response.msg);
-                        mainPanel.dictGridClick(mainPanel.getDictSelectedRow());
+                        dictPanel.dictGridClick(dictPanel.getDictSelectedRow());
                     });
                 }).catch(function () {});
         },
@@ -141,9 +141,9 @@ var mainPanel = new Vue({
             this.itemForm.sysDictCode = this.getDictSelectedRow().code;
             czy.ajax.postJson({
                 url: '/sys/dictItem/save',
-                data: mainPanel.itemForm,
+                data: dictPanel.itemForm,
                 success: function (result) {
-                    mainPanel.dictGridClick(mainPanel.getDictSelectedRow());
+                    dictPanel.dictGridClick(dictPanel.getDictSelectedRow());
                     czy.msg.success(result.msg);
                 }
             });

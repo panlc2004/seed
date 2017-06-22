@@ -1,8 +1,8 @@
 /**
  * Created by PLC on 2017/6/3.
  */
-var main_panel = new Vue({
-        el: '#main-panel',
+var resource_panel = new Vue({
+        el: '#resource_panel',
         data: {
             queryParam: {
                 params: {}
@@ -44,8 +44,8 @@ var main_panel = new Vue({
                     url: "/sys/resource/save",
                     data: _this.formData,
                     success: function (result) {
-                        main_panel.loadData();
-                        main_panel.editDialogShow = false;
+                        resource_panel.loadData();
+                        resource_panel.editDialogShow = false;
                         czy.msg.success(result.msg);
                     }
                 })
@@ -60,7 +60,7 @@ var main_panel = new Vue({
                         $.post("/sys/resource/deleteByPrimary/" + data.id, function (res) {
                             if (res.code == 200) {
                                 czy.msg.success(res.msg);
-                                main_panel.loadData();
+                                resource_panel.loadData();
                             } else {
                                 czy.msg.error(res.msg);
                             }
@@ -86,9 +86,9 @@ var main_panel = new Vue({
                     attrs: {size: "mini", type: "primary"}, on: {
                         click: function (event) {
                             event.stopPropagation();                //点击按钮时，树不自动打开
-                            // main_panel.formData.parentId = data.id  // 将选中的节点的id值做为新增机构的parentId
-                            main_panel.formData = {types: 1, parentId: data.id};                     //清空表单数据
-                            main_panel.editDialogShow = true;
+                            // resource_panel.formData.parentId = data.id  // 将选中的节点的id值做为新增机构的parentId
+                            resource_panel.formData = {types: 1, parentId: data.id};                     //清空表单数据
+                            resource_panel.editDialogShow = true;
                         }
                     }
                 }, "新增");
@@ -96,7 +96,7 @@ var main_panel = new Vue({
                     attrs: {size: "mini", type: "warning"}, on: {
                         click: function (event) {
                             event.stopPropagation();    //点击按钮时，树不自动打开
-                            main_panel.edit(data);
+                            resource_panel.edit(data);
                         }
                     }
                 }, "修改");
@@ -104,7 +104,7 @@ var main_panel = new Vue({
                 var delBtn = createElement('el-button', {
                     attrs: {size: "mini", type: "danger"}, on: {
                         click: function (event) {
-                            main_panel.delete(data, store);
+                            resource_panel.delete(data, store);
                         }
                     }
                 }, "删除");

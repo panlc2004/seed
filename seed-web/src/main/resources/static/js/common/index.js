@@ -27,11 +27,6 @@ var menuItem = Vue.extend({
             }
         },
         toPage: function (child) {
-            // home.contentUrl = child.url;
-            // $(".content-wrapper").load(child.url, function (data) {
-            //     main_contain.title = child.name
-            //     window.location.hash = child.url
-            // })
             loadPage(child, pageLoadInTag);
         }
     }
@@ -72,15 +67,17 @@ var menuItemHide = Vue.extend({
  * @param pageLoadInTag 加载模式：false.整页加载；true.tab加载；
  */
 function loadPage(child, pageLoadInTag) {
+    //以整页方式加载页面
     if (!pageLoadInTag) {
         $(".content-wrapper").load(child.url, function (data) {
             main_contain.title = child.name
             window.location.hash = child.url
         });
+        //以tag方式加载页面
     } else {
-        //判断当前页面是否已经打开，如果打开，就焦点至对应tab，不再重复打开
+        //打开tab
         var existTagId; //已经打开的tabID
-        for(var i = 0; i < main_contain.editableTabs.length; i++) {
+        for(var i = 0; i < main_contain.editableTabs.length; i++) {//判断当前页面是否已经打开，如果打开，就焦点至对应tab，不再重复打开
             var tab = main_contain.editableTabs[i];
             if(tab.id == child.id) {
                 existTagId = child.id + '';
@@ -88,10 +85,21 @@ function loadPage(child, pageLoadInTag) {
             }
         }
         if(existTagId) {
-            main_contain.editableTabsValue = existTagId;
-        } else {
+            main_contain.editableTabsValue = existTagId;        //当前菜单已经打开，则直接激活对应tab页
+        } else {//当前菜单未打开，则新建tab页
             main_contain.editableTabs.push(child);
             main_contain.editableTabsValue = child.id + '';
+            // 加载页面
+            var tabContentId = 'tab-content-' + child.id;
+            var t = window.setInterval(function () {
+                var tabContent = $("#" + tabContentId);
+                if (tabContent) {
+                    tabContent.load(child.url, function (status, data) {
+                        window.location.hash = child.url
+                    })
+                    window.clearInterval(t);
+                }
+            }, 100);
         }
     }
 };
@@ -192,5 +200,5 @@ const main_contain = new Vue({
     created: function () {
         this.getMenuList();
     }
-})
+});
 

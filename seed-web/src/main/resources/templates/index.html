@@ -55,7 +55,7 @@
                 <el-col :span="24" class="content-wrapper">
                     <el-tabs v-if="pageLoadInTag" v-model="editableTabsValue" type="card" closable @tab-remove="removeTab">
                         <el-tab-pane v-for="(tab, index) in editableTabs" :key="tab.id" :label="tab.name" :name="tab.id + ''">
-                            123123
+                            <el-col :span="24" :id="'tab-content-' + tab.id"></el-col>
                         </el-tab-pane>
                     </el-tabs>
                 </el-col>
