@@ -5,6 +5,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
@@ -16,6 +17,8 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
  */
 
 @Configuration
+@EnableWebSecurity
+@EnableGlobalMethodSecurity(prePostEnabled=true)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
@@ -27,6 +30,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .anyRequest().authenticated() //任何请求,登录后可以访问
                 .and().formLogin().loginPage("/login").permitAll()
+                .successHandler(loginSuccessHandler())    ////登录成功后可使用loginSuccessHandler()存储用户信息
                 .and().logout().permitAll()
                 .and().csrf().disable()
                 .headers().frameOptions().disable()
@@ -62,7 +66,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 //        指定密码加密所使用的加密器为passwordEncoder()
 //        需要将密码加密后写入数据库
         auth.userDetailsService(sysUserDetailsService).passwordEncoder(passwordEncoder());
-        auth.eraseCredentials(false);
+        auth.eraseCredentials(false);   //不删除凭据，以便记住用户
     }
 
     /**
@@ -87,3 +91,24 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     }
 
 }
+//
+//
+//http.authorizeRequests()
+//        .anyRequest().authenticated()
+//        .and().formLogin().loginPage("/login")
+//        //设置默认登录成功跳转页面
+//        .defaultSuccessUrl("/index").failureUrl("/login?error").permitAll()
+//        .and()
+//        //开启cookie保存用户数据
+//        .rememberMe()
+//        //设置cookie有效期
+//        .tokenValiditySeconds(60 * 60 * 24 * 7)
+//        //设置cookie的私钥
+//        .key("")
+//        .and()
+//        .logout()
+//        //默认注销行为为logout，可以通过下面的方式来修改
+//        .logoutUrl("/custom-logout")
+//        //设置注销成功后跳转页面，默认是跳转到登录页面
+//        .logoutSuccessUrl("")
+//        .permitAll();

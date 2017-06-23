@@ -1,17 +1,12 @@
 package com.czy.seed.mvc.auth;
 
-import com.czy.seed.mvc.sys.entity.SysRole;
 import com.czy.seed.mvc.sys.entity.SysUser;
 import com.czy.seed.mvc.sys.mapper.SysUserDetailsMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Created by Comup on 2017/5/23.
@@ -28,7 +23,6 @@ public class SysUserDetailsService implements UserDetailsService {
      * @return
      * @throws UsernameNotFoundException
      */
-    @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         if (username == null || username.trim().equals("")) {
             throw new UsernameNotFoundException("username maybe is null or empty");

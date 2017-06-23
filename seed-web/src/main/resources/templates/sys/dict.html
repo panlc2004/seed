@@ -14,7 +14,7 @@
                         <el-input placeholder="请输入名称查询" v-model="queryParam.name"></el-input>
                     </el-col>
                     <el-col :span="17" >
-                        <el-button type="primary" icon="search" @click="queryDict">查询</el-button>
+                        <el-button sec:authorize="hasAuthority('admin')" type="primary" icon="search" @click="queryDict">查询</el-button>
                         <el-button type="primary" icon="plus" @click="addDict">新增</el-button>
                         <el-button type="warning" icon="edit" @click="editDict">修改</el-button>
                         <el-button type="danger" icon="delete" @click="delDict">删除</el-button>

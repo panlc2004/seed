@@ -6,7 +6,6 @@ import com.czy.seed.mvc.sys.mapper.SysUserRoleMapper;
 import com.czy.seed.mybatis.config.mybatis.annotations.Cache;
 import com.czy.seed.mybatis.tool.SpringContextHelper;
 import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.Entity;
@@ -27,13 +26,13 @@ public class SecurityUser extends SysUser implements UserDetails {
     @Transient
     private List<SysRole> roles;
 
-    public SecurityUser(SysUser suser) {
-        if (suser != null) {
-            this.setId(suser.getId());
-            this.setName(suser.getName());
-            this.setEmail(suser.getEmail());
-            this.setPassword(suser.getPassword());
-            roles = SpringContextHelper.getBeanByType(SysUserRoleMapper.class).selectRolesByUserId(suser.getId());
+    public SecurityUser(SysUser sysUser) {
+        if (sysUser != null) {
+            this.setId(sysUser.getId());
+            this.setName(sysUser.getName());
+            this.setEmail(sysUser.getEmail());
+            this.setPassword(sysUser.getPassword());
+            roles = SpringContextHelper.getBeanByType(SysUserRoleMapper.class).selectRolesByUserId(sysUser.getId());
         }
     }
 

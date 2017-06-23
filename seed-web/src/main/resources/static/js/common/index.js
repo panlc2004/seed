@@ -186,7 +186,11 @@ const main_contain = new Vue({
             }).then(
                 function () {
                     // sessionStorage.removeItem('user');
-                    // _this.$router.push('/login');
+                    $.get("/logout", function (data,status) {
+                        if(status) {
+                            window.location.href = "login";
+                        }
+                    });
                 });
         },
         //折叠导航栏

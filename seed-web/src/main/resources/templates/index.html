@@ -12,7 +12,7 @@
         <el-col :span="24" class="el-col el-col-24 header">
             <el-col :span="10" class="el-col el-col-10 logo logo-width"
                     :class="collapsed?'logo-collapse-width':'logo-width'">
-                {{collapsed ? '' : sysName}}
+                <span v-if="!collapsed" sec:authentication="name"></span>
             </el-col>
             <el-col :span="10">
                 <div class="tools" @click.prevent="collapse">

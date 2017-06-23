@@ -16,10 +16,13 @@ import java.util.Set;
  * Created by panlc on 2017-05-23.
  */
 public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
+
+    public LoginSuccessHandler() {
+        System.out.println(123);
+    }
+
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request,
-                                        HttpServletResponse response,
-                                        Authentication authentication) throws IOException, ServletException {
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, Authentication authentication) throws IOException, ServletException {
         //获得授权后可得到用户信息   可使用SUserService进行数据库操作
         SysUser userDetails = (SysUser) authentication.getPrincipal();
 //        Set<SysRole> roles = userDetails.getSysRoles();//TODO
