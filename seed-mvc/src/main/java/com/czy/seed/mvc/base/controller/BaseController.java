@@ -1,6 +1,5 @@
 package com.czy.seed.mvc.base.controller;
 
-import com.czy.seed.mvc.base.entity.BaseEntity;
 import com.czy.seed.mvc.base.exception.IllegalleControllerNameException;
 import com.czy.seed.mvc.base.param.Param;
 import com.czy.seed.mvc.base.service.BaseService;
@@ -22,7 +21,7 @@ import java.util.Map;
 /**
  * Created by PLC on 2017/5/21.
  */
-public class BaseController<T extends BaseEntity> {
+public class BaseController<T> {
 
     public BaseController() {
         entityClass = GenricUtil.getGenericClass(this.getClass(), 0);
@@ -123,7 +122,7 @@ public class BaseController<T extends BaseEntity> {
     @RequestMapping("/insert")
     public Res insert(T record) {
         service.insert(record);
-        return Res.ok(record.getId());
+        return Res.ok(record);
     }
 
     /**
@@ -143,7 +142,7 @@ public class BaseController<T extends BaseEntity> {
     @RequestMapping("/updateSelectiveByPrimaryKey")
     public Res updateSelectiveByPrimaryKey(T record) {
         service.updateSelectiveByPrimaryKey(record);
-        return Res.ok(record.getId());
+        return Res.ok(record);
     }
 
     /**
@@ -153,7 +152,7 @@ public class BaseController<T extends BaseEntity> {
     @RequestMapping("/updateByPrimaryKey")
     public Res updateByPrimaryKey(T record) {
         service.updateByPrimaryKey(record);
-        return Res.ok(record.getId());
+        return Res.ok(record);
     }
 
     /**
@@ -199,21 +198,6 @@ public class BaseController<T extends BaseEntity> {
         QueryParams queryParams = param.toQueryParams(entityClass);
         int num = service.deleteByParams(queryParams);
         return Res.ok(num);
-    }
-
-    /**
-     * 保存数据:当传入数据有id时，进行修改操作，无id时，进行新增操作
-     *
-     * @param record 数据实体
-     * @return 新增/修改数据的id值
-     */
-    @RequestMapping("/save")
-    public Res save(@RequestBody T record) {
-        if (record.getId() == null) {
-            return this.insert(record);
-        } else {
-            return updateSelectiveByPrimaryKey(record);
-        }
     }
 
 }

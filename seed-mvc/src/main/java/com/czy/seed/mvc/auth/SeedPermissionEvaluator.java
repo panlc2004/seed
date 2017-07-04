@@ -13,23 +13,32 @@ import java.io.Serializable;
  */
 @Component
 public class SeedPermissionEvaluator implements PermissionEvaluator {
-
-    @Autowired
-    private LoginService loginService;
-
-    @Autowired
-    private SysRoleService roleService;
-
     @Override
     public boolean hasPermission(Authentication authentication, Object targetDomainObject, Object permission) {
-        String username = authentication.getName();
-        Login login = loginService.findByUsername(username).get();
-        return roleService.authorized(login.getId(), targetDomainObject.toString(), permission.toString());
+        return false;
     }
 
     @Override
     public boolean hasPermission(Authentication authentication, Serializable targetId, String targetType, Object permission) {
-        // not supported
         return false;
     }
+
+//    @Autowired
+//    private LoginService loginService;
+//
+//    @Autowired
+//    private SysRoleService roleService;
+//
+//    @Override
+//    public boolean hasPermission(Authentication authentication, Object targetDomainObject, Object permission) {
+//        String username = authentication.getName();
+//        Login login = loginService.findByUsername(username).get();
+//        return roleService.authorized(login.getId(), targetDomainObject.toString(), permission.toString());
+//    }
+//
+//    @Override
+//    public boolean hasPermission(Authentication authentication, Serializable targetId, String targetType, Object permission) {
+//        // not supported
+//        return false;
+//    }
 }

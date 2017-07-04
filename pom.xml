@@ -27,6 +27,7 @@
         <module>seed-web</module>
         <module>seed-mybatis</module>
         <module>seed-dependencies</module>
+        <module>seed-process</module>
     </modules>
 
 </project>

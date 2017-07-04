@@ -16,13 +16,14 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/sys/dict")
 public class SysDictController extends BaseController<SysDict> {
 
-    String a = "123";
 
-    @Override
     @AutoLog("新增/修改数据字典项")
-//    @PreAuthorize("hasAnyAuthority('admin')")
-    @PreAuthorize("authenticated and hasPermission('hello', 'view')")
     public Res save(@RequestBody SysDict record) {
-        return super.save(record);
+        if (record.getId() != null) {
+            return super.insert(record);
+        } else {
+            return super.updateByPrimaryKey(record);
+        }
     }
+
 }
