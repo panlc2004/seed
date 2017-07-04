@@ -66,42 +66,21 @@ public class FlightConfigController {
         return Res.ok(flightConfig);
     }
 
-//    @RequestMapping("/view")
-//    public FlightConfig view(FlightConfig flightConfig) {
-//        FlightConfig config = flightConfigServiceImpl.selectRelativeByPrimaryKey(flightConfig.getId());
-//        if (config != null)
-//            config.setFlightTypeConfig(configService.selectByPrimaryKey(config.getFlightTypeConfigId()));
-//        return config;
-//    }
-
     /**
-     * 修改航班配置参数
+     * 保存数据:当传入数据有id时，进行修改操作，无id时，进行新增操作
      *
-     * @param flightConfig
-     * @return
+     * @param flightConfig 数据实体
+     * @return 新增/修改数据的id值
      */
-    @RequestMapping("/update")
-    public Res update(FlightConfig flightConfig) {
-        int result = flightConfigServiceImpl.updateByPrimaryKey(flightConfig);
-        return Res.ok(result);
+    @RequestMapping("/save")
+    public Res save(@RequestBody FlightConfig flightConfig) {
+        if (flightConfig.getId() == null) {
+            flightConfigServiceImpl.insert(flightConfig);
+        } else {
+            flightConfigServiceImpl.updateSelectiveByPrimaryKey(flightConfig);
+        }
+        return Res.ok(flightConfig);
     }
-
-//    @RequestMapping("/list")
-//    public List<FlightConfig> list(FlightConfig flightConfig) {
-//        QueryParams queryParams = new QueryParams(FlightConfig.class);
-//        String num = flightConfig.getNum();//出厂序号
-//        String msn = flightConfig.getMsn();//机号
-//        QueryParams.Criteria criteria = queryParams.createCriteria();
-//        if (num != null && !"".equals(num.trim())) {
-//            criteria.andLike("num", "%" + num + "%");
-//        }
-//        if (msn != null && !"".equals(msn.trim())) {
-//
-//            criteria.andLike("msn", "%" + msn + "%");
-//        }
-//        List<FlightConfig> list = flightConfigServiceImpl.selectListByParams(queryParams);
-//        return list;
-//    }
 
 
     /**
@@ -146,13 +125,4 @@ public class FlightConfigController {
     }
 
 
-//    @RequestMapping("/del")
-//    public int del(FlightConfig flightConfig) {
-//        int result = flightConfigServiceImpl.deleteByPrimaryKey(flightConfig.getId());
-//        if (result > 0) {
-//            return 200;
-//        } else {
-//            return 500;
-//        }
-//    }
 }

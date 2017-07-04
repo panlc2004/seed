@@ -92,7 +92,7 @@ var main = new Vue({
                 var main = this;
                 $.ajax({
                     type:"POST",
-                    url:"/sys/user/selectByPage",
+                    url:"sys/user/selectByPage",
                     dataType:"json",
                     contentType:"application/json",
                     data:JSON.stringify(param),
@@ -143,7 +143,7 @@ var main = new Vue({
                     type: 'warning'
                 }).then(
                     function () {
-                        $.post("/sys/user/deleteByPrimary/" + main.currentRow.id, function (success, data) {
+                        $.post("sys/user/deleteByPrimary/" + main.currentRow.id, function (success, data) {
                             if(success) {
                                 czy.msg.info("操作成功");
                                 var param = {"pageNum":1, "pageSize":this.pageSize, "params":{}};

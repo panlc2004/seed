@@ -31,7 +31,7 @@ $(function () {
             loadData: function () {
                 var data = {};//组装的data数据
                 $.ajax({
-                    url: "/cfg/flightTypeConfig/list",
+                    url: "cfg/flightTypeConfig/list",
                     data: {},
                     type: 'POST',
                     async: false,//需要添加这个参数使用同步功能

@@ -71,6 +71,23 @@ public class FlightTypeConfigController {
     }
 
     /**
+     * 保存数据:当传入数据有id时，进行修改操作，无id时，进行新增操作
+     *
+     * @param flightTypeConfig 数据实体
+     * @return 新增/修改数据的id值
+     */
+    @RequestMapping("/save")
+    public Res save(@RequestBody FlightTypeConfig flightTypeConfig) {
+        if (flightTypeConfig.getId() == null) {
+            flightTypeConfigServiceImpl.insert(flightTypeConfig);
+        } else {
+            flightTypeConfigServiceImpl.updateSelectiveByPrimaryKey(flightTypeConfig);
+        }
+        return Res.ok(flightTypeConfig);
+    }
+
+
+    /**
      * 修改航班类型实体
      *
      * @param flightTypeConfig 航班类型配置实体参数
@@ -136,30 +153,6 @@ public class FlightTypeConfigController {
     }
 
 
-//    @RequestMapping("/del")
-//    public int del(FlightTypeConfig flightTypeConfig) {
-//        int result = flightTypeConfigServiceImpl.deleteByPrimaryKey(flightTypeConfig.getId());
-//        if (result > 0) {
-//            return 200;
-//        } else {
-//            return 500;
-//        }
-//    }
-
-
-//    @RequestMapping("/check")
-//    public Integer check(FlightTypeConfig flightTypeConfig) {
-//        QueryParams queryParams = new QueryParams(FlightTypeConfig.class);
-//        QueryParams.Criteria criteria = queryParams.createCriteria();
-//        criteria.andEqualTo("flightType", flightTypeConfig.getFlightType());
-//        FlightTypeConfig result = flightTypeConfigServiceImpl.selectOneByParams(queryParams);
-//        if (result == null) {
-//            return 200;
-//        } else {
-//            return 500;
-//        }
-//
-//    }
 
     /**
      * 组装航班类型组装回显对象

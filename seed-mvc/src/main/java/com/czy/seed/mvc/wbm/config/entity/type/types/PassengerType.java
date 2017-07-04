@@ -7,7 +7,7 @@ import java.math.BigDecimal;
  */
 public enum PassengerType {
 
-    AUDLT {
+    ADULT {
         @Override
         public BigDecimal standardWeight(String flightType) {
             return null;

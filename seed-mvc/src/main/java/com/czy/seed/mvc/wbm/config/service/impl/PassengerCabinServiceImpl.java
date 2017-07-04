@@ -10,6 +10,7 @@ import com.czy.seed.mvc.wbm.config.service.PassengerCabinService;
 import com.czy.seed.mybatis.base.QueryParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,18 +25,32 @@ public class PassengerCabinServiceImpl extends BaseServiceImpl<PassengerCabin> i
     private IndexConfigMapper indexConfigMapper;
 
     @Override
-    public void insertAsList(List<AboutIndexConfigBean> indexConfigBeanList) {
+    @Transactional("tm-default")
+    public void saveAsList(List<AboutIndexConfigBean> indexConfigBeanList) {
         for (AboutIndexConfigBean aboutIndexConfigBean : indexConfigBeanList) {
             PassengerCabin cabin = aboutIndexConfigBean.getCabin();
-            super.insert(cabin);
+            if (cabin.getId() == null) {
+                super.insert(cabin);
+            } else {
+                super.updateByPrimaryKey(cabin);
+            }
+
             List<IndexConfig> indexConfigList = aboutIndexConfigBean.getIndexConfigList();
+
+            QueryParams queryParams = new QueryParams(IndexConfig.class);
+            QueryParams.Criteria criteria = queryParams.createCriteria();
+            List<Long> list = new ArrayList<>();
+            list.add(-1L);
             if (indexConfigList != null && !indexConfigList.isEmpty()) {
                 for (IndexConfig indexConfig : indexConfigList) {
+                    list.add(indexConfig.getId());
                     indexConfig.setAircraftCabinId(cabin.getId());
                     indexConfig.setTypes(1);
                 }
-                indexConfigMapper.insertList(indexConfigList);
             }
+            criteria.andIn("id", list);
+            indexConfigMapper.deleteByParams(queryParams);
+            indexConfigMapper.insertList(indexConfigList);
         }
     }
 

@@ -63,7 +63,7 @@ var main_panel = new Vue({
                     type: 'warning'
                 }).then(
                     function () {
-                        $.post("/sys/role/deleteByPrimary/" + selectedRow.id, function (res) {
+                        $.post("sys/role/deleteByPrimary/" + selectedRow.id, function (res) {
                             main_panel.query();
                         });
                     }).catch(function () {
@@ -131,7 +131,7 @@ var main_panel = new Vue({
         },
         created: function () {
             var _this = this;
-            $.post("/sys/resource/selectResourceTree", this.queryParam, function (data) {
+            $.post("sys/resource/selectResourceTree", this.queryParam, function (data) {
                 _this.treeData = data.data;
             });
         }

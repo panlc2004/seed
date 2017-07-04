@@ -2,11 +2,15 @@ package com.czy.seed.mvc.wbm.msg;
 
 
 
+import com.czy.seed.mvc.wbm.config.entity.Manifest;
 import com.czy.seed.mvc.wbm.config.entity.flight.FlightInfo;
 import com.czy.seed.mvc.wbm.config.entity.type.CabinConfig;
+import com.czy.seed.mvc.wbm.math.formula.base.LdMath;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
+import java.util.List;
 
 /**
  * 舱单生成参数封装类
@@ -25,6 +29,7 @@ public class ReportData implements Serializable {
     private FlightInfo flightInfo;  //航班信息
     private Math math;  //公式计算结果
 
+    private LdMath ldMath; //公式计算结果
     private BigDecimal cockpitActuralNum; //飞行员人数
 
     private BigDecimal serviceActuralNum;//机务人员人数
@@ -34,9 +39,12 @@ public class ReportData implements Serializable {
     private BigDecimal aftActualWeight; //后舱重量
 
     private BigDecimal fwdActualWeight; // 前舱总量
-
+    //TODO 次 bean 对象即将废弃,不再启用
     private CabinConfig cabinConfig;// 舱位相关信息
 
+    private Manifest manifest; //电子舱单页面回传 bean 对象,次对象包含所有回传的数据
+
+    private List<Manifest.ManySegment> manySegmentList;
     private Integer adultNum; //成人数量
     private Integer childNum; //小孩数量
     private Integer infantNum;//婴儿数量
@@ -47,7 +55,125 @@ public class ReportData implements Serializable {
 
     private BigDecimal mWeight; //邮件重量
 
+    private Integer cFs; //货物数量
+    private Integer bFs; //包裹数量
+    private Integer mFs; //邮件数量
 
+    private BigDecimal plMtow;// 业载最大起飞重量
+    private BigDecimal plMldw;//业载最大落地重量
+    private BigDecimal plMzfw;//业载最大无油重量
+    private BigDecimal minPlNum;//业载数据中最小值
+
+    private BigDecimal payload;//业载
+
+    private BigDecimal spa;
+
+    private Date nowDate;
+
+
+    public Date getNowDate() {
+        return nowDate;
+    }
+
+    public void setNowDate(Date nowDate) {
+        this.nowDate = nowDate;
+    }
+
+    public List<Manifest.ManySegment> getManySegmentList() {
+        return manySegmentList;
+    }
+
+    public void setManySegmentList(List<Manifest.ManySegment> manySegmentList) {
+        this.manySegmentList = manySegmentList;
+    }
+
+    public Manifest getManifest() {
+        return manifest;
+    }
+
+    public void setManifest(Manifest manifest) {
+        this.manifest = manifest;
+    }
+
+    public LdMath getLdMath() {
+        return ldMath;
+    }
+
+    public void setLdMath(LdMath ldMath) {
+        this.ldMath = ldMath;
+    }
+
+    public BigDecimal getSpa() {
+        return spa;
+    }
+
+    public void setSpa(BigDecimal spa) {
+        this.spa = spa;
+    }
+
+    public BigDecimal getPayload() {
+        return payload;
+    }
+
+    public void setPayload(BigDecimal payload) {
+        this.payload = payload;
+    }
+
+    public BigDecimal getMinPlNum() {
+        return minPlNum;
+    }
+
+    public void setMinPlNum(BigDecimal minPlNum) {
+        this.minPlNum = minPlNum;
+    }
+
+    public BigDecimal getPlMtow() {
+        return plMtow;
+    }
+
+    public void setPlMtow(BigDecimal plMtow) {
+        this.plMtow = plMtow;
+    }
+
+    public BigDecimal getPlMldw() {
+        return plMldw;
+    }
+
+    public void setPlMldw(BigDecimal plMldw) {
+        this.plMldw = plMldw;
+    }
+
+    public BigDecimal getPlMzfw() {
+        return plMzfw;
+    }
+
+    public void setPlMzfw(BigDecimal plMzfw) {
+        this.plMzfw = plMzfw;
+    }
+
+    public Integer getcFs() {
+        return cFs;
+    }
+
+    public void setcFs(Integer cFs) {
+        this.cFs = cFs;
+    }
+
+    public Integer getbFs() {
+        return bFs;
+    }
+
+    public void setbFs(Integer bFs) {
+        this.bFs = bFs;
+    }
+
+    public Integer getmFs() {
+        return mFs;
+    }
+
+    public void setmFs(Integer mFs) {
+        this.mFs = mFs;
+    }
 
     public BigDecimal getcWeight() {
         return cWeight;

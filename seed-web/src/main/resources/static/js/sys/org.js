@@ -32,7 +32,7 @@ var main = new Vue({
         },
         methods: {
             loadTree: function () {
-                this.$http.post("/sys/org/selectOrgTree").then(
+                this.$http.post("sys/org/selectOrgTree").then(
                     function (response) {
                         this.treeData = response.body;
                     },
@@ -78,7 +78,7 @@ var main = new Vue({
 
             // 保存组织机构
             saveOrg: function () {
-                this.$http.post("/sys/org/save", this.sysOrg).then(
+                this.$http.post("sys/org/save", this.sysOrg).then(
                     function (success) {
                         this.operateDialogShow = false;  //关闭窗口
                         this.loadTree();
@@ -98,7 +98,7 @@ var main = new Vue({
                 var main = this;
                 $.ajax({
                     type: "POST",
-                    url: "/sys/user/selectByPage",
+                    url: "sys/user/selectByPage",
                     dataType: "json",
                     contentType: "application/json",
                     data: JSON.stringify(param),
@@ -150,7 +150,7 @@ var main = new Vue({
                     type: 'warning'
                 }).then(
                     function () {
-                        $.post("/sys/user/deleteByPrimary/" + main.selectedUser.id, function (success, data) {
+                        $.post("sys/user/deleteByPrimary/" + main.selectedUser.id, function (success, data) {
                             if (success) {
                                 czy.msg.info("操作成功");
                                 var param = {"pageNum": 1, "pageSize": this.pageSize, "params": {}};

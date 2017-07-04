@@ -26,7 +26,7 @@ var resource_panel = new Vue({
             },
             loadData: function () {
                 var _this = this;
-                $.post("/sys/resource/selectResourceTree", this.queryParam, function (data) {
+                $.post("sys/resource/selectResourceTree", this.queryParam, function (data) {
                     _this.treeData = data.data;
                 });
             },
@@ -41,7 +41,7 @@ var resource_panel = new Vue({
             save: function () {
                 var _this = this;
                 czy.ajax.postJson({
-                    url: "/sys/resource/save",
+                    url: "sys/resource/save",
                     data: _this.formData,
                     success: function (result) {
                         resource_panel.loadData();
@@ -57,7 +57,7 @@ var resource_panel = new Vue({
                     type: 'warning'
                 }).then(
                     function () {
-                        $.post("/sys/resource/deleteByPrimary/" + data.id, function (res) {
+                        $.post("sys/resource/deleteByPrimary/" + data.id, function (res) {
                             if (res.code == 200) {
                                 czy.msg.success(res.msg);
                                 resource_panel.loadData();

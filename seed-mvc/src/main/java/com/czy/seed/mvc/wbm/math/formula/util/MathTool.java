@@ -44,11 +44,19 @@ public class MathTool {
     public static BigDecimal linearInterpolation(BigDecimal x1, BigDecimal y1, BigDecimal x2, BigDecimal y2, BigDecimal x) {
         if (x2.compareTo(x1) == 0) {
             throw new IllegalArgumentException("差值运算时参数错误，x1不能等于x2");
-        }
+        }//  Function_01 = (y2 - y1) * (x - x1) / (x2 - x1) + y1
         return y2.subtract(y1)
                 .divide(x2.subtract(x1), 2, BigDecimal.ROUND_HALF_UP)
                 .multiply(x.subtract(x1))
                 .add(y1);
+
+        /**
+         * 1 public BigDecimal add(BigDecimal value);       //加法
+         2 public BigDecimal subtract(BigDecimal value);    //减法
+         3 public BigDecimal multiply(BigDecimal value);    //乘法
+         4 public BigDecimal divide(BigDecimal value);      //除法
+         */
+       // return y2.subtract(y1).multiply(x.subtract(x1)).divide(x2.subtract(x1),2, BigDecimal.ROUND_HALF_UP).add(y1);
     }
 
     /**
@@ -60,6 +68,7 @@ public class MathTool {
      * @return
      */
     public static BigDecimal buildCg(BigDecimal i, BigDecimal w, FlightTypeConfig flightTypeConfig) {
+        //    CG_TOW = (((TOI - 50) * 1000 / TOW + 18.8499) - 17.8015) * 100 / 4.1935
         return i.subtract(flightTypeConfig.getK())
                 .multiply(flightTypeConfig.getC())
                 .divide(w, 3, BigDecimal.ROUND_HALF_UP)
@@ -146,18 +155,34 @@ public class MathTool {
             throw new IllegalArgumentException("差值法计算时，发现配置重量小于0的参数：" + headIndexConfig.getWeight());
         }
         //开始计算，获取当前重量所在范围的数据值的前一个和后一个元素
-        for (int i = 0; i < indexConfigList.size(); i++) {
-            IndexConfig config = indexConfigList.get(i);
-            if (currentConfig.equals(config)) {
-                if (i != 0 || i != indexConfigList.size()) {
-                    linearParams.setPre(indexConfigList.get(i - 1));
-                    linearParams.setAft(indexConfigList.get(i + 1));
-                    return linearParams;
-                }
+//        for (int i = 0; i < indexConfigList.size(); i++) {
+//            IndexConfig config = indexConfigList.get(i);
+//            if (currentConfig.equals(config)) {
+//                if (i != 0 && i != indexConfigList.size() - 1) {
+//                    linearParams.setPre(indexConfigList.get(i - 1));
+//                    linearParams.setAft(indexConfigList.get(i + 1));
+//                    return linearParams;
+//                }
+//            }
+//        }
+        //开始计算，获取当前重量所在范围的数据值的前一个和后一个元素
+        //查找排序后的位置
+        int indexOf = indexConfigList.indexOf(currentConfig);
+        //如果最排在最后一个位置并且最后第二个元素比较值等于当前数,则取倒数第二个元素
+        if (indexOf == indexConfigList.size() - 1) {
+            IndexConfig indexConfig = indexConfigList.get(indexOf - 1);
+            if (indexConfig.getWeight().compareTo(currentConfig.getWeight()) == 0) {
+                linearParams.setPre(indexConfigList.get(indexOf - 2));
+                linearParams.setAft(indexConfig);
+                return linearParams;
             }
+        }else if (indexOf > 0) {
+            linearParams.setPre(indexConfigList.get(indexOf - 1));
+            linearParams.setAft(indexConfigList.get(indexOf + 1));
+            return linearParams;
         }
 
-        throw new IllegalArgumentException("实际重量/人数：" + param + "超出最大限制:" + indexConfigList.get(indexConfigList.size() - 1));
+        throw new IllegalArgumentException("实际重量/人数：" + param + "超出最大限制:" + indexConfigList.get(indexConfigList.size() - 1).getWeight());
     }
 
     /**

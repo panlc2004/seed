@@ -37,11 +37,11 @@ var defaults = {
     },
     passengerForm: {
         passengers: [
-            {passengerTypeCode: "AUDLT"},// 成人
+            {passengerTypeCode: "ADULT"},// 成人
             {passengerTypeCode: "CHILD"},// 小孩
             {passengerTypeCode: "INFANT"}// 婴儿
         ],
-        configuration: {"AUDLT": "成人", "CHILD": "小孩", "INFANT": "婴儿"}
+        configuration: {"ADULT": "成人", "CHILD": "小孩", "INFANT": "婴儿"}
     },
     crewForm: {
         crews: [
@@ -189,20 +189,22 @@ var cfg_index = new Vue({
         loadData: function () {
             var data = {};//组装的data数据
             $.ajax({
-                url: "/cfg/flightTypeConfig/list",
+                url: "cfg/flightTypeConfig/list",
                 data: {},
                 type: 'POST',
                 async: false,//需要添加这个参数使用同步功能
                 success: function (result) {
                     data = result;
+                },
+                error: function (error) {
+                    var text = error.responseJSON.msg;
+                    if (text && text.length > 100) {
+                        text = text.substring(0, 100);
+                    }
+                    czy.msg.error(text);
                 }
             });
             return data;
-        },
-        rowClick: function (row, event, column) {
-            for (var key in row) {
-                //alert(row.id);
-            }
         },
         getSelectRows: function (selection, row) {
             var length = selection.length;
@@ -226,6 +228,8 @@ var cfg_index = new Vue({
         },
 
         typeConfAdd: function () {
+
+            this.ftcForm = {};
             this.showTable = false;
             this.showForm = true;
         },
@@ -254,13 +258,21 @@ var cfg_index = new Vue({
                 if (result) {
                     var params = JSON.stringify(cfg_index.ftcForm);
                     $.ajax({
-                        url: "/cfg/flightTypeConfig/add",
+                        url: "cfg/flightTypeConfig/save",
                         data: params,
                         type: 'POST',
                         contentType: 'application/json;charset=UTF-8',
                         async: false,//需要添加这个参数使用同步功能
                         success: function (result) {
                             cfg_index.ftcForm.id = result.data.id
+                            czy.msg.success(result.msg)
+                        },
+                        error: function (error) {
+                            var text = error.responseJSON.msg;
+                            if (text && text.length > 100) {
+                                text = text.substring(0, 100);
+                            }
+                            czy.msg.error(text);
                         }
                     });
                 }
@@ -287,6 +299,11 @@ var cfg_index = new Vue({
         chDelClick: function (cargoHold) {
             var indexOf = this.cargoHoldForm.cargoHolds.indexOf(cargoHold);
             if (indexOf !== -1 && indexOf !== 0) {
+                /**splice 方法说明
+                 * index    必需。整数，规定添加/删除项目的位置，使用负数可从数组结尾处规定位置。
+                 * howmany    必需。要删除的项目数量。如果设置为 0，则不会删除项目。
+                 * item1, ..., itemX    可选。向数组添加的新项目。
+                 */
                 this.cargoHoldForm.cargoHolds.splice(indexOf, 1)
             } else {
                 czy.msg.warn("不能选择第一条数据!")
@@ -294,7 +311,7 @@ var cfg_index = new Vue({
         },
         //指数配置增加输入项
         icpcAddClick: function (index) {
-            this.passengerCabinForm.passengerCabins[index].icTableData.push({key: Date.now()});
+            this.passengerCabinForm.passengerCabins[index].icTableData.push({types: 1, key: Date.now()});
         },
         icpcDelClick: function (index, row) {
             if (index == 0) {
@@ -314,10 +331,11 @@ var cfg_index = new Vue({
             }
             row.splice(index, 1);
         },
-        //指数配置增加输入项
+        //货舱指数配置增加输入项
         icchAddClick: function (index) {
-            this.cargoHoldForm.cargoHolds[index].icTableData.push({key: Date.now()});
+            this.cargoHoldForm.cargoHolds[index].icTableData.push({types: 2, key: Date.now()});
         },
+
         icchDelClick: function (index, row) {
             if (index == 0) {
                 czy.msg.warn("不能删除第一条数据!");
@@ -360,14 +378,19 @@ var cfg_index = new Vue({
                     }
                     var params = JSON.stringify(data);
                     $.ajax({
-                        url: "/cfg/passengerCabin/addList",
+                        url: "cfg/passengerCabin/addList",
                         data: params,
                         type: 'POST',
                         contentType: 'application/json;charset=UTF-8',
                         success: function (result) {
-                            if (result == 200) {
-                                czy.msg.success("保存成功!")
+                            czy.msg.success(result.msg)
+                        },
+                        error: function (error) {
+                            var text = error.responseJSON.msg;
+                            if (text && text.length > 100) {
+                                text = text.substring(0, 100);
                             }
+                            czy.msg.error(text);
                         }
                     });
                 } else {
@@ -393,7 +416,7 @@ var cfg_index = new Vue({
                         var cargoHold = {};//客舱信息配置对象
                         var indexOfObj = cargoHolds[index];
                         for (var key in indexOfObj) {
-                            if (key == "icTableData") {
+                            if (key == "icTableData") {//为指数配置项添加 flightTypeConfigId
                                 indexConfigList = indexOfObj[key];
                                 for (var indes in indexConfigList) {
                                     indexConfigList[indes].flightTypeConfigId = cfg_index.ftcForm.id;
@@ -409,14 +432,19 @@ var cfg_index = new Vue({
                     }
                     var params = JSON.stringify(data);
                     $.ajax({
-                        url: "/cfg/cargoHold/addList",
+                        url: "cfg/cargoHold/addList",
                         data: params,
                         type: 'POST',
                         contentType: 'application/json;charset=UTF-8',
                         success: function (result) {
-                            if (result == 200) {
-                                czy.msg.success("保存成功!")
+                            czy.msg.success(result.msg)
+                        },
+                        error: function (error) {
+                            var text = error.responseJSON.msg;
+                            if (text && text.length > 100) {
+                                text = text.substring(0, 100);
                             }
+                            czy.msg.error(text);
                         }
                     });
                 } else {
@@ -445,14 +473,19 @@ var cfg_index = new Vue({
                     }
                     var params = JSON.stringify(fuelsIndexConfig);
                     $.ajax({
-                        url: "/cfg/indexConfig/addList",
+                        url: "cfg/indexConfig/addList",
                         data: params,
                         type: 'POST',
                         contentType: 'application/json;charset=UTF-8',
                         success: function (result) {
-                            if (result == 200) {
-                                czy.msg.success("保存成功!")
+                            czy.msg.success(result.msg);
+                        },
+                        error: function (error) {
+                            var text = error.responseJSON.msg;
+                            if (text && text.length > 100) {
+                                text = text.substring(0, 100);
                             }
+                            czy.msg.error(text);
                         }
                     });
                 } else {
@@ -483,14 +516,19 @@ var cfg_index = new Vue({
                     }
                     var params = JSON.stringify(passengers);
                     $.ajax({
-                        url: "/cfg/passenger/addList",
+                        url: "cfg/passenger/addList",
                         data: params,
                         type: 'POST',
                         contentType: 'application/json;charset=UTF-8',
                         success: function (result) {
-                            if (result == 200) {
-                                czy.msg.success("保存成功!")
+                            czy.msg.success(result.msg);
+                        },
+                        error: function (error) {
+                            var text = error.responseJSON.msg;
+                            if (text && text.length > 100) {
+                                text = text.substring(0, 100);
                             }
+                            czy.msg.error(text);
                         }
                     });
                 } else {
@@ -521,14 +559,19 @@ var cfg_index = new Vue({
                     }
                     var params = JSON.stringify(crews);
                     $.ajax({
-                        url: "/cfg/crew/addList",
+                        url: "cfg/crew/addList",
                         data: params,
                         type: 'POST',
                         contentType: 'application/json;charset=UTF-8',
                         success: function (result) {
-                            if (result == 200) {
-                                czy.msg.success("保存成功!")
+                            czy.msg.success(result.msg);
+                        },
+                        error: function (error) {
+                            var text = error.responseJSON.msg;
+                            if (text && text.length > 100) {
+                                text = text.substring(0, 100);
                             }
+                            czy.msg.error(text);
                         }
                     });
                 } else {
@@ -553,14 +596,19 @@ var cfg_index = new Vue({
                     }
                     var params = JSON.stringify(galleyGoods);
                     $.ajax({
-                        url: "/cfg/galleyGoods/addList",
+                        url: "cfg/galleyGoods/addList",
                         data: params,
                         type: 'POST',
                         contentType: 'application/json;charset=UTF-8',
                         success: function (result) {
-                            if (result == 200) {
-                                czy.msg.success("保存成功!")
+                            czy.msg.success(result.msg);
+                        },
+                        error: function (error) {
+                            var text = error.responseJSON.msg;
+                            if (text && text.length > 100) {
+                                text = text.substring(0, 100);
                             }
+                            czy.msg.error(text);
                         }
                     });
                 } else {
@@ -582,14 +630,19 @@ var cfg_index = new Vue({
                     offset.flightTypeConfigId = cfg_index.ftcForm.id;
                     var params = JSON.stringify(offset);
                     $.ajax({
-                        url: "/cfg/offset/add",
+                        url: "cfg/offset/save",
                         data: params,
                         type: 'POST',
                         contentType: 'application/json;charset=UTF-8',
                         success: function (result) {
-                            if (result == 200) {
-                                czy.msg.success("保存成功!")
+                            czy.msg.success(result.msg);
+                        },
+                        error: function (error) {
+                            var text = error.responseJSON.msg;
+                            if (text && text.length > 100) {
+                                text = text.substring(0, 100);
                             }
+                            czy.msg.error(text);
                         }
                     });
                 } else {
@@ -617,18 +670,23 @@ var cfg_index = new Vue({
                     flightInfo.flightConfigId = cfg_index.fcForm.id;
                     var params = JSON.stringify(flightInfo);
                     $.ajax({
-                        url: "/cfg/flightInfo/add",
+                        url: "cfg/flightInfo/save",
                         data: params,
                         type: 'POST',
                         contentType: 'application/json;charset=UTF-8',
                         success: function (result) {
-                            if (result == 200) {
-                                czy.msg.success("保存成功!")
+                            czy.msg.success(result.msg);
+                        },
+                        error: function (error) {
+                            var text = error.responseJSON.msg;
+                            if (text && text.length > 100) {
+                                text = text.substring(0, 100);
                             }
+                            czy.msg.error(text);
                         }
                     });
                 } else {
-                    czy.msg.error("校验不通过!")
+                    czy.msg.error("校验不通过!");
                 }
             });
         },
@@ -638,7 +696,6 @@ var cfg_index = new Vue({
             //提交客舱信息参数
             this.$refs[fcForm].validate(function (result) {
                 var flightConfigId = cfg_index.ftcForm.id;
-                debugger;
                 if (!flightConfigId || "" == flightConfigId) {
                     czy.msg.error("航班类型配置ID");
                     return;
@@ -649,14 +706,20 @@ var cfg_index = new Vue({
                     flightConfig.flightTypeConfigId = cfg_index.ftcForm.id;
                     var params = JSON.stringify(flightConfig);
                     $.ajax({
-                        url: "/cfg/flightCfg/add",
+                        url: "cfg/flightCfg/save",
                         data: params,
                         type: 'POST',
                         contentType: 'application/json;charset=UTF-8',
                         success: function (result) {
                             cfg_index.fcForm.id = result.data.id;
-                            czy.msg.success("保存成功!")
-
+                            czy.msg.success(result.msg);
+                        },
+                        error: function (error) {
+                            var text = error.responseJSON.msg;
+                            if (text && text.length > 100) {
+                                text = text.substring(0, 100);
+                            }
+                            czy.msg.error(text);
                         }
                     });
                 } else {
@@ -668,7 +731,7 @@ var cfg_index = new Vue({
         //客舱数据和指数参数配置数据回显
         aboutTypeConfEcho: function () {
             $.ajax({
-                url: "/cfg/flightTypeConfig/queryFlightTypeList",
+                url: "cfg/flightTypeConfig/queryFlightTypeList",
                 data: {flightTypeConfigId: cfg_index.ftcForm.id},
                 type: 'POST',
                 async: false,//需要添加这个参数使用同步功能
@@ -698,7 +761,7 @@ var cfg_index = new Vue({
                         data.icTableData = indexConfigList;
                         cabins.push(data);
                     }
-                    cfg_index.passengerCabinForm.passengerCabins = cabins;
+
                     //货舱信息数据回显
                     for (var key in chList) {
                         var obj = chList[key];
@@ -708,30 +771,37 @@ var cfg_index = new Vue({
                         data.icTableData = indexConfigList;
                         cargoHolds.push(data);
                     }
-                    cfg_index.cargoHoldForm.cargoHolds = cargoHolds;
-
                     //燃油指数配置
-                    for (var key in fuelList) {
-                        var fuel = fuelList[key];
-                        var indexConfigList = obj.indexConfigList;
-                        fuel.icTableData = indexConfigList;
-                        fuels.push(fuel);
-                    }
-                    cfg_index.fuelIndexConfigForm.fuels = fuels;
+                    var fuel = {};
+                    fuel.icTableData = fuelList == null || fuelList.length == 0 ? [{key: new Date()}] : fuelList;
+                    fuels.push(fuel);
 
                     //乘务信息配置
                     for (var key in crewList) {
                         var crew = crewList[key];
                         crews.push(crew);
                     }
-                    cfg_index.crewForm.crews = crews;
 
                     //乘客信息配置
                     for (var key in passengerList) {
                         var passenger = passengerList[key];
                         passengers.push(passenger);
                     }
-                    cfg_index.passengerForm.passengers = passengers;
+                    /**
+                     * 在数据回显赋值时,当数据库没有返回对应的值是,使用默认的配置项,防止页面输入项不正确
+                     */
+                    cfg_index.passengerCabinForm.passengerCabins = cabins.length != 0 ? cabins : defaults.passengerCabinForm.passengerCabins;
+                    cfg_index.cargoHoldForm.cargoHolds = cargoHolds.length != 0 ? cargoHolds : defaults.cargoHoldForm.cargoHolds;
+                    cfg_index.fuelIndexConfigForm.fuels = fuels.length != 0 ? fuels : defaults.fuelIndexConfigForm.fuels;
+                    cfg_index.crewForm.crews = crews.length != 0 ? crews : defaults.crewForm.crews;
+                    cfg_index.passengerForm.passengers = passengers.length != 0 ? passengers : defaults.passengerForm.passengers;
+                },
+                error: function (error) {
+                    var text = error.responseJSON.msg;
+                    if (text && text.length > 100) {
+                        text = text.substring(0, 100);
+                    }
+                    czy.msg.error(text);
                 }
             });
 
@@ -739,7 +809,7 @@ var cfg_index = new Vue({
         //架次参数配置回显数据
         aboutInfoConfEcho: function () {
             $.ajax({
-                url: "/cfg/flightCfg/queryFlightConfList",
+                url: "cfg/flightCfg/queryFlightConfList",
                 data: {flightTypeConfigId: cfg_index.ftcForm.id},
                 type: 'POST',
                 async: false,//需要添加这个参数使用同步功能
@@ -752,12 +822,21 @@ var cfg_index = new Vue({
                     var flightConfig = result.data.flightConfig;
                     //航班总体参数数据对象
                     var flightInfo = result.data.flightInfo;
-
+                    /**
+                     * 在数据库中没有存在值时,需使用默认的配置项,防止页面输入项不正确
+                     */
                     cfg_index.fcForm = flightConfig == null ? defaults.fcForm : flightConfig;
                     cfg_index.offsetForm = offset == null ? defaults.offsetForm : offset;
                     cfg_index.flightInfoForm = flightInfo == null ? defaults.flightInfoForm : flightInfo;
                     cfg_index.ggForm.galleyGoods = galleyGoodsList == null || galleyGoodsList.length == 0 ? defaults.ggForm.galleyGoods : galleyGoodsList;
 
+                },
+                error: function (error) {
+                    var text = error.responseJSON.msg;
+                    if (text && text.length > 100) {
+                        text = text.substring(0, 100);
+                    }
+                    czy.msg.error(text);
                 }
             });
         }

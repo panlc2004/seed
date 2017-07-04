@@ -122,7 +122,7 @@ public class GlobalExceptionAdvice {
     @ExceptionHandler(BusinessException.class)
     public Res handleServiceException(BusinessException e) {
         logger.error("业务逻辑异常", e);
-        return Res.error("业务逻辑异常：" + e.getMessage());
+        return Res.error(e.getMessage());
     }
 
     /**
@@ -132,7 +132,7 @@ public class GlobalExceptionAdvice {
     @ExceptionHandler(Exception.class)
     public Res handleException(Exception e) {
         logger.error("通用异常", e);
-        return Res.error("通用异常：" + e.getMessage());
+        return Res.error(e.getMessage());
     }
 
     /**

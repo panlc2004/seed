@@ -33,6 +33,11 @@ public class ZfMath extends DoMath {
         zfCg = buildZfCg();
     }
 
+
+    public BigDecimal getZfCg() {
+        return zfCg;
+    }
+
     public BigDecimal getZfw() {
         return zfw;
     }
@@ -75,18 +80,32 @@ public class ZfMath extends DoMath {
 
         //货仓指数计算
         List<CargoHold> cargoHoldList = flightTypeConfig.getCargoHoldList();
-        Map<String, List<IndexConfig>> cargoConfigGroup = getConfigGroup(flightInfo, 2); //查找货仓配置
+        Map<Long, List<IndexConfig>> cargoConfigGroup = getConfigGroup(flightInfo, 2); //查找货仓配置
         for (CargoHold cargoHold : cargoHoldList) {
             zfi = zfi.add(MathTool.linearInterpolation(
-                    cargoConfigGroup.get(cargoHold.getName()), cargoHold.getCargoWeight()));
+                    cargoConfigGroup.get(cargoHold.getId()), cargoHold.getCargoWeight()));
         }
 
         //客仓指数计算
         List<PassengerCabin> cabinHoldList = flightTypeConfig.getPassengerCabinList();
-        Map<String, List<IndexConfig>> cabinConfigGroup = getConfigGroup(flightInfo, 1); //查找客仓配置
+        Map<PassengerType, List<Passenger>> passengerGroup = getPassengerGroup(flightTypeConfig.getPassengers());
+
+        Map<Long, List<IndexConfig>> cabinConfigGroup = getConfigGroup(flightInfo, 1); //查找客仓配置
         for (PassengerCabin cabin : cabinHoldList) {
+            //小孩和婴儿按照成人的比例进行计算
+            BigDecimal totalNumIndex = new BigDecimal(cabin.getAdultNum());
+            BigDecimal adultStandardWeight = passengerGroup.get(PassengerType.ADULT).get(0).getStandardWeight();
+            totalNumIndex =
+                    totalNumIndex.add(
+                            (passengerGroup.get(PassengerType.CHILD).get(0).getStandardWeight())
+                                    .divide(adultStandardWeight,2, BigDecimal.ROUND_HALF_UP)
+                                    .multiply(new BigDecimal(cabin.getChildNum())))
+                    .add((passengerGroup.get(PassengerType.INFANT).get(0).getStandardWeight())
+                            .divide(adultStandardWeight,2, BigDecimal.ROUND_HALF_UP)
+                            .multiply(new BigDecimal(cabin.getInfantNum())))
+                    .divide(BigDecimal.ONE,2,BigDecimal.ROUND_HALF_UP);
             zfi = zfi.add(MathTool.linearInterpolation(
-                    cabinConfigGroup.get(cabin.getName()), new BigDecimal(cabin.getAdultNum())));    //TODO 人数取值可能有问题
+                    cabinConfigGroup.get(cabin.getId()),totalNumIndex));    //TODO 人数取值可能有问题
         }
 
         return zfi;
@@ -109,10 +128,10 @@ public class ZfMath extends DoMath {
      * @param types      配置类型：1.客舱参数、2.货仓参数、3.燃油参数
      * @return Map<String, List<IndexConfig>>
      */
-    public Map<String, List<IndexConfig>> getConfigGroup(FlightInfo flightInfo, int types) {
+    public Map<Long, List<IndexConfig>> getConfigGroup(FlightInfo flightInfo, int types) {
         List<IndexConfig> indexConfigList = getIndexConfigs(flightInfo, types);
         return indexConfigList.stream().collect(
-                Collectors.groupingBy(IndexConfig::getHouseName));
+                Collectors.groupingBy(IndexConfig::getAircraftCabinId));
     }
 
 
@@ -137,7 +156,7 @@ public class ZfMath extends DoMath {
         List<CargoHold> cargoHoldList = flightInfo.getFlightTypeConfig().getCargoHoldList();
         BigDecimal totalCargoWeight = BigDecimal.ZERO;
         for (CargoHold cargoHold : cargoHoldList) {
-            totalCargoWeight.add(cargoHold.getCargoWeight());
+            totalCargoWeight = totalCargoWeight.add(cargoHold.getCargoWeight());
         }
         return totalCargoWeight;
     }
@@ -153,9 +172,9 @@ public class ZfMath extends DoMath {
         Map<PassengerType, BigDecimal> passengerNums = getPassengerNums(flightInfo);
         FlightTypeConfig flightTypeConfig = flightInfo.getFlightTypeConfig();
         Map<PassengerType, List<Passenger>> passengerGroup = getPassengerGroup(flightTypeConfig.getPassengers());
-        totalCarbinWeight
-                .add(passengerNums.get(PassengerType.AUDLT)
-                        .multiply(passengerGroup.get(PassengerType.AUDLT).get(0).getStandardWeight()))
+        totalCarbinWeight = totalCarbinWeight
+                .add(passengerNums.get(PassengerType.ADULT)
+                        .multiply(passengerGroup.get(PassengerType.ADULT).get(0).getStandardWeight()))
                 .add(passengerNums.get(PassengerType.CHILD)
                         .multiply(passengerGroup.get(PassengerType.CHILD).get(0).getStandardWeight()))
                 .add(passengerNums.get(PassengerType.INFANT)
@@ -178,7 +197,7 @@ public class ZfMath extends DoMath {
         //实际成人数量=乘客成人数量 + “超出标准之外”的随行机组人员数量
         totalAdultNum = totalAdultNum.add(buildAccompaniedCrewNum(flightInfo));
         Map<PassengerType, BigDecimal> nums = new HashMap<>();
-        nums.put(PassengerType.AUDLT, totalAdultNum);
+        nums.put(PassengerType.ADULT, totalAdultNum);
         nums.put(PassengerType.CHILD, totalChildNum);
         nums.put(PassengerType.INFANT, totalInfantNum);
         return nums;

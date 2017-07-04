@@ -44,46 +44,19 @@ public class CrewController {
     @Resource
     private FlightTypeConfigService configService;
 
-//    @RequestMapping("/add")
-//    public Integer add(Crew crew) {
-//        int result = crewServiceImpl.insert(crew);
-//        if (result > 0) {
-//            return 200;
-//        } else {
-//            return 500;
-//        }
-//
-//    }
 
     /**
      * 批量添加乘务信息
+     *
      * @param crews 乘务新信息配置
      * @return
      */
     @RequestMapping("/addList")
     public Res addList(@RequestBody List<Crew> crews) {
-        crewServiceImpl.insertList(crews);
+        crewServiceImpl.saveAsList(crews);
         return Res.ok();
     }
 
-    /**
-     * 修改乘务信息配置
-     * @param crew
-     * @return
-     */
-    @RequestMapping("/update")
-    public Res update(Crew crew) {
-        int result = crewServiceImpl.updateByPrimaryKey(crew);
-        return Res.ok(result);
-    }
-
-//    @RequestMapping("/view")
-//    public Crew view(Crew crew) {
-//        Crew crew1 = crewServiceImpl.selectRelativeByPrimaryKey(crew.getId());
-//        if (crew1 != null)
-//            crew1.setFlightTypeConfig(configService.selectByPrimaryKey(crew1.getFlightTypeConfigId()));
-//        return crew1;
-//    }
 
     @RequestMapping("/list")
     public List<Crew> list(Crew crew) {
@@ -103,13 +76,4 @@ public class CrewController {
         return list;
     }
 
-//    @RequestMapping("/del")
-//    public int del(Crew crew) {
-//        int result = crewServiceImpl.deleteByPrimaryKey(crew.getId());
-//        if (result > 0) {
-//            return 200;
-//        } else {
-//            return 500;
-//        }
-//    }
 }

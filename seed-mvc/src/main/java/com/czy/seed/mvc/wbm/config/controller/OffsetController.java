@@ -15,13 +15,11 @@ import com.czy.seed.mvc.util.Res;
 import com.czy.seed.mvc.wbm.config.entity.type.Offset;
 import com.czy.seed.mvc.wbm.config.service.FlightTypeConfigService;
 import com.czy.seed.mvc.wbm.config.service.OffsetService;
-import com.czy.seed.mybatis.base.QueryParams;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import javax.annotation.Resource;
-import java.util.List;
 
 /**
  * <一句话功能简介><br>
@@ -57,6 +55,23 @@ public class OffsetController {
     }
 
     /**
+     * 保存数据:当传入数据有id时，进行修改操作，无id时，进行新增操作
+     *
+     * @param offset 数据实体
+     * @return 新增/修改数据的id值
+     */
+    @RequestMapping("/save")
+    public Res save(@RequestBody Offset offset) {
+        if (offset.getId() == null) {
+            offsetServiceImpl.insert(offset);
+        } else {
+            offsetServiceImpl.updateSelectiveByPrimaryKey(offset);
+        }
+        return Res.ok(offset);
+    }
+
+
+    /**
      * 修改偏差设置
      *
      * @param offset 偏差设置参数实体对象
@@ -68,35 +83,4 @@ public class OffsetController {
         return Res.ok(result);
     }
 
-//    @RequestMapping("/view")
-//    public Offset view(Offset offset) {
-//        Offset offset1 = offsetServiceImpl.selectRelativeByPrimaryKey(offset.getId());
-//        if (offset1 != null)
-//            offset1.setFlightTypeConfig(configService.selectByPrimaryKey(offset1.getFlightTypeConfigId()));
-//        return offset1;
-//    }
-
-//    @RequestMapping("/list")
-//    public List<Offset> list(Offset offset) {
-//        QueryParams queryParams = new QueryParams(Offset.class);
-//        String type = offset.getType();//类型
-//        QueryParams.Criteria criteria = queryParams.createCriteria();
-//
-//        if (type != null && !"".equals(type.trim())) {
-//
-//            criteria.andLike("type", "%" + type + "%");
-//        }
-//        List<Offset> list = offsetServiceImpl.selectListByParams(queryParams);
-//        return list;
-//    }
-
-//    @RequestMapping("/del")
-//    public int del(Offset offset) {
-//        int result = offsetServiceImpl.deleteByPrimaryKey(offset.getId());
-//        if (result > 0) {
-//            return 200;
-//        } else {
-//            return 500;
-//        }
-//    }
 }

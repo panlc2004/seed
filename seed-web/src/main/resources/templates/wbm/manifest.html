@@ -3,6 +3,7 @@
       xmlns:th="http://www.thymeleaf.org">
 <body>
 <script th:src="@{/js/wbm/manifest.js}"></script>
+<script th:src="@{/lib/echarts/echarts.min.js}"></script>
 <style>
     .time {
         font-size: 13px;
@@ -77,7 +78,7 @@
 </style>
 
 <div id="manifest" style="margin: 10px 10px 10px 10px">
-    <el-col :span="20">
+    <el-col :span="22">
         <el-row>
             <el-form :model="infoForm" ref="infoForm" label-width="110px">
                 <el-col :span="8">
@@ -181,7 +182,7 @@
                                         </el-col>
                                         <el-col :span="4" v-for="crew in infoForm.crews">
                                             <el-input size="small"
-                                                      v-model="crew.standardNum" readonly>
+                                                      v-model="crew.standardNum">
                                             </el-input>
                                         </el-col>
                                     </el-row>
@@ -191,7 +192,7 @@
                                         </el-col>
                                         <el-col :span="8" v-for="galleyGood in infoForm.galleyGoods">
                                             <el-input size="small"
-                                                      v-model="galleyGood.standardWeight" readonly></el-input>
+                                                      v-model="galleyGood.standardWeight"></el-input>
                                         </el-col>
                                     </el-row>
                                 </el-col>
@@ -294,7 +295,7 @@
                                         </el-col>
                                         <el-col :span="12">
                                             <el-input size="small"
-                                                      v-model="infoForm.tripFuel" readonly>
+                                                      v-model.number="infoForm.tripFuel" readonly>
                                             </el-input>
                                         </el-col>
                                     </el-row>
@@ -308,12 +309,13 @@
         </el-row>
         <el-row style="margin-top: 10px;">
             <el-col :span="24">
-                <el-card :body-style="{ padding: '0px' }" style="margin-left: 10px;" v-if="showcargoAndCabin">
+                <el-card :body-style="{ padding: '0px' }" style="margin-left: 10px;" v-if="showCargoAndCabin">
                     <div style="padding: 14px;">
                         <el-form :model="cabinsForm" ref="cabinsForm" label-width="110px">
-                            <el-row v-if="showcargoAndCabin">
-                                <el-col :span="6" v-for="(segm,index) in cabinsForm.segments">
-                                    <el-card :body-style="{ padding: '0px' }" style="margin-left: 10px;">
+                            <el-row>
+                                <el-col :span="6" v-for="(segment,index) in cabinsForm.passengerCabins">
+                                    <el-card :body-style="{ padding: '0px' }"
+                                             style="margin-left: 10px;margin-top: 10px;">
                                         <el-tag v-if="index==0" type="danger">
                                             <span v-if="radio2==1">{{infoForm.segmentA}}-{{infoForm.segmentB}}</span>
                                             <span v-if="radio2==2">{{infoForm.segmentA}}-{{infoForm.segmentB}}</span>
@@ -337,25 +339,30 @@
                                         <el-tag v-else-if="index==3" type="danger">
                                             <span v-if="radio2==5">{{infoForm.segmentB}}-{{infoForm.segmentD}}</span>
                                         </el-tag>
-                                        <el-row v-for="(passengerType,typeIndex) in cabinsForm.passengerTypes">
-                                            <el-col :span="6"
-                                                    v-for="(passengerCabin,cabinIndex) in cabinsForm.passengerCabins">
-                                                <span class="span-font" v-if="typeIndex==0&&cabinIndex==0">
+                                        <el-row v-for="(rowData,rowIndex) in segment">
+                                            <el-row v-for="(rowData2,rowIndex2) in rowData">
+                                                <el-col :span="6" v-for="(colData,colIndex) in rowData2.aircraftCabin">
+                                                <span class="span-font" v-if="rowIndex2==0&&colIndex==0">
                                                     &nbsp;
                                                 </span>
-                                                <span class="span-font-center" v-else-if="typeIndex==0&&cabinIndex!=0">
-                                                    {{passengerCabin.name}}
+                                                    <span class="span-font-center"
+                                                          v-else-if="rowIndex2==0&&colIndex!=0">
+                                                    {{colData.name}}
                                                 </span>
-                                                <span class="span-font" v-else-if="typeIndex!=0&&cabinIndex==0">
-                                                    {{passengerType.key}}
+                                                    <span class="span-font" v-else-if="rowIndex2!=0&&colIndex==0">
+                                                    {{rowData2.cabinType}}
                                                 </span>
-                                                <el-input size="small" v-model="cabinsForm.name" v-else>
-                                                </el-input>
-                                            </el-col>
+                                                    <el-input size="small"
+                                                              v-model.number="cabinsForm.passengerCabins[index][rowIndex][rowIndex2].aircraftCabin[colIndex].value"
+                                                              v-else>
+                                                    </el-input>
+                                                </el-col>
+                                            </el-row>
                                         </el-row>
                                     </el-card>
                                 </el-col>
                             </el-row>
+
                         </el-form>
                     </div>
                 </el-card>
@@ -363,10 +370,10 @@
         </el-row>
         <el-row>
             <el-col :span="24">
-                <el-card :body-style="{ padding: '0px' }" style="margin-left: 10px;" v-if="showcargoAndCabin">
+                <el-card :body-style="{ padding: '0px' }" style="margin-left: 10px;" v-if="showCargoAndCabin">
                     <el-form :model="cargoHoldForm" ref="cargoHoldForm" label-width="110px">
                         <el-row>
-                            <el-col :span="6" v-for="(segment,index) in cargoHoldForm.segments">
+                            <el-col :span="6" v-for="(segment,index) in cargoHoldForm.cargos">
                                 <el-card :body-style="{ padding: '0px' }" style="margin-left: 10px;margin-top: 10px;">
                                     <el-tag v-if="index==0" type="danger">
                                         <span v-if="radio2==1">{{infoForm.segmentA}}-{{infoForm.segmentB}}</span>
@@ -391,30 +398,47 @@
                                     <el-tag v-else-if="index==3" type="danger">
                                         <span v-if="radio2==5">{{infoForm.segmentB}}-{{infoForm.segmentD}}</span>
                                     </el-tag>
-                                    <el-row v-for="(cargoType,typeIndex) in cargoHoldForm.cargoTypes">
-                                        <el-col :span="4"
-                                                v-for="(cargo,cargoIndex) in cargoHoldForm.cargos">
-                                                <span class="span-font" v-if="typeIndex==0&&cargoIndex==0">
-                                                    &nbsp;
+                                    <el-row v-for="(rowData,rowIndex) in segment">
+                                        <el-row v-for="(rowData2,rowIndex2) in rowData">
+                                            <el-col :span="4" v-for="(colData,colIndex) in rowData2.aircraftCabin">
+                                                <span class="span-font" v-if="rowIndex2==0&&colIndex==0">
+                                                &nbsp;
                                                 </span>
-                                            <span class="span-font-center" v-else-if="typeIndex==0&&cargoIndex!=0">
-                                                    {{cargo.name}}
+                                                <span class="span-font-center" v-else-if="rowIndex2==0&&colIndex!=0">
+                                                    {{colData.name}}
                                                 </span>
-                                            <span class="span-font" v-else-if="typeIndex!=0&&cargoIndex==0">
-                                                    {{cargoType.key}}
+                                                <span class="span-font" v-else-if="rowIndex2!=0&&colIndex==0">
+                                                {{rowData2.holtType}}
                                                 </span>
-                                            <el-input size="small" v-model="cargoHoldForm.cargos[index].inputData[typeIndex]" v-else>
-                                            </el-input>
-                                        </el-col>
-                                        <el-col :span="4" v-if="typeIndex==0">
-                                                <span class="span-font" v-if="typeIndex==0">
+                                                <!--<el-form-item label-width="1px"-->
+                                                <!--:prop="'cargoHoldForm.cargos[' + index + ']['rowIndex']['+rowIndex2+'].aircraftCabin['+colIndex+'].value'"-->
+                                                <!--:rules="[{-->
+                                                <!--required: true, message: '不能为空',-->
+                                                <!--},{ type: 'number', message: '必须为数字值',trigger: 'blur'}]" v-else>-->
+                                                <el-input size="small"
+                                                          v-model.number="cargoHoldForm.cargos[index][rowIndex][rowIndex2].aircraftCabin[colIndex].value"
+                                                          v-else>
+                                                </el-input>
+                                                <!--</el-form-item>-->
+                                            </el-col>
+                                            <el-col :span="4" v-if="rowIndex2==0">
+                                                <span class="span-font" v-if="rowIndex2==0">
+                                                    FS
+                                                </span>
+                                            </el-col>
+                                            <el-col :span="4" v-else>
+                                                <el-input size="small"
+                                                          v-model.number="cargoHoldForm.cargos[index][rowIndex][rowIndex2].fullScale">
+                                                </el-input>
+                                            </el-col>
+                                        </el-row>
+
+                                        <el-col :span="4" v-if="rowIndex==0">
+                                                <span class="span-font" v-if="rowIndex==0">
                                                     FS
                                                 </span>
                                         </el-col>
-                                        <el-col :span="4" v-else>
-                                            <el-input size="small" v-model="cargoHoldForm.name">
-                                            </el-input>
-                                        </el-col>
+
                                     </el-row>
                                 </el-card>
                             </el-col>
@@ -424,18 +448,30 @@
             </el-col>
         </el-row>
         <el-row>
-            <el-card :body-style="{ padding: '0px' }" style="margin-left: 10px;height: 500px;">
+            <el-card :body-style="{ padding: '0px' }" style="margin-left: 10px;">
                 <div slot="header" class="clearfix">
                     <span>区域</span>
                 </div>
-                <div style="padding: 14px; margin-left: 1%">
-
-                </div>
+                <el-row>
+                    <el-col :span="10">
+                        <div v-html="showFtl" style="padding: 14px; margin-left: 1%">
+                        </div>
+                    </el-col>
+                    <el-col :span="14">
+                        <el-row>
+                            <div id="loadAndTrimSheet" style="padding: 14px;width: 460px;height: 450px;">
+                            </div>
+                        </el-row>
+                        <el-row>
+                            <div v-html="checkResultData"></div>
+                        </el-row>
+                    </el-col>
+                </el-row>
             </el-card>
         </el-row>
     </el-col>
 
-    <el-col :span="4">
+    <el-col :span="2">
         <el-card :body-style="{ padding: '0px' }" style="margin-left: 10px;">
             <div slot="header" class="clearfix">
                 <span>区域</span>

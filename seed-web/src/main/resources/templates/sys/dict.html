@@ -21,7 +21,7 @@
                     </el-col>
                 </el-button-group>
             </div>
-            <czy-page-grid ref="dictGrid" url="/sys/dict/selectPageByParams" @current-change="dictGridClick">
+            <czy-page-grid ref="dictGrid" url="sys/dict/selectPageByParams" @current-change="dictGridClick">
                 <el-table-column type="index" width="55px" ></el-table-column>
                 <el-table-column prop="name" label="名称"></el-table-column>
                 <el-table-column prop="code" label="编码"></el-table-column>
@@ -42,7 +42,7 @@
                     <el-button type="danger" icon="delete" @click="delItem">删除</el-button>
                 </el-button-group>
             </div>
-            <czy-page-grid ref="itemGrid" url="/sys/dictItem/selectPageByParams"
+            <czy-page-grid ref="itemGrid" url="sys/dictItem/selectPageByParams"
                            table-height="80%" auto-init="false">
                 <el-table-column type="index" width="55px" ></el-table-column>
                 <el-table-column prop="itemCode" label="编码"></el-table-column>

@@ -16,12 +16,18 @@ public class LdMath extends ToMath {
     private BigDecimal ldi;
     private BigDecimal ldCg;
 
+    private BigDecimal trimCg;
 
     public LdMath(FlightInfo flightInfo) {
         super(flightInfo);
         this.ldw = buildLdw();
         this.ldi = buildLdi();
         this.ldCg = buildLdCg();
+        this.trimCg =buildLdTrimCg();
+    }
+
+    public BigDecimal getTrimCg() {
+        return trimCg;
     }
 
     public BigDecimal getLdw() {
@@ -50,7 +56,9 @@ public class LdMath extends ToMath {
      * @return
      */
     private BigDecimal buildLdi() {
-        return super.getToi().subtract(super.buildFuelIndex(super.getFlightInfo().getFlightConfig().getTripFuel()));
+        //计算起飞油量指数
+        BigDecimal tofIndex = MathTool.linearInterpolation(fuelIndexConfigList, super.getFlightInfo().getFlightConfig().getTripFuel());
+        return super.getToi().subtract(tofIndex);
     }
 
     /**

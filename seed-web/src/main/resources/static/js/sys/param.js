@@ -24,7 +24,7 @@ var param_panel = new Vue({
         },
         loadData: function () {
             var _this = this;
-            $.post("/sys/param/selectPageByParams", this.queryParam, function (data) {
+            $.post("sys/param/selectPageByParams", this.queryParam, function (data) {
                 _this.pageData = data.data.page;
                 _this.total = data.data.total;
             });

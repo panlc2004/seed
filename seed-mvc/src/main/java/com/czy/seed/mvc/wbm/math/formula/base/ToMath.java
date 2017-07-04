@@ -24,11 +24,19 @@ public class ToMath extends ZfMath {
         super(flightInfo);
         //获取油量指数配置
         fuelIndexConfigList = indexConfigServiceImpl.findIndexConfigList(
-                flightInfo.getFlightTypeConfig().getId(), 3);
+                flightInfo.getFlightTypeConfig().getId(), 3, -1L);
         tow = buildTow();
         toi = buildFuelIndex(flightInfo.getFlightConfig().getTakeOffFuel());
         toCg = buildToCg();
         trimToCg = buildToTrimCg();
+    }
+
+    public BigDecimal getToCg() {
+        return toCg;
+    }
+
+    public BigDecimal getTrimToCg() {
+        return trimToCg;
     }
 
     public BigDecimal getTow() {

@@ -5,6 +5,7 @@ import com.czy.seed.mybatis.sql.helper.EntityHelper;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 
 /**
  * Created by panlc on 2017-03-20.
@@ -43,7 +44,7 @@ public abstract class AbstractSqlTemplate {
      */
     private InputStream sqlParse(EntityTable entityTable) {
         String process = FreeMarkerUtil.process(getSqlTemplateName(), entityTable);
-        InputStream inputStream = new ByteArrayInputStream(process.getBytes());
+        InputStream inputStream = new ByteArrayInputStream(process.getBytes(Charset.forName("UTF-8")));
         return inputStream;
     }
 

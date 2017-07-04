@@ -42,6 +42,8 @@
         <freemarker.version>2.3.23</freemarker.version>
         <persistence-api.version>1.0</persistence-api.version>
         <java.version>1.8</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
     </properties>
 
 

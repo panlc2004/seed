@@ -60,7 +60,7 @@ var dictPanel = new Vue({
                 type: 'warning'
             }).then(
                 function () {
-                    $.post("/sys/dict/deleteByPrimaryKey/" + selectedRow.id, function (response) {
+                    $.post("sys/dict/deleteByPrimaryKey/" + selectedRow.id, function (response) {
                         czy.msg.success(response.msg);
                         dictPanel.queryDict();
                     });
@@ -129,7 +129,7 @@ var dictPanel = new Vue({
                 type: 'warning'
             }).then(
                 function () {
-                    $.post("/sys/dictItem/deleteByPrimaryKey/" + selectedRow.id, function (response) {
+                    $.post("sys/dictItem/deleteByPrimaryKey/" + selectedRow.id, function (response) {
                         czy.msg.success(response.msg);
                         dictPanel.dictGridClick(dictPanel.getDictSelectedRow());
                     });

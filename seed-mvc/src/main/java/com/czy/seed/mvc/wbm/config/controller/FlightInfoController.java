@@ -55,6 +55,26 @@ public class FlightInfoController {
 
     }
 
+    /**
+     * 保存数据:当传入数据有id时，进行修改操作，无id时，进行新增操作
+     *
+     * @param flightInfo 数据实体
+     * @return 新增/修改数据的id值
+     */
+    @RequestMapping("/save")
+    public Res save(@RequestBody FlightInfo flightInfo) {
+        if (flightInfo.getId() == null) {
+            flightInfoServiceImpl.insert(flightInfo);
+        } else {
+            flightInfoServiceImpl.updateSelectiveByPrimaryKey(flightInfo);
+        }
+        return Res.ok(flightInfo);
+    }
+
+
+
+
+
 
     @RequestMapping("/view")
     public FlightInfo view(FlightInfo flightInfo) {

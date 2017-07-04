@@ -16,7 +16,7 @@ public interface PassengerCabinService extends BaseService<PassengerCabin> {
      * @param indexConfigBeanList 在客舱数据中组装上指数配置列表项
      * @return
      */
-    void insertAsList(List<AboutIndexConfigBean> indexConfigBeanList);
+    void saveAsList(List<AboutIndexConfigBean> indexConfigBeanList);
 
     /**
      * 根据flightTypeConfigId 查询客舱信息和指数配置信息组装成对应的对象
