@@ -2,46 +2,48 @@ package com.czy.seed.mybatis.config;
 
 import com.czy.seed.mybatis.config.datasource.AtomikosDataSourceBuilder;
 import com.czy.seed.mybatis.config.datasource.DataSourceBuilder;
+import com.czy.seed.mybatis.config.datasource.DefaultDataSourceProperties;
+import com.czy.seed.mybatis.config.datasource.DynamicDataSourceProperties;
 import com.czy.seed.mybatis.config.mybatis.MybatisAtomikosConfig;
 import com.czy.seed.mybatis.config.mybatis.MybatisConfig;
 import com.czy.seed.mybatis.tool.SpringContextHelper;
-import com.czy.seed.mybatis.tool.SpringPropertiesUtil;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
+import org.springframework.boot.context.properties.EnableConfigurationProperties;
+import org.springframework.context.annotation.Configuration;
 
 import javax.annotation.PostConstruct;
-import java.util.Map;
 
 /**
  * Created by PLC on 2017/5/3.
  */
-@Component
+@Configuration
+@EnableConfigurationProperties({DefaultDataSourceProperties.class, DynamicDataSourceProperties.class, DataSourceProperties.class})
 public class DataBaseEnvInit {
 
     @Autowired
     private SpringContextHelper springContextHelper;
+
+    @Autowired
+    private DataSourceProperties dataSourceProperties;
 
     /**
      * 根据配置的数据源类型，初始化不同的数据源和mybatis环境
      */
     @PostConstruct
     public void initDataSource() {
+        String datasourcePool = dataSourceProperties.getPool();
         boolean initNormalEvnFlag = true;   //是否初始化普通数据源
-
-        if (SpringPropertiesUtil.containsKey("datasource.pool")) {
-            String property = SpringPropertiesUtil.getProperty("datasource.pool");
-            if (property.startsWith("atomikos")) {
-                initNormalEvnFlag = false;
-            }
+        if (datasourcePool != null && datasourcePool.startsWith("atomikos")) {
+            initNormalEvnFlag = false;
         }
         //如果配置了动态数据源，则自动使用atomikos数据连接
-        Map<String, Object> ctxPropertiesMap = SpringPropertiesUtil.getCtxPropertiesMap();
-        for (String key : ctxPropertiesMap.keySet()) {
-            if (key.startsWith(DataSourceBuilder.DYNAMIC_DATASOURCE_PREFIX)) {
-                initNormalEvnFlag = false;
-                break;
-            }
-        }
+//        Map<String, Object> ctxPropertiesMap = SpringPropertiesUtil.getCtxPropertiesMap();
+//        for (String key : ctxPropertiesMap.keySet()) {
+//            if (key.startsWith(DataSourceBuilder.DYNAMIC_DATASOURCE_PREFIX)) {
+//                initNormalEvnFlag = false;
+//                break;
+//            }
+//        }
 
         if (initNormalEvnFlag) {
             initNormalEnv();

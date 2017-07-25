@@ -111,6 +111,16 @@ public class QueryParams {
             }
         }
 
+        public OrderBy OrderCondition(String commond) {
+            if ("asc".equalsIgnoreCase(commond)) {
+                return this.asc();
+            } else if ("desc".equalsIgnoreCase(commond)) {
+                return this.desc();
+            } else {
+                throw new IllegalArgumentException("排序参数只能是：desc或asc");
+            }
+        }
+
         public OrderBy orderBy(String property) {
             String column = property(property);
             if (column == null) {
@@ -127,6 +137,7 @@ public class QueryParams {
             isProperty = true;
             return this;
         }
+
 
         public OrderBy desc() {
             if (isProperty) {

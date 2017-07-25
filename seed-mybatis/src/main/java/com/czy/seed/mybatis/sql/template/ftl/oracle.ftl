@@ -3,31 +3,37 @@
 
 <mapper namespace="${mapperClassName}">
 
-    <#if cache?? && cache == "MYBATIS">
-        <cache eviction="LRU" flushInterval="60000" size="1024"  readOnly="false"></cache>
-    </#if>
+<#if cache?? && cache == "MYBATIS">
+    <cache eviction="LRU" flushInterval="60000" size="1024" readOnly="false"></cache>
+</#if>
 
     <resultMap id="BaseResultMap" type="${entityClassName}">
     <#list entityClassColumns as column>
         <#if column.id>
-            <id column="${column.column}" <#if column.jdbcTypeName??>jdbcType="${column.jdbcTypeName}"</#if> property="${column.property}"/>
+            <id column="${column.column}" <#if column.jdbcTypeName??>jdbcType="${column.jdbcTypeName}"</#if>
+                property="${column.property}"/>
         </#if>
     </#list>
     <#list entityClassColumns as column>
         <#if !column.id>
-            <result column="${column.column}" <#if column.jdbcTypeName??>jdbcType="${column.jdbcTypeName}"</#if> property="${column.property}"/>
+            <result column="${column.column}" <#if column.jdbcTypeName??>jdbcType="${column.jdbcTypeName}"</#if>
+                    property="${column.property}"/>
         </#if>
     </#list>
     <#list mybatisAssociations as association>
         <association property="${association.property}" javaType="${association.targetEntityTable.entityClassName}">
             <#list association.resultMap as result>
                 <#if result.id>
-                    <id column="${association.property}_${result.column}" <#if result.jdbcTypeName??>jdbcType="${result.jdbcTypeName}"</#if> property="${result.property}"/>
+                    <id column="${association.property}_${result.column}"
+                        <#if result.jdbcTypeName??>jdbcType="${result.jdbcTypeName}"</#if>
+                        property="${result.property}"/>
                 </#if>
             </#list>
             <#list association.resultMap as result>
                 <#if !result.id>
-                    <result column="${association.property}_${result.column}" <#if result.jdbcTypeName??>jdbcType="${result.jdbcTypeName}"</#if> property="${result.property}"/>
+                    <result column="${association.property}_${result.column}"
+                            <#if result.jdbcTypeName??>jdbcType="${result.jdbcTypeName}"</#if>
+                            property="${result.property}"/>
                 </#if>
             </#list>
         </association>
@@ -36,27 +42,44 @@
         <collection property="${connection.property}" ofType="${connection.targetEntityTable.entityClassName}">
             <#list connection.resultMap as result>
                 <#if result.id>
-                    <id column="${connection.property}_${result.column}" <#if result.jdbcTypeName??>jdbcType="${result.jdbcTypeName}"</#if> property="${result.property}"/>
+                    <id column="${connection.property}_${result.column}"
+                        <#if result.jdbcTypeName??>jdbcType="${result.jdbcTypeName}"</#if>
+                        property="${result.property}"/>
                 </#if>
             </#list>
             <#list connection.resultMap as result>
                 <#if !result.id>
-                    <result column="${connection.property}_${result.column}" <#if result.jdbcTypeName??>jdbcType="${result.jdbcTypeName}"</#if> property="${result.property}"/>
+                    <result column="${connection.property}_${result.column}"
+                            <#if result.jdbcTypeName??>jdbcType="${result.jdbcTypeName}"</#if>
+                            property="${result.property}"/>
                 </#if>
             </#list>
         </collection>
     </#list>
     </resultMap>
 
-    <insert id="insert" parameterType="${entityClassName}" >
-        <selectKey keyProperty="<#list entityClassPKColumns as column>${column.property}</#list>" order="BEFORE" resultType="java.lang.Long">
-            select SEQ_${name}_ID.NEXTVAL as ID from DUAL
+    <insert id="insert" parameterType="${entityClassName}">
+        <selectKey keyProperty="<#list entityClassPKColumns as column>${column.property}</#list>" order="BEFORE"
+                   resultType="java.lang.Long">
+            <choose>
+                <when test="@com.czy.seed.mybatis.sql.util.MybatisColumnsOGNL@idIsNull(_parameter)">
+                    select SEQ_${name}_ID.NEXTVAL as ID from DUAL
+                </when>
+                <otherwise>
+                <#list entityClassPKColumns as column>
+                    select ${r'#{'}${column.property}<#if column.jdbcTypeName??>
+                    ,jdbcType=${column.jdbcTypeName}</#if>${r'}'} as ID from DUAL
+                </#list>
+                </otherwise>
+            </choose>
         </selectKey>
+
         insert into ${name}
+
         <trim prefix="(" suffix=")" suffixOverrides=",">
         <#list entityClassColumns as column>
             <#if column.id>
-                ${column.column},
+            ${column.column},
             <#else>
                 <if test="${column.property} != null">
                 ${column.column},
@@ -68,10 +91,7 @@
         <#list entityClassColumns as column>
             <#if column.id>
                 <if test="${column.property} != null">
-                    ${r'#{'}${column.property}<#if column.jdbcTypeName??>, jdbcType=${column.jdbcTypeName}</#if>${r'}'},
-                </if>
-                <if test="${column.property} == null">
-                    SEQ_${name}_ID.nextval,
+                ${r'#{'}${column.property}<#if column.jdbcTypeName??>, jdbcType=${column.jdbcTypeName}</#if>${r'}'},
                 </if>
             <#else >
                 <if test="${column.property} != null">
@@ -82,18 +102,44 @@
         </trim>
     </insert>
 
+    <insert id="insertList" parameterType="java.util.ArrayList" >
+        <if test="@com.czy.seed.mybatis.sql.util.MybatisColumnsOGNL@initPkForList(_parameter)"></if>
+        INSERT ALL
+        <foreach collection="list" item="record" index="index" separator=" ">
+            INTO ${name}
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+            <#list entityClassColumns as column>
+                <if test="record.${column.property} != null">
+                    ${column.column},
+                </if>
+            </#list>
+            </trim>
+            VALUES
+            <trim prefix="(" suffix=")" suffixOverrides=",">
+            <#list entityClassColumns as column>
+                <if test="record.${column.property} != null">
+                    ${r'#{'}record.${column.property}<#if column.jdbcTypeName??>, jdbcType=${column.jdbcTypeName}</#if>${r'}'},
+                </if>
+            </#list>
+            </trim>
+        </foreach>
+        SELECT 1 FROM DUAL
+    </insert>
+
     <update id="updateByPrimaryKey" parameterType="${entityClassName}">
         update ${name}
         <trim prefix=" set " suffix=" " suffixOverrides=",">
         <#list entityClassColumns as column>
             <#if !column.id>
-            ${column.column} = ${r'#{'}${column.property}<#if column.jdbcTypeName??>, jdbcType=${column.jdbcTypeName}</#if>${r'}'},
+            ${column.column} = ${r'#{'}${column.property}<#if column.jdbcTypeName??>,
+                jdbcType=${column.jdbcTypeName}</#if>${r'}'},
             </#if>
         </#list>
         </trim>
         <trim prefix=" where " suffix=" " suffixOverrides="and">
         <#list entityClassPKColumns as column>
-        ${column.column} = ${r'#{'}${column.property}<#if column.jdbcTypeName??>, jdbcType=${column.jdbcTypeName}</#if>${r'}'} and
+        ${column.column} = ${r'#{'}${column.property}<#if column.jdbcTypeName??>,
+            jdbcType=${column.jdbcTypeName}</#if>${r'}'} and
         </#list>
         </trim>
     </update>
@@ -104,32 +150,16 @@
         <#list entityClassColumns as column>
             <#if !column.id>
                 <if test="${column.property} != null">
-                ${column.column} = ${r'#{'}${column.property}<#if column.jdbcTypeName??>, jdbcType=${column.jdbcTypeName}</#if>${r'}'},
+                ${column.column} = ${r'#{'}${column.property}<#if column.jdbcTypeName??>,
+                    jdbcType=${column.jdbcTypeName}</#if>${r'}'},
                 </if>
             </#if>
         </#list>
         </trim>
         <trim prefix=" where " suffix=" " suffixOverrides="and">
         <#list entityClassPKColumns as column>
-        ${column.column} = ${r'#{'}${column.property}<#if column.jdbcTypeName??>, jdbcType=${column.jdbcTypeName}</#if>${r'}'} and
-        </#list>
-        </trim>
-    </update>
-
-    <update id="updateByPrimaryKeySelective" parameterType="${entityClassName}">
-        update ${name}
-        <trim prefix=" set " suffix=" " suffixOverrides=",">
-        <#list entityClassColumns as column>
-            <#if !column.id>
-                <if test="${column.property} != null">
-                ${column.column} = ${r'#{'}${column.property}<#if column.jdbcTypeName??>, jdbcType=${column.jdbcTypeName}</#if>${r'}'},
-                </if>
-            </#if>
-        </#list>
-        </trim>
-        <trim prefix=" where " suffix=" " suffixOverrides="and">
-        <#list entityClassPKColumns as column>
-        ${column.column} = ${r'#{'}${column.property}<#if column.jdbcTypeName??>, jdbcType=${column.jdbcTypeName}</#if>${r'}'} and
+        ${column.column} = ${r'#{'}${column.property}<#if column.jdbcTypeName??>,
+            jdbcType=${column.jdbcTypeName}</#if>${r'}'} and
         </#list>
         </trim>
     </update>
@@ -139,13 +169,14 @@
         <trim prefix=" set " suffix=" " suffixOverrides=",">
         <#list entityClassColumns as column>
             <#if !column.id>
-            ${column.column} = ${r'#{record.'}${column.property}<#if column.jdbcTypeName??>,jdbcType=${column.jdbcTypeName}</#if>${r'}'},
+            ${column.column} = ${r'#{record.'}${column.property}<#if column.jdbcTypeName??>
+                ,jdbcType=${column.jdbcTypeName}</#if>${r'}'},
             </#if>
         </#list>
         </trim>
-        <if test="inParams != null">
+        <if test="params != null">
             <where>
-                <foreach collection="inParams.orCriteria" item="criteria" separator="or">
+                <foreach collection="params.orCriteria" item="criteria" separator="or">
                     <if test="criteria.valid">
                         <trim prefix="(" prefixOverrides="and" suffix=")">
                             <foreach collection="criteria.criteria" item="criterion">
@@ -176,7 +207,7 @@
                 </foreach>
             </where>
         </if>
-        <if test = "inParams == null">
+        <if test="params == null">
             <where>
                 1 = -1
             </where>
@@ -190,13 +221,14 @@
             <trim prefix=" set " suffix=" " suffixOverrides=",">
             <#list entityClassColumns as column>
                 <if test="record.${column.property} != null">
-                ${column.column} = ${r'#{record.'}${column.property}<#if column.jdbcTypeName??>, jdbcType=${column.jdbcTypeName}</#if>${r'}'},
+                ${column.column} = ${r'#{record.'}${column.property}<#if column.jdbcTypeName??>,
+                    jdbcType=${column.jdbcTypeName}</#if>${r'}'},
                 </if>
             </#list>
             </trim>
-            <if test="inParams != null">
+            <if test="params != null">
                 <where>
-                    <foreach collection="inParams.orCriteria" item="criteria" separator="or">
+                    <foreach collection="params.orCriteria" item="criteria" separator="or">
                         <if test="criteria.valid">
                             <trim prefix="(" prefixOverrides="and" suffix=")">
                                 <foreach collection="criteria.criteria" item="criterion">
@@ -227,7 +259,7 @@
                     </foreach>
                 </where>
             </if>
-            <if test = "inParams == null">
+            <if test="params == null">
                 <where>
                     1 = -1
                 </where>
@@ -239,7 +271,8 @@
         delete from ${name}
         <trim prefix=" where " suffix=" " suffixOverrides="and">
         <#list entityClassPKColumns as column>
-        ${column.column} = ${r'#{'}${column.property}<#if column.jdbcTypeName??>, jdbcType=${column.jdbcTypeName}</#if>${r'}'} and
+        ${column.column} = ${r'#{'}${column.property}<#if column.jdbcTypeName??>,
+            jdbcType=${column.jdbcTypeName}</#if>${r'}'} and
         </#list>
         </trim>
     </delete>
@@ -271,7 +304,8 @@
         from ${name}
         <trim prefix=" where " suffix=" " suffixOverrides="and">
         <#list entityClassPKColumns as column>
-        ${name}.${column.column} = ${r'#{'}${column.property}<#if column.jdbcTypeName??>, jdbcType=${column.jdbcTypeName}</#if>${r'}'} and
+        ${name}.${column.column} = ${r'#{'}${column.property}<#if column.jdbcTypeName??>,
+            jdbcType=${column.jdbcTypeName}</#if>${r'}'} and
         </#list>
         </trim>
     </select>
@@ -284,12 +318,12 @@
         </#list>
         <#list mybatisAssociations as association>
             <#list association.resultMap as result>
-            ${association.targetTableName}_${association.property}.${result.column} as ${association.property}_${result.column},
+            ${association.property}.${result.column} as ${association.property}_${result.column},
             </#list>
         </#list>
         <#list mybatisConnections as connection>
             <#list connection.resultMap as result>
-            ${connection.targetTableName}_${connection.property}.${result.column} as ${connection.property}_${result.column},
+            ${connection.property}.${result.column} as ${connection.property}_${result.column},
             </#list>
         </#list>
         </trim>
@@ -302,23 +336,27 @@
     </#list>
         <trim prefix=" where " suffix=" " suffixOverrides="and">
         <#list entityClassPKColumns as column>
-        ${name}.${column.column} = ${r'#{'}${column.property}<#if column.jdbcTypeName??>, jdbcType=${column.jdbcTypeName}</#if>${r'}'} and
+        ${name}.${column.column} = ${r'#{'}${column.property}<#if column.jdbcTypeName??>,
+            jdbcType=${column.jdbcTypeName}</#if>${r'}'} and
         </#list>
         </trim>
     </select>
 
     <select id="selectListByParams" resultMap="BaseResultMap" parameterType="com.czy.seed.mybatis.base.QueryParams">
         select
-        <if test="@com.czy.seed.mybatis.sql.util.MybatisColumnsOGNL@hasSelectColumns(_parameter)">
-            <foreach collection="_parameter.selectColumns" item="selectColumn" separator=",">${name}.${r'${selectColumn}'}</foreach>
-        </if>
-        <if test="@com.czy.seed.mybatis.sql.util.MybatisColumnsOGNL@hasSelectColumns(_parameter) == false">
-            <trim prefix=" " suffix=" " suffixOverrides=",">
-            <#list entityClassColumns as column>
-            ${name}.${column.column},
-            </#list>
-            </trim>
-        </if>
+        <choose>
+            <when test="@com.czy.seed.mybatis.sql.util.MybatisColumnsOGNL@hasSelectColumns(_parameter)">
+                <foreach collection="_parameter.selectColumns" item="selectColumn" separator=",">${name}
+                    .${r'${selectColumn}'}</foreach>
+            </when>
+            <otherwise>
+                <trim prefix=" " suffix=" " suffixOverrides=",">
+                <#list entityClassColumns as column>
+                ${name}.${column.column},
+                </#list>
+                </trim>
+            </otherwise>
+        </choose>
         from ${name}
         <if test="_parameter != null">
             <where>
@@ -332,34 +370,38 @@
         </if>
     </select>
 
-    <select id="selectListRelativeByParams" resultMap="BaseResultMap" parameterType="com.czy.seed.mybatis.base.QueryParams">
+    <select id="selectListRelativeByParams" resultMap="BaseResultMap"
+            parameterType="com.czy.seed.mybatis.base.QueryParams">
         select
-        <if test="@com.czy.seed.mybatis.sql.util.MybatisColumnsOGNL@hasSelectColumns(_parameter)">
-            <foreach collection="_parameter.selectColumns" item="selectColumn" separator=",">${name}.${r'${selectColumn}'}</foreach>
-        </if>
-        <if test="@com.czy.seed.mybatis.sql.util.MybatisColumnsOGNL@hasSelectColumns(_parameter) == false">
-            <trim prefix=" " suffix=" " suffixOverrides=",">
-            <#list entityClassColumns as column>
-            ${name}.${column.column},
-            </#list>
-            <#list mybatisAssociations as association>
-                <#list association.resultMap as result>
-                ${association.targetTableName}_${association.property}.${result.column} as ${association.property}_${result.column},
+        <choose>
+            <when test="@com.czy.seed.mybatis.sql.util.MybatisColumnsOGNL@hasSelectColumns(_parameter)">
+                <foreach collection="_parameter.selectColumns" item="selectColumn" separator=",">${name}
+                    .${r'${selectColumn}'}</foreach>
+            </when>
+            <otherwise>
+                <trim prefix=" " suffix=" " suffixOverrides=",">
+                <#list entityClassColumns as column>
+                ${name}.${column.column},
                 </#list>
-            </#list>
-            <#list mybatisConnections as connection>
-                <#list connection.resultMap as result>
-                ${connection.targetTableName}_${connection.property}.${result.column} as ${connection.property}_${result.column},
+                <#list mybatisAssociations as association>
+                    <#list association.resultMap as result>
+                    ${association.property}.${result.column} as ${association.property}_${result.column},
+                    </#list>
                 </#list>
-            </#list>
-            </trim>
-        </if>
+                <#list mybatisConnections as connection>
+                    <#list connection.resultMap as result>
+                    ${connection.property}.${result.column} as ${connection.property}_${result.column},
+                    </#list>
+                </#list>
+                </trim>
+            </otherwise>
+        </choose>
         from ${name}
         <#list mybatisAssociations as association>
-            ${association.joinCondition}
+        ${association.joinCondition}
         </#list>
         <#list mybatisConnections as connection>
-             ${connection.joinCondition}
+        ${connection.joinCondition}
         </#list>
         <if test="_parameter != null">
             <where>
@@ -375,16 +417,19 @@
 
     <select id="selectOneByParams" resultMap="BaseResultMap" parameterType="com.czy.seed.mybatis.base.QueryParams">
         select distinct
-        <if test="@com.czy.seed.mybatis.sql.util.MybatisColumnsOGNL@hasSelectColumns(_parameter)">
-            <foreach collection="_parameter.selectColumns" item="selectColumn" separator=",">${name}.${r'${selectColumn}'}</foreach>
-        </if>
-        <if test="@com.czy.seed.mybatis.sql.util.MybatisColumnsOGNL@hasSelectColumns(_parameter) == false">
-            <trim prefix=" " suffix=" " suffixOverrides=",">
-            <#list entityClassColumns as column>
-            ${name}.${column.column},
-            </#list>
-            </trim>
-        </if>
+        <choose>
+            <when test="@com.czy.seed.mybatis.sql.util.MybatisColumnsOGNL@hasSelectColumns(_parameter)">
+                <foreach collection="_parameter.selectColumns" item="selectColumn" separator=",">${name}
+                    .${r'${selectColumn}'}</foreach>
+            </when>
+            <otherwise>
+                <trim prefix=" " suffix=" " suffixOverrides=",">
+                <#list entityClassColumns as column>
+                ${name}.${column.column},
+                </#list>
+                </trim>
+            </otherwise>
+        </choose>
         from ${name}
         <if test="_parameter != null">
             <where>
@@ -395,28 +440,32 @@
         </if>
     </select>
 
-    <select id="selectOneRelativeByParams" resultMap="BaseResultMap" parameterType="com.czy.seed.mybatis.base.QueryParams">
+    <select id="selectOneRelativeByParams" resultMap="BaseResultMap"
+            parameterType="com.czy.seed.mybatis.base.QueryParams">
         select distinct
-        <if test="@com.czy.seed.mybatis.sql.util.MybatisColumnsOGNL@hasSelectColumns(_parameter)">
-            <foreach collection="_parameter.selectColumns" item="selectColumn" separator=",">${name}.${r'${selectColumn}'}</foreach>
-        </if>
-        <if test="@com.czy.seed.mybatis.sql.util.MybatisColumnsOGNL@hasSelectColumns(_parameter) == false">
-            <trim prefix=" " suffix=" " suffixOverrides=",">
-            <#list entityClassColumns as column>
-            ${name}.${column.column},
-            </#list>
-            <#list mybatisAssociations as association>
-                <#list association.resultMap as result>
-                ${association.targetTableName}_${association.property}.${result.column} as ${association.property}_${result.column},
+        <choose>
+            <when test="@com.czy.seed.mybatis.sql.util.MybatisColumnsOGNL@hasSelectColumns(_parameter)">
+                <foreach collection="_parameter.selectColumns" item="selectColumn" separator=",">${name}
+                    .${r'${selectColumn}'}</foreach>
+            </when>
+            <otherwise>
+                <trim prefix=" " suffix=" " suffixOverrides=",">
+                <#list entityClassColumns as column>
+                ${name}.${column.column},
                 </#list>
-            </#list>
-            <#list mybatisConnections as connection>
-                <#list connection.resultMap as result>
-                ${connection.targetTableName}_${connection.property}.${result.column} as ${connection.property}_${result.column},
+                <#list mybatisAssociations as association>
+                    <#list association.resultMap as result>
+                    ${association.property}.${result.column} as ${association.property}_${result.column},
+                    </#list>
                 </#list>
-            </#list>
-            </trim>
-        </if>
+                <#list mybatisConnections as connection>
+                    <#list connection.resultMap as result>
+                    ${connection.property}.${result.column} as ${connection.property}_${result.column},
+                    </#list>
+                </#list>
+                </trim>
+            </otherwise>
+        </choose>
         from ${name}
     <#list mybatisAssociations as association>
     ${association.joinCondition}

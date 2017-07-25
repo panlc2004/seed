@@ -2,6 +2,7 @@ package com.czy.seed.mybatis.sql.entity;
 
 import com.czy.seed.mybatis.config.mybatis.annotations.Join;
 import com.czy.seed.mybatis.sql.helper.EntityHelper;
+import com.czy.seed.mybatis.sql.util.SqlStringUtil;
 import com.czy.seed.mybatis.tool.NullUtil;
 
 import java.util.HashSet;
@@ -18,11 +19,11 @@ public class MybatisAssociation {
 //    }
 
     /**
-     * @param mainTableName   主查询表名
-     * @param property    查询数据映射字段
-     * @param targetClass 关联实体类型
-     * @param fields      要指定查询的字段
-     * @param columns     关联查询条件
+     * @param mainTableName 主查询表名
+     * @param property      查询数据映射字段
+     * @param targetClass   关联实体类型
+     * @param fields        要指定查询的字段
+     * @param columns       关联查询条件
      */
     public MybatisAssociation(String mainTableName, String property, Class<?> targetClass,
                               String fields, String columns, Join join) {
@@ -36,7 +37,6 @@ public class MybatisAssociation {
         initResultMap(fields);
         joinCondition(columns);
     }
-
 
 
     /**
@@ -116,8 +116,8 @@ public class MybatisAssociation {
         return columns;
     }
 /**
-     * 指定的查询列
-     */
+ * 指定的查询列
+ */
 
     /**
      * 关联查询条件
@@ -149,19 +149,20 @@ public class MybatisAssociation {
     /**
      * 初始化连接条件
      *
-     * @param columns 连接条件参数，格式：id=test_id, name=test_name
+     * @param columns 连接条件参数，格式：id=testId
      */
     private void joinCondition(String columns) {
         String[] split = columns.split(",");
         StringBuffer sb = new StringBuffer(join.name());
-        sb.append(" join ").append(targetTableName).append(" ").append(targetTableName).append("_").append(property).append(" on ");
+        sb.append(" join ").append(targetTableName).append(" ").append(property).append(" on ");
         for (String col : split) {
-            String[] condition = anaCondition(col);
+            String column = SqlStringUtil.camelhumpToUnderline(col);
+            String[] condition = anaCondition(column);
             sb.append(mainTableName).append(".").append(condition[0]).append(" = ");
-            sb.append(targetTableName).append("_").append(property).append(".").append(condition[1]);
+            sb.append(property).append(".").append(condition[1]);
             sb.append(" and ");
         }
-        joinCondition = sb.substring(0,sb.length() - 4).toUpperCase();
+        joinCondition = sb.substring(0, sb.length() - 4).toUpperCase();
     }
 
     /**

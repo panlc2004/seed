@@ -22,5 +22,7 @@
         <setting name="defaultStatementTimeout" value="5000"/>
         <!-- 对于批量更新操作缓存SQL以提高性能 BATCH,SIMPLE -->
         <setting name="defaultExecutorType" value="SIMPLE"/>
+        <!-- 对null的解析 -->
+        <setting name="jdbcTypeForNull" value="NULL" />
     </settings>
 </configuration>

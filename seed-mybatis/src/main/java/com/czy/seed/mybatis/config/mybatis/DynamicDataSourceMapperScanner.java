@@ -45,7 +45,6 @@ public class DynamicDataSourceMapperScanner extends ClassPathBeanDefinitionScann
     private MapperFactoryBean<?> mapperFactoryBean = new MapperFactoryBean<Object>();
 
 
-
     public DynamicDataSourceMapperScanner(BeanDefinitionRegistry registry) {
         super(registry, false);
     }
@@ -115,6 +114,9 @@ public class DynamicDataSourceMapperScanner extends ClassPathBeanDefinitionScann
         addExcludeFilter(new TypeFilter() {
             public boolean match(MetadataReader metadataReader, MetadataReaderFactory metadataReaderFactory) throws IOException {
                 String className = metadataReader.getClassMetadata().getClassName();
+                if (className.equals("com.czy.seed.mybatis.base.mapper.BaseMapper")) {
+                    return true;
+                }
                 return className.endsWith("package-info");
             }
         });
@@ -134,7 +136,6 @@ public class DynamicDataSourceMapperScanner extends ClassPathBeanDefinitionScann
         } else {
             processBeanDefinitions(beanDefinitions);
         }
-
         return beanDefinitions;
     }
 
@@ -204,13 +205,16 @@ public class DynamicDataSourceMapperScanner extends ClassPathBeanDefinitionScann
      */
     private String getSqlSessionTemplateBeanName(final Class<?> clazz) {
         try {
-            AutoMapper annotation = clazz.getAnnotation(AutoMapper.class);
-            return "sqlSessionFactory-" + annotation.value();
+            if (clazz.isAnnotationPresent(AutoMapper.class)) {
+                AutoMapper annotation = clazz.getAnnotation(AutoMapper.class);
+                return "sqlSessionFactory-" + annotation.value();
+            }
+            return "sqlSessionFactory-default";
+
         } catch (Exception e) {
             throw new RuntimeException("error occurred while get a sessionFactory name", e);
         }
     }
-
 
 
     /**

@@ -101,15 +101,6 @@ public interface BaseMapper<T> {
      * @param record 实体数据 主键不能为空
      * @return 返回更新成功的条数
      */
-    @Deprecated
-    int updateByPrimaryKeySelective(T record);
-
-    /**
-     * 根据主键修改数据，参数中为空的字段将不做修改
-     *
-     * @param record 实体数据 主键不能为空
-     * @return 返回更新成功的条数
-     */
     int updateSelectiveByPrimaryKey(T record);
 
     /**

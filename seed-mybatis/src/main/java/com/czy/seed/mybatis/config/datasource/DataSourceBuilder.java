@@ -5,6 +5,7 @@ import com.czy.seed.mybatis.tool.SpringContextHelper;
 import com.czy.seed.mybatis.tool.SpringPropertiesUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.BeanClassLoaderAware;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
@@ -20,7 +21,13 @@ import java.util.Set;
 /**
  * Created by panlc on 2017-03-14.
  */
-public class DataSourceBuilder {
+public class DataSourceBuilder implements BeanClassLoaderAware {
+
+    @Autowired
+    private DefaultDataSourceProperties defaultDataSourceProperties;
+
+    @Autowired
+    private DynamicDataSourceProperties dynamicDataSourceProperties;
 
     @Autowired
     public SpringContextHelper springContextHelper;
@@ -93,7 +100,7 @@ public class DataSourceBuilder {
      */
     private void registerDefaultDataSources() {
         Map<String, Object> defaultDataSourceConf = getDefaultDataSourceConf();
-        if (defaultDataSourceConf.keySet().size() == 0) {
+        if (defaultDataSourceConf != null && defaultDataSourceConf.keySet().size() == 0) {
             initTargetDefaultDataSource();
         } else {
             initConfigDefaultDataSource(defaultDataSourceConf);
@@ -130,14 +137,14 @@ public class DataSourceBuilder {
      * 注册其他数据源
      */
     private void registerDynamicDataSources() {
-        String[] dynamicDataSourceNames = getDynamicDataSourceNames();
-        for (int i = 0; i < dynamicDataSourceNames.length; i++) {
-            String dynamicDataSourceName = dynamicDataSourceNames[i];
-            Map<String, Object> dynamicDataSourceConf = getDynamicDataSourceConf(dynamicDataSourceName);
-            String beanId = DATASOURCE_BEAN_PREFIX + dynamicDataSourceName;
+        Map<String, Map<String, Object>> dynamicDataSource = dynamicDataSourceProperties.getDatasource();
+        for (Map.Entry<String, Map<String, Object>> entry : dynamicDataSource.entrySet()) {
+            String beanId = DATASOURCE_BEAN_PREFIX + entry.getKey();
+            Map<String, Object> config = entry.getValue();
             springContextHelper.addBean(poolTypeClass, beanId,
-                    dynamicDataSourceConf, poolType.getInitMethod(), poolType.getDestroyMethod());  //注册主数据源
-            setDialect(beanId, dynamicDataSourceConf);     //记录其他数据源类型
+                    config, poolType.getInitMethod(), poolType.getDestroyMethod());  //注册主数据源
+            setDialect(beanId, config);     //记录其他数据源类型
+            dealUrlForSpecialDataSource(config, IdentityDialect.SQLITE);
         }
     }
 
@@ -221,25 +228,10 @@ public class DataSourceBuilder {
      * @return
      */
     private Map<String, Object> getDefaultDataSourceConf() {
-        return getDataSourceConfigForSpecialDataSource(DEFAULT_DATASOURCE_PREFIX);
-    }
-
-    /**
-     * 获取动态数据源配置
-     *
-     * @param datasourceName 数据源名称
-     * @return
-     */
-    private Map<String, Object> getDynamicDataSourceConf(String datasourceName) {
-        return getDataSourceConfigForSpecialDataSource(DYNAMIC_DATASOURCE_PREFIX + datasourceName + ".");
-    }
-
-    public Map<String, Object> getDataSourceConfigForSpecialDataSource(String prefix) {
-        Map<String, Object> dataSourceConf = getDataSourceConf(prefix);
+        Map<String, Object> dataSourceConf = defaultDataSourceProperties.getDatasource();
         dealUrlForSpecialDataSource(dataSourceConf, IdentityDialect.SQLITE);
         return dataSourceConf;
     }
-
 
     /**
      * 获取数据库类型
@@ -323,4 +315,8 @@ public class DataSourceBuilder {
         return identityDialect;
     }
 
+    @Override
+    public void setBeanClassLoader(ClassLoader classLoader) {
+
+    }
 }

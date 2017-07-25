@@ -95,24 +95,6 @@
         </trim>
     </update>
 
-    <update id="updateByPrimaryKeySelective" parameterType="${entityClassName}">
-        update ${name}
-        <trim prefix=" set " suffix=" " suffixOverrides=",">
-        <#list entityClassColumns as column>
-            <#if !column.id>
-                <if test="${column.property} != null">
-                ${column.column} = ${r'#{'}${column.property}<#if column.jdbcTypeName??>, jdbcType=${column.jdbcTypeName}</#if>${r'}'},
-                </if>
-            </#if>
-        </#list>
-        </trim>
-        <trim prefix=" where " suffix=" " suffixOverrides="and">
-        <#list entityClassPKColumns as column>
-        ${column.column} = ${r'#{'}${column.property}<#if column.jdbcTypeName??>, jdbcType=${column.jdbcTypeName}</#if>${r'}'} and
-        </#list>
-        </trim>
-    </update>
-
     <update id="updateSelectiveByPrimaryKey" parameterType="${entityClassName}">
         update ${name}
         <trim prefix=" set " suffix=" " suffixOverrides=",">
@@ -140,9 +122,9 @@
             </#if>
         </#list>
         </trim>
-        <if test="inParams != null">
+        <if test="params != null">
             <where>
-                <foreach collection="inParams.orCriteria" item="criteria" separator="or">
+                <foreach collection="params.orCriteria" item="criteria" separator="or">
                     <if test="criteria.valid">
                         <trim prefix="(" prefixOverrides="and" suffix=")">
                             <foreach collection="criteria.criteria" item="criterion">
@@ -173,7 +155,7 @@
                 </foreach>
             </where>
         </if>
-        <if test = "inParams == null">
+        <if test = "params == null">
             <where>
                 1 = -1
             </where>
@@ -191,9 +173,9 @@
                 </if>
             </#list>
             </trim>
-            <if test="inParams != null">
+            <if test="params != null">
                 <where>
-                    <foreach collection="inParams.orCriteria" item="criteria" separator="or">
+                    <foreach collection="params.orCriteria" item="criteria" separator="or">
                         <if test="criteria.valid">
                             <trim prefix="(" prefixOverrides="and" suffix=")">
                                 <foreach collection="criteria.criteria" item="criterion">
@@ -224,7 +206,7 @@
                     </foreach>
                 </where>
             </if>
-            <if test = "inParams == null">
+            <if test = "params == null">
                 <where>
                     1 = -1
                 </where>

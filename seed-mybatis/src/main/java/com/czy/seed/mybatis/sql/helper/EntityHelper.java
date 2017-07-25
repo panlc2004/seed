@@ -111,8 +111,85 @@ public class EntityHelper {
      * @return
      */
     public static EntityTable getEntityTableByEntityClass(Class<?> entityClass) {
-        return buildEntityTable(null, entityClass);
+        return buildEntityTableWithoutOne2oneAndOne2Many(null, entityClass);
+    }
 
+    private static EntityTable buildEntityTableWithoutOne2oneAndOne2Many(Class<?> mapperClass, Class<?> entityClass) {
+        Style style = Style.camelhumpAndUppercase;  //TODO 可设置
+        EntityTable entityTable = null;
+        entityTable = new EntityTable(mapperClass, entityClass);
+        //设置对应表名，可以通过stye控制
+        entityTable.setName(SqlStringUtil.convertByStyle(entityClass.getSimpleName(), style));
+
+        //处理@Table注解
+        if (entityClass.isAnnotationPresent(Table.class)) {
+            Table table = entityClass.getAnnotation(Table.class);
+            if (!table.name().equals("")) {
+                entityTable.setTable(table);
+            }
+        }
+
+        //处理@Cache注解
+        if (entityClass.isAnnotationPresent(Cache.class)) {
+            Cache cache = entityClass.getAnnotation(Cache.class);
+            if (cache.cacheType() == Cache.CacheType.MYBATIS) {
+                entityTable.setCache(cache.cacheType().name());
+            }
+        }
+
+        entityTable.setEntityClassColumns(new LinkedHashSet<EntityColumn>());
+        entityTable.setEntityClassPKColumns(new LinkedHashSet<EntityColumn>());
+
+        //处理所有列
+        List<EntityField> fields = null;
+
+        fields = FieldHelper.getAll(entityClass);   //TODO 待扩展
+
+        for (EntityField field : fields) {
+            processFieldWithoutOne2oneAndOne2Many(entityTable, style, field);
+        }
+        //当pk.size=0的时候使用所有列作为主键
+        if (entityTable.getEntityClassPKColumns().size() == 0) {
+            entityTable.setEntityClassPKColumns(entityTable.getEntityClassColumns());
+        }
+        entityTable.initPropertyMap();
+//        entityTableMap.put(entityClass, entityTable);
+
+        return entityTable;
+    }
+
+    /**
+     * 处理字段数据列 除开one2one one2many
+     * @param entityTable
+     * @param style
+     * @param field
+     */
+    private static void processFieldWithoutOne2oneAndOne2Many(EntityTable entityTable, Style style, EntityField field) {
+        //排除字段
+        if (field.isAnnotationPresent(Transient.class)) {
+            return;
+        }
+        //Id
+        EntityColumn entityColumn = new EntityColumn(entityTable);
+        if (field.isAnnotationPresent(Id.class)) {
+            entityColumn.setId(true);
+        }
+        //Column
+        String columnName = dealColumn(field, entityColumn);
+        //ColumnType
+        columnName = dealColumnType(field, entityColumn, columnName, style);
+
+        entityColumn.setProperty(field.getName());
+        entityColumn.setColumn(columnName);
+        entityColumn.setJavaType(field.getJavaType());
+        //OrderBy
+        dealOrderBy(field, entityColumn);
+        //主键策略 - Oracle序列，MySql自动增长，UUID
+        dealKey(entityTable, field, entityColumn);
+        entityTable.getEntityClassColumns().add(entityColumn);
+        if (entityColumn.isId()) {
+            entityTable.getEntityClassPKColumns().add(entityColumn);
+        }
     }
 
     /**

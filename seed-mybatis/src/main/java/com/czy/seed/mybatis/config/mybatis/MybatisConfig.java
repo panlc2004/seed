@@ -128,18 +128,15 @@ public class MybatisConfig {
             resource.put("configLocation", configLocation);
 
             //加载mapper文件
-            String mapperLocations = SpringPropertiesUtil.getStringProperty("mybatis.mapperLocations");
+            String mapperLocations = SpringPropertiesUtil.getStringProperty("mybatis.mapper-locations");
             if (NullUtil.isNotEmpty(mapperLocations)) {
                 String[] mapperLocationsConfig = mapperLocations.split(",");
                 resource.put("mapperLocations", Arrays.asList(mapperLocationsConfig));
             }
 
-            //TODO 增加插件
-
+            //注册bean
             springContextHelper.addBean(SqlSessionFactoryBean.class, sqlSessionFactoryName, resource, null, null);
             sqlSessionDialect.put(sqlSessionFactoryName, dialect); //TODO注册sqlSessionFactory类型
-
-
 
         } catch (Exception e) {
             logger.error("error occurred while register {} to spring", sqlSessionFactoryName, e);
