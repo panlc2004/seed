@@ -18,7 +18,6 @@ import java.util.Set;
 public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 
     public LoginSuccessHandler() {
-        System.out.println(123);
     }
 
     @Override

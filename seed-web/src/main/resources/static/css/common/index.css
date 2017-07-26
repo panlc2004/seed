@@ -142,3 +142,27 @@ body {
     background-color: #fff;
     /*box-sizing: border-box;*/
 }
+
+.demo-table-expand {
+    font-size: 0;
+}
+
+.demo-table-expand label {
+    width: 120px;
+    color: #99a9bf;
+}
+
+.demo-table-expand .el-form-item {
+    margin-right: 0;
+    margin-bottom: 0;
+    width: 30%;
+}
+
+.el-table .info-row {
+    background: #c9e5f5;
+}
+
+.el-table .positive-row {
+    background: #e2f0e4;
+}
+

@@ -130,7 +130,7 @@ var main = new Vue({
                 this.userDialogShow = true;
             },
             saveUser: function () {
-                this.$http.post("/sys/user/save", this.sysUser).then(
+                this.$http.post("sys/user/save", this.sysUser).then(
                     function (success) {
                         this.userDialogShow = false;  //关闭窗口
                         var param = {"pageNum": 1, "pageSize": this.pageSize, "params": {}}

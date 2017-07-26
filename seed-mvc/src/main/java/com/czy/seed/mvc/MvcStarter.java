@@ -10,6 +10,5 @@ import org.springframework.context.annotation.ImportResource;
 
 @Configuration
 @ComponentScan("com.czy.seed.mvc")
-@ImportResource("classpath:core/applicationContext-core.xml")
 public class MvcStarter {
 }

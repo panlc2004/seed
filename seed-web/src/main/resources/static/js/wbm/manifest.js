@@ -28,12 +28,26 @@ var defaults = {
         {sgment: "D"}
     ],
     //简单数据回显时使用的字段名字,便于循环赋值
-    configuration: ["baseIndex", "baseWeight", "limitedMtow", "limitedMldw", "limitedMzfw", "takeOffFuel", "tripFuel"],
+    configuration: ["baseIndex", "baseWeight", "limitedMtow", "limitedMldw", "limitedMzfw", "takeOffFuel", "tripFuel", "num", "msn"],
     //缓存动态构建的电子舱单货舱单航段对象,用于添加单航段或者多航段
     cacheCargoObj: {},
     //缓存动态构建的电子舱单客舱单行对象,用于提那家单航段或者多航段
     cacheCabinObj: {}
 }
+
+Vue.component('my-item-zh', {
+    functional: true,
+    render: function (h, ctx) {
+        var item = ctx.props.item;
+        return h('li', ctx.data, [
+            h('div', {attrs: {class: 'name'}}, [item.value]),
+            h('span', {attrs: {class: 'addr'}}, [item.span])
+        ]);
+    },
+    props: {
+        item: {type: Object, required: true}
+    }
+});
 
 var cfg_manifest = new Vue({
     el: "#manifest",
@@ -49,9 +63,11 @@ var cfg_manifest = new Vue({
             checkResultData: "",
             currentDate: new Date(),
             infoForm: {
+                flightConfig: {},
                 crews: defaults.crews,
                 galleyGoods: defaults.galleyGoods,
                 flightInfo: {},
+                flightTypeConfig: {},
                 segmentInput: [],
                 segmentA: '', //A 站输入框
                 segmentB: '', //B 站输入框
@@ -62,7 +78,9 @@ var cfg_manifest = new Vue({
             cabinsForm: defaults.cabinsForm, //客舱信息组装
             cargoHoldForm: defaults.cargoHoldForm, //货舱信息组装
             restaurants: [], //航班号搜索框
-            timeout: null,
+            restaurantsMsn: [], //机号搜索框
+            state3: '',
+
             flightNo: '' //航班号
         }
     },
@@ -127,7 +145,7 @@ var cfg_manifest = new Vue({
         searchByFlightNo: function () {
             var data = [];
             $.ajax({
-                url: "cfg/flightInfo/searchFlightInfo",
+                url: "wbm/flightInfo/searchFlightInfo",
                 data: {},
                 type: 'POST',
                 async: false,//需要添加这个参数使用同步功能
@@ -144,8 +162,28 @@ var cfg_manifest = new Vue({
             });
             return data;
         },
-        querySearchAsync: function (queryString, callBack) {
-            var restaurants = this.restaurants;
+        searchFcList: function () {
+            var data = [];
+            $.ajax({
+                url: "cfg/flightCfg/searchFcList",
+                data: {},
+                type: 'POST',
+                async: false,//需要添加这个参数使用同步功能
+                success: function (result) {
+                    data = result.data
+                },
+                error: function (error) {
+                    var text = error.responseJSON.msg;
+                    if (text && text.length > 100) {
+                        text = text.substring(0, 100);
+                    }
+                    czy.msg.error(text);
+                }
+            });
+            return data;
+        },
+        querySearchFc: function (queryString, callBack) {
+            var restaurants = this.restaurantsMsn;
             var results = queryString ? restaurants.filter(this.createStateFilter(queryString)) : restaurants;
             callBack(results);
         },
@@ -156,25 +194,74 @@ var cfg_manifest = new Vue({
                 return (state.value.indexOf(queryString) === 0)
             }
         },
+
+        handleInfoSelect: function (item) {
+            this.infoForm.segment = item.segment;
+            this.infoForm.flightInfo = item;
+        },
         handleSelect: function (item) {
+            $.ajax({
+                url: "wbm/flightInfo/searchByFlightInfo",
+                data: JSON.stringify(item),
+                type: 'POST',
+                async: false,//需要添加这个参数使用同步功能
+                contentType: 'application/json;charset=UTF-8',
+                success: function (result) {
+                    var data = result.data;
+
+                    if (data.flightTypeConfig == null) {
+                        czy.msg.warn("请先完善航班类型参数配置!");
+                        return;
+                    }
+                    if (data.flightTypeConfig.crewList == null) {
+                        czy.msg.warn("请先完善乘务信息配置!");
+                        return;
+                    }
+
+                    if (data.flightTypeConfig.galleyGoodsList == null) {
+                        czy.msg.warn("请先完善机供品参数配置!");
+                        return;
+                    }
+                    if (data.flightTypeConfig.cargoHoldList == null) {
+                        czy.msg.warn("请先完善货舱配置!");
+                        return;
+                    }
+                    if (data.flightTypeConfig.passengerCabinList == null) {
+                        czy.msg.warn("请先完善客舱配置!");
+                        return;
+                    }
+
+                    item = data;
+                },
+                error: function (error) {
+                    var text = error.responseJSON.msg;
+                    if (text && text.length > 100) {
+                        text = text.substring(0, 100);
+                    }
+                    czy.msg.error(text);
+                }
+            });
+
             this.showSegmentA_B = true;
             this.radio2 = 1;
+
+            this.infoForm.seatNum = item.flightTypeConfig.seatNum;
+            this.infoForm.flightConfig = item.flightConfig;
+            this.infoForm.flightTypeConfig = item.flightTypeConfig;
+            this.infoForm.flightType = item.flightTypeConfig.flightType;
+
             //回显数据
             for (var val in defaults.configuration) {
                 var configuration = defaults.configuration[val];
                 var value = item.flightConfig[configuration];
                 this.infoForm[configuration] = value;
             }
-            this.infoForm.seatNum = item.flightTypeConfig.seatNum;
-            //
-            this.infoForm.segment = item.segment;
 
             var crews = item.flightTypeConfig.crewList;
             var galleyGoods = item.flightTypeConfig.galleyGoodsList;
             var holdList = item.flightTypeConfig.cargoHoldList;
             var cabinsList = item.flightTypeConfig.passengerCabinList;
             //保存数据用于电子舱单生成时数据回显使用数据
-            this.infoForm.flightInfo = item;
 
             this.infoForm.crews = defaults.crews;
             this.infoForm.galleyGoods = defaults.galleyGoods;
@@ -283,6 +370,7 @@ var cfg_manifest = new Vue({
         },
         //提交电子舱单,货舱代码
         submitManifest: function () {
+            cfg_manifest.showFtl = null;
             var cargoData = cfg_manifest.cargoHoldForm;
             var cabinData = cfg_manifest.cabinsForm;
 
@@ -317,11 +405,17 @@ var cfg_manifest = new Vue({
                             continue;
                         }
                         var passenger = {};
-                        //把客舱名字和值绑定成为一个对象如(OA:123)  这种数据格式
+
+                        //把客舱名字和值绑定成为一个对象
                         var colDatum = colData[colKey];
 
                         passenger.name = colDatum.name;
-                        passenger.num = colDatum.value
+                        var val = colDatum.value;
+                        passenger.num = val == null || val == "" ? 0 : val;
+                        if (!this.validate(passenger.num)) {
+                            czy.msg.warn("请输入数字!");
+                            return;
+                        }
                         // rowObj[colDatum.name] = colDatum.value;
                         rowObj.passengerList.push(passenger);
                     }
@@ -353,7 +447,13 @@ var cfg_manifest = new Vue({
                         var colDatum = colData[colKey];
 
                         cargo.name = colDatum.name;
-                        cargo.weight = colDatum.value
+                        var val = colDatum.value;
+                        cargo.weight = val == null || val == "" ? 0 : val;
+                        if (!this.validate(cargo.weight)) {
+                            czy.msg.warn("请输入数字!");
+                            return;
+                        }
+                        // cargo.weight = colDatum.value;
                         rowObj.cargoHoldList.push(cargo);
                     }
                     cargoParams.push(rowObj);
@@ -363,12 +463,28 @@ var cfg_manifest = new Vue({
                 //组装多个航段的信息
                 manySegmentList.push(manySegment);
             }
+            var flightId = this.infoForm.flightInfo.id;
+            var flightTypeConfigId = this.infoForm.flightTypeConfig.id;
+            if (flightId == null) {
+                czy.msg.warn("请选择航班号!");
+                return;
+            }
+            if (flightTypeConfigId == null) {
+                czy.msg.warn("请选择机型!");
+                return;
+            }
+
             //组装传输到后台的数据
             var data = {
-                flightId: this.infoForm.flightInfo.id,//航班号主键ID
+                flightId: flightId,//航班号主键ID
+                flightConfigId: this.infoForm.flightConfig.id,
+                flightTypeConfigId: flightTypeConfigId,
                 baseInfoBean: this.infoForm,
-                manySegmentList: manySegmentList,
-            };
+                crewList: this.infoForm.crews,
+                galleyGoodsList: this.infoForm.galleyGoods,
+                manySegmentList: manySegmentList
+            }
+
             $.ajax({
                 url: "msg/message/createManifest",
                 data: JSON.stringify(data),
@@ -376,11 +492,17 @@ var cfg_manifest = new Vue({
                 contentType: 'application/json;charset=UTF-8',
                 async: false,//需要添加这个参数使用同步功能
                 success: function (result) {
+                    // cfg_manifest.show9CFtl = true;
+                    if (result.code == 500) {
+                        czy.msg.error(result.msg)
+                        return;
+                    }
                     cfg_manifest.showFtl = result.data.message;
                     cfg_manifest.showtable(result.data);
                     czy.msg.success(result.msg)
                 },
                 error: function (error) {
+                    cfg_manifest.showtable(null);
                     var text = error.responseJSON.msg;
                     if (text && text.length > 100) {
                         text = text.substring(0, 100);
@@ -462,9 +584,9 @@ var cfg_manifest = new Vue({
             var data1 = [[40, 35], [34, 53], [36, 63], [36, 64.5], [85.5, 64.5], [82, 58], [66, 47], [63, 35]];
             var data2 = [[42, 35], [38.8, 43], [39, 53.8], [38, 56], [39, 61], [88, 61], [71, 35]];
 
-            var data4 = [[result.towi, result.tow]];//[[50, 57]];
-            var data5 = [[result.ldwi, result.ldw]];
-            var data6 = [[result.zfwi, result.zfw]];
+            var data4 = [[result == null ? 0 : result.towi, result == null ? 0 : result.tow]];//[[50, 57]];
+            var data5 = [[result == null ? 0 : result.ldwi, result == null ? 0 : result.ldw]];
+            var data6 = [[result == null ? 0 : result.zfwi, result == null ? 0 : result.zfw]];
 
             var option = {
                 backgroundColor: new echarts.graphic.RadialGradient(0.3, 0.3, 0.8, [{
@@ -644,7 +766,6 @@ var cfg_manifest = new Vue({
                 silent: true
             });
 
-
             var mtowMap = validate(data4, data);
             var mlwMap = validate(data5, data1);
             var mzfwMap = validate(data6, data2);
@@ -740,23 +861,56 @@ var cfg_manifest = new Vue({
             }
             // 射线穿过多边形边界的次数为奇数时点在多边形内
             return flag ? 'in' : 'out'
-        }
+        },
+        //数字正则校验
+        validate: function (val) {
+            var reg = new RegExp("^[0-9]*$");
+            if (!reg.test(val)) {
+                return false;
+            }
+            return true;
+        },
+        querySearch: function (queryString, cb) {
+            var restaurants = this.restaurants;
+            var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants;
+            // 调用 callback 返回建议列表的数据
+            cb(results);
+        },
+        createFilter: function (queryString) {
+            return function (state) {
+                return (state.value.indexOf(queryString) === 0);
+            }
+        },
     },
     mounted: function () {
         //
         var flights = this.searchByFlightNo();
+        var fcList = this.searchFcList();
         var data = [];
+        var fcData = [];
         for (var key in  flights) {
             var obj = {};
             var flight = flights[key];
             //value 此属性是必须的,在构建远程input 请求显示列表
             obj.value = flight.flightNo;
+            obj.span = flight.segment;
             for (var index in flight) {
                 obj[index] = flight[index];
             }
             data.push(obj);
         }
         this.restaurants = data;
+        for (var key in fcList) {
+            var obj = {};
+            var flightConfig = fcList[key];
+            obj.value = flightConfig.msn;
+            obj.span = flightConfig.flightTypeConfig.flightType;
+            for (var index in flightConfig) {
+                obj[index] = flightConfig[index];
+            }
+            fcData.push(obj);
+        }
+        this.restaurantsMsn = fcData;
     }
 })
 

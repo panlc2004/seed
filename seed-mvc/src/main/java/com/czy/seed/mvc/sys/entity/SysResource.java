@@ -10,7 +10,7 @@ import java.util.List;
  * 系统资源
  * Created by PLC on 2017/5/23.
  */
-public class SysResource implements Serializable{
+public class SysResource implements Serializable, Comparable<SysResource>{
 
     public SysResource() {
     }
@@ -120,5 +120,17 @@ public class SysResource implements Serializable{
                 ", icon='" + icon + '\'' +
                 ", children=" + children +
                 '}';
+    }
+
+    public int compareTo(SysResource o) {
+        int orderBy_this = this.getOrderBy() == null ? 999 : this.getOrderBy();
+        int orderBy_o = o.getOrderBy() == null ? 999 : o.getOrderBy();
+        int orderByDiff = orderBy_this - orderBy_o;
+        if (orderByDiff != 0) {
+            return orderByDiff;
+        } else {
+            long idDiff = this.getId() - o.getId();
+            return idDiff >= 0 ? 1 : -1;
+        }
     }
 }

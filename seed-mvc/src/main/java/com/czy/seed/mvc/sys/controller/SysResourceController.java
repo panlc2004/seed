@@ -56,7 +56,7 @@ public class SysResourceController {
         if (sysResource.getId() == null) {
             sysResourceService.insert(sysResource);
         } else {
-            sysResourceService.updateByPrimaryKeySelective(sysResource);
+            sysResourceService.updateSelectiveByPrimaryKey(sysResource);
         }
         return Res.ok(sysResource.getId().toString());
     }

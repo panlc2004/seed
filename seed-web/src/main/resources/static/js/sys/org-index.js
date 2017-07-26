@@ -29,7 +29,7 @@ var main = new Vue({
         },
         methods: {
             loadTree: function () {
-                this.$http.post("/sys/org/selectOrgTree").then(
+                this.$http.post("sys/org/selectOrgTree").then(
                     function (response) {
                         this.treeData = response.body;
                     },
@@ -123,7 +123,7 @@ var main = new Vue({
                 this.userDialogShow = true;
             },
             saveUser:function () {
-                this.$http.post("/sys/user/save", this.sysUser).then(
+                this.$http.post("sys/user/save", this.sysUser).then(
                     function (success) {
                         this.userDialogShow = false;  //关闭窗口
                         var param = {"pageNum":1, "pageSize":this.pageSize, "params":{}}
@@ -205,7 +205,7 @@ function buildOpeBtn(createElement, node, data, store) {
 }
 
 function openEditWin(store, id) {
-    Vue.http.get("/sys/org/loadData", {params: {id: id}}).then(
+    Vue.http.get("sys/org/loadData", {params: {id: id}}).then(
         function (success) {
             main.sysOrg = success.body;
             main.operateDialogShow = true;
@@ -223,7 +223,7 @@ function deleteOrg(id) {
         type: 'warning'
     }).then(
         function () {
-            Vue.http.get("/sys/org/deleteOrg", {params: {id: id}}).then(
+            Vue.http.get("sys/org/deleteOrg", {params: {id: id}}).then(
                 function (success) {
                     if (success.body.code != 200) {
                         main.$message({

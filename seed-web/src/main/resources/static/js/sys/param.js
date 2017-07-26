@@ -43,7 +43,7 @@ var param_panel = new Vue({
         },
         save: function () {
             czy.ajax.postJson({
-                utl:"/sys/param/save",
+                utl:"sys/param/save",
                 data:this.formData,
                 success:function (result) {
                 param_panel.editDialogShow = false;

@@ -20,16 +20,18 @@
                 </div>
             </el-col>
             <el-col :span="4" class="userinfo">
-                <el-dropdown trigger="hover">
-                    <span class="el-dropdown-link userinfo-inner">
-                        <img :src="this.sysUserAvatar"/> {{sysUserName}}
-                    </span>
-                    <el-dropdown-menu slot="dropdown">
-                        <el-dropdown-item>我的消息</el-dropdown-item>
-                        <el-dropdown-item>设置</el-dropdown-item>
-                        <el-dropdown-item divided @click.native="logout">退出登录</el-dropdown-item>
-                    </el-dropdown-menu>
-                </el-dropdown>
+                <!--<el-dropdown trigger="hover">-->
+                <!--<span class="el-dropdown-link userinfo-inner">-->
+                <!--<img :src="this.sysUserAvatar"/> {{sysUserName}}-->
+                <!--</span>-->
+                <!--&lt;!&ndash;<el-dropdown-menu slot="dropdown">&ndash;&gt;-->
+                <!--&lt;!&ndash;&lt;!&ndash;<el-dropdown-item>我的消息</el-dropdown-item>&ndash;&gt;&ndash;&gt;-->
+                <!--&lt;!&ndash;&lt;!&ndash;<el-dropdown-item>设置</el-dropdown-item>&ndash;&gt;&ndash;&gt;-->
+                <!--&lt;!&ndash;<el-dropdown-item divided @click.native="logout">退出登录</el-dropdown-item>&ndash;&gt;-->
+                <!--&lt;!&ndash;</el-dropdown-menu>&ndash;&gt;-->
+                <!--</el-dropdown>-->
+                <!--<i class="el-icon-share" >退出登录</i>-->
+                <el-button type="primary" size="small" @click.native="logout">退出登录</el-button>
             </el-col>
         </el-col>
         <el-col :span="24" class="main">
@@ -53,8 +55,10 @@
                     </el-breadcrumb>
                 </el-col>
                 <el-col :span="24" class="content-wrapper">
-                    <el-tabs v-if="pageLoadInTag" v-model="editableTabsValue" type="card" closable @tab-remove="removeTab">
-                        <el-tab-pane v-for="(tab, index) in editableTabs" :key="tab.id" :label="tab.name" :name="tab.id + ''">
+                    <el-tabs v-if="pageLoadInTag" v-model="editableTabsValue" type="card" closable
+                             @tab-remove="removeTab">
+                        <el-tab-pane v-for="(tab, index) in editableTabs" :key="tab.id" :label="tab.name"
+                                     :name="tab.id + ''">
                             <el-col :span="24" :id="'tab-content-' + tab.id"></el-col>
                         </el-tab-pane>
                     </el-tabs>

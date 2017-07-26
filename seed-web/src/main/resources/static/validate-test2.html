@@ -33,7 +33,31 @@
                     <el-form-item :label="'客舱'"
                                   :prop="'passengerCabins.' + index + '.name'"
                                   :key="passengerCabin.key"
-                                  >
+                    >
+                        <el-input size="small" v-model="passengerCabin.name"></el-input>
+                        <el-button @click="pcDelClick(passengerCabin)" type="primary"
+                                   icon="delete"></el-button>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+            <el-row>
+                <el-col :span="6">
+                    <el-form-item :label="'客舱'"
+                                  :prop="'passengerCabins.' + index + '.name'"
+                                  :key="passengerCabin.key"
+                    >
+                        <el-input autofocus="focus" size="small" v-model="passengerCabin.name"></el-input>
+                        <el-button @click="pcDelClick(passengerCabin)" type="primary"
+                                   icon="delete"></el-button>
+                    </el-form-item>
+                </el-col>
+            </el-row>
+            <el-row>
+                <el-col :span="6">
+                    <el-form-item :label="'客舱'"
+                                  :prop="'passengerCabins.' + index + '.name'"
+                                  :key="passengerCabin.key"
+                    >
                         <el-input size="small" v-model="passengerCabin.name"></el-input>
                         <el-button @click="pcDelClick(passengerCabin)" type="primary"
                                    icon="delete"></el-button>
@@ -56,6 +80,7 @@
         data: function () {
             return {
                 tableData: this.loadData(),
+                focus: true,
                 form: {
                     name: '',
                     region: '',
@@ -108,24 +133,27 @@
                 }
             },
             submitPcForm: function (passengerForm) {
-                this.$refs[passengerForm].validate(function (result) {
-                    if (result) {
-                        debugger
-                        var params = JSON.stringify(this.formData.passengerCabins);
-                        debugger
-                        $.ajax({
-                            url: "cfg/passengerCabin/addList",
-                            data: params,
-                            type: 'POST',
-                            contentType: 'application/json;charset=UTF-8',
-                            success: function (result) {
-                                alert(result);
-                            }
-                        });
-                    } else {
+                this.focus = true;
 
-                    }
-                });
+
+//                this.$refs[passengerForm].validate(function (result) {
+//                    if (result) {
+//                        debugger
+//                        var params = JSON.stringify(this.formData.passengerCabins);
+//                        debugger
+//                        $.ajax({
+//                            url: "cfg/passengerCabin/addList",
+//                            data: params,
+//                            type: 'POST',
+//                            contentType: 'application/json;charset=UTF-8',
+//                            success: function (result) {
+//                                alert(result);
+//                            }
+//                        });
+//                    } else {
+//
+//                    }
+//                });
 
             }
         }

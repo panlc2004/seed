@@ -11,7 +11,7 @@
  */
 package com.czy.seed.mvc.util;
 
-import com.czy.seed.mvc.wbm.util.IdWorker;
+import com.czy.seed.mybatis.util.IdWorker;
 import org.junit.Assert;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -28,14 +28,15 @@ import org.springframework.test.context.junit4.SpringRunner;
  * @see [相关类/方法]
  * @since [产品/模块]
  */
-@RunWith(SpringRunner.class)
-@SpringBootTest
+
 public class IdWorkerTest {
 
     @Test
     public void testIdWorker() {
-        IdWorker idWorker = new IdWorker(1, 2);
-        Assert.assertNotEquals(idWorker.nextId(), idWorker.nextId());
+        System.out.println(IdWorker.getId());
+        System.out.println(IdWorker.getId());
+        System.out.println(IdWorker.getId());
+        System.out.println(IdWorker.getId());
     }
 
 }

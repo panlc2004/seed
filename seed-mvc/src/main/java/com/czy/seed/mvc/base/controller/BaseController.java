@@ -84,7 +84,7 @@ public class BaseController<T> {
     }
 
     /**
-     * 分页查询
+     * 分页查询——只查询本表数据
      *
      * @param pageNum  查询页号
      * @param pageSize 分页大小
@@ -95,6 +95,25 @@ public class BaseController<T> {
     public Res selectPageByParams(@PathVariable int pageNum, @PathVariable int pageSize, @RequestBody Param param) {
         QueryParams queryParams = param.toQueryParams(entityClass);
         Page<T> page = service.selectPageByParams(pageNum, pageSize, queryParams);
+        Map<String, Object> pageInfo = new HashMap<String, Object>();
+        pageInfo.put("total", page.getTotal());
+        pageInfo.put("pages", page.getPages());
+        pageInfo.put("page", page);
+        return Res.ok(pageInfo);
+    }
+
+    /**
+     * 分页查询——查询关联数据
+     *
+     * @param pageNum  查询页号
+     * @param pageSize 分页大小
+     * @param param   查询参数
+     * @return 返回分页数据
+     */
+    @RequestMapping("/selectPageRelativeByParams/{pageNum}/{pageSize}")
+    public Res selectPageRelativeByParams(@PathVariable int pageNum, @PathVariable int pageSize, @RequestBody Param param) {
+        QueryParams queryParams = param.toQueryParams(entityClass);
+        Page<T> page = service.selectPageRelativeByParams(pageNum, pageSize, queryParams);
         Map<String, Object> pageInfo = new HashMap<String, Object>();
         pageInfo.put("total", page.getTotal());
         pageInfo.put("pages", page.getPages());
@@ -198,6 +217,15 @@ public class BaseController<T> {
         QueryParams queryParams = param.toQueryParams(entityClass);
         int num = service.deleteByParams(queryParams);
         return Res.ok(num);
+    }
+
+    public static void main(String[] args) {
+        String a = "test";
+        String b = new String("test");
+        String c = "test";
+        System.out.println(a.equals(b));
+
+        throw new NullPointerException("test");
     }
 
 }

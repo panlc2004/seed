@@ -8,12 +8,12 @@
     <parent>
         <groupId>com.czy</groupId>
         <artifactId>seed-dependencies</artifactId>
-        <version>1.0.1</version>
+        <version>1.0.1-SNAPSHOT</version>
         <relativePath>../seed-dependencies</relativePath>
     </parent>
 
     <artifactId>seed-mvc</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.2-SNAPSHOT</version>
 
     <packaging>jar</packaging>
 
@@ -21,16 +21,16 @@
         <dependency>
             <groupId>com.czy</groupId>
             <artifactId>seed-mybatis</artifactId>
-            <version>1.0.1</version>
+            <version>1.0.2-SNAPSHOT</version>
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-thymeleaf</artifactId>
+            <artifactId>spring-boot-starter-web</artifactId>
         </dependency>
-        <dependency>
+        <!-- <dependency>
             <groupId>org.thymeleaf.extras</groupId>
             <artifactId>thymeleaf-extras-springsecurity4</artifactId>
-        </dependency>
+        </dependency> -->
         <dependency>
             <groupId>net.sourceforge.nekohtml</groupId>
             <artifactId>nekohtml</artifactId>
@@ -49,9 +49,8 @@
             <artifactId>spring-boot-starter-test</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.alibaba</groupId>
-            <artifactId>fastjson</artifactId>
-            <version>1.2.30</version>
+          <groupId>com.fasterxml.jackson.core</groupId>
+          <artifactId>jackson-databind</artifactId>
         </dependency>
         <dependency>
             <groupId>mysql</groupId>
@@ -59,6 +58,15 @@
             <version>5.1.41</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>javax.servlet</groupId>
+            <artifactId>javax.servlet-api</artifactId>
+        </dependency>
+		<dependency>
+		    <groupId>commons-httpclient</groupId>
+		    <artifactId>commons-httpclient</artifactId>
+		    <version>3.1</version>
+		</dependency>
     </dependencies>
 
     <build>
@@ -96,45 +104,25 @@
                 <configuration>
                     <includes>com.*</includes>
                 </configuration>
-                <executions>
+                <!-- <executions>
                     <execution>
-                        <id>pre-test</id>
+                        <id>pre-prepareTransactionManager</id>
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
                     </execution>
                     <execution>
-                        <id>post-test</id>
-                        <phase>test</phase>
+                        <id>post-prepareTransactionManager</id>
+                        <phase>prepareTransactionManager</phase>
                         <goals>
                             <goal>report</goal>
                         </goals>
                     </execution>
-                </executions>
-            </plugin>
-
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.3</version>
-                <configuration>
-                    <encoding>UTF-8</encoding>
-                </configuration>
+                </executions> -->
             </plugin>
         </plugins>
     </build>
 
-    <distributionManagement>
-        <repository>
-            <id>releases</id>
-            <name>Internal Releases</name>
-            <url>http://10.131.0.164:8081/nexus/content/repositories/thirdparty</url>
-        </repository>
-        <snapshotRepository>
-            <id>releases</id>
-            <name>Internal Releases</name>
-            <url>http://10.131.0.164:8081/nexus/content/repositories/thirdparty</url>
-        </snapshotRepository>
-    </distributionManagement>
+
 
 </project>

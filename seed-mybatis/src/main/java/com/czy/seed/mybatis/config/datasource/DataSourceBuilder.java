@@ -21,7 +21,7 @@ import java.util.Set;
 /**
  * Created by panlc on 2017-03-14.
  */
-public class DataSourceBuilder implements BeanClassLoaderAware {
+public class DataSourceBuilder {
 
     @Autowired
     private DefaultDataSourceProperties defaultDataSourceProperties;
@@ -315,8 +315,4 @@ public class DataSourceBuilder implements BeanClassLoaderAware {
         return identityDialect;
     }
 
-    @Override
-    public void setBeanClassLoader(ClassLoader classLoader) {
-
-    }
 }

@@ -75,6 +75,27 @@
         white-space: nowrap;
         height: 30px;
     }
+
+    .my-autocomplete li {
+        line-height: normal;
+        padding: 7px;
+    }
+
+    .my-autocomplete li .name {
+        text-overflow: ellipsis;
+        overflow: hidden;
+    }
+
+    .my-autocomplete li .addr {
+        font-size: 12px;
+        color: #b4b4b4;
+    }
+
+    .my-autocomplete li .highlighted .addr {
+        color: #ddd;
+    }
+
+
 </style>
 
 <div id="manifest" style="margin: 10px 10px 10px 10px">
@@ -141,19 +162,21 @@
                     <div style="padding: 14px;">
                         <el-form :model="infoForm" ref="infoForm" label-width="110px">
                             <el-row>
-                                <el-col :span="10">
+                                <el-col :span="8">
                                     <el-row>
                                         <el-col :span="8">
                                             <span class="span-size-center">Flight NO</span>
                                         </el-col>
                                         <el-col :span="16">
                                             <el-autocomplete size="small"
+                                                             popper-class="my-autocomplete"
                                                              v-model="flightNo"
-                                                             :fetch-suggestions="querySearchAsync"
-                                                             placeholder="请输入内容"
-                                                             @select="handleSelect"
+                                                             :fetch-suggestions="querySearch"
+                                                             custom-item="my-item-zh"
+                                                             placeholder="请输入航班号"
+                                                             @select="handleInfoSelect"
+                                                             icon="search"
                                             ></el-autocomplete>
-                                            </el-input>
                                         </el-col>
                                     </el-row>
                                     <el-row style="margin-top: 5px;">
@@ -182,7 +205,7 @@
                                         </el-col>
                                         <el-col :span="4" v-for="crew in infoForm.crews">
                                             <el-input size="small"
-                                                      v-model="crew.standardNum">
+                                                      v-model.number="crew.standardNum">
                                             </el-input>
                                         </el-col>
                                     </el-row>
@@ -192,19 +215,25 @@
                                         </el-col>
                                         <el-col :span="8" v-for="galleyGood in infoForm.galleyGoods">
                                             <el-input size="small"
-                                                      v-model="galleyGood.standardWeight"></el-input>
+                                                      v-model.number="galleyGood.standardWeight"></el-input>
                                         </el-col>
                                     </el-row>
                                 </el-col>
-                                <el-col :span="7">
+                                <el-col :span="8">
                                     <el-row>
                                         <el-col :span="12">
                                             <span class="span-size-center">AC Reg</span>
                                         </el-col>
                                         <el-col :span="12">
-                                            <el-input size="small"
-                                                      v-model="infoForm.name" readonly>
-                                            </el-input>
+                                            <el-autocomplete size="small"
+                                                             popper-class="my-autocomplete"
+                                                             v-model="infoForm.msn"
+                                                             :fetch-suggestions="querySearchFc"
+                                                             custom-item="my-item-zh"
+                                                             placeholder="请输入机号"
+                                                             @select="handleSelect"
+                                                             icon="search"
+                                            ></el-autocomplete>
                                         </el-col>
                                     </el-row>
                                     <el-row style="margin-top: 5px;">
@@ -213,7 +242,7 @@
                                         </el-col>
                                         <el-col :span="12">
                                             <el-input size="small"
-                                                      v-model="infoForm.name" readonly>
+                                                      v-model="infoForm.flightType" readonly>
                                             </el-input>
                                         </el-col>
                                     </el-row>
@@ -248,7 +277,7 @@
                                         </el-col>
                                     </el-row>
                                 </el-col>
-                                <el-col :span="7">
+                                <el-col :span="8">
                                     <el-row style="margin-left: 5px;">
                                         <el-col :span="12">
                                             <span class="span-size-center">Limited MTOW</span>

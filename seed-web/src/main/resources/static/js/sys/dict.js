@@ -140,7 +140,7 @@ var dictPanel = new Vue({
             this.itemFormShow = false;
             this.itemForm.sysDictCode = this.getDictSelectedRow().code;
             czy.ajax.postJson({
-                url: '/sys/dictItem/save',
+                url: 'sys/dictItem/save',
                 data: dictPanel.itemForm,
                 success: function (result) {
                     dictPanel.dictGridClick(dictPanel.getDictSelectedRow());

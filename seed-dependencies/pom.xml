@@ -13,7 +13,7 @@
 
     <groupId>com.czy</groupId>
     <artifactId>seed-dependencies</artifactId>
-    <version>1.0.1</version>
+    <version>1.0.1-SNAPSHOT</version>
     <packaging>pom</packaging>
     <name>Seed Dependencies</name>
     <description>Seed Dependencies</description>
@@ -37,16 +37,12 @@
         <mybatis.version>3.4.0</mybatis.version>
         <mybatis-spring.version>1.3.0</mybatis-spring.version>
         <pagehelper.version>5.0.0</pagehelper.version>
-        <druid.version>1.0.29</druid.version>
+        <druid.version>1.1.2</druid.version>
         <logback.version>1.1.11</logback.version>
         <freemarker.version>2.3.23</freemarker.version>
         <persistence-api.version>1.0</persistence-api.version>
-        <java.version>1.8</java.version>
-        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <java.version>1.7</java.version>
     </properties>
-
-
 
     <dependencyManagement>
         <dependencies>
@@ -88,16 +84,61 @@
         </dependencies>
     </dependencyManagement>
 
+    <build>
+        <resources>
+            <resource>
+                <filtering>false</filtering>
+                <directory>src/main/java</directory>
+                <includes>
+                    <include>**</include>
+                </includes>
+                <excludes>
+                    <exclude>**/*.java</exclude>
+                </excludes>
+            </resource>
+            <resource>
+                <directory>src/main/resources</directory>
+                <includes>
+                    <include>**</include>
+                </includes>
+            </resource>
+            <resource>
+                <directory>src/main/resources/META-INF</directory>
+                <includes>
+                    <include>**</include>
+                </includes>
+            </resource>
+        </resources>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-source-plugin</artifactId>
+                <configuration>
+                    <attach>true</attach>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>attach-sources</id>
+                        <phase>compile</phase>
+                        <goals>
+                            <goal>jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+
     <distributionManagement>
         <repository>
-            <id>releases</id>
+            <id>thirdparty</id>
             <name>Internal Releases</name>
             <url>http://10.131.0.164:8081/nexus/content/repositories/thirdparty</url>
         </repository>
         <snapshotRepository>
-            <id>releases</id>
-            <name>Internal Releases</name>
-            <url>http://10.131.0.164:8081/nexus/content/repositories/thirdparty</url>
+            <id>snapshots</id>
+            <name>Internal Snapshot</name>
+            <url>http://10.131.0.164:8081/nexus/content/repositories/snapshots</url>
         </snapshotRepository>
     </distributionManagement>
 

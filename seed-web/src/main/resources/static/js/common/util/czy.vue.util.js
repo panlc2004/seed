@@ -8,7 +8,7 @@
 $.ajaxSetup({
     complete: function (response, status) {
         if (response.status == 401 && response.responseText.indexOf("Unauthorized") > 0) {
-            window.location.href = "/login";
+            window.location.href = "login";
         }
     }
 });

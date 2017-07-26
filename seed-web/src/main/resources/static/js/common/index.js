@@ -1,7 +1,7 @@
 /**
  *点击菜单时，对应页面加载模式
  */
-const pageLoadInTag = true;
+const pageLoadInTag = false;
 
 // 主菜单栏
 var menuItem = Vue.extend({
@@ -186,7 +186,7 @@ const main_contain = new Vue({
             }).then(
                 function () {
                     // sessionStorage.removeItem('user');
-                    $.get("/logout", function (data,status) {
+                    $.get("logout", function (data,status) {
                         if(status) {
                             window.location.href = "login";
                         }

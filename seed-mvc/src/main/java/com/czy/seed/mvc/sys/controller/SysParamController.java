@@ -59,7 +59,7 @@ public class SysParamController {
         if (sysParam.getId() == null) {
             sysParamService.insert(sysParam);
         } else {
-            sysParamService.updateByPrimaryKeySelective(sysParam);
+            sysParamService.updateSelectiveByPrimaryKey(sysParam);
         }
         return Res.ok(sysParam.getId());
     }

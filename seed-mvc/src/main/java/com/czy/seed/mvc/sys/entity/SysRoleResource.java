@@ -17,7 +17,7 @@ public class SysRoleResource implements Serializable {
     private Long sysRoleId;
     private Long sysResourceId;
 
-    @One2One(columns = "sys_resource_id=id")
+    @One2One(columns = "sysResourceId=id")
     private SysResource sysResource;
 
     public Long getId() {

@@ -1,11 +1,10 @@
 package com.czy.seed.mvc.aop;
 
-import com.alibaba.druid.util.StringUtils;
-import com.alibaba.fastjson.JSON;
-import com.czy.seed.mvc.annotation.AutoLog;
-import com.czy.seed.mvc.sys.entity.SysLog;
-import com.czy.seed.mvc.sys.service.SysLogService;
-import com.czy.seed.mvc.util.PrincipalUtil;
+import java.lang.reflect.Method;
+import java.util.Date;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -18,9 +17,12 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import javax.servlet.http.HttpServletRequest;
-import java.lang.reflect.Method;
-import java.util.Date;
+import com.alibaba.druid.util.StringUtils;
+import com.czy.seed.mvc.annotation.AutoLog;
+import com.czy.seed.mvc.sys.entity.SysLog;
+import com.czy.seed.mvc.sys.service.SysLogService;
+import com.czy.seed.mvc.util.JsonUtils;
+import com.czy.seed.mvc.util.PrincipalUtil;
 
 
 /**
@@ -64,7 +66,7 @@ public class SysLogAspect {
         sysLog.setMethod(className + "." + methodName + "()");
         //请求的参数
         Object[] args = joinPoint.getArgs();
-        String params = JSON.toJSONString(args[0]);
+        String params = JsonUtils.toJSONString(args[0]);
         sysLog.setParams(params);
         //获取request
         HttpServletRequest request = getHttpServletRequest();

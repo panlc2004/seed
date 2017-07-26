@@ -54,7 +54,7 @@ public class SysOrgController {
         if (sysOrg.getId() == null) {
             sysOrgService.insert(sysOrg);
         } else {
-            sysOrgService.updateByPrimaryKeySelective(sysOrg);
+            sysOrgService.updateSelectiveByPrimaryKey(sysOrg);
         }
         return sysOrg.getId().toString();
     }

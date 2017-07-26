@@ -5,6 +5,7 @@ import com.czy.seed.mvc.sys.entity.SysRoleResource;
 import com.czy.seed.mvc.sys.service.SysRoleResourceService;
 import com.czy.seed.mybatis.base.QueryParams;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 
@@ -15,13 +16,15 @@ import java.util.List;
 public class SysRoleResourceServiceImpl extends BaseServiceImpl<SysRoleResource> implements SysRoleResourceService {
     /**
      * 添加用户权限
+     *
      * @param roleResourceList
      */
     @Override
-    public void saveRoleResources(List<SysRoleResource> roleResourceList) {
+    @Transactional(transactionManager = "tm-default")
+    public void saveRoleResources(Long roleId, List<SysRoleResource> roleResourceList) {
         QueryParams queryParams = new QueryParams(SysRoleResource.class);
         QueryParams.Criteria criteria = queryParams.createCriteria();
-        criteria.andEqualTo("sysRoleId", roleResourceList.get(0).getSysRoleId());
+        criteria.andEqualTo("sysRoleId", roleId);
         super.deleteByParams(queryParams);
         super.insertList(roleResourceList);
     }

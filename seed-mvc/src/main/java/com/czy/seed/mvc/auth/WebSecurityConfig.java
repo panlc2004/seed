@@ -15,7 +15,6 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
  * 权限认证
  * Created by panlc on 2017-05-22.
  */
-
 @Configuration
 @EnableWebSecurity
 @EnableGlobalMethodSecurity(prePostEnabled=true)
@@ -23,50 +22,60 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Autowired
     private SysUserDetailsService sysUserDetailsService;
+    
+    @Override
+    public void configure(WebSecurity web) throws Exception {
+        web.ignoring()
+            .antMatchers("/public/**", "/**/*.html");
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .authorizeRequests()
-                .anyRequest().authenticated() //任何请求,登录后可以访问
-                .and().formLogin().loginPage("/login").permitAll()
-                .successHandler(loginSuccessHandler())    ////登录成功后可使用loginSuccessHandler()存储用户信息
-                .and().logout().permitAll()
-                .and().csrf().disable()
-                .headers().frameOptions().disable()
-                .and().exceptionHandling().authenticationEntryPoint(ajaxAuthenticationEntryPoint());
+        http.authorizeRequests()
+            .antMatchers("/login/**").permitAll() // ajax登录
+            .antMatchers("/j_spring_security_check", "/csrf").permitAll() // spring security默认地址
+            .anyRequest().authenticated() // 其他地址的访问均需验证权限
+            .and().formLogin()
+                    .loginPage("/login.html") // 登录页面，未登录时会自动跳转到登录页面
+                    .usernameParameter("username").passwordParameter("password")
+                    .loginProcessingUrl("/j_spring_security_check") // 这个controller不会执行（会被security的登录拦截器拦截）
+                    .defaultSuccessUrl("/index.html", false) // 登录拦截器在成功登录时跳转的路径
+                    .failureUrl("/login.html?error") // 登录拦截器登录失败（密码错误等）会跳转到此页面
+                    .permitAll()
+                    //.successHandler(loginSuccessHandler())
+            .and().logout()
+                    .logoutUrl("logout") // spring security默认地址
+                    .logoutSuccessUrl("/login.html?logout")
+                    .invalidateHttpSession(true)
+                    //.addLogoutHandler(logoutHandler())
+                    .permitAll()
+            .and().csrf().disable().headers().frameOptions().disable();
     }
 
+    
     @Override
-    protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(sysUserDetailsService);
+    public void configure(AuthenticationManagerBuilder auth) throws Exception {
+//        auth.inMemoryAuthentication()
+//                    .withUser("admin").password("admin").roles("ADMIN", "USER").and()
+//                    .withUser("user").password("user").roles("USER");
+          auth.userDetailsService(sysUserDetailsService);//.passwordEncoder(passwordEncoder());
+          auth.authenticationProvider(myAuthenticationProvider());
+          auth.eraseCredentials(false);   //不删除凭据，以便记住用户
+          // SocialAuthenticationFilter
+    }
+    
+    @Bean
+    public MyAuthenticationProvider myAuthenticationProvider() {
+        MyAuthenticationProvider ret = new MyAuthenticationProvider();
+        ret.setUserDetailsService(sysUserDetailsService);
+        ret.setPasswordEncoder(new org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder());
+        return ret;
     }
 
-    /**
-     * 取消common目录下的访问权限控制
-     *
-     * @param web
-     * @throws Exception
-     */
-    @Override
-    public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("/js/**", "/css/**", "/lib/**");
-    }
-
-    /**
-     * 设置加密器
-     *
-     * @param auth
-     * @throws Exception
-     */
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-        auth.inMemoryAuthentication()
-                .withUser("1234").password("123").roles("USER");
-//        指定密码加密所使用的加密器为passwordEncoder()
-//        需要将密码加密后写入数据库
-        auth.userDetailsService(sysUserDetailsService).passwordEncoder(passwordEncoder());
-        auth.eraseCredentials(false);   //不删除凭据，以便记住用户
+    @Bean
+    public AjaxAuthenticationEntryPoint ajaxAuthenticationEntryPoint() {
+        AjaxAuthenticationEntryPoint point = new AjaxAuthenticationEntryPoint("/login.html");
+        return point;
     }
 
     /**
@@ -82,12 +91,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Bean
     public LoginSuccessHandler loginSuccessHandler() {
         return new LoginSuccessHandler();
-    }
-
-    @Bean
-    public AjaxAuthenticationEntryPoint ajaxAuthenticationEntryPoint() {
-        AjaxAuthenticationEntryPoint point = new AjaxAuthenticationEntryPoint("/login");
-        return point;
     }
 
 }

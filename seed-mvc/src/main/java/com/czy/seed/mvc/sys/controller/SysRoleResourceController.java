@@ -1,6 +1,5 @@
 package com.czy.seed.mvc.sys.controller;
 
-import com.czy.seed.mvc.sys.entity.SysOrg;
 import com.czy.seed.mvc.sys.entity.SysRoleResource;
 import com.czy.seed.mvc.sys.service.SysRoleResourceService;
 import com.czy.seed.mvc.util.Res;
@@ -42,7 +41,7 @@ public class SysRoleResourceController {
         if (sysRoleResource.getId() == null) {
             sysRoleResourceService.insert(sysRoleResource);
         } else {
-            sysRoleResourceService.updateByPrimaryKeySelective(sysRoleResource);
+            sysRoleResourceService.updateSelectiveByPrimaryKey(sysRoleResource);
         }
         return Res.ok(sysRoleResource.getId());
     }
@@ -59,10 +58,11 @@ public class SysRoleResourceController {
      * @param roleResourceList
      * @return
      */
-    @RequestMapping("/saveRoleResource")
-    public Res saveRoleResource(@RequestBody List<SysRoleResource> roleResourceList) {
-        sysRoleResourceService.saveRoleResources(roleResourceList);
+    @RequestMapping("/saveRoleResource/{roleId}")
+    public Res saveRoleResource(@PathVariable Long roleId, @RequestBody List<SysRoleResource> roleResourceList) {
+        sysRoleResourceService.saveRoleResources(roleId, roleResourceList);
         return Res.ok();
+
     }
 
 }

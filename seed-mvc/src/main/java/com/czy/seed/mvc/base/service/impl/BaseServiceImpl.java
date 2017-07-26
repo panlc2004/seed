@@ -4,15 +4,17 @@ import com.czy.seed.mvc.auth.SecurityUser;
 import com.czy.seed.mvc.base.entity.PrepareEntity;
 import com.czy.seed.mvc.base.service.BaseService;
 import com.czy.seed.mvc.util.PrincipalUtil;
+import com.czy.seed.mvc.util.TransactionUtil;
 import com.czy.seed.mybatis.base.QueryParams;
 import com.czy.seed.mybatis.base.mapper.BaseMapper;
+import com.czy.seed.mybatis.config.mybatis.annotations.AutoMapper;
 import com.github.pagehelper.ISelect;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.annotation.PostConstruct;
 import java.util.Date;
 import java.util.List;
 
@@ -21,29 +23,39 @@ import java.util.List;
  */
 public class BaseServiceImpl<T> implements BaseService<T> {
 
-    private int defaultBatchOperateLimit = 10000;
 
     @Autowired
     private BaseMapper<T> mapper;
+
+    private int defaultBatchOperateLimit = 10000;   //批次新增时，每批次处理的最大数量
+
+    public static final String DEFAULT_TM = "tm-default";
+
+    @PostConstruct
+    public void prepareTransactionManager() {
+//        SpringContextHelper.getBeanById(this.getClass().getSimpleName().substring(0).toLowerCase() +
+//                this.getClass().getSimpleName().substring(1, this.getClass().getSimpleName().length()));
+        try {
+            String tmName = DEFAULT_TM;
+            Class<? extends BaseMapper> mapperClass = this.getMapper().getClass();
+            if (mapperClass.isAnnotationPresent(AutoMapper.class)) {
+                AutoMapper annotation = mapperClass.getAnnotation(AutoMapper.class);
+                tmName = annotation.value();
+            }
+            TransactionUtil.prepareTransactionManager(this.getClass(), tmName);
+        } catch (Exception e) {
+            throw new RuntimeException("动态设置事务管理器时出错", e);
+        }
+    }
 
     public BaseMapper<T> getMapper() {
         return mapper;
     }
 
-    /**
-     * 指定对应的mapper名称
-     * 不重写时，本service默认从Spring容器中查找id为：泛型实体类名 + Mapper 的mapper实例
-     *
-     * @return
-     */
-    public String getMapperName() {
-        return null;
-    }
-
+    @Transactional(transactionManager="tm-default")
     public int insert(T record) {
         if (record instanceof PrepareEntity) {
             SecurityUser loginUser = PrincipalUtil.getLoginUser();
-
             PrepareEntity preparedRecord = (PrepareEntity) record;
             preparedRecord.setCreateDt(new Date());
             preparedRecord.setCreateBy(loginUser.getId());
@@ -52,12 +64,12 @@ public class BaseServiceImpl<T> implements BaseService<T> {
         return getMapper().insert(record);
     }
 
-    @Transactional
+    @Transactional(transactionManager="tm-default")
     public int insertList(List<T> recordList) {
         return insertList(recordList, defaultBatchOperateLimit);
     }
 
-    @Transactional
+    @Transactional(transactionManager="tm-default")
     public int insertList(List<T> recordList, int batchOperateLimit) {
         int res = 0;
         int i = 0;
@@ -120,27 +132,25 @@ public class BaseServiceImpl<T> implements BaseService<T> {
         return getMapper().selectCountByParams(params);
     }
 
+    @Transactional(transactionManager="tm-default")
     public int updateByPrimaryKey(T record) {
         beforeUpdate(record);
         return getMapper().updateByPrimaryKey(record);
     }
 
-    @Deprecated
-    public int updateByPrimaryKeySelective(T record) {
-        beforeUpdate(record);
-        return getMapper().updateByPrimaryKeySelective(record);
-    }
-
+    @Transactional(transactionManager="tm-default")
     public int updateSelectiveByPrimaryKey(T record) {
         beforeUpdate(record);
         return getMapper().updateSelectiveByPrimaryKey(record);
     }
 
+    @Transactional(transactionManager="tm-default")
     public int updateByParams(T record, QueryParams params) {
         beforeUpdate(record);
         return getMapper().updateByParams(record, params);
     }
 
+    @Transactional(transactionManager="tm-default")
     public int updateSelectiveByParams(T record, QueryParams params) {
         beforeUpdate(record);
         return getMapper().updateSelectiveByParams(record, params);
@@ -167,12 +177,15 @@ public class BaseServiceImpl<T> implements BaseService<T> {
         }
     }
 
+    @Transactional(transactionManager="tm-default")
     public int deleteByPrimaryKey(long id) {
         return getMapper().deleteByPrimaryKey(id);
     }
 
+    @Transactional(transactionManager="tm-default")
     public int deleteByParams(QueryParams params) {
         return getMapper().deleteByParams(params);
     }
+
 
 }

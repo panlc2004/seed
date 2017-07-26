@@ -17,7 +17,7 @@
     <groupId>com.czy</groupId>
     <artifactId>seed</artifactId>
     <packaging>pom</packaging>
-    <version>1.0.1</version>
+    <version>1.0.1-SNAPSHOT</version>
 
     <name>seed</name>
     <description>Seed project for czy by Technical Committee</description>
@@ -27,7 +27,9 @@
         <module>seed-web</module>
         <module>seed-mybatis</module>
         <module>seed-dependencies</module>
-        <module>seed-process</module>
+        <module>wbp-math</module>
+        <module>seed-auth</module>
+        <!--<module>seed-process</module>-->
     </modules>
 
 </project>

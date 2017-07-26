@@ -1,5 +1,6 @@
 package com.czy.seed.mybatis.tool;
 
+import com.czy.seed.mybatis.config.mybatis.MapperConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -7,6 +8,9 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
+import org.springframework.boot.autoconfigure.AutoConfigureBefore;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
 
 import java.util.Map;
@@ -14,7 +18,7 @@ import java.util.Map;
 /**
  * Created by panlc on 2017-02-08.
  */
-@Component
+@Configuration
 public class SpringContextHelper implements BeanFactoryAware {
 
     private static Logger logger = LoggerFactory.getLogger(SpringContextHelper.class);
