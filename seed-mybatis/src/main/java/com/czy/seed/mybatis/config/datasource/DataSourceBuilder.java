@@ -1,12 +1,10 @@
 package com.czy.seed.mybatis.config.datasource;
 
 import com.czy.seed.mybatis.config.exception.DataSourceBuildException;
+import com.czy.seed.mybatis.tool.NullUtil;
 import com.czy.seed.mybatis.tool.SpringContextHelper;
-import com.czy.seed.mybatis.tool.SpringPropertiesUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.BeanClassLoaderAware;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.annotation.PostConstruct;
 import javax.sql.DataSource;
@@ -14,7 +12,6 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.sql.SQLException;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
@@ -23,14 +20,11 @@ import java.util.Set;
  */
 public class DataSourceBuilder {
 
-    @Autowired
-    private DefaultDataSourceProperties defaultDataSourceProperties;
+    public DefaultDataSourceProperties defaultDataSourceProperties = SpringContextHelper.getBeanById("defaultDataSourceProperties");
 
-    @Autowired
-    private DynamicDataSourceProperties dynamicDataSourceProperties;
+    public DynamicDataSourceProperties dynamicDataSourceProperties = SpringContextHelper.getBeanById("dynamicDataSourceProperties");
 
-    @Autowired
-    public SpringContextHelper springContextHelper;
+    public ApplicationProperties applicationProperties = SpringContextHelper.getBeanById("applicationProperties");
 
     private Map<String, String> datasourceDialect = new HashMap<String, String>();
 
@@ -68,15 +62,17 @@ public class DataSourceBuilder {
         registDataSources();
     }
 
+
+
     /**
      * 初始连接池信息
      *
      * @throws ClassNotFoundException
      */
     protected void initPoolInfo() {
-        if (SpringPropertiesUtil.containsKey("datasource.pool")) {
-            String property = SpringPropertiesUtil.getProperty("datasource.pool");
-            poolType = DataSourcePoolType.valueOf(property);
+        String defaultDatasourceId = applicationProperties.getDefaultDatasourceId();
+        if (NullUtil.isNotEmpty(defaultDatasourceId)) {
+            poolType = DataSourcePoolType.valueOf(defaultDatasourceId);
         } else {
             poolType = DataSourcePoolType.druid;
         }
@@ -109,16 +105,16 @@ public class DataSourceBuilder {
     }
 
     private void initTargetDefaultDataSource() {
-        String defaultKey = "default.datasource";
-        if (!SpringPropertiesUtil.containsKey(defaultKey)) {
+        String defaultDatasourceId = applicationProperties.getDefaultDatasourceId();
+        if (NullUtil.isNotEmpty(defaultDatasourceId)) {
             throw new IllegalArgumentException("can not find the default datasource");  //TODO 更完善的提示信息
         } else {
-            DataSource defaultDatasource = springContextHelper.getBeanById(SpringPropertiesUtil.getStringProperty(defaultKey));
+            DataSource defaultDatasource = SpringContextHelper.getBeanById(defaultDatasourceId);
             String url = null;
             try {
                 url = defaultDatasource.getConnection().getMetaData().getURL();
             } catch (SQLException e) {
-                logger.error("the datasource with the id{} in spring context can't be connected", SpringPropertiesUtil.getProperty(defaultKey), e);
+                logger.error("the datasource with the id{} in spring context can't be connected", defaultDatasourceId, e);
             }
             setDialect(MAIN_DATASOURCE_NAME, url);     //记录主数据源类型
         }
@@ -126,7 +122,7 @@ public class DataSourceBuilder {
 
     public void initConfigDefaultDataSource(Map<String, Object> defaultDataSourceConf) {
         try {
-            springContextHelper.addBean(poolTypeClass, MAIN_DATASOURCE_NAME,
+            SpringContextHelper.addBean(poolTypeClass, MAIN_DATASOURCE_NAME,
                     defaultDataSourceConf, poolType.getInitMethod(), poolType.getDestroyMethod());  //注册主数据源
         } catch (Exception e) {
             throw new DataSourceBuildException("error occurred while build defaultDatasource", e);
@@ -137,16 +133,17 @@ public class DataSourceBuilder {
      * 注册其他数据源
      */
     private void registerDynamicDataSources() {
-        Map<String, Map<String, Object>> dynamicDataSource = dynamicDataSourceProperties.getDatasource();
-        for (Map.Entry<String, Map<String, Object>> entry : dynamicDataSource.entrySet()) {
-            String beanId = DATASOURCE_BEAN_PREFIX + entry.getKey();
-            Map<String, Object> config = entry.getValue();
-            springContextHelper.addBean(poolTypeClass, beanId,
-                    config, poolType.getInitMethod(), poolType.getDestroyMethod());  //注册主数据源
-            setDialect(beanId, config);     //记录其他数据源类型
-            dealUrlForSpecialDataSource(config, IdentityDialect.SQLITE);
+        String[] dynamicDataSourceNames = getDynamicDataSourceNames();
+        for (int i = 0; i < dynamicDataSourceNames.length; i++) {
+            String dynamicDataSourceName = dynamicDataSourceNames[i];
+            Map<String, Object> dynamicDataSourceConf = getDynamicDataSourceConf(dynamicDataSourceName);
+            String beanId = DATASOURCE_BEAN_PREFIX + dynamicDataSourceName;
+            SpringContextHelper.addBean(poolTypeClass, beanId,
+                    dynamicDataSourceConf, poolType.getInitMethod(), poolType.getDestroyMethod());  //注册主数据源
+            setDialect(beanId, dynamicDataSourceConf);     //记录其他数据源类型
         }
     }
+
 
     /**
      * 获取动态数据源名称
@@ -154,17 +151,14 @@ public class DataSourceBuilder {
      * @return
      */
     private String[] getDynamicDataSourceNames() {
-        Map<String, Object> ctxPropertiesMap = SpringPropertiesUtil.getCtxPropertiesMap();
-        Set<String> dbNames = new HashSet<String>();
-        Set<String> configs = ctxPropertiesMap.keySet();
-        for (String config : configs) {
-            if (config.startsWith("dynamic.datasource")) {
-                String[] split = config.split("\\.");
-                dbNames.add(split[2].trim());
-            }
+        Map<String, Map<String, Object>> dynamicDataSource = dynamicDataSourceProperties.getDatasource();
+        if (dynamicDataSource == null) {
+            return new String[0];
         }
-        String[] res = new String[dbNames.size()];
-        return dbNames.toArray(res);
+        Set<String> keys = dynamicDataSource.keySet();
+        String[] res = new String[keys.size()];
+
+        return keys.toArray(res);
     }
 
     /**
@@ -178,10 +172,12 @@ public class DataSourceBuilder {
             throw new IllegalArgumentException("datasource config prefix can not be null or ''");
         }
         Map<String, Object> conf = new HashMap<String, Object>();
-        Map<String, Object> ctxPropertiesMap = SpringPropertiesUtil.getCtxPropertiesMap();
-        for (String key : ctxPropertiesMap.keySet()) {
-            if (key.startsWith(prefix)) {
-                conf.put(key.replace(prefix, ""), ctxPropertiesMap.get(key));
+        if (DEFAULT_DATASOURCE_PREFIX.equals(prefix)) {
+            conf = defaultDataSourceProperties.getDatasource();
+        } else if (prefix.startsWith(DYNAMIC_DATASOURCE_PREFIX)) {
+            Map<String, Map<String, Object>> datasource = dynamicDataSourceProperties.getDatasource();
+            for (Map.Entry<String, Map<String, Object>> entry : datasource.entrySet()) {
+                conf.putAll(entry.getValue());
             }
         }
         if (conf.keySet().size() == 0) {
@@ -228,7 +224,24 @@ public class DataSourceBuilder {
      * @return
      */
     private Map<String, Object> getDefaultDataSourceConf() {
-        Map<String, Object> dataSourceConf = defaultDataSourceProperties.getDatasource();
+        return getDataSourceConfigForSpecialDataSource(DEFAULT_DATASOURCE_PREFIX);
+//        Map<String, Object> dataSourceConf = defaultDataSourceProperties.getDatasource();
+//        dealUrlForSpecialDataSource(dataSourceConf, IdentityDialect.SQLITE);
+//        return dataSourceConf;
+    }
+
+    /**
+     * 获取动态数据源配置
+     *
+     * @param datasourceName 数据源名称
+     * @return
+     */
+    private Map<String, Object> getDynamicDataSourceConf(String datasourceName) {
+        return getDataSourceConfigForSpecialDataSource(DYNAMIC_DATASOURCE_PREFIX + datasourceName + ".");
+    }
+
+    public Map<String, Object> getDataSourceConfigForSpecialDataSource(String prefix) {
+        Map<String, Object> dataSourceConf = getDataSourceConf(prefix);
         dealUrlForSpecialDataSource(dataSourceConf, IdentityDialect.SQLITE);
         return dataSourceConf;
     }

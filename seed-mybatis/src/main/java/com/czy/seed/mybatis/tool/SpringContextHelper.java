@@ -1,6 +1,5 @@
 package com.czy.seed.mybatis.tool;
 
-import com.czy.seed.mybatis.config.mybatis.MapperConfiguration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
@@ -8,10 +7,7 @@ import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.BeanFactoryAware;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
 import org.springframework.beans.factory.support.DefaultListableBeanFactory;
-import org.springframework.boot.autoconfigure.AutoConfigureBefore;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.core.annotation.Order;
-import org.springframework.stereotype.Component;
 
 import java.util.Map;
 
@@ -55,7 +51,7 @@ public class SpringContextHelper implements BeanFactoryAware {
      *
      * @param beanName 从容器中移除对应的bean
      */
-    public void destroy(String beanName) {
+    public static void destroy(String beanName) {
         logger.info("destroy bean " + beanName);
         if (beanFactory.containsBean(beanName)) {
             beanFactory.destroySingleton(beanName);
@@ -75,7 +71,7 @@ public class SpringContextHelper implements BeanFactoryAware {
      * @param initMethod        初始化方法
      * @param destroyMethod     销毁方法
      */
-    public void addBean(Class<?> beanClass, String beanName, Map<String, Object> autowiredResource, String initMethod, String destroyMethod) {
+    public static void addBean(Class<?> beanClass, String beanName, Map<String, Object> autowiredResource, String initMethod, String destroyMethod) {
         if (!beanFactory.containsBean(beanName)) {
             BeanDefinitionBuilder beanDefinitionBuilder = BeanDefinitionBuilder.genericBeanDefinition(beanClass);
 //            BeanDefinitionBuilder beanDefinitionBuilder = BeanDefinitionBuilder.rootBeanDefinition(beanClass);
@@ -93,6 +89,7 @@ public class SpringContextHelper implements BeanFactoryAware {
             beanFactory.registerBeanDefinition(beanName, beanDefinitionBuilder.getBeanDefinition());
             logger.info("Add {} to bean container.", beanName);
         }
+        getBeanById(beanName);  //即时初始化bean
     }
 
     /**
@@ -102,7 +99,7 @@ public class SpringContextHelper implements BeanFactoryAware {
      * @param beanName
      * @param bean
      */
-    public void addSingleton(String beanName, Object bean) {
+    public static void addSingleton(String beanName, Object bean) {
         if (!beanFactory.containsBean(beanName)) {
             beanFactory.registerSingleton(beanName, bean);
         } else {

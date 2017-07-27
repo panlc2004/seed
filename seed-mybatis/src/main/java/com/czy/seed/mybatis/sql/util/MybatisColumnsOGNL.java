@@ -2,9 +2,10 @@ package com.czy.seed.mybatis.sql.util;
 
 
 import com.czy.seed.mybatis.base.QueryParams;
+import com.czy.seed.mybatis.config.datasource.ApplicationProperties;
 import com.czy.seed.mybatis.sql.entity.EntityField;
 import com.czy.seed.mybatis.sql.helper.FieldHelper;
-import com.czy.seed.mybatis.tool.SpringPropertiesUtil;
+import com.czy.seed.mybatis.tool.SpringContextHelper;
 import com.czy.seed.mybatis.util.IdWorker;
 import org.apache.ibatis.session.defaults.DefaultSqlSession;
 import org.slf4j.Logger;
@@ -17,7 +18,6 @@ import java.lang.reflect.Field;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.List;
-import java.util.Map;
 
 /**
  * OGNL静态方法
@@ -27,10 +27,11 @@ import java.util.Map;
 public abstract class MybatisColumnsOGNL {
 
     private static Logger logger = LoggerFactory.getLogger(MybatisColumnsOGNL.class);
+    private static ApplicationProperties applicationProperties = SpringContextHelper.getBeanById("applicationProperties");
     private static String idGenModel;
 
     static {
-        idGenModel = SpringPropertiesUtil.getStringProperty("id-gen-model");
+        idGenModel = applicationProperties.getIdGenModel();
     }
 
     /**

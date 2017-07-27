@@ -1,10 +1,10 @@
 package com.czy.seed.mybatis.config.mybatis;
 
+import com.czy.seed.mybatis.config.datasource.ApplicationProperties;
 import com.czy.seed.mybatis.config.datasource.DataSourceBuilder;
 import com.czy.seed.mybatis.config.exception.ConfigErrorException;
 import com.czy.seed.mybatis.tool.NullUtil;
 import com.czy.seed.mybatis.tool.SpringContextHelper;
-import com.czy.seed.mybatis.tool.SpringPropertiesUtil;
 import com.github.pagehelper.PageInterceptor;
 import org.mybatis.spring.SqlSessionFactoryBean;
 import org.slf4j.Logger;
@@ -121,14 +121,16 @@ public class MybatisConfig {
             resource.put("plugins", interceptor);
 
             //加载mybatis config文件
-            String configLocation = SpringPropertiesUtil.getStringProperty("mybatis.configurationLocations");
-            if (NullUtil.isEmpty(configLocation)) {
-                configLocation = "classpath:core/mybatis-config.xml";
-            }
+//            String configLocation = SpringPropertiesUtil.getStringProperty("mybatis.configurationLocations");
+//            if (NullUtil.isEmpty(configLocation)) {
+//                configLocation = "classpath:core/mybatis-config.xml";
+//            }
+            String configLocation = "classpath:core/mybatis-config.xml";
             resource.put("configLocation", configLocation);
 
             //加载mapper文件
-            String mapperLocations = SpringPropertiesUtil.getStringProperty("mybatis.mapper-locations");
+            ApplicationProperties applicationProperties = springContextHelper.getBeanById("applicationProperties");
+            String mapperLocations = applicationProperties.getMybatisMapperLocations();
             if (NullUtil.isNotEmpty(mapperLocations)) {
                 String[] mapperLocationsConfig = mapperLocations.split(",");
                 resource.put("mapperLocations", Arrays.asList(mapperLocationsConfig));

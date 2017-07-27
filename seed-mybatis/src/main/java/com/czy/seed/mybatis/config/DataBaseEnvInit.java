@@ -1,9 +1,6 @@
 package com.czy.seed.mybatis.config;
 
-import com.czy.seed.mybatis.config.datasource.AtomikosDataSourceBuilder;
-import com.czy.seed.mybatis.config.datasource.DataSourceBuilder;
-import com.czy.seed.mybatis.config.datasource.DefaultDataSourceProperties;
-import com.czy.seed.mybatis.config.datasource.DynamicDataSourceProperties;
+import com.czy.seed.mybatis.config.datasource.*;
 import com.czy.seed.mybatis.config.mybatis.MybatisAtomikosConfig;
 import com.czy.seed.mybatis.config.mybatis.MybatisConfig;
 import com.czy.seed.mybatis.tool.SpringContextHelper;
@@ -17,7 +14,8 @@ import javax.annotation.PostConstruct;
  * Created by PLC on 2017/5/3.
  */
 @Configuration
-@EnableConfigurationProperties({DefaultDataSourceProperties.class, DynamicDataSourceProperties.class, DataSourceProperties.class})
+@EnableConfigurationProperties({DefaultDataSourceProperties.class, DynamicDataSourceProperties.class,
+        DataSourceProperties.class, ApplicationProperties.class})
 public class DataBaseEnvInit {
 
     @Autowired

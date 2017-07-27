@@ -1,9 +1,10 @@
 package com.czy.seed.mybatis.sql.template;
 
+import com.czy.seed.mybatis.config.datasource.ApplicationProperties;
 import com.czy.seed.mybatis.sql.entity.EntityTable;
 import com.czy.seed.mybatis.sql.helper.EntityHelper;
 import com.czy.seed.mybatis.tool.NullUtil;
-import com.czy.seed.mybatis.tool.SpringPropertiesUtil;
+import com.czy.seed.mybatis.tool.SpringContextHelper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -16,6 +17,8 @@ import java.nio.charset.Charset;
 public abstract class AbstractSqlTemplate {
 
     private Logger logger = LoggerFactory.getLogger(this.getClass());
+
+    private ApplicationProperties applicationProperties = SpringContextHelper.getBeanById("applicationProperties");
 
     /**
      * 生成mybatis需要的mapper.xml文件
@@ -53,7 +56,7 @@ public abstract class AbstractSqlTemplate {
      */
     private InputStream sqlParse(EntityTable entityTable) {
         String xmlContent = FreeMarkerUtil.process(getSqlTemplateName(), entityTable);
-        String genPath = SpringPropertiesUtil.getStringProperty("mybatis.mapper-gen-path");
+        String genPath = applicationProperties.getMybatisMapperGenPath();
         if (NullUtil.isNotEmpty(genPath)) {
             String xmlName = entityTable.getMapperClass().getSimpleName() + ".xml";
             //生成文件，以备查看

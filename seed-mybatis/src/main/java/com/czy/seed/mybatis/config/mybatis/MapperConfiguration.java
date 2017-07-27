@@ -2,22 +2,17 @@ package com.czy.seed.mybatis.config.mybatis;
 
 import com.czy.seed.mybatis.base.mapper.BaseMapper;
 import com.czy.seed.mybatis.config.DataBaseEnvInit;
-import com.czy.seed.mybatis.config.datasource.DataSourceBuilder;
-import com.czy.seed.mybatis.config.mybatis.annotations.AutoMapper;
+import com.czy.seed.mybatis.config.datasource.ApplicationProperties;
 import com.czy.seed.mybatis.tool.NullUtil;
 import com.czy.seed.mybatis.tool.SpringContextHelper;
-import com.czy.seed.mybatis.tool.SpringPropertiesUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.BeansException;
 import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.config.BeanPostProcessor;
-import org.springframework.boot.autoconfigure.AutoConfigureAfter;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnBean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Import;
-import org.springframework.core.annotation.Order;
 import org.springframework.core.io.ResourceLoader;
 
 import javax.annotation.PostConstruct;
@@ -43,6 +38,9 @@ public class MapperConfiguration implements BeanPostProcessor {
     @Autowired
     private ResourceLoader resourceLoader;
 
+    @Autowired
+    private ApplicationProperties applicationProperties;
+
     @PostConstruct
     public void scan() {
         logger.debug("Searching for mappers annotated with @AutoMapper'");
@@ -55,7 +53,7 @@ public class MapperConfiguration implements BeanPostProcessor {
 //            scanner.setAnnotationClass(AutoMapper.class);
             scanner.registerFilters();
 //            scanner.doScan(StringUtils.toStringArray(pkgs));
-            String config = SpringPropertiesUtil.getProperty("automapper.locations");
+            String config = applicationProperties.getAutomapperLocations();
             config = config + ",com.czy.seed.mvc.**.mapper";
             if (NullUtil.isNotEmpty(config)) {
                 String[] split = config.split(",");

@@ -3,7 +3,6 @@ package com.czy.seed.mybatis.config.datasource;
 import com.czy.seed.mybatis.config.exception.ConfigErrorException;
 import com.czy.seed.mybatis.config.exception.DataSourceBuildException;
 import com.czy.seed.mybatis.tool.NullUtil;
-import com.czy.seed.mybatis.tool.SpringPropertiesUtil;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -20,13 +19,13 @@ public class AtomikosDataSourceBuilder extends DataSourceBuilder {
      */
     @Override
     protected void initPoolInfo() {
-        if (SpringPropertiesUtil.containsKey("datasource.pool")) {
-            String property = SpringPropertiesUtil.getProperty("datasource.pool");
-            if (property.startsWith("atomikos")) {
+        String dataSourcePoolType = applicationProperties.getDataSourcePoolType();
+        if (NullUtil.isNotEmpty(dataSourcePoolType)) {
+            if (dataSourcePoolType.startsWith("atomikos")) {
                 try {
-                    poolType = DataSourcePoolType.valueOf(property);
+                    poolType = DataSourcePoolType.valueOf(dataSourcePoolType);
                 } catch (Exception e) {
-                    throw new ConfigErrorException("不支持的连接池类型：" + property);
+                    throw new ConfigErrorException("不支持的连接池类型：" + dataSourcePoolType);
                 }
             } else {
                 poolType = DataSourcePoolType.atomikos_noxa;
