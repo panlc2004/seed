@@ -111,7 +111,7 @@ public class QueryParams {
             }
         }
 
-        public OrderBy OrderCondition(String commond) {
+        public OrderBy orderCondition(String commond) {
             if ("asc".equalsIgnoreCase(commond)) {
                 return this.asc();
             } else if ("desc".equalsIgnoreCase(commond)) {
