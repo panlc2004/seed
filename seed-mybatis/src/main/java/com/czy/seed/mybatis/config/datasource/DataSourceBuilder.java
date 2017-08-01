@@ -124,6 +124,8 @@ public class DataSourceBuilder {
         try {
             SpringContextHelper.addBean(poolTypeClass, MAIN_DATASOURCE_NAME,
                     defaultDataSourceConf, poolType.getInitMethod(), poolType.getDestroyMethod());  //注册主数据源
+            DataSource dataSource = SpringContextHelper.getBeanById(MAIN_DATASOURCE_NAME);
+            dataSource.getConnection(); //在启动时直接连接数据源
         } catch (Exception e) {
             throw new DataSourceBuildException("error occurred while build defaultDatasource", e);
         }
@@ -140,6 +142,12 @@ public class DataSourceBuilder {
             String beanId = DATASOURCE_BEAN_PREFIX + dynamicDataSourceName;
             SpringContextHelper.addBean(poolTypeClass, beanId,
                     dynamicDataSourceConf, poolType.getInitMethod(), poolType.getDestroyMethod());  //注册主数据源
+            DataSource dataSource = SpringContextHelper.getBeanById(beanId);
+            try {
+                dataSource.getConnection(); //在启动时直接连接数据源
+            } catch (SQLException e) {
+                throw new RuntimeException("数据源:" + beanId + "连接出错", e);
+            }
             setDialect(beanId, dynamicDataSourceConf);     //记录其他数据源类型
         }
     }
