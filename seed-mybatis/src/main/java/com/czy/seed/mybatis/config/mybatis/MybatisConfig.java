@@ -66,6 +66,11 @@ public class MybatisConfig {
     public void registerDynamicTransactionManager() {
         Map<String, String> customDataSources = dataSourceBuilder.getDatasourceDialect();
         for (String dataSourceBeanName : customDataSources.keySet()) {
+            String defaultDs = DataSourceBuilder.DATASOURCE_BEAN_PREFIX
+                    + DataSourceBuilder.MAIN_DATASOURCE_SUFFIX;
+            if (defaultDs.equals(dataSourceBeanName)) {
+                continue;
+            }
             String tranBeanName = "tm-" + getDatasourceName(dataSourceBeanName);
             registerTransactionmanager(dataSourceBeanName, tranBeanName);
         }
@@ -111,8 +116,8 @@ public class MybatisConfig {
             String dialect = dataSourceBuilder.getDialect(dataSourceName);
             Map<String, Object> resource = new HashMap<String, Object>();
             resource.put("dataSource", dataSource);
-//            resource.put("plugins", new ProcedureSqlInt());       //TODO 添加插件
 
+            //添加分页插件
             PageInterceptor interceptor = new PageInterceptor();
             Map<String, String> pagehelper = new LinkedHashMap<String, String>();
             Properties properties = new Properties();
