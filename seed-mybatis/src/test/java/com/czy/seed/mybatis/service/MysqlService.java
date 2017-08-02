@@ -2,11 +2,14 @@ package com.czy.seed.mybatis.service;
 
 import com.czy.seed.mybatis.base.Procedure;
 import com.czy.seed.mybatis.base.ProcedureExecutor;
+import com.czy.seed.mybatis.entity.One;
 import com.czy.seed.mybatis.entity.TestEntity;
 import com.czy.seed.mybatis.mapper.MySqlMapper;
+import com.czy.seed.mybatis.mapper.OneMapper;
 import com.czy.seed.mybatis.tool.SpringContextHelper;
 import org.apache.ibatis.session.SqlSession;
 import org.apache.ibatis.session.SqlSessionFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +26,9 @@ public class MysqlService {
 
     @Resource
     private MySqlMapper mySqlMapper;
+
+    @Autowired
+    private OneMapper oneMapper;
 
     @Resource
     private ProcedureExecutor procedureExecutor;
@@ -63,4 +69,21 @@ public class MysqlService {
         }
     }
 
+
+
+    @Transactional
+    public void insertList3(List<TestEntity> recordList) {
+
+        for (TestEntity t : recordList) {
+            mySqlMapper.insert(t);
+        }
+
+        One one = new One();
+        one.setMemo("memo");
+        one.setName("name");
+        one.setTestId(1L);
+        int insert = oneMapper.insert(one);
+        int insert1 = oneMapper.insert(one);
+
+    }
 }

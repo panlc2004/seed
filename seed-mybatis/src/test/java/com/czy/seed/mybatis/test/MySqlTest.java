@@ -279,6 +279,23 @@ public class MySqlTest {
         //list.size = 10000 -> simple:-7849 ; batch:-7525
     }
 
+    @Test
+    public void insertList3() throws Exception {
+        List<TestEntity> testEntities = new ArrayList<TestEntity>(3);
+        for (int i = 0; i < 3; i++) {
+            TestEntity t1 = new TestEntity();
+            t1.setName("t1");
+            testEntities.add(t1);
+        }
+        TestEntity t2 = new TestEntity();
+        t2.setName("t1");
+        t2.setId(132L);
+//        testEntities.add(t2);
+
+        mysqlService.insertList3(testEntities);
+    }
+
+
     @Ignore
     public void test3() {
         int size = 1000000;
