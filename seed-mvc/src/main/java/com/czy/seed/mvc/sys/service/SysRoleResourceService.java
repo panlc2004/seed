@@ -9,5 +9,5 @@ import java.util.List;
  * Created by PLC on 2017/5/23.
  */
 public interface SysRoleResourceService extends BaseService<SysRoleResource> {
-    void saveRoleResources(Long roleId, List<SysRoleResource> roleResourceList);
+    void saveRoleResources(List<SysRoleResource> roleResourceList);
 }

@@ -8,7 +8,7 @@
     <parent>
         <groupId>com.czy</groupId>
         <artifactId>seed-dependencies</artifactId>
-        <version>1.0.1-SNAPSHOT</version>
+        <version>1.0.2-SNAPSHOT</version>
         <relativePath>../seed-dependencies</relativePath>
     </parent>
 
@@ -25,12 +25,12 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
+            <artifactId>spring-boot-starter-thymeleaf</artifactId>
         </dependency>
-        <!-- <dependency>
+        <dependency>
             <groupId>org.thymeleaf.extras</groupId>
             <artifactId>thymeleaf-extras-springsecurity4</artifactId>
-        </dependency> -->
+        </dependency>
         <dependency>
             <groupId>net.sourceforge.nekohtml</groupId>
             <artifactId>nekohtml</artifactId>
@@ -49,8 +49,9 @@
             <artifactId>spring-boot-starter-test</artifactId>
         </dependency>
         <dependency>
-          <groupId>com.fasterxml.jackson.core</groupId>
-          <artifactId>jackson-databind</artifactId>
+            <groupId>com.alibaba</groupId>
+            <artifactId>fastjson</artifactId>
+            <version>1.2.30</version>
         </dependency>
         <dependency>
             <groupId>mysql</groupId>
@@ -58,15 +59,6 @@
             <version>5.1.41</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>javax.servlet-api</artifactId>
-        </dependency>
-		<dependency>
-		    <groupId>commons-httpclient</groupId>
-		    <artifactId>commons-httpclient</artifactId>
-		    <version>3.1</version>
-		</dependency>
     </dependencies>
 
     <build>
@@ -95,6 +87,18 @@
                 </includes>
             </resource>
         </resources>
+        <finalName>bps</finalName>
+
+        <pluginManagement>
+            <plugins>
+                <plugin>
+                    <groupId>org.jacoco</groupId>
+                    <artifactId>jacoco-maven-plugin</artifactId>
+                    <version>0.5.3.201107060350</version>
+                </plugin>
+            </plugins>
+        </pluginManagement>
+
         <plugins>
             <!-- 用于公司单元测试执行情况检查插件。非项目插件 -->
             <plugin>
@@ -104,25 +108,33 @@
                 <configuration>
                     <includes>com.*</includes>
                 </configuration>
-                <!-- <executions>
+                <executions>
                     <execution>
-                        <id>pre-prepareTransactionManager</id>
+                        <id>pre-test</id>
                         <goals>
                             <goal>prepare-agent</goal>
                         </goals>
                     </execution>
                     <execution>
-                        <id>post-prepareTransactionManager</id>
-                        <phase>prepareTransactionManager</phase>
+                        <id>post-test</id>
+                        <phase>test</phase>
                         <goals>
                             <goal>report</goal>
                         </goals>
                     </execution>
-                </executions> -->
+                </executions>
+            </plugin>
+
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.3</version>
+                <configuration>
+                    <encoding>UTF-8</encoding>
+                </configuration>
             </plugin>
         </plugins>
     </build>
-
 
 
 </project>

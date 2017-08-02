@@ -10,8 +10,8 @@ var menuItem = Vue.extend({
     template: [
         '<el-submenu :index="item.id + \'\'">',
         '<template slot="title"><i :class="item.icon == null ? \'el-icon-menu\' : item.icon"></i>{{item.name}}</template>',
-        '<el-menu-item v-if="child.children.length == 0" v-for="child in item.children" :index="child.id + \'\'" :key="child.id" @click="toPage(child)">{{child.name}}</el-menu-item>',
-        '<menu-item v-if="subChild.children.length > 0" :item="subChild" v-for="subChild in item.children" :key="subChild.name"></menu-item>',
+        '<el-menu-item v-if="item.children" v-for="child in item.children" :index="child.id + \'\'" :key="child.id" @click="toPage(child)">{{child.name}}</el-menu-item>',
+        '<menu-item v-if="!item.children" :item="subChild" v-for="subChild in item.children" :key="subChild.name"></menu-item>',
         '</el-submenu>',
     ].join(''),
     methods: {
@@ -167,6 +167,8 @@ const main_contain = new Vue({
                 function (result, status) {
                     if (status) {
                         _this.menuList = result[0].children;
+                        console.log(_this.menuList);
+
                     } else {
                         _this.$message({
                             type: 'error',

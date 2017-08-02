@@ -1,5 +1,7 @@
 package com.czy.seed.mvc.sys.entity;
 
+import com.czy.seed.mybatis.config.mybatis.annotations.Cache;
+
 import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.Date;
@@ -8,6 +10,7 @@ import java.util.Date;
  * 用户信息
  * Created by PLC on 2017/5/23.
  */
+//@Cache
 public class SysUser implements Serializable {
 
     private static final long serialVersionUID = 6022588492678547207L;
@@ -19,10 +22,9 @@ public class SysUser implements Serializable {
     private String password;
     private String email;
     private boolean enable;                 //账号是否可用
-    private boolean nonLocked;              //账号是否锁定
-    private Date credentialsExpiredTime;    //密码过期时间
-    private Date accountExpiredTime;        //账号过期时间
-
+    private boolean nonLocked;       //账号是否锁定
+    private Date credentialsExpiredTime; //密码过期时间
+    private Date accountExpiredTime;     //账号过期时间
 
     public Long getId() {
         return id;
@@ -95,5 +97,4 @@ public class SysUser implements Serializable {
     public void setAccountExpiredTime(Date accountExpiredTime) {
         this.accountExpiredTime = accountExpiredTime;
     }
-
 }

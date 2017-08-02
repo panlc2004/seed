@@ -55,7 +55,7 @@ public class Param {
         }
         if (this.getOrderBy() != null) {
             for (Map.Entry<String, String> entry : orderBy.entrySet()) {
-                queryParams.orderBy(entry.getKey()).OrderCondition(entry.getValue());
+                queryParams.orderBy(entry.getKey()).orderCondition(entry.getValue());
             }
         }
         if (this.getOr() != null) {

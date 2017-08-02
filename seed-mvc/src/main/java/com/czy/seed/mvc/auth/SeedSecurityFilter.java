@@ -2,9 +2,7 @@ package com.czy.seed.mvc.auth;
 
 import org.springframework.security.access.SecurityMetadataSource;
 import org.springframework.security.access.intercept.AbstractSecurityInterceptor;
-import org.springframework.security.web.FilterInvocation;
 
-import javax.annotation.PostConstruct;
 import javax.servlet.*;
 import java.io.IOException;
 

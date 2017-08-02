@@ -1,7 +1,5 @@
 package com.czy.seed.mvc.auth;
 
-import com.czy.seed.mvc.sys.service.SysRoleService;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;

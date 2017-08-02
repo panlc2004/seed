@@ -58,11 +58,10 @@ public class SysRoleResourceController {
      * @param roleResourceList
      * @return
      */
-    @RequestMapping("/saveRoleResource/{roleId}")
-    public Res saveRoleResource(@PathVariable Long roleId, @RequestBody List<SysRoleResource> roleResourceList) {
-        sysRoleResourceService.saveRoleResources(roleId, roleResourceList);
+    @RequestMapping("/saveRoleResource")
+    public Res saveRoleResource(@RequestBody List<SysRoleResource> roleResourceList) {
+        sysRoleResourceService.saveRoleResources(roleResourceList);
         return Res.ok();
-
     }
 
 }

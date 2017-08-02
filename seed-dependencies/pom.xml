@@ -41,7 +41,7 @@
         <logback.version>1.1.11</logback.version>
         <freemarker.version>2.3.23</freemarker.version>
         <persistence-api.version>1.0</persistence-api.version>
-        <java.version>1.7</java.version>
+        <java.version>1.6</java.version>
     </properties>
 
     <dependencyManagement>

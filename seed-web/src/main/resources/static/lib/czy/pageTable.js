@@ -22,7 +22,7 @@ var pageGrid = Vue.extend({
                 param: {}
             },
             total: 0,
-            currentPageNum: 1,
+            currentPageNum: '1',
             _url: this.url,
             _pageBar: this.pageBar,
             _pageBarSmall: this.pageBarSmall

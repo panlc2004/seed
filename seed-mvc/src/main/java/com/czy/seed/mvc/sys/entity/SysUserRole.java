@@ -16,7 +16,7 @@ public class SysUserRole implements Serializable {
     private Long sysUserId;
     private Long sysRoleId;
 
-    @One2One(columns = "sysRoleId = id")
+    @One2One(columns = "sys_role_id = id")
     private SysRole sysRole;
 
     public Long getId() {

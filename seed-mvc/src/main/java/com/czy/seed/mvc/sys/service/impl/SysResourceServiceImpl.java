@@ -133,7 +133,18 @@ public class SysResourceServiceImpl extends BaseServiceImpl<SysResource> impleme
     }
 
     private void orderBy(List<SysResource> resources) {
-        Collections.sort(resources);
+        resources.sort(new Comparator<SysResource>() {
+            @Override
+            public int compare(SysResource o1, SysResource o2) {
+                int orderByDiff = o1.getOrderBy() - o2.getOrderBy();
+                if (orderByDiff != 0) {
+                    return orderByDiff;
+                } else {
+                    String idDiff = o1.getId() - o2.getId() + "";
+                    return Integer.parseInt(idDiff);
+                }
+            }
+        });
         for (SysResource resource : resources) {
             List<SysResource> children = resource.getChildren();
             if (children != null && children.size() > 0) {
