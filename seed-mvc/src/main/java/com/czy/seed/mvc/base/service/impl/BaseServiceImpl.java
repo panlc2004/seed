@@ -29,7 +29,7 @@ public class BaseServiceImpl<T> implements BaseService<T> {
 
     private int defaultBatchOperateLimit = 10000;   //批次新增时，每批次处理的最大数量
 
-    public static final String DEFAULT_TM = "tm-default";
+    public static final String DEFAULT_TM = "transactionManager";
 
     @PostConstruct
     public void prepareTransactionManager() {
@@ -52,7 +52,7 @@ public class BaseServiceImpl<T> implements BaseService<T> {
         return mapper;
     }
 
-    @Transactional(transactionManager="tm-default")
+    @Transactional
     public int insert(T record) {
         if (record instanceof PrepareEntity) {
             SecurityUser loginUser = PrincipalUtil.getLoginUser();
@@ -64,12 +64,12 @@ public class BaseServiceImpl<T> implements BaseService<T> {
         return getMapper().insert(record);
     }
 
-    @Transactional(transactionManager="tm-default")
+    @Transactional
     public int insertList(List<T> recordList) {
         return insertList(recordList, defaultBatchOperateLimit);
     }
 
-    @Transactional(transactionManager="tm-default")
+    @Transactional
     public int insertList(List<T> recordList, int batchOperateLimit) {
         int res = 0;
         int i = 0;
@@ -132,25 +132,25 @@ public class BaseServiceImpl<T> implements BaseService<T> {
         return getMapper().selectCountByParams(params);
     }
 
-    @Transactional(transactionManager="tm-default")
+    @Transactional
     public int updateByPrimaryKey(T record) {
         beforeUpdate(record);
         return getMapper().updateByPrimaryKey(record);
     }
 
-    @Transactional(transactionManager="tm-default")
+    @Transactional
     public int updateSelectiveByPrimaryKey(T record) {
         beforeUpdate(record);
         return getMapper().updateSelectiveByPrimaryKey(record);
     }
 
-    @Transactional(transactionManager="tm-default")
+    @Transactional
     public int updateByParams(T record, QueryParams params) {
         beforeUpdate(record);
         return getMapper().updateByParams(record, params);
     }
 
-    @Transactional(transactionManager="tm-default")
+    @Transactional
     public int updateSelectiveByParams(T record, QueryParams params) {
         beforeUpdate(record);
         return getMapper().updateSelectiveByParams(record, params);
@@ -177,12 +177,12 @@ public class BaseServiceImpl<T> implements BaseService<T> {
         }
     }
 
-    @Transactional(transactionManager="tm-default")
+    @Transactional
     public int deleteByPrimaryKey(long id) {
         return getMapper().deleteByPrimaryKey(id);
     }
 
-    @Transactional(transactionManager="tm-default")
+    @Transactional
     public int deleteByParams(QueryParams params) {
         return getMapper().deleteByParams(params);
     }
