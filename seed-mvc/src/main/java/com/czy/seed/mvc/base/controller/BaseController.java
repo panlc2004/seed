@@ -135,6 +135,19 @@ public class BaseController<T> {
     }
 
     /**
+     * 查询所有数据
+     *
+     * @param param 查询参数
+     * @return 所有数据
+     */
+    @RequestMapping("/selectListRelativeByParams")
+    public Res selectListRelativeByParams(@RequestBody Param param) {
+        QueryParams queryParams = param.toQueryParams(entityClass);
+        List<T> list = service.selectListRelativeByParams(queryParams);
+        return Res.ok(list);
+    }
+
+    /**
      * 新增
      * @return 新增数据的主键
      */

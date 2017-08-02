@@ -27,7 +27,17 @@ var dictPanel = new Vue({
         },
         //字典项查询
         queryDict: function () {
-            var param = {or: [{like: {name:this.queryParam.name}}]};
+            var param = {
+                or: [
+                    {
+                        like: {name:this.queryParam.name},
+                        equalTo:{id:10}
+                    },
+                    {
+                        equalTo:{id:11}
+                    }
+                    ]
+            };
             this.getDictGrid().reload(param)
             this.showItemOperateBtn = false;
         },
