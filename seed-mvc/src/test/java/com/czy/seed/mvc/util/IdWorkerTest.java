@@ -18,17 +18,6 @@ import org.junit.runner.RunWith;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-/**
- * <一句话功能简介><br>
- *
- * @author [011424]zhangyang@inner.czy.com
- * @version [版本号, 2017年6月9日]
- * @Description: id生成器单元测试
- * @ClassName:IdWorkerTest
- * @see [相关类/方法]
- * @since [产品/模块]
- */
-
 public class IdWorkerTest {
 
     @Test

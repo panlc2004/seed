@@ -11,9 +11,6 @@ import org.springframework.security.core.GrantedAuthority;
 import java.util.Collection;
 import java.util.Iterator;
 
-/**
- * Created by 003914[panlc] on 2017-06-23.
- */
 public class CustomAccessDecisionManager implements AccessDecisionManager {
     @Override
     public void decide(Authentication authentication, Object object, Collection<ConfigAttribute> configAttributes) throws AccessDeniedException, InsufficientAuthenticationException {

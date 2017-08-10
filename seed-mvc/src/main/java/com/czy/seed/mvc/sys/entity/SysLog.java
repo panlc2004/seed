@@ -6,9 +6,6 @@ import com.czy.seed.mvc.base.entity.BaseEntity;
 import java.io.Serializable;
 import java.util.Date;
 
-/**
- * Created by 003914[panlc] on 2017-06-12.
- */
 public class SysLog extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = -5605619995509261468L;

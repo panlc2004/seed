@@ -6,10 +6,6 @@ import com.czy.seed.mybatis.config.mybatis.annotations.One2One;
 import javax.persistence.Id;
 import java.io.Serializable;
 
-/**
- * 角色资源
- * Created by PLC on 2017/5/23.
- */
 public class SysRoleResource implements Serializable {
     private static final long serialVersionUID = -3755254892758648117L;
     @Id

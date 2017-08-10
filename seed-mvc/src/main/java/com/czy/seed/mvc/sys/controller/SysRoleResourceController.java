@@ -12,9 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-/**
- * Created by 003914[panlc] on 2017-06-06.
- */
 @RestController
 @RequestMapping("/sys/roleResource")
 public class SysRoleResourceController {
@@ -22,11 +19,6 @@ public class SysRoleResourceController {
     @Autowired
     private SysRoleResourceService sysRoleResourceService;
 
-    /**
-     * 查询角色对应菜单
-     * @param roleId
-     * @return
-     */
     @RequestMapping("/selectResourceForRole/{roleId}")
     public Res selectResourceForRole(@PathVariable long roleId) {
         QueryParams queryParams = new QueryParams(SysRoleResource.class);
@@ -52,12 +44,6 @@ public class SysRoleResourceController {
         return Res.ok();
     }
 
-    /**
-     * insertList
-     *
-     * @param roleResourceList
-     * @return
-     */
     @RequestMapping("/saveRoleResource")
     public Res saveRoleResource(@RequestBody List<SysRoleResource> roleResourceList) {
         sysRoleResourceService.saveRoleResources(roleResourceList);

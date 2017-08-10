@@ -1,15 +1,13 @@
 package com.czy.seed.mvc.sys.entity;
 
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * 系统资源
- * Created by PLC on 2017/5/23.
- */
+@Table(name = "SEED_SYS_RESOURCE")
 public class SysResource implements Serializable{
 
     public SysResource() {

@@ -9,9 +9,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * Created by 003914[panlc] on 2017-06-12.
- */
 @RestController
 @RequestMapping("/sys/dict")
 public class SysDictController extends BaseController<SysDict> {

@@ -12,9 +12,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.transaction.annotation.Transactional;
 
 
-/**
- * Created by 003914[panlc] on 2017-07-07.
- */
 public class TransactionUtil {
 
     public static Logger logger = LoggerFactory.getLogger(TransactionUtil.class);
@@ -44,11 +41,6 @@ public class TransactionUtil {
         }
     }
 
-    /**
-     * 设置事务管理器
-     * @param cms
-     * @param tmName
-     */
     private static void setTransactionManagerName(CtMethod cms, String tmName) {
         MethodInfo methodInfo = cms.getMethodInfo();
         ConstPool constPool = methodInfo.getConstPool();
@@ -64,12 +56,6 @@ public class TransactionUtil {
         logger.debug("设置事务管理器：{} -> {}", cms.getLongName(), tmName);
     }
 
-    /**
-     * 查找父类Service
-     *
-     * @param clazz
-     * @return
-     */
     private static CtClass getParentService(CtClass clazz) throws NotFoundException {
         while (true) {
             CtClass superclass = clazz.getSuperclass();

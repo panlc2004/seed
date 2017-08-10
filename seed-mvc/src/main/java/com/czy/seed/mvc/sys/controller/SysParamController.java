@@ -17,9 +17,6 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.HashMap;
 import java.util.Map;
 
-/**
- * Created by PLC on 2017/6/3.
- */
 @RequestMapping("sys/param")
 @RestController
 public class SysParamController {
@@ -48,12 +45,6 @@ public class SysParamController {
         return Res.ok(pageInfo);
     }
 
-    /**
-     * 保存参数信息
-     *
-     * @param sysParam 参数信息
-     * @return 操作成功的数据id值
-     */
     @RequestMapping("/save")
     public Res save(@RequestBody SysParam sysParam) {
         if (sysParam.getId() == null) {

@@ -14,9 +14,6 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-/**
- * Created by panlc on 2017-05-23.
- */
 @Entity
 @Cache
 public class SecurityUser extends SysUser implements UserDetails {

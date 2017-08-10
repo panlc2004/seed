@@ -5,9 +5,6 @@ import com.czy.seed.mvc.base.entity.BaseEntity;
 import javax.persistence.Id;
 import java.io.Serializable;
 
-/**
- * Created by PLC on 2017/5/23.
- */
 public class SysRole extends BaseEntity {
 
     private static final long serialVersionUID = 4659702439449421452L;

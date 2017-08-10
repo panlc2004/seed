@@ -12,9 +12,6 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurerAdapter
 
 import com.czy.seed.mvc.util.JacksonCustomObjectMapper;
 
-/**
- * Created by panlc on 2017-05-23.
- */
 @Configuration
 public class JsonConfig extends WebMvcConfigurerAdapter {
     

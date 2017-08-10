@@ -13,9 +13,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
-/**
- * Created by 003914[panlc] on 2017-06-06.
- */
 @RestController
 @RequestMapping("/sys/role")
 public class SysRoleController extends BaseController<SysRole> {

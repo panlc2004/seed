@@ -12,9 +12,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-/**
- * Created by 003914[panlc] on 2017-06-06.
- */
 @RestController
 @RequestMapping("/sys/userRole")
 public class SysUserRoleController {
@@ -39,12 +36,6 @@ public class SysUserRoleController {
         return Res.ok(sysUserRoles);
     }
 
-    /**
-     * 保存用户权限
-     *
-     * @param userRoleList 用户角色列表
-     * @return Res
-     */
     @RequestMapping("/saveUserRole")
     public Res saveUserRole(@RequestBody List<SysUserRole> userRoleList) {
         sysAccountRoleService.saveUserRole(userRoleList);

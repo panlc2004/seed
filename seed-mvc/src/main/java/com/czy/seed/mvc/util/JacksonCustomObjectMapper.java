@@ -15,21 +15,9 @@ import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.ser.std.StdScalarSerializer;
 import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 
-/**
- * 配置JSON处理的一些特性：
- * 1、BigDecimal、Long、Double、Float（包括其数组类型） 转换成JSON后变为String类型，防止精度丢失。
- * 2、日期格式为： yyyy-MM-dd HH:mm:ss
- * 3、字段为空时，则不输出（null不会输出，但空字符会输出）。
- * 4、JSON转对象时，遇到未知属性，直接忽略，不报异常。
- * 5、其他参见下面的具体配置项
- * 
- * @author zollty
- * @since 2017-4-20
- */
 public class JacksonCustomObjectMapper extends ObjectMapper {
     private static final long serialVersionUID = 1L;
     
-    /** JSON处理的相关配置 */
     public JacksonCustomObjectMapper() {
         super();
 
@@ -69,16 +57,6 @@ public class JacksonCustomObjectMapper extends ObjectMapper {
     }
     
     
-    /**
-     * 也可以使用注解：
-     * <pre>
-     *  // 1、注解处理，这里可以配置公共 baseEntity 处理
-     *  @JsonSerialize(using=XXXSerializer.class)
-     *  public long getId() {
-     *      return id;
-     *  }
-     * </pre>
-     */
     private void configToStringSerializer() {
         // 输出数值加引号,解决long 数值类型过长,js 解析不了.
 //      this.configure(JsonGenerator.Feature.WRITE_NUMBERS_AS_STRINGS, true);

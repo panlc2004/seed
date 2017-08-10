@@ -25,11 +25,6 @@ import com.czy.seed.mvc.util.JsonUtils;
 import com.czy.seed.mvc.util.PrincipalUtil;
 
 
-/**
- * 系统日志，切面处理类
- * <p>
- * Created by 003914[panlc] on 2017-06-12.
- */
 @Aspect
 @Component
 public class SysLogAspect {
@@ -77,22 +72,10 @@ public class SysLogAspect {
         sysLogService.insert(sysLog);
     }
 
-    /**
-     * 获取servletRequest
-     *
-     * @return HttpServletRequest
-     */
     public static HttpServletRequest getHttpServletRequest() {
         return ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
     }
 
-    /**
-     * 获取IP地址
-     * <p>
-     * 使用Nginx等反向代理软件， 则不能通过request.getRemoteAddr()获取IP地址
-     * 如果使用了多级反向代理的话，X-Forwarded-For的值并不止一个，而是一串IP地址，
-     * X-Forwarded-For中第一个非unknown的有效IP字符串，则为真实IP地址
-     */
     public String getIpAddr(HttpServletRequest request) {
         String ip = null;
         try {

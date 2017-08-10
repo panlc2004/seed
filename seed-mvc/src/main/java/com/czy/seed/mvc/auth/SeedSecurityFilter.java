@@ -6,9 +6,6 @@ import org.springframework.security.access.intercept.AbstractSecurityInterceptor
 import javax.servlet.*;
 import java.io.IOException;
 
-/**
- * Created by 003914[panlc] on 2017-06-23.
- */
 public class SeedSecurityFilter extends AbstractSecurityInterceptor implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {

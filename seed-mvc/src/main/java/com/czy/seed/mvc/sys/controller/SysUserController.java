@@ -10,9 +10,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * Created by 003914[panlc] on 2017-06-01.
- */
 @RestController
 @RequestMapping("/sys/user")
 public class SysUserController extends BaseController<SysUser> {
@@ -21,12 +18,6 @@ public class SysUserController extends BaseController<SysUser> {
     private SysUserService sysUserService;
 
 
-    /**
-     * 保存用户信息
-     *
-     * @param sysUser
-     * @return 操作成功的数据id值
-     */
     @RequestMapping("/save")
     public String save(@RequestBody SysUser sysUser) {
         if (sysUser.getId() == null) {

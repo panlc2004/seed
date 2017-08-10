@@ -8,17 +8,10 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-/**
- * Created by PLC on 2017/5/23.
- */
 @Service
 public class SysAccountRoleServiceImpl extends BaseServiceImpl<SysUserRole> implements SysAccountRoleService {
 
 
-    /**
-     * 添加用户角色
-     * @param userRoleList
-     */
     @Override
     public void saveUserRole(List<SysUserRole> userRoleList) {
         QueryParams queryParams = new QueryParams(SysUserRole.class);

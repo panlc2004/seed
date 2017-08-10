@@ -6,9 +6,6 @@ import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
 
-/**
- * Created by 003914[panlc] on 2017-06-23.
- */
 @Component
 public class SeedPermissionEvaluator implements PermissionEvaluator {
     @Override

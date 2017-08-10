@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <title>SEED</title>
+    <script src="/common/js/head.js"></script>
+</head>
+
+<style type="text/css">
+    .login-box {
+        width: 295px;
+        height: 300px;
+        padding: 13px 14px 15px;
+        top: 25%;
+        left: 55%;
+        right: 30%;
+        text-align: left;
+        position: absolute;
+        z-index: 2;
+        border-left: 1px solid #e8e8e8;
+        border-right: 1px solid #e8e8e8;
+        border-bottom: 1px solid #e8e8e8;
+        border-top: 2px solid #f40;
+        background-color: #fafafa;
+    }
+
+    .login-input {
+        margin-top: 30px;
+    }
+
+    .login-btn {
+        width: 100%;
+        background: #f40;
+        border-color: #f40;
+        font-size: 16px;
+        font-weight: 700;
+        font-family: "PingFang SC";
+    }
+
+    .login-form {
+        /*padding-top: 40px;*/
+    }
+
+    .login-infp {
+        color:#f40;
+    }
+</style>
+
+<body>
+
+<div class="login-box">
+
+    <el-form class="login-form" :model="ruleForm" :rules="rules" ref="ruleForm" th:action="@{/login}" method="post">
+        <el-form-item class="login-infp">
+            <!--<div th:if="${param.logout}">
+                <i class="el-icon-circle-check"/>您已注销成功
+            </div>
+            <div th:if="${param.error}">
+                <i class="el-icon-circle-check"/>用户名或密码错
+            </div>-->
+        </el-form-item>
+        <el-form-item prop="username">
+            <el-input placeholder="请输入账号" v-model="ruleForm.username" name="username">
+                <template slot="prepend"><i class="el-icon-edit"></i></template>
+            </el-input>
+        </el-form-item>
+        <el-form-item prop="password">
+            <el-input placeholder="请输入密码" type="password" v-model="ruleForm.password" name="password">
+                <template slot="prepend"><i class="el-icon-edit"></i></template>
+            </el-input>
+        </el-form-item>
+        <el-form-item>
+            <div class="login-input">
+                <el-button class="login-btn" type="primary" native-type="submit" >
+                    登&nbsp;&nbsp;录
+                </el-button>
+            </div>
+        </el-form-item>
+    </el-form>
+</div>
+
+</body>
+
+<script src="/common/js/login.js"></script>
+
+</html>

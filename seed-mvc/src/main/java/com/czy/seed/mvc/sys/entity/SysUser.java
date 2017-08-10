@@ -6,10 +6,6 @@ import javax.persistence.Id;
 import java.io.Serializable;
 import java.util.Date;
 
-/**
- * 用户信息
- * Created by PLC on 2017/5/23.
- */
 //@Cache
 public class SysUser implements Serializable {
 

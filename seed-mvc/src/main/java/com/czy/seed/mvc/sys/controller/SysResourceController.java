@@ -12,9 +12,6 @@ import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
-/**
- * Created by PLC on 2017/5/29.
- */
 @RestController
 @RequestMapping("/sys/resource")
 public class SysResourceController {
@@ -27,30 +24,18 @@ public class SysResourceController {
         return new ModelAndView("/sys/resource");
     }
 
-    /**
-     * 查找登陆用户的资源树
-     * @return
-     */
     @RequestMapping("/findResourceTreeForLoginUser")
-    public List<SysResource> findResourceTreeForLoginUser() {
-        return sysResourceService.findResourceTreeForLoginUser();
+    public Res findResourceTreeForLoginUser() {
+        List<SysResource> resourceTreeForLoginUser = sysResourceService.findResourceTreeForLoginUser();
+        return Res.ok(resourceTreeForLoginUser);
     }
 
-    /**
-     * 查找所有资源树
-     * @return
-     */
     @RequestMapping("/selectResourceTree")
     public Res selectResourceTree() {
         List<SysResource> sysResources = sysResourceService.selectResourceTree();
         return Res.ok(sysResources);
     }
 
-    /**
-     * 保存组织机构
-     * @param sysResource
-     * @return 操作成功的数据id值
-     */
     @RequestMapping("/save")
     public Res save(@RequestBody SysResource sysResource) {
         if (sysResource.getId() == null) {
@@ -61,11 +46,6 @@ public class SysResourceController {
         return Res.ok(sysResource.getId().toString());
     }
 
-    /**
-     * 根据主键删除
-     * @param id
-     * @return
-     */
     @RequestMapping("/deleteByPrimary/{id}")
     public Res deleteByPrimary(@PathVariable long id) {
         sysResourceService.deleteByPrimaryKey(id);

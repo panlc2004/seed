@@ -8,15 +8,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.List;
 
-/**
- * Created by PLC on 2017/5/29.
- */
 @Service
 public class SysRoleResourceServiceImpl extends BaseServiceImpl<SysRoleResource> implements SysRoleResourceService {
-    /**
-     * 添加用户权限
-     * @param roleResourceList
-     */
     @Override
     public void saveRoleResources(List<SysRoleResource> roleResourceList) {
         QueryParams queryParams = new QueryParams(SysRoleResource.class);

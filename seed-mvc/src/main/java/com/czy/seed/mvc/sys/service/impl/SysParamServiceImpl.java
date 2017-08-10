@@ -13,9 +13,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-/**
- * Created by PLC on 2017/5/30.
- */
 @Service
 public class SysParamServiceImpl extends BaseServiceImpl<SysParam> implements SysParamService {
 

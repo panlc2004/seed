@@ -6,9 +6,6 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-/**
- * Created by PLC on 2017/5/30.
- */
 public class SysOrg implements Serializable {
     private static final long serialVersionUID = 1172246239374961171L;
 

@@ -7,9 +7,6 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by PLC on 2017/6/10.
- */
 public class Param {
 
     private List<Group> or;

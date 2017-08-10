@@ -18,9 +18,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by PLC on 2017/5/21.
- */
 public class BaseController<T> {
 
     public BaseController() {
@@ -40,13 +37,6 @@ public class BaseController<T> {
         return new ModelAndView(pageName);
     }
 
-    /**
-     * 跳转至指定页面
-     *
-     * @param viewPath 要跳转的页面路径
-     * @param viewPath params 要跳转时带入的参数
-     * @return 参数指定页面视图
-     */
     @RequestMapping("/toView/{viewPath}")
     public ModelAndView toView(@PathVariable String viewPath, @RequestParam Map<String, Object> params) {
         ModelAndView model = new ModelAndView(viewPath);
@@ -54,12 +44,6 @@ public class BaseController<T> {
         return model;
     }
 
-    /**
-     * 获取页面名
-     *
-     * @param className 类名
-     * @return 当前controller类名对应的index页面
-     */
     private String getViewName(String className) {
         for (int i = 0; i < className.length(); i++) {
             if (i > 0 && Character.isUpperCase(className.charAt(i)) == true) {
@@ -71,26 +55,12 @@ public class BaseController<T> {
         throw new IllegalleControllerNameException();
     }
 
-    /**
-     * 根据主键查询数据——查询关联表数据
-     *
-     * @param id 主键
-     * @return
-     */
     @RequestMapping("/selectRelativeByPrimaryKey/{id}")
     public Res selectRelativeByPrimaryKey(@PathVariable long id) {
         T record = service.selectRelativeByPrimaryKey(id);
         return Res.ok(record);
     }
 
-    /**
-     * 分页查询——只查询本表数据
-     *
-     * @param pageNum  查询页号
-     * @param pageSize 分页大小
-     * @param param   查询参数
-     * @return 返回分页数据
-     */
     @RequestMapping("/selectPageByParams/{pageNum}/{pageSize}")
     public Res selectPageByParams(@PathVariable int pageNum, @PathVariable int pageSize, @RequestBody Param param) {
         QueryParams queryParams = param.toQueryParams(entityClass);
@@ -102,14 +72,6 @@ public class BaseController<T> {
         return Res.ok(pageInfo);
     }
 
-    /**
-     * 分页查询——查询关联数据
-     *
-     * @param pageNum  查询页号
-     * @param pageSize 分页大小
-     * @param param   查询参数
-     * @return 返回分页数据
-     */
     @RequestMapping("/selectPageRelativeByParams/{pageNum}/{pageSize}")
     public Res selectPageRelativeByParams(@PathVariable int pageNum, @PathVariable int pageSize, @RequestBody Param param) {
         QueryParams queryParams = param.toQueryParams(entityClass);
@@ -121,12 +83,6 @@ public class BaseController<T> {
         return Res.ok(pageInfo);
     }
 
-    /**
-     * 查询所有数据
-     *
-     * @param param 查询参数
-     * @return 所有数据
-     */
     @RequestMapping("/selectListByParams")
     public Res selectListByParams(@RequestBody Param param) {
         QueryParams queryParams = param.toQueryParams(entityClass);
@@ -134,12 +90,6 @@ public class BaseController<T> {
         return Res.ok(list);
     }
 
-    /**
-     * 查询所有数据
-     *
-     * @param param 查询参数
-     * @return 所有数据
-     */
     @RequestMapping("/selectListRelativeByParams")
     public Res selectListRelativeByParams(@RequestBody Param param) {
         QueryParams queryParams = param.toQueryParams(entityClass);
@@ -147,50 +97,29 @@ public class BaseController<T> {
         return Res.ok(list);
     }
 
-    /**
-     * 新增
-     * @return 新增数据的主键
-     */
     @RequestMapping("/insert")
     public Res insert(T record) {
         service.insert(record);
         return Res.ok(record);
     }
 
-    /**
-     * 批量新增
-     * @param records 新增数据列表
-     * @return 新增成功的条数
-     */
     public Res insertList(List<T> records) {
         int num = service.insertList(records);
         return Res.ok(num);
     }
 
-    /**
-     * 修改
-     * @return 修改数据的id
-     */
     @RequestMapping("/updateSelectiveByPrimaryKey")
     public Res updateSelectiveByPrimaryKey(T record) {
         service.updateSelectiveByPrimaryKey(record);
         return Res.ok(record);
     }
 
-    /**
-     * 修改
-     * @return 修改数据的id
-     */
     @RequestMapping("/updateByPrimaryKey")
     public Res updateByPrimaryKey(T record) {
         service.updateByPrimaryKey(record);
         return Res.ok(record);
     }
 
-    /**
-     * 修改
-     * @return 修改成功的条数
-     */
     @RequestMapping("/updateByParams")
     public Res updateByParams(T record, @RequestBody Param param) {
         QueryParams queryParams = param.toQueryParams(entityClass);
@@ -198,10 +127,6 @@ public class BaseController<T> {
         return Res.ok(num);
     }
 
-    /**
-     * 修改
-     * @return 修改成功的条数
-     */
     @RequestMapping("/updateSelectiveByParams")
     public Res updateSelectiveByParams(T record, @RequestBody Param param) {
         QueryParams queryParams = param.toQueryParams(entityClass);
@@ -209,22 +134,12 @@ public class BaseController<T> {
         return Res.ok(num);
     }
 
-    /**
-     * 根据主键物理删除数据
-     *
-     * @param id 要删除数据的主键
-     * @return 删除成功的条数
-     */
     @RequestMapping("/deleteByPrimaryKey/{id}")
     public Res deleteByPrimaryKey(@PathVariable Long id) {
         int num = service.deleteByPrimaryKey(id);
         return Res.ok(num);
     }
 
-    /**
-     * 根据参数物理删除
-     * @return 删除成功的条数
-     */
     @RequestMapping("/deleteByParams")
     public Res deleteByParams(@RequestBody Param param) {
         QueryParams queryParams = param.toQueryParams(entityClass);

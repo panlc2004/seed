@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+<body>
+<script th:src="@{/js/wbm/flightInfo.js}"></script>
+
+<div id="dt-grid">
+    <el-col :span="24">
+        <div>
+            <el-button-group>
+                <el-col :span="10" style="padding-right: 5px; padding-bottom: 5px">
+                    <el-input placeholder="航班号/航段" v-model="queryParam.flightNo"></el-input>
+                </el-col>
+
+                <el-col :span="14">
+                    <el-button type="primary" icon="search" @click="queryByParams">查询</el-button>
+                    <el-button type="primary" icon="plus" @click="openDialog">新增</el-button>
+                </el-col>
+            </el-button-group>
+        </div>
+        <czy-page-grid ref="modelValue" url="wbm/flightInfo/selectPageByParams">
+            <el-table-column type="expand">
+                <template scope="props">
+                    <el-form label-position="left" inline class="demo-table-expand">
+                        <el-form-item label="航班号">
+                            <span>{{ props.row.flightNo }}</span>
+                        </el-form-item>
+                        <el-form-item label="航段">
+                            <span>{{ props.row.segment }}</span>
+                        </el-form-item>
+                    </el-form>
+                </template>
+            </el-table-column>
+            <el-table-column prop="flightNo" label="航班号"></el-table-column>
+            <el-table-column prop="segment" label="航段"></el-table-column>
+            <el-table-column label="操作">
+                <template scope="scope">
+                    <el-button
+                            size="small"
+                            type="warning"
+                            icon="edit"
+                            @click="update(scope.$index, scope.row)">
+                    </el-button>
+                    <el-button
+                            size="small"
+                            type="danger"
+                            icon="delete"
+                            @click="confirm(scope.$index, scope.row)">
+                    </el-button>
+                </template>
+            </el-table-column>
+        </czy-page-grid>
+
+        <!--维护字典项表单-->
+        <el-dialog title="添加航班信息" :visible.sync="showForm" size="miny" :close-on-click-modal="false">
+            <el-form :model="modelForm" :rules="infoRules" ref="modelForm" :label-width="formLabelWidth">
+                <el-form-item label="航班号" prop="flightNo" required>
+                    <el-input v-model="modelForm.flightNo"></el-input>
+                </el-form-item>
+                <el-form-item label="航段" prop="segment" required>
+                    <el-input v-model="modelForm.segment"></el-input>
+                </el-form-item>
+            </el-form>
+            <div slot="footer" class="dialog-footer">
+                <el-button @click="showForm=false">取消</el-button>
+                <el-button type="primary" @click="save('modelForm')">确定</el-button>
+            </div>
+        </el-dialog>
+    </el-col>
+</div>
+
+
+</body>
+</html>

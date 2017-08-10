@@ -6,9 +6,6 @@ import java.lang.reflect.GenericDeclaration;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
-/**
- * Created by PLC on 2017/6/10.
- */
 public class GenricUtil {
 
     public static Class getGenericClass(final Class clazz, final int index) {

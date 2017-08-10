@@ -12,13 +12,9 @@ import java.io.IOException;
 import java.util.HashSet;
 import java.util.Set;
 
-/**
- * Created by panlc on 2017-05-23.
- */
 public class LoginSuccessHandler extends SavedRequestAwareAuthenticationSuccessHandler {
 
     public LoginSuccessHandler() {
-        System.out.println(123);
     }
 
     @Override

@@ -8,21 +8,12 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
-/**
- * Created by Comup on 2017/5/23.
- * 查询用户服务类
- */
 @Service
 public class SysUserDetailsService implements UserDetailsService {
 
     @Autowired
     private SysUserDetailsMapper sysUserDetailsMapper;
 
-    /**
-     * @param username
-     * @return
-     * @throws UsernameNotFoundException
-     */
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         if (username == null || username.trim().equals("")) {
             throw new UsernameNotFoundException("username maybe is null or empty");

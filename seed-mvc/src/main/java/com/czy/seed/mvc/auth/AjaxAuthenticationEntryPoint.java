@@ -8,9 +8,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-/**
- * Created by 003914[panlc] on 2017-06-12.
- */
 public class AjaxAuthenticationEntryPoint extends LoginUrlAuthenticationEntryPoint {
 
     public AjaxAuthenticationEntryPoint(String loginFormUrl) {

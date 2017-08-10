@@ -6,9 +6,6 @@ import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 
-/**
- * Created by 003914[panlc] on 2017-06-23.
- */
 @Service
 public class CustomInvocationSecurityMetadataSourceService implements FilterInvocationSecurityMetadataSource {
     @Override

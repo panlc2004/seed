@@ -5,9 +5,6 @@ import org.springframework.util.Assert;
 
 import java.io.Serializable;
 
-/**
- * Created by PLC on 2017/5/29.
- */
 public class UserAuthority implements GrantedAuthority, Serializable {
 
     private final String role;

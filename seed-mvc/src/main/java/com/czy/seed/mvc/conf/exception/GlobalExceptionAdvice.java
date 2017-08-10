@@ -22,19 +22,12 @@ import javax.validation.ConstraintViolationException;
 import javax.validation.ValidationException;
 import java.util.Set;
 
-/**
- * 全局日志拦截器
- * Created by 003914[panlc] on 2017-06-08.
- */
 @ControllerAdvice
 @ResponseBody
 public class GlobalExceptionAdvice {
 
     private static Logger logger = LoggerFactory.getLogger(GlobalExceptionAdvice.class);
 
-    /**
-     * 400 - Bad Request
-     */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public Res handleMissingServletRequestParameterException(MissingServletRequestParameterException e) {
@@ -42,9 +35,6 @@ public class GlobalExceptionAdvice {
         return Res.error("required_parameter_is_not_present");
     }
 
-    /**
-     * 400 - Bad Request
-     */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Res handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {
@@ -57,9 +47,6 @@ public class GlobalExceptionAdvice {
         return Res.error(message);
     }
 
-    /**
-     * 400 - Bad Request
-     */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(BindException.class)
     public Res handleBindException(BindException e) {
@@ -72,9 +59,6 @@ public class GlobalExceptionAdvice {
         return Res.error(message);
     }
 
-    /**
-     * 400 - Bad Request
-     */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ConstraintViolationException.class)
     public Res handleServiceException(ConstraintViolationException e) {
@@ -85,9 +69,6 @@ public class GlobalExceptionAdvice {
         return Res.error("parameter:" + message);
     }
 
-    /**
-     * 400 - Bad Request
-     */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(ValidationException.class)
     public Res handleValidationException(ValidationException e) {
@@ -95,9 +76,6 @@ public class GlobalExceptionAdvice {
         return Res.error("validation_exception");
     }
 
-    /**
-     * 405 - Method Not Allowed
-     */
     @ResponseStatus(HttpStatus.METHOD_NOT_ALLOWED)
     @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
     public Res handleHttpRequestMethodNotSupportedException(HttpRequestMethodNotSupportedException e) {
@@ -105,9 +83,6 @@ public class GlobalExceptionAdvice {
         return Res.error("request_method_not_supported");
     }
 
-    /**
-     * 415 - Unsupported Media Type
-     */
     @ResponseStatus(HttpStatus.UNSUPPORTED_MEDIA_TYPE)
     @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
     public Res handleHttpMediaTypeNotSupportedException(Exception e) {
@@ -115,9 +90,6 @@ public class GlobalExceptionAdvice {
         return Res.error("content_type_not_supported");
     }
 
-    /**
-     * 500 - Internal Server Error
-     */
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(BusinessException.class)
     public Res handleServiceException(BusinessException e) {
@@ -125,9 +97,6 @@ public class GlobalExceptionAdvice {
         return Res.error("业务逻辑异常：" + e.getMessage());
     }
 
-    /**
-     * 500 - Internal Server Error
-     */
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(Exception.class)
     public Res handleException(Exception e) {
@@ -135,9 +104,6 @@ public class GlobalExceptionAdvice {
         return Res.error("通用异常：" + e.getMessage());
     }
 
-    /**
-     * 操作数据库出现异常:名称重复，外键关联
-     */
     @ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
     @ExceptionHandler(DataIntegrityViolationException.class)
     public Res handleException(DataIntegrityViolationException e) {

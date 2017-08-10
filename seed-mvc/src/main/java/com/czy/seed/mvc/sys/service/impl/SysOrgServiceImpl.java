@@ -12,30 +12,18 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-/**
- * Created by PLC on 2017/5/30.
- */
 @Service
 public class SysOrgServiceImpl extends BaseServiceImpl<SysOrg> implements SysOrgService {
 
     @Autowired
     private SysOrgMapper sysOrgMapper;
 
-    /**
-     * 查找组织结构树
-     * @return
-     */
     @Override
     public List<SysOrg> selectOrgTree() {
         List<SysOrg> sysOrgs = sysOrgMapper.selectAllOrgs();
         return buildTree(sysOrgs);
     }
 
-    /**
-     * 构造组织树
-     * @param sysOrgs
-     * @return
-     */
     public List<SysOrg> buildTree(List<SysOrg> sysOrgs) {
         List<SysOrg> res = new ArrayList<SysOrg>();
 
@@ -55,11 +43,6 @@ public class SysOrgServiceImpl extends BaseServiceImpl<SysOrg> implements SysOrg
         return res;
     }
 
-    /**
-     * 查找根节点
-     * @param orgList
-     * @return
-     */
     private List<SysOrg> findRootOrg(List<SysOrg> orgList) {
         List<SysOrg> rootOrgList = new ArrayList<SysOrg>();
         for (SysOrg org : orgList) {
@@ -71,11 +54,6 @@ public class SysOrgServiceImpl extends BaseServiceImpl<SysOrg> implements SysOrg
         return rootOrgList;
     }
 
-    /**
-     * 设置父节点的所有子节点——递归调用
-     * @param orgWithoutRoot 不包含父节点的所有组织列表
-     * @param rootList 根节点
-     */
     public void findChildrenResource(List<SysOrg> orgWithoutRoot, List<SysOrg> rootList) {
         List<SysOrg> subList = new ArrayList<SysOrg>();  //本轮未查找到归属的节点集合
         Iterator<SysOrg> iterator = orgWithoutRoot.iterator();

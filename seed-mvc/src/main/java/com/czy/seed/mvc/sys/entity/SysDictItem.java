@@ -2,9 +2,6 @@ package com.czy.seed.mvc.sys.entity;
 
 import com.czy.seed.mvc.base.entity.PrepareEntity;
 
-/**
- * Created by 003914[panlc] on 2017-06-13.
- */
 public class SysDictItem extends PrepareEntity {
     private Long parentId;
     private String sysDictCode;

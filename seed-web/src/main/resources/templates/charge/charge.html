@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en"
+      xmlns:th="http://www.thymeleaf.org">
+
+
+
+<script th:src="@{/js/charge/charge.js}"></script>
+<div id="pane">
+    <el-col :span="24">
+        <el-card class="box-card">
+            <div slot="header" style="line-height: 20px;">
+                <span>订单列表</span>
+            </div>
+            <el-table :data="tableData" stripe style="width: 100%" >
+
+                <el-table-column type="index" width="55px" ></el-table-column>
+                <el-table-column prop="licenseNo" label="辅收订单号"></el-table-column>
+                <el-table-column prop="name" label="姓名"></el-table-column>
+                <el-table-column prop="overweightLuggage" label="逾中行李"></el-table-column>
+                <el-table-column prop="seat" label="选座"></el-table-column>
+                <el-table-column prop="specialLuggage" label="特殊行李"></el-table-column>
+                <el-table-column prop="other" label="其他"></el-table-column>
+                <el-table-column prop="receivableAmount" label="金额"></el-table-column>
+                <el-table-column prop="type" label="状态"></el-table-column>
+            </el-table>
+        </el-card>
+    </el-col>
+<div>
+
+</div>
+</div>
+
+
+
+</html>

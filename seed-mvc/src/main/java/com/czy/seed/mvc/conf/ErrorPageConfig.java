@@ -7,10 +7,6 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.http.HttpStatus;
 
-/**
- * 访问发生错误时，跳转到”/403”
- * Created by PLC on 2017/5/23.
- */
 @Configuration
 public class ErrorPageConfig {
 

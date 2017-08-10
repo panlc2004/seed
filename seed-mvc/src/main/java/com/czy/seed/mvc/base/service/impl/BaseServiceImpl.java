@@ -18,9 +18,6 @@ import javax.annotation.PostConstruct;
 import java.util.Date;
 import java.util.List;
 
-/**
- * Created by PLC on 2017/4/30.
- */
 public class BaseServiceImpl<T> implements BaseService<T> {
 
 
@@ -167,10 +164,6 @@ public class BaseServiceImpl<T> implements BaseService<T> {
         }
     }
 
-    /**
-     * 更新版本号，下个版本将移至sql中计算，不采用加锁方式
-     * @param record
-     */
     private void updateVersion(PrepareEntity record) {
         synchronized (record.getClass().getName().intern()) {
             record.setVersion(record.getVersion() + 1);

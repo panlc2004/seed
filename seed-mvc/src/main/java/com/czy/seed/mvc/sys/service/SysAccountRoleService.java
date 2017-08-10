@@ -6,9 +6,6 @@ import com.czy.seed.mvc.sys.entity.SysUserRole;
 
 import java.util.List;
 
-/**
- * Created by PLC on 2017/5/23.
- */
 public interface SysAccountRoleService extends BaseService<SysUserRole> {
     void saveUserRole(List<SysUserRole> userRoleList);
 }

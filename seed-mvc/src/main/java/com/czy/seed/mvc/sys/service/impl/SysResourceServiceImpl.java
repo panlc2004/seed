@@ -12,39 +12,25 @@ import org.springframework.stereotype.Service;
 
 import java.util.*;
 
-/**
- * Created by PLC on 2017/5/29.
- */
 @Service
 public class SysResourceServiceImpl extends BaseServiceImpl<SysResource> implements SysResourceService {
 
     @Autowired
     private SysResourceMapper sysResourceMapper;
 
-    /**
-     * 查找用户所有权限
-     *
-     * @return 登陆用户菜单列表
-     */
     public List<SysResource> findResourceTreeForLoginUser() {
         //获取登陆用户角色
-        List<UserAuthority> loginUserRoles = PrincipalUtil.getLoginUserRoles();
-        String roleIds = getRoleIds(loginUserRoles);
+//        List<UserAuthority> loginUserRoles = PrincipalUtil.getLoginUserRoles();
+//        String roleIds = getRoleIds(loginUserRoles);
 
+        String roleIds = "(1)";
         List<SysResource> resources = sysResourceMapper.findResourceForLoginUser(roleIds);   //查询用户所有菜单
         //关联查询所有菜单的父级菜单
-        List<SysResource> fullResources = new ArrayList<SysResource>();
         List<SysResource> fullResourceList = findFullResources(resources, resources);
 
         return buildTree(fullResourceList);
     }
 
-    /**
-     * 获取用户角色主键信息
-     *
-     * @param loginUserRoles 登陆用户角色
-     * @return 登陆用户角色id字符串
-     */
     private String getRoleIds(List<UserAuthority> loginUserRoles) {
         //封装角色id
         StringBuffer sb = new StringBuffer("(");
@@ -56,13 +42,6 @@ public class SysResourceServiceImpl extends BaseServiceImpl<SysResource> impleme
         return substring;
     }
 
-    /**
-     * 递归查询用户完善权限树
-     *
-     * @param resources 当前菜单项
-     * @param fullResources 所有菜单列表
-     * @return 所有菜单列表
-     */
     private List<SysResource> findFullResources(List<SysResource> resources, List<SysResource> fullResources) {
         if (resources == null || resources.size() == 0) {
             return fullResources;
@@ -100,21 +79,11 @@ public class SysResourceServiceImpl extends BaseServiceImpl<SysResource> impleme
         return findFullResources(parentResources, fullResources);  //递归查找;
     }
 
-    /**
-     * 查询所有资源树
-     * @return
-     */
     public List<SysResource> selectResourceTree() {
         List<SysResource> allResources = sysResourceMapper.selectListAll();
         return buildTree(allResources);
     }
 
-    /**
-     * 构造资源树
-     *
-     * @param allResources
-     * @return
-     */
     public List<SysResource> buildTree(List<SysResource> allResources) {
         List<SysResource> rootResource = findRootResource(allResources);
         findChildrenResource(allResources, rootResource);
@@ -126,14 +95,13 @@ public class SysResourceServiceImpl extends BaseServiceImpl<SysResource> impleme
         zeroNode.getChildren().addAll(rootResource);
         List<SysResource> resources = new ArrayList<SysResource>();
         resources.add(zeroNode);
-
         //排序
         orderBy(resources);
         return resources;
     }
 
     private void orderBy(List<SysResource> resources) {
-        resources.sort(new Comparator<SysResource>() {
+        Collections.sort(resources,new Comparator<SysResource>() {
             @Override
             public int compare(SysResource o1, SysResource o2) {
                 int orderByDiff = o1.getOrderBy() - o2.getOrderBy();
@@ -153,12 +121,6 @@ public class SysResourceServiceImpl extends BaseServiceImpl<SysResource> impleme
         }
     }
 
-    /**
-     * 查找根节点
-     *
-     * @param allResources
-     * @return
-     */
     private List<SysResource> findRootResource(List<SysResource> allResources) {
         List<SysResource> rootResource = new ArrayList<SysResource>();
         for (SysResource resource : allResources) {
@@ -170,12 +132,6 @@ public class SysResourceServiceImpl extends BaseServiceImpl<SysResource> impleme
         return rootResource;
     }
 
-    /**
-     * 设置父节点的所有子节点——递归调用
-     *
-     * @param allResourcesWithoutRoot allResourcsWithoutRoot不包含父节点的所有资源列表
-     * @param rootResourceList        根节点
-     */
     public void findChildrenResource(List<SysResource> allResourcesWithoutRoot, List<SysResource> rootResourceList) {
         List<SysResource> subResources = new ArrayList<SysResource>();  //本轮未查找到归属的节点集合
         Iterator<SysResource> iterator = allResourcesWithoutRoot.iterator();

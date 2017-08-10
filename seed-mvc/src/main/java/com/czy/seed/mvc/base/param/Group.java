@@ -7,18 +7,10 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by 003914[panlc] on 2017-06-09.
- */
 public class Group implements Serializable {
 
     private static final long serialVersionUID = 1853557890332197293L;
 
-    /**
-     * 查询参数对象转换
-     *
-     * @param queryParams 查询参数对象
-     */
     public void appendParamGroup(QueryParams queryParams) {
         QueryParams.Criteria criteria = queryParams.or();
         if (this.getLike() != null) {

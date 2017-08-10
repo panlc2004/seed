@@ -5,9 +5,6 @@ import com.czy.seed.mvc.sys.entity.SysRole;
 import com.czy.seed.mvc.sys.service.SysRoleService;
 import org.springframework.stereotype.Service;
 
-/**
- * Created by PLC on 2017/5/23.
- */
 @Service
 public class SysRoleServiceImpl extends BaseServiceImpl<SysRole> implements SysRoleService {
 

@@ -9,9 +9,6 @@ import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
-/**
- * Created by Comup on 2017/5/23.
- */
 @AutoMapper
 public interface SysUserRoleMapper extends BaseMapper<SysUserRole> {
 

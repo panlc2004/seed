@@ -7,10 +7,6 @@ import javax.persistence.Column;
 import javax.persistence.Id;
 import java.io.Serializable;
 
-/**
- * 系统参数配置
- * Created by PLC on 2017/6/3.
- */
 public class SysParam implements Serializable {
     private static final long serialVersionUID = -2671018678667359634L;
 
