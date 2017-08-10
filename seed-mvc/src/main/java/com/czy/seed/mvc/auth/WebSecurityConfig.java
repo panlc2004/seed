@@ -37,12 +37,19 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
                 //登录配置
                 .and().formLogin().loginPage("/login.html").permitAll()
                 .successHandler(loginSuccessHandler())    ////登录成功后可使用loginSuccessHandler()存储用户信息
+//                .failureHandler()
 
                 //登出配置
                 .and().logout().logoutUrl("/logout").and().logout().permitAll()
+//                .addLogoutHandler()
+
+                //异常配置
+                .and().exceptionHandling().authenticationEntryPoint(ajaxAuthenticationEntryPoint())
+
+                //安全配置
                 .and().csrf().disable()
-                .headers().frameOptions().disable()
-                .and().exceptionHandling().authenticationEntryPoint(ajaxAuthenticationEntryPoint());
+                .headers().frameOptions().disable();
+
     }
 
     @Override
@@ -52,7 +59,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("**/js/**", "**/css/**", "/lib/**");
+        web.ignoring().antMatchers("**/js/**", "**/css/**", "/lib/**", "/common/**");
     }
 
     @Autowired
