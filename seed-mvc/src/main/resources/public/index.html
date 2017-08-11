@@ -12,12 +12,7 @@
     <script type="text/javascript">
         function afterLoad(o) {
             if (o.src != "") {
-                clearInterval(mainPanel.timer);
-                mainPanel.timer = null;
-                mainPanel.percentage = 100;
-                setTimeout(function () {
-                    mainPanel.progressShow = false;
-                }, 500);
+                mainPanel.$Loading.finish();
             }
         }
 
