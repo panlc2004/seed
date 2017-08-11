@@ -28,7 +28,7 @@ Vue.component('menuItem', {
         '       <span>{{item.name}}</span>',
         '   </a>',
         '</li>',
-        '<li v-else-if="item.types == 2" class="treeview">',
+            '<li v-else-if="item.types == 2" class="treeview">',
         '   <a href="#">',
         '       <i v-if="item.icon != null" :class="item.icon"></i>',
         '       <i v-else class="fa fa-link"></i>',
@@ -38,7 +38,7 @@ Vue.component('menuItem', {
         '       </span>',
         '   </a>',
         '   <ul class="treeview-menu">',
-        '<menu-item :item="item" v-for="item in item.children"></menu-item>',
+        '       <menu-item :item="item" v-for="item in item.children"></menu-item>',
         '   </ul>',
         '</li>'
     ].join('')
@@ -81,9 +81,9 @@ function routerList(router, menuList) {
             router.add('#' + menu.url, function () {
                 var url = window.location.hash;
                 //替换iframe的url
-                mainPanel.loadUrl = url.replace('#', '');
+                mainPanel.loadUrl = url.replace('#', '') + ".html";
                 //导航菜单展开
-                $(".treeview-menu li").removeClass("active");
+                $(".active").removeClass("active");
                 $("a[href='" + url + "']").parents("li").addClass("active");
 
                 mainPanel.navTitle = $("a[href='" + url + "']").text();
