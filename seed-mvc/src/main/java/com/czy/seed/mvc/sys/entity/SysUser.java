@@ -1,12 +1,11 @@
 package com.czy.seed.mvc.sys.entity;
 
-import com.czy.seed.mybatis.config.mybatis.annotations.Cache;
-
 import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
 
-//@Cache
+@Table(name = "SEED_SYS_USER")
 public class SysUser implements Serializable {
 
     private static final long serialVersionUID = 6022588492678547207L;

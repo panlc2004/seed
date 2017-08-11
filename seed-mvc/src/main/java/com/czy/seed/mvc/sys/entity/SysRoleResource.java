@@ -1,11 +1,12 @@
 package com.czy.seed.mvc.sys.entity;
 
-import com.czy.seed.mybatis.config.mybatis.annotations.One2Many;
 import com.czy.seed.mybatis.config.mybatis.annotations.One2One;
 
 import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 
+@Table(name = "SEED_SYS_ROLE_RESOURCE")
 public class SysRoleResource implements Serializable {
     private static final long serialVersionUID = -3755254892758648117L;
     @Id

@@ -1,11 +1,13 @@
 package com.czy.seed.mvc.sys.entity;
 
 import javax.persistence.Id;
+import javax.persistence.Table;
 import javax.persistence.Transient;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
+@Table(name = "SEED_SYS_ORG")
 public class SysOrg implements Serializable {
     private static final long serialVersionUID = 1172246239374961171L;
 

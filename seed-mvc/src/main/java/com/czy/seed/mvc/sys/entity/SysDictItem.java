@@ -2,6 +2,9 @@ package com.czy.seed.mvc.sys.entity;
 
 import com.czy.seed.mvc.base.entity.PrepareEntity;
 
+import javax.persistence.Table;
+
+@Table(name = "SEED_SYS_DICT_ITEM")
 public class SysDictItem extends PrepareEntity {
     private Long parentId;
     private String sysDictCode;

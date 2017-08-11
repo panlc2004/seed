@@ -3,9 +3,11 @@ package com.czy.seed.mvc.sys.entity;
 
 import com.czy.seed.mvc.base.entity.BaseEntity;
 
+import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
 
+@Table(name="SYS_LOG")
 public class SysLog extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = -5605619995509261468L;

@@ -1,3 +1,5 @@
+
+
 /**
  * Created by PLC on 2017/8/6.
  */
@@ -38,7 +40,7 @@ Vue.component('menuItem', {
         '       </span>',
         '   </a>',
         '   <ul class="treeview-menu">',
-                '<menu-item :item="item" v-for="item in item.children"></menu-item>',
+        '<menu-item :item="item" v-for="item in item.children"></menu-item>',
         '   </ul>',
         '</li>'
     ].join('')
@@ -47,10 +49,12 @@ Vue.component('menuItem', {
 var mainPanel = new Vue({
     el: '#main-panel',
     data: {
-        loadUrl: '',
+        loadUrl: '/homePage.html',
         menuList: {},
-        navTitle: '首页',
-
+        navTitle: '',
+        progressShow: true,
+        percentage: 0,
+        timer: null
     },
     methods: {
         getMenu: function () {
@@ -59,6 +63,7 @@ var mainPanel = new Vue({
                 mainPanel.menuList = o.data[0].children;
             });
         },
+
 
     },
     created: function () {
@@ -80,16 +85,71 @@ function routerList(router, menuList) {
         } else if (menu.types == 1) {
             router.add('#' + menu.url, function () {
                 var url = window.location.hash;
-
                 //替换iframe的url
                 mainPanel.loadUrl = url.replace('#', '');
-
                 //导航菜单展开
                 $(".treeview-menu li").removeClass("active");
                 $("a[href='" + url + "']").parents("li").addClass("active");
 
                 mainPanel.navTitle = $("a[href='" + url + "']").text();
+                // mainPanel.$Loading.start();
+
+                if(mainPanel.timer==null) {
+                    mainPanel.timer = setInterval(function () {
+                        mainPanel.percentage = mainPanel.percentage + 1;
+                        // 父组件数据加载完前进度条最多到stopVal的这个百分值
+                        if (mainPanel.percentage >= 90) {
+                            clearInterval(mainPanel.timer)
+                        }
+                    }, 10);
+                }
+
             });
         }
     }
 }
+
+/**
+ * 启动进度条
+ * @param stopPercent
+ */
+function startProgress(stopPercent) {
+    mainPanel.progressShow = true;
+    if (mainPanel.timer == null) {
+        mainPanel.timer = setInterval(function () {
+            mainPanel.percentage = mainPanel.percentage + 10;
+            // 父组件数据加载完前进度条最多到stopVal的这个百分值
+            if (mainPanel.percentage >= stopPercent) {
+                clearInterval(mainPanel.timer)
+                // return timer;
+            }
+        }, 100);
+    }
+}
+
+/**
+ * 关闭进度条
+ */
+function finishProgress() {
+    mainPanel.percentage = 100;
+    mainPanel.progressShow = false;
+}
+
+function test123() {
+    var iframe = $("#page-load-progress");
+    //先为iframe 添加一个 onreadystatechange
+    iframe.attachEvent("onreadystatechange", function(){
+        //此事件在内容没有被载入时候也会被触发，所以我们要判断状态
+        //有时候会比拟怪异 readyState状态会跳过 complete 所以我们loaded状态也要判断
+        if(iframe.readyState === "complete" || iframe.readyState == "loaded"){
+            //代码能执行到这里说明已载入胜利完毕了
+            //要清除掉事件
+            iframe.detachEvent( "onreadystatechange", arguments.callee);
+            //这里是回调函数
+        }
+
+    });
+}
+
+
+// test123();

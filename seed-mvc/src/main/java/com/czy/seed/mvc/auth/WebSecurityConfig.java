@@ -31,20 +31,23 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .authorizeRequests()
-                .anyRequest().authenticated() //任何请求,登录后可以访问
+//                .authorizeRequests()
+//                .anyRequest().authenticated() //任何请求,登录后可以访问
+//
+//                //登录配置
+//                .and().formLogin().loginPage("/login.html").permitAll()
+//                .successHandler(loginSuccessHandler())    ////登录成功后可使用loginSuccessHandler()存储用户信息
+////                .failureHandler()
+//
+//                //登出配置
+//                .and().logout().logoutUrl("/logout").and().logout().permitAll()
+////                .addLogoutHandler()
+//
+//                //异常配置
+//                .and().exceptionHandling().authenticationEntryPoint(ajaxAuthenticationEntryPoint())
 
-                //登录配置
-                .and().formLogin().loginPage("/login.html").permitAll()
-                .successHandler(loginSuccessHandler())    ////登录成功后可使用loginSuccessHandler()存储用户信息
-//                .failureHandler()
 
-                //登出配置
-                .and().logout().logoutUrl("/logout").and().logout().permitAll()
-//                .addLogoutHandler()
-
-                //异常配置
-                .and().exceptionHandling().authenticationEntryPoint(ajaxAuthenticationEntryPoint())
+                .authorizeRequests().anyRequest().permitAll()
 
                 //安全配置
                 .and().csrf().disable()

@@ -39,7 +39,8 @@ var headerCss = [
     "/lib/awesome/css/font-awesome.min.css",
     "/lib/adminlte/css/AdminLTE.min.css",
     "/lib/adminlte/css/skins/_all-skins.min.css",
-    "/lib/elementui/1.4.1/theme-default/index.css"
+    "/lib/elementui/1.4.1/theme-default/index.css",
+    "/lib/iview/2.0.0/iview.css"
 ]
 for ( var i = 0; i < headerCss.length; i++) {
     document.writeln('<link rel="stylesheet" href="' +  headerCss[i] + '"></link>');
@@ -54,6 +55,7 @@ var headerJs = [
     "/lib/respond/1.4.2/respond.min.js",      //ie8适配
     "/lib/vue/2.4.2/vue.js",
     "/lib/elementui/1.4.1/index.js",
+    "/lib/iview/2.0.0/iview.min.js",
     "/lib/router.js"
 ]
 for ( var i = 0; i < headerJs.length; i++) {

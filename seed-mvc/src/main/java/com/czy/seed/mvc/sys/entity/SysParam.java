@@ -1,12 +1,10 @@
 package com.czy.seed.mvc.sys.entity;
 
-import com.czy.seed.mybatis.config.mybatis.annotations.ColumnType;
-import org.apache.ibatis.type.JdbcType;
-
-import javax.persistence.Column;
 import javax.persistence.Id;
+import javax.persistence.Table;
 import java.io.Serializable;
 
+@Table(name = "SEED_SYS_PARAM")
 public class SysParam implements Serializable {
     private static final long serialVersionUID = -2671018678667359634L;
 
