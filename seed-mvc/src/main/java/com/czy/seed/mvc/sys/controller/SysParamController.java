@@ -1,6 +1,6 @@
 package com.czy.seed.mvc.sys.controller;
 
-import com.czy.seed.mvc.sys.entity.SysOrg;
+import com.czy.seed.mvc.sys.entity.SysDept;
 import com.czy.seed.mvc.sys.entity.SysParam;
 import com.czy.seed.mvc.sys.service.SysParamService;
 import com.czy.seed.mvc.util.Res;
@@ -33,7 +33,7 @@ public class SysParamController {
     public Res selectPageByParams(@RequestParam  Map<String, Object> params) {
         Integer pageNum = Integer.parseInt(params.get("pageNum").toString());
         Integer pageSize = Integer.parseInt(params.get("pageSize").toString());
-        QueryParams queryParams = new QueryParams(SysOrg.class);
+        QueryParams queryParams = new QueryParams(SysDept.class);
         if (params.containsKey("name") && NullUtil.isNotEmpty(params.get("name"))) {
             QueryParams.Criteria criteria = queryParams.createCriteria();
             criteria.andLike("name", "%" + params.get("name") + "%");

@@ -1,5 +1,3 @@
-
-
 /**
  * Created by PLC on 2017/8/6.
  */
@@ -52,9 +50,6 @@ var mainPanel = new Vue({
         loadUrl: '/homePage.html',
         menuList: {},
         navTitle: '',
-        progressShow: true,
-        percentage: 0,
-        timer: null
     },
     methods: {
         getMenu: function () {

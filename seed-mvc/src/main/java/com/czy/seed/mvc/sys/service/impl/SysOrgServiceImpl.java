@@ -1,10 +1,9 @@
 package com.czy.seed.mvc.sys.service.impl;
 
 import com.czy.seed.mvc.base.service.impl.BaseServiceImpl;
-import com.czy.seed.mvc.sys.entity.SysOrg;
-import com.czy.seed.mvc.sys.entity.SysResource;
-import com.czy.seed.mvc.sys.mapper.SysOrgMapper;
-import com.czy.seed.mvc.sys.service.SysOrgService;
+import com.czy.seed.mvc.sys.entity.SysDept;
+import com.czy.seed.mvc.sys.mapper.SysDeptMapper;
+import com.czy.seed.mvc.sys.service.SysDeptService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,25 +12,25 @@ import java.util.Iterator;
 import java.util.List;
 
 @Service
-public class SysOrgServiceImpl extends BaseServiceImpl<SysOrg> implements SysOrgService {
+public class SysOrgServiceImpl extends BaseServiceImpl<SysDept> implements SysDeptService {
 
     @Autowired
-    private SysOrgMapper sysOrgMapper;
+    private SysDeptMapper sysOrgMapper;
 
     @Override
-    public List<SysOrg> selectOrgTree() {
-        List<SysOrg> sysOrgs = sysOrgMapper.selectAllOrgs();
+    public List<SysDept> selectOrgTree() {
+        List<SysDept> sysOrgs = sysOrgMapper.selectAllOrgs();
         return buildTree(sysOrgs);
     }
 
-    public List<SysOrg> buildTree(List<SysOrg> sysOrgs) {
-        List<SysOrg> res = new ArrayList<SysOrg>();
+    public List<SysDept> buildTree(List<SysDept> sysOrgs) {
+        List<SysDept> res = new ArrayList<SysDept>();
 
-        List<SysOrg> rootOrg = findRootOrg(sysOrgs);
+        List<SysDept> rootOrg = findRootOrg(sysOrgs);
         findChildrenResource(sysOrgs, rootOrg);
 
         //构建id为0的虚拟节点
-        SysOrg zeroOrg = new SysOrg();
+        SysDept zeroOrg = new SysDept();
         zeroOrg.setId(0L);
         zeroOrg.setParentId(-1L);
         zeroOrg.setCode("zero");
@@ -43,9 +42,9 @@ public class SysOrgServiceImpl extends BaseServiceImpl<SysOrg> implements SysOrg
         return res;
     }
 
-    private List<SysOrg> findRootOrg(List<SysOrg> orgList) {
-        List<SysOrg> rootOrgList = new ArrayList<SysOrg>();
-        for (SysOrg org : orgList) {
+    private List<SysDept> findRootOrg(List<SysDept> orgList) {
+        List<SysDept> rootOrgList = new ArrayList<SysDept>();
+        for (SysDept org : orgList) {
             if (0 == org.getParentId()) {
                 rootOrgList.add(org);
             }
@@ -54,14 +53,14 @@ public class SysOrgServiceImpl extends BaseServiceImpl<SysOrg> implements SysOrg
         return rootOrgList;
     }
 
-    public void findChildrenResource(List<SysOrg> orgWithoutRoot, List<SysOrg> rootList) {
-        List<SysOrg> subList = new ArrayList<SysOrg>();  //本轮未查找到归属的节点集合
-        Iterator<SysOrg> iterator = orgWithoutRoot.iterator();
-        List<SysOrg> children = new ArrayList<SysOrg>();  //查找到归属的节点集合
+    public void findChildrenResource(List<SysDept> orgWithoutRoot, List<SysDept> rootList) {
+        List<SysDept> subList = new ArrayList<SysDept>();  //本轮未查找到归属的节点集合
+        Iterator<SysDept> iterator = orgWithoutRoot.iterator();
+        List<SysDept> children = new ArrayList<SysDept>();  //查找到归属的节点集合
         while (iterator.hasNext()) {
-            SysOrg resource = iterator.next();
+            SysDept resource = iterator.next();
             boolean flag = false;   //当为真时，表示当前iterator已经被识别为子节点
-            for (SysOrg parent : rootList) {
+            for (SysDept parent : rootList) {
                 if (resource.getParentId() == parent.getId()) {
                     parent.getChildren().add(resource);
                     children.add(resource);

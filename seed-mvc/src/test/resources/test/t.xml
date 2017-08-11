@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-<mapper namespace="com.czy.seed.mvc.sys.mapper.SysOrgMapper">
+<mapper namespace="com.czy.seed.mvc.sys.mapper.SysDeptMapper">
 
 
-    <resultMap id="BaseResultMap" types="com.czy.seed.mvc.sys.entity.SysOrg">
+    <resultMap id="BaseResultMap" types="com.czy.seed.mvc.sys.entity.SysDept">
         <id column="ID"  property="id"/>
         <result column="PARENT_ID"  property="parentId"/>
         <result column="CODE" jdbcType="VARCHAR" property="code"/>
@@ -12,7 +12,7 @@
         <result column="MEMO" jdbcType="VARCHAR" property="memo"/>
     </resultMap>
 
-    <insert id="insert" parameterType="com.czy.seed.mvc.sys.entity.SysOrg" useGeneratedKeys="true" keyProperty="id">
+    <insert id="insert" parameterType="com.czy.seed.mvc.sys.entity.SysDept" useGeneratedKeys="true" keyProperty="id">
         insert into SYS_ORG
         <trim prefix="(" suffix=")" suffixOverrides=",">
             <if test="id != null">
@@ -100,7 +100,7 @@
         </foreach>
     </insert>
 
-    <update id="updateByPrimaryKey" parameterType="com.czy.seed.mvc.sys.entity.SysOrg">
+    <update id="updateByPrimaryKey" parameterType="com.czy.seed.mvc.sys.entity.SysDept">
         update SYS_ORG
         <trim prefix=" set " suffix=" " suffixOverrides=",">
             PARENT_ID = #{parentId},
@@ -113,7 +113,7 @@
         </trim>
     </update>
 
-    <update id="updateByPrimaryKeySelective" parameterType="com.czy.seed.mvc.sys.entity.SysOrg">
+    <update id="updateByPrimaryKeySelective" parameterType="com.czy.seed.mvc.sys.entity.SysDept">
         update SYS_ORG
         <trim prefix=" set " suffix=" " suffixOverrides=",">
             <if test="parentId != null">
@@ -134,7 +134,7 @@
         </trim>
     </update>
 
-    <update id="updateByParams" parameterType="com.czy.seed.mvc.sys.entity.SysOrg">
+    <update id="updateByParams" parameterType="com.czy.seed.mvc.sys.entity.SysDept">
         update SYS_ORG
         <trim prefix=" set " suffix=" " suffixOverrides=",">
             PARENT_ID = #{record.parentId},

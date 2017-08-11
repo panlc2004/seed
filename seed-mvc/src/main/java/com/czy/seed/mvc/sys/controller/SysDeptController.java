@@ -1,7 +1,7 @@
 package com.czy.seed.mvc.sys.controller;
 
-import com.czy.seed.mvc.sys.entity.SysOrg;
-import com.czy.seed.mvc.sys.service.SysOrgService;
+import com.czy.seed.mvc.sys.entity.SysDept;
+import com.czy.seed.mvc.sys.service.SysDeptService;
 import com.czy.seed.mvc.util.Res;
 import com.czy.seed.mybatis.base.QueryParams;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +14,10 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/sys/org")
-public class SysOrgController {
+public class SysDeptController {
 
     @Autowired
-    private SysOrgService sysOrgService;
+    private SysDeptService sysOrgService;
 
     @RequestMapping("/index")
     public ModelAndView index() {
@@ -26,12 +26,12 @@ public class SysOrgController {
     }
 
     @RequestMapping("/selectOrgTree")
-    public List<SysOrg> selectOrgTree() {
+    public List<SysDept> selectOrgTree() {
         return sysOrgService.selectOrgTree();
     }
 
     @RequestMapping("/save")
-    public String save(@RequestBody SysOrg sysOrg) {
+    public String save(@RequestBody SysDept sysOrg) {
         if (sysOrg.getId() == null) {
             sysOrgService.insert(sysOrg);
         } else {
@@ -41,13 +41,13 @@ public class SysOrgController {
     }
 
     @RequestMapping("/loadData")
-    public SysOrg loadData(long id) {
+    public SysDept loadData(long id) {
         return sysOrgService.selectByPrimaryKey(id);
     }
 
     @RequestMapping("/deleteOrg")
     public Res deleteOrg(long id) {
-        QueryParams params = new QueryParams(SysOrg.class);
+        QueryParams params = new QueryParams(SysDept.class);
         QueryParams.Criteria criteria = params.createCriteria();
         criteria.andEqualTo("parentId", id);
         int count = sysOrgService.selectCountByParams(params);

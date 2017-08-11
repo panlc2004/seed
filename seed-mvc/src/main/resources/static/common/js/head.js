@@ -56,6 +56,7 @@ var headerJs = [
     "/lib/vue/2.4.2/vue.js",
     "/lib/elementui/1.4.1/index.js",
     "/lib/iview/2.0.0/iview.min.js",
+    "/lib/layer/layer-3.0.3.js",
     "/lib/router.js"
 ]
 for ( var i = 0; i < headerJs.length; i++) {

@@ -10,7 +10,7 @@
     <script src="/title.js"></script>
     <link rel="stylesheet" href="/common/css/index.css">
     <script type="text/javascript">
-        function afterLoad(o) {
+        function iframeOnLoad(o) {
             if (o.src != "") {
                 mainPanel.$Loading.finish();
             }
@@ -115,16 +115,11 @@
                 <li class="active">{{navTitle}}</li>
             </ol>
         </section>
-        <section>
-            <el-progress id="page-load-progress" v-show="progressShow" :stroke-width="2" :show-text="false"
-                         :percentage="percentage"></el-progress>
-        </section>
-
         <!-- 动态加载区 -->
         <section class="content" style="background:#fff;">
             <iframe scrolling="yes" frameborder="0"
                     style="width:100%;min-height:200px;overflow:visible;background:#fff;" :src="loadUrl"
-                    onload="afterLoad(this)"></iframe>
+                    onload="iframeOnLoad(this)"></iframe>
         </section>
 
     </div>
