@@ -13,13 +13,12 @@
 </head>
 <body>
 <div id="indexDiv">
-    <el-table :data="tableData"  style="width: 100%" border="">
-        <el-table-column prop="date" label="单位名称"> </el-table-column>
-        <el-table-column prop="date" label="单位编码"> </el-table-column>
-        <el-table-column prop="date" label="单位描述"> </el-table-column>
-        <el-table-column  label="操作" width="200">
+    <el-table :data="tableData" style="width: 100%" border="">
+        <el-table-column prop="date" label="日期"></el-table-column>
+        <el-table-column fixed="right" label="操作" width="200">
             <template scope="scope">
-                <el-button @click="handleClick" type="text" size="small">查看</el-button>
+                <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
+                <el-button size="small" type="danger" @click="handleDelete(scope.$index, scope.row)">删除</el-button>
             </template>
         </el-table-column>
     </el-table>
