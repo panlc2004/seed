@@ -47,19 +47,16 @@ Vue.component('menuItem', {
 var mainPanel = new Vue({
     el: '#main-panel',
     data: {
-        loadUrl: '/homePage.html',
+        loadUrl: '#',
         menuList: {},
         navTitle: '',
     },
     methods: {
         getMenu: function () {
             $.get("/sys/resource/findResourceTreeForLoginUser?_" + $.now(), function (o) {
-                console.log(o);
                 mainPanel.menuList = o.data[0].children;
             });
         },
-
-
     },
     created: function () {
         this.getMenu();

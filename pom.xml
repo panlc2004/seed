@@ -28,7 +28,6 @@
         <module>seed-mybatis</module>
         <module>seed-dependencies</module>
         <module>demo</module>
-        <!--<module>seed-process</module>-->
     </modules>
 
 </project>

@@ -30,13 +30,6 @@ public class BaseController<T> {
     @Autowired
     private BaseService<T> service;
 
-    @RequestMapping("/index")
-    public ModelAndView index() {
-        String className = this.getClass().getSimpleName();
-        String pageName = getViewName(className);
-        return new ModelAndView(pageName);
-    }
-
     @RequestMapping("/toView/{viewPath}")
     public ModelAndView toView(@PathVariable String viewPath, @RequestParam Map<String, Object> params) {
         ModelAndView model = new ModelAndView(viewPath);

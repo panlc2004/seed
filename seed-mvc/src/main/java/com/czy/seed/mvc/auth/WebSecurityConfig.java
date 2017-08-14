@@ -51,6 +51,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
                 //安全配置
                 .and().csrf().disable()
+                //允许页面加载在iframe中
                 .headers().frameOptions().disable();
 
     }
