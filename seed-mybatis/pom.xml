@@ -8,7 +8,7 @@
     <parent>
         <groupId>com.czy</groupId>
         <artifactId>seed-dependencies</artifactId>
-        <version>1.0.1-SNAPSHOT</version>
+        <version>1.0.2-SNAPSHOT</version>
         <relativePath>../seed-dependencies</relativePath>
     </parent>
 
