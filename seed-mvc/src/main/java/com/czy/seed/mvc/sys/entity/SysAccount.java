@@ -15,7 +15,6 @@ public class SysAccount implements IPrepare {
     private Long id;
     private Long sysOrgId;
     private Long sysUserId;
-
     private String username;
     private String password;
     private String email;

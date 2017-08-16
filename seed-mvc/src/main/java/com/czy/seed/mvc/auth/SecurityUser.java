@@ -25,10 +25,10 @@ public class SecurityUser extends SysUser implements UserDetails {
 
     public SecurityUser(SysUser sysUser) {
         if (sysUser != null) {
-            this.setId(sysUser.getId());
-            this.setName(sysUser.getName());
-            this.setEmail(sysUser.getEmail());
-            this.setPasswrod(sysUser.getPasswrod());
+            setId(sysUser.getId());
+            setName(sysUser.getName());
+            setEmail(sysUser.getEmail());
+            setPasswrod(sysUser.getPasswrod());
             roles = SpringContextHelper.getBeanByType(SysUserRoleMapper.class).selectRolesByUserId(sysUser.getId());
         }
     }
