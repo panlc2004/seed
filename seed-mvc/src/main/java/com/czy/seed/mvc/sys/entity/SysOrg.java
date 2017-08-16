@@ -1,17 +1,20 @@
 package com.czy.seed.mvc.sys.entity;
 
+import com.czy.seed.mvc.base.entity.IPrepare;
+
+import javax.persistence.Id;
 import javax.persistence.Table;
-import java.io.Serializable;
 import java.util.Date;
 
 /**
  * Created by 003914[panlc] on 2017-08-11.
  */
 @Table(name = "SEED_SYS_ORG")
-public class SysOrg implements Serializable {
+public class SysOrg implements IPrepare {
 
     private static final long serialVersionUID = 1172246239374961171L;
 
+    @Id
     private Long id;
     private Date createDt;
     private Long createBy;

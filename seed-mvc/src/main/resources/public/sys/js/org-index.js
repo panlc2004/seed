@@ -6,7 +6,7 @@ var t = new Vue({
     },
     methods: {
         test: function () {
-            czy.openWin('机构信息维护', ctx + '/sys/org-edit.html' ,["400px","450px"]);
+            czy.win.open('机构信息维护', ctx + '/sys/org-edit.html' ,["400px","450px"]);
         }
     }
 })

@@ -141,6 +141,7 @@ public class BaseController<T> {
         return Res.ok(num);
     }
 
+    @RequestMapping("/save")
     public Res save(@RequestBody T record) {
         if (EntityUtil.getIdValule(record) == null) {
             return insert(record);

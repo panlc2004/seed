@@ -58,7 +58,7 @@ window.mainPanel = new Vue({
             });
         },
         openWin:function(title, url,area) {
-            czy._openWin(title, url,area)
+            czy.win._open(title, url,area)
         }
     },
     created: function () {

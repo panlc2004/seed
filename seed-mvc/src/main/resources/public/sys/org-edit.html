@@ -8,7 +8,7 @@
 </head>
 <body>
 <div id="app">
-    <el-form label-position="right" label-width="80px" :model="entity" :rules="rules">
+    <el-form label-position="right" label-width="80px" :model="entity" :rules="rules" ref="editForm">
         <el-form-item label="组织名称" prop="orgName">
             <el-input v-model="entity.orgName" size="small"></el-input>
         </el-form-item>

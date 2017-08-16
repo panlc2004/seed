@@ -13,7 +13,7 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
 @RestController
-@RequestMapping("/sys/org")
+@RequestMapping("/sys/dept")
 public class SysDeptController {
 
     @Autowired
