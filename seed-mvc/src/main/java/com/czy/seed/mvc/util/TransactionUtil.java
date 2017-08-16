@@ -16,6 +16,9 @@ public class TransactionUtil {
 
     public static Logger logger = LoggerFactory.getLogger(TransactionUtil.class);
 
+    public static final String DEFAULT_TM = "transactionManager";
+
+
 //    public static void main(String[] args) throws ClassNotFoundException, NotFoundException {
 //        String str = "com.czy.seed.mvc.sys.service.impl.SysLogServiceImpl";
 //        Class claz = Class.forName(str);
@@ -23,7 +26,7 @@ public class TransactionUtil {
 //    }
 
     public static void prepareTransactionManager(Class clazz, String tmName) throws NotFoundException, ClassNotFoundException {
-        if (BaseServiceImpl.DEFAULT_TM.equals(tmName)) {
+        if (DEFAULT_TM.equals(tmName)) {
             return;
         }
         ClassPool pool = ClassPool.getDefault();

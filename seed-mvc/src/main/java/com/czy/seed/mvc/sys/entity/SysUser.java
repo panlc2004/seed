@@ -12,6 +12,8 @@ public class SysUser implements Serializable {
 
     @Id
     private Long id;
+    private Long orgId;
+    private Long deptId;
     private String name;
     private String username;
     private String password;
@@ -27,6 +29,22 @@ public class SysUser implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Long getOrgId() {
+        return orgId;
+    }
+
+    public void setOrgId(Long orgId) {
+        this.orgId = orgId;
+    }
+
+    public Long getDeptId() {
+        return deptId;
+    }
+
+    public void setDeptId(Long deptId) {
+        this.deptId = deptId;
     }
 
     public String getName() {

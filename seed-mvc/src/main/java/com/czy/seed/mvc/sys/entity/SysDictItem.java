@@ -1,11 +1,11 @@
 package com.czy.seed.mvc.sys.entity;
 
-import com.czy.seed.mvc.base.entity.PrepareEntity;
+import com.czy.seed.mvc.base.entity.IPrepare;
 
 import javax.persistence.Table;
 
 @Table(name = "SEED_SYS_DICT_ITEM")
-public class SysDictItem extends PrepareEntity {
+public class SysDictItem implements IPrepare {
     private Long parentId;
     private String sysDictCode;
     private String itemCode;

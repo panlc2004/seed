@@ -44,10 +44,10 @@ Vue.component('menuItem', {
     ].join('')
 });
 
-var mainPanel = new Vue({
+window.mainPanel = new Vue({
     el: '#main-panel',
     data: {
-        loadUrl: '#',
+        loadUrl: 'homePage.html',
         menuList: {},
         navTitle: '',
     },
@@ -57,6 +57,9 @@ var mainPanel = new Vue({
                 mainPanel.menuList = o.data[0].children;
             });
         },
+        openWin:function(title, url,area) {
+            czy._openWin(title, url,area)
+        }
     },
     created: function () {
         this.getMenu();
@@ -85,14 +88,14 @@ function routerList(router, menuList) {
 
                 mainPanel.navTitle = $("a[href='" + url + "']").text();
                 // 开启加载条
-                mainPanel.$Loading.start();
+                // mainPanel.$Loading.start();
             });
         }
     }
 }
 
-//设置进度加载条
-mainPanel.$Loading.config({
-    color: '#264e6a',
-    height: 50
-});
+// //设置进度加载条
+// mainPanel.$Loading.config({
+//     color: '#264e6a',
+//     height: 50
+// });

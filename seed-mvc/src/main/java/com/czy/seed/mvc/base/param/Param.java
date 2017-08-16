@@ -3,6 +3,7 @@ package com.czy.seed.mvc.base.param;
 import com.czy.seed.mybatis.base.QueryParams;
 import com.czy.seed.mybatis.tool.NullUtil;
 
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -21,12 +22,38 @@ public class Param {
         this.or = or;
     }
 
+    public void addOr(Group or) {
+        if (this.getOr() != null) {
+            this.getOr().add(or);
+        } else {
+            List<Group> temp = new ArrayList<>(1);
+            temp.add(or);
+            this.setOr(temp);
+        }
+    }
+
+    public void addOr(List<Group> or) {
+        if (this.getOr() != null) {
+            this.getOr().addAll(or);
+        } else {
+            this.setOr(or);
+        }
+    }
+
     public String getSelectProperties() {
         return selectProperties;
     }
 
     public void setSelectProperties(String selectProperties) {
         this.selectProperties = selectProperties;
+    }
+    public void addSelectProperties(String selectProperties) {
+        if (this.getSelectProperties() != null) {
+            String s = this.getSelectProperties() + "," + selectProperties;
+            this.setSelectProperties(s);
+        } else {
+            this.setSelectProperties(selectProperties);
+        }
     }
 
     public LinkedHashMap<String, String> getOrderBy() {
@@ -38,10 +65,17 @@ public class Param {
     }
 
     public void addOrderBy(LinkedHashMap<String, String> orderBy) {
-        if (this.getOrderBy() == null) {
+        if (this.getOrderBy() != null) {
+            this.getOrderBy().putAll(orderBy);
+        } else {
             this.setOrderBy(new LinkedHashMap<String, String>());
         }
-        this.getOrderBy().putAll(orderBy);
+    }
+
+    public Group or() {
+        Group or = new Group();
+        this.addOr(or);
+        return or;
     }
 
     public QueryParams toQueryParams(Class clazz) {

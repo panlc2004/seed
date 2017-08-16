@@ -14,21 +14,21 @@
     <script src="/lib/router.js"></script>
     <script src="/lib/bootstrap/js/bootstrap.min.js"></script>
     <script src="/lib/adminlte/js/adminlte.min.js"></script>
-    <script src="/lib/iview/2.0.0/iview.min.js"></script>
+    <!--<script src="/lib/iview/2.0.0/iview.min.js"></script>-->
 
     <link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css">
     <link rel="stylesheet" href="/lib/adminlte/css/AdminLTE.min.css">
     <link rel="stylesheet" href="/lib/adminlte/css/skins/_all-skins.min.css">
     <link rel="stylesheet" href="/common/css/index.css">
-    <link rel="stylesheet" href="/lib/iview/2.0.0/iview.css">
-    <script type="text/javascript">
-        function iframeOnLoad(o) {
-            if (o.src != "") {
-                mainPanel.$Loading.finish();
-            }
-        }
+    <!--<link rel="stylesheet" href="/lib/iview/2.0.0/iview.css">-->
+    <!--<script type="text/javascript">-->
+        <!--function iframeOnLoad(o) {-->
+            <!--if (o.src != "") {-->
+                <!--mainPanel.$Loading.finish();-->
+            <!--}-->
+        <!--}-->
 
-    </script>
+    <!--</script>-->
 </head>
 
 <body class="hold-transition skin-blue sidebar-mini">
@@ -49,7 +49,6 @@
             <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
                 <span class="sr-only">Toggle navigation</span>
             </a>
-
             <!-- Navbar Right Menu -->
             <div class="navbar-custom-menu">
                 <ul class="nav navbar-nav">
@@ -122,7 +121,7 @@
         <section class="content-header">
             <ol class="breadcrumb" id="nav_title" style="position:static;float:none;">
                 <li class="active">
-                    <i class="fa fa-home" style="font-size:20px;position:relative;top:2px;left:-3px;"></i> &nbsp;<首页></首页>
+                    <i class="fa fa-home" style="font-size:20px;position:relative;top:2px;left:-3px;"></i> &nbsp;首页
                 </li>
                 <li class="active">{{navTitle}}</li>
             </ol>
@@ -131,7 +130,7 @@
         <section class="content" style="background:#fff;">
             <iframe scrolling="yes" frameborder="0"
                     style="width:100%;min-height:200px;overflow:visible;background:#fff;" :src="loadUrl"
-                    onload="iframeOnLoad(this)"></iframe>
+                    ></iframe>
         </section>
 
     </div>

@@ -5,19 +5,19 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <script src="/common/js/head.js"></script>
-    <script src="/lib/czyseed/pageBar.js"></script>
 </head>
 <body>
 <div id="indexDiv">
+
     <el-row>
         <el-col :span="24" style="padding-right: 5px; padding-bottom: 5px">
-            <el-button type="primary" size="small">新增</el-button>
+            <el-button type="primary" size="small" @click="test">新增</el-button>
         </el-col>
     </el-row>
 
     <el-table :data="pageData" border="">
-        <el-table-column prop="date" label="机构名称"></el-table-column>
-        <el-table-column prop="date" label="机构编码"></el-table-column>
+        <el-table-column prop="orgName" label="机构名称"></el-table-column>
+        <el-table-column prop="orgCode" label="机构编码"></el-table-column>
         <el-table-column label="操作" width="200">
             <template scope="scope">
                 <el-button size="small" @click="handleEdit(scope.$index, scope.row)">编辑</el-button>
@@ -30,6 +30,4 @@
 </div>
 </body>
 <script src="/sys/js/org-index.js"></script>
-
-
 </html>

@@ -1,10 +1,11 @@
 package com.czy.seed.mvc.aop;
 
-import java.lang.reflect.Method;
-import java.util.Date;
-
-import javax.servlet.http.HttpServletRequest;
-
+import com.alibaba.druid.util.StringUtils;
+import com.czy.seed.mvc.annotation.AutoLog;
+import com.czy.seed.mvc.sys.entity.SysLog;
+import com.czy.seed.mvc.sys.service.SysLogService;
+import com.czy.seed.mvc.util.JsonUtils;
+import com.czy.seed.mvc.util.LoginUserTool;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
@@ -17,12 +18,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import com.alibaba.druid.util.StringUtils;
-import com.czy.seed.mvc.annotation.AutoLog;
-import com.czy.seed.mvc.sys.entity.SysLog;
-import com.czy.seed.mvc.sys.service.SysLogService;
-import com.czy.seed.mvc.util.JsonUtils;
-import com.czy.seed.mvc.util.PrincipalUtil;
+import javax.servlet.http.HttpServletRequest;
+import java.lang.reflect.Method;
+import java.util.Date;
 
 
 @Aspect
@@ -33,6 +31,9 @@ public class SysLogAspect {
 
     @Autowired
     private SysLogService sysLogService;
+
+    @Autowired
+    private LoginUserTool principalUtil;
 
     @Pointcut("@annotation(com.czy.seed.mvc.annotation.AutoLog)")
     public void logPointCut() {
@@ -46,7 +47,7 @@ public class SysLogAspect {
 
         SysLog sysLog = new SysLog();
         sysLog.setOpeTime(new Date());
-        sysLog.setOpeId(PrincipalUtil.getLoginUser().getId());
+        sysLog.setOpeId(principalUtil.getLoginUser().getId());
 
 //		解析注解
         AutoLog autoLog = method.getAnnotation(AutoLog.class);

@@ -1,5 +1,6 @@
 package com.czy.seed.mvc.base.controller;
 
+import com.czy.seed.mvc.base.entity.EntityUtil;
 import com.czy.seed.mvc.base.exception.IllegalleControllerNameException;
 import com.czy.seed.mvc.base.param.Param;
 import com.czy.seed.mvc.base.service.BaseService;
@@ -140,13 +141,12 @@ public class BaseController<T> {
         return Res.ok(num);
     }
 
-    public static void main(String[] args) {
-        String a = "test";
-        String b = new String("test");
-        String c = "test";
-        System.out.println(a.equals(b));
-
-        throw new NullPointerException("test");
+    public Res save(@RequestBody T record) {
+        if (EntityUtil.getIdValule(record) == null) {
+            return insert(record);
+        } else {
+            return updateByPrimaryKey(record);
+        }
     }
 
 }
