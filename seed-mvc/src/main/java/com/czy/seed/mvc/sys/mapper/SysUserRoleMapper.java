@@ -12,7 +12,8 @@ import java.util.List;
 @AutoMapper
 public interface SysUserRoleMapper extends BaseMapper<SysUserRole> {
 
-    @Select("select * from sys_role sr where exists ( select sys_role_id from sys_user_role sur where sr.ID = sur.SYS_ROLE_ID and sys_user_id=#{userId})")
+    @Select("SELECT * FROM SEED_SYS_ROLE SSR WHERE EXISTS ( SELECT SSUR.SYS_ROLE_ID FROM SEED_SYS_USER_ROLE SSUR" +
+            " WHERE SSR.ID = SSUR.SYS_ROLE_ID AND SSUR.SYS_USER_ID=#{userId})")
     List<SysRole> selectRolesByUserId(@Param("userId") Long userId);
 
 }

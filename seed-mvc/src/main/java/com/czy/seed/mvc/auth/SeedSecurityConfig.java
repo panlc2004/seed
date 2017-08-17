@@ -28,15 +28,17 @@ public class SeedSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private SysUserDetailsService sysUserDetailsService;
 
+//    private final String LOGIN_URL = "/auth/";
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/signin").permitAll()
+                .antMatchers("/j_spring_security_check").permitAll()
                 .anyRequest().authenticated() //任何请求,登录后可以访问
 
                 //登录配置
-                .and().formLogin().loginPage("/login.html").loginProcessingUrl("/signin").permitAll()
+                .and().formLogin().loginPage("/login.html").loginProcessingUrl("/j_spring_security_check").permitAll()
                 .successHandler(loginSuccessHandler())    ////登录成功后可使用loginSuccessHandler()存储用户信息
 //                .failureHandler()
 
@@ -64,7 +66,7 @@ public class SeedSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("**/js/**", "**/css/**", "/lib/**", "/common/**", "/signin");
+        web.ignoring().antMatchers("**/js/**", "**/css/**", "/lib/**", "/common/**", "/title.js");
     }
 
     @Autowired

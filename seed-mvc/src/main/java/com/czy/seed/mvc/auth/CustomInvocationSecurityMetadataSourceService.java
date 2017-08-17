@@ -2,11 +2,10 @@ package com.czy.seed.mvc.auth;
 
 import org.springframework.security.access.ConfigAttribute;
 import org.springframework.security.web.access.intercept.FilterInvocationSecurityMetadataSource;
-import org.springframework.stereotype.Service;
 
 import java.util.Collection;
 
-@Service
+//@Service
 public class CustomInvocationSecurityMetadataSourceService implements FilterInvocationSecurityMetadataSource {
     @Override
     public Collection<ConfigAttribute> getAttributes(Object object) throws IllegalArgumentException {

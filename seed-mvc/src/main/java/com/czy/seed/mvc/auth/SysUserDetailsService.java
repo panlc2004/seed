@@ -25,4 +25,5 @@ public class SysUserDetailsService implements UserDetailsService {
         SecurityUser securityUser = new SecurityUser(sysUser);
         return securityUser;
     }
+
 }

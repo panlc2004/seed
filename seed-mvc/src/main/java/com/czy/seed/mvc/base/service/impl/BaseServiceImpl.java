@@ -43,8 +43,8 @@ public class BaseServiceImpl<T> implements BaseService<T> {
             SecurityUser loginUser = loginUserTool.getLoginUser();
             if (loginUser != null) {
                 EntityUtil.setPreparedValue(record, "createBy", loginUser.getId());
-                EntityUtil.setPreparedValue(record, "orgId", loginUser.getOrgId());
-                EntityUtil.setPreparedValue(record, "deptId", loginUser.getDeptId());
+                EntityUtil.setPreparedValue(record, "orgId", loginUser.getSysOrgId());
+                EntityUtil.setPreparedValue(record, "deptId", loginUser.getSysDeptId());
             }
             EntityUtil.setPreparedValue(record, "createDt", new Date());
         }

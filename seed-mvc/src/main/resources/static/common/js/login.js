@@ -6,17 +6,17 @@ new Vue({
     data: function () {
         return {
             ruleForm: {
-                username: 'admin',
+                username: 'suadmin',
                 password: 'admin'
             },
             rules: {
                 username: [
                     {required: true, message: '请填写账号', trigger: 'blur'},
-                    {min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
+                    {min: 6, max: 20, message: '长度在 3 到 5 个字符', trigger: 'blur'}
                 ],
                 password: [
                     {required: true, message: '请填写密码', trigger: 'blur'},
-                    {min: 3, max: 5, message: '长度在 3 到 5 个字符', trigger: 'blur'}
+                    {min: 6, max: 20, message: '长度在 3 到 5 个字符', trigger: 'blur'}
                 ]
             }
         };

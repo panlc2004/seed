@@ -28,7 +28,7 @@ public class SecurityUser extends SysUser implements UserDetails {
             setId(sysUser.getId());
             setName(sysUser.getName());
             setEmail(sysUser.getEmail());
-            setPasswrod(sysUser.getPasswrod());
+            setPassword(sysUser.getPassword());
             roles = SpringContextHelper.getBeanByType(SysUserRoleMapper.class).selectRolesByUserId(sysUser.getId());
         }
     }
@@ -47,7 +47,7 @@ public class SecurityUser extends SysUser implements UserDetails {
 
     @Override
     public String getPassword() {
-        return super.getPasswrod();
+        return super.getPassword();
     }
 
     @Override

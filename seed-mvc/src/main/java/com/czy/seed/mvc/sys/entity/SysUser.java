@@ -13,13 +13,13 @@ public class SysUser implements IPrepare {
 
     @Id
     private Long id;
-    private Long orgId;
-    private Long deptId;
+    private Long sysOrgId;
+    private Long sysDeptId;
     private String name;
     private String email;
 
     @Transient
-    private String passwrod;
+    private String password;
 
     public Long getId() {
         return id;
@@ -29,20 +29,20 @@ public class SysUser implements IPrepare {
         this.id = id;
     }
 
-    public Long getOrgId() {
-        return orgId;
+    public Long getSysOrgId() {
+        return sysOrgId;
     }
 
-    public void setOrgId(Long orgId) {
-        this.orgId = orgId;
+    public void setSysOrgId(Long sysOrgId) {
+        this.sysOrgId = sysOrgId;
     }
 
-    public Long getDeptId() {
-        return deptId;
+    public Long getSysDeptId() {
+        return sysDeptId;
     }
 
-    public void setDeptId(Long deptId) {
-        this.deptId = deptId;
+    public void setSysDeptId(Long sysDeptId) {
+        this.sysDeptId = sysDeptId;
     }
 
     public String getName() {
@@ -61,11 +61,11 @@ public class SysUser implements IPrepare {
         this.email = email;
     }
 
-    public String getPasswrod() {
-        return passwrod;
+    public String getPassword() {
+        return password;
     }
 
-    public void setPasswrod(String passwrod) {
-        this.passwrod = passwrod;
+    public void setPassword(String password) {
+        this.password = password;
     }
 }
