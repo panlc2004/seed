@@ -52,7 +52,7 @@
 
 <div class="login-box">
 
-    <el-form class="login-form" :model="ruleForm" :rules="rules" ref="ruleForm" th:action="@{/login}" method="post">
+    <el-form class="login-form" :model="ruleForm" :rules="rules" ref="ruleForm" action="/signin" method="get">
         <el-form-item class="login-infp">
             <!--<div th:if="${param.logout}">
                 <i class="el-icon-circle-check"/>您已注销成功

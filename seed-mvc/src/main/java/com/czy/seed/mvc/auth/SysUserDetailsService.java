@@ -19,10 +19,10 @@ public class SysUserDetailsService implements UserDetailsService {
             throw new UsernameNotFoundException("username maybe is null or empty");
         }
         SysUser sysUser = sysUserDetailsMapper.selectByUsername(username);
-        SecurityUser securityUser = new SecurityUser(sysUser);
-        if (securityUser == null) {
+        if (sysUser == null) {
             throw new UsernameNotFoundException("User:" + username + "not found");
         }
+        SecurityUser securityUser = new SecurityUser(sysUser);
         return securityUser;
     }
 }

@@ -2,6 +2,7 @@ package com.czy.seed.mvc.util;
 
 import java.io.IOException;
 
+import com.czy.seed.mvc.conf.JacksonCustomObjectMapper;
 import com.fasterxml.jackson.core.JsonProcessingException;
 
 public class JsonUtils {
