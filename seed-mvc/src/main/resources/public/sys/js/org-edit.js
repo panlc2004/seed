@@ -34,14 +34,17 @@ var app = new Vue({
             czy.win.close();
         },
         save: function () {
+            var _this = this;
             this.$refs.editForm.validate(function (valid) {
                 if (valid) {
                     czy.ajax.postJson({
                         url:ctx + '/sys/org/save',
                         data:app.entity,
-                        success:function (status, data) {
-                            console.log(status)
-                            console.log(data)
+                        success:function (data, status) {
+                            if(status) {
+                                _this.cancel();
+                                parent.app.search();    //TODO 刷新页面
+                            }
                         }
                     })
                 } else {
