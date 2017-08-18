@@ -31,16 +31,11 @@ var app = new Vue({
             }
         },
         cancel: function () {
-            // var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-            // parent.layer.close(index);
             czy.win.close();
         },
         save: function () {
             this.$refs.editForm.validate(function (valid) {
                 if (valid) {
-                    // $.getJSON(ctx + '/sys/org/save', JSON.stringify(this.entity), function (status, data) {
-                    //     console.log(data);
-                    // })
                     czy.ajax.postJson({
                         url:ctx + '/sys/org/save',
                         data:app.entity,
@@ -55,6 +50,9 @@ var app = new Vue({
             });
 
         }
+    },
+    created:function () {
+        this.entity = czy.param.temp.getEntity();
     }
 });
 

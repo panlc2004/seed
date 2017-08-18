@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <script src="/common/js/head.js"></script>
+</head>
+<body>
+
+<div id="indexDiv">
+    <async-example></async-example>
+    <test2></test2>
+</div>
+
+<script type="text/javascript">
+
+    var comA = Vue.extend({
+        template: '<span>1231239999</span>'
+    })
+
+    Vue.component('test', {
+        template: '1231239999'
+    })
+
+    var test3 = {
+        extends:test
+    }
+
+    var test2 = {
+        extends: comA
+    }
+
+    Vue.component('test2', test2);
+    Vue.component('test3', test3);
+
+    Vue.component('async-example', function (resolve, reject) {
+        setTimeout(function () {
+            // Pass the component definition to the resolve callback
+            resolve({
+                template: '<div>I am async!</div>'
+//                extend:test
+            })
+
+        }, 1000)
+    })
+    new Vue({
+        el: '#indexDiv'
+    })
+</script>
+
+</body>
+
+</html>

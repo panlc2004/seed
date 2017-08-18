@@ -42,6 +42,7 @@
         <freemarker.version>2.3.23</freemarker.version>
         <persistence-api.version>1.0</persistence-api.version>
         <java.version>1.7</java.version>
+        <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     </properties>
 
     <dependencyManagement>

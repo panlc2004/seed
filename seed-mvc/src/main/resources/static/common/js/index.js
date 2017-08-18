@@ -1,48 +1,52 @@
 /**
  * Created by PLC on 2017/8/6.
  */
-//iframe自适应
-$(window).on('resize', function () {
-    var $content = $('.content');
-    var width = $(this).width();
-    var remove = 120;
-    if (width <= 760) {  //宽度在760以下时，header会自动加高，因此要多减一部分
-        remove = 170
-    }
-    //设置页面加载区域高度
-    $content.height($(this).height() - remove);
-    //设置页面加载frame高度
-    $content.find('iframe').each(function () {
-        $(this).height($content.height());
-    });
-}).resize();
+// iframe自适应
+// $(window).on('resize', function () {
+//     var $content = $('.content');
+//     console.log($content.width())
+//     // var remove = 120;
+//     // //设置页面加载区域高度
+//     // $content.height($(this).height() - remove);
+//     // //设置页面加载frame高度
+//     $content.find('iframe').each(function () {
+//         $(this).width($content.width());
+//     });
+// }).resize();
 
-// 定义菜单组件
-Vue.component('menuItem', {
+// 主菜单栏
+var menuItem = Vue.extend({
     name: 'menu-item',
     props: {item: {}},
     template: [
-        '<li v-if="item.types == 1">',
-        '   <a  :href="\'#\'+item.url">',
-        '       <i v-if="item.icon != null" :class="item.icon"></i>',
-        '       <span>{{item.name}}</span>',
-        '   </a>',
-        '</li>',
-            '<li v-else-if="item.types == 2" class="treeview">',
-        '   <a href="#">',
-        '       <i v-if="item.icon != null" :class="item.icon"></i>',
-        '       <i v-else class="fa fa-link"></i>',
-        '           <span>{{item.name}}</span>',
-        '       <span class="pull-right-container">',
-        '           <i class="fa fa-angle-left pull-right"></i>',
-        '       </span>',
-        '   </a>',
-        '   <ul class="treeview-menu">',
-        '       <menu-item :item="item" v-for="item in item.children"></menu-item>',
-        '   </ul>',
-        '</li>'
-    ].join('')
-});
+        '<el-submenu :index="item.id + \'\'">',
+        '<template slot="title"><i :class="item.icon == null ? \'el-icon-menu\' : item.icon"></i><span slot="title">{{item.name}}</span></template>',
+        '<el-menu-item v-if="item.children" v-for="child in item.children" :index="child.id + \'\'" :key="child.id" @click="loadPage(child)">',
+        '<span slot="title">{{child.name}}</span>',
+        '</el-menu-item>',
+        '<menu-item v-if="!item.children" :item="subChild" v-for="subChild in item.children" :key="subChild.name"></menu-item>',
+        '</el-submenu>',
+    ].join(''),
+    methods: {
+        loadInFrame: function (child) {
+            window.location.hash = child.url
+        },
+        loadInTab:function (child) {
+
+        },
+        loadPage: function (child) {
+            if(window.pageloadInTab) {
+                this.loadInTab(child);
+            } else {
+                this.loadInFrame(child);
+            }
+        }
+    }
+
+})
+
+
+Vue.component('menuItem', menuItem);
 
 window.mainPanel = new Vue({
     el: '#main-panel',
@@ -50,6 +54,8 @@ window.mainPanel = new Vue({
         loadUrl: 'homePage.html',
         menuList: {},
         navTitle: '',
+        collapse: false,
+        tempValue:{}
     },
     methods: {
         getMenu: function () {
@@ -57,8 +63,8 @@ window.mainPanel = new Vue({
                 mainPanel.menuList = o.data[0].children;
             });
         },
-        openWin:function(title, url,area) {
-            czy.win._open(title, url,area)
+        openWin: function (title, url, area) {
+            czy.win._open(title, url, area)
         }
     },
     created: function () {
@@ -93,9 +99,3 @@ function routerList(router, menuList) {
         }
     }
 }
-
-// //设置进度加载条
-// mainPanel.$Loading.config({
-//     color: '#264e6a',
-//     height: 50
-// });

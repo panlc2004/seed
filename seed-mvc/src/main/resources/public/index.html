@@ -7,208 +7,112 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <title>Seed</title>
     <script src="/common/js/head.js"></script>
-    <!--ie8适配-->
-    <script src="/lib/html5shiv/3.7.3/html5shiv.min.js"></script>
-    <!--ie8适配-->
-    <script src="/lib/respond/1.4.2/respond.min.js"></script>
     <script src="/lib/router.js"></script>
-    <script src="/lib/bootstrap/js/bootstrap.min.js"></script>
-    <script src="/lib/adminlte/js/adminlte.min.js"></script>
-    <!--<script src="/lib/iview/2.0.0/iview.min.js"></script>-->
 
-    <link rel="stylesheet" href="/lib/bootstrap/css/bootstrap.min.css">
-    <link rel="stylesheet" href="/lib/adminlte/css/AdminLTE.min.css">
-    <link rel="stylesheet" href="/lib/adminlte/css/skins/_all-skins.min.css">
-    <link rel="stylesheet" href="/common/css/index.css">
-    <!--<link rel="stylesheet" href="/lib/iview/2.0.0/iview.css">-->
-    <!--<script type="text/javascript">-->
-        <!--function iframeOnLoad(o) {-->
-            <!--if (o.src != "") {-->
-                <!--mainPanel.$Loading.finish();-->
-            <!--}-->
-        <!--}-->
+    <style type="text/css">
+        body {
+            margin: 0px;
+            width: 100%;
+            height: 100%;
+        }
 
-    <!--</script>-->
+        #main-panel {
+            position: absolute;
+            top: 0px;
+            bottom: 0px;
+            width: 100%;
+        }
+
+        #main-panel .header {
+            height: 6%;
+            min-height: 45px;
+            /*background: #20a0ff;*/
+            background: #1870b4;
+            color: #fff;
+        }
+
+        #main-panel .header .logo {
+            height: 100%;
+            width: 4%;
+            line-height: 100%;
+            /*background-color: #324157;*/
+        }
+
+        #main-panel .header .logo-collapse {
+            height: 100%;
+            width: 14%;
+        }
+
+        #main-panel .header .bar {
+            /*overflow: auto;*/
+            height: 100%;
+            width: 86%;
+            line-height: 100%;
+            /*background-color: #b80494;*/
+        }
+
+        #main-panel .container {
+            height: 94%;
+        }
+
+        #main-panel .container .nav-menu {
+            /*overflow: auto;*/
+            height: 100%;
+            width: 14%;
+        }
+
+
+
+        #main-panel .container .content {
+            overflow: hidden;
+            height: 100%;
+            width: 86%;
+        }
+
+        .el-menu-item {
+            height: 40px !important;
+            line-height: 40px !important;
+        }
+
+        .el-submenu__title {
+            height: 45px !important;
+            line-height: 45px !important;
+        }
+
+        .el-menu-vertical-demo:not(.el-menu--collapse) {
+            /*width: 200px;*/
+            /*min-height: 400px;*/
+            height:100%;
+        }
+
+    </style>
+
 </head>
 
-<body class="hold-transition skin-blue sidebar-mini">
-<div id="main-panel" class="wrapper">
-    <!-- 导航栏 -->
-    <header class="main-header">
-        <!-- Logo -->
-        <a href="index.html" class="logo">
-            <!--菜单收缩时的logo,50x50 pixels-->
-            <span class="logo-mini"><b>SEED</b></span>
-            <!-- 菜单展开时的logo -->
-            <span class="logo-lg"><b>CZY</b>-SEED</span>
-        </a>
+<body style="width: 100%;height: 100%;margin: 0;padding: 0">
 
-        <!-- 顶部工具栏 -->
-        <nav class="navbar navbar-static-top" role="navigation">
-            <!-- 菜单收缩按钮-->
-            <a href="#" class="sidebar-toggle" data-toggle="push-menu" role="button">
-                <span class="sr-only">Toggle navigation</span>
-            </a>
-            <!-- Navbar Right Menu -->
-            <div class="navbar-custom-menu">
-                <ul class="nav navbar-nav">
-                    <!-- User Account Menu -->
-                    <li class="dropdown user user-menu">
-                        <!-- Menu Toggle Button -->
-                        <a href="#" class="dropdown-toggle" data-toggle="dropdown">
-                            <!-- The user image in the navbar-->
-                            <i class="fa fa-user-circle"></i>
-                            <!-- hidden-xs hides the username on small devices so only the image appears. -->
-                            <span class="hidden-xs">登陆人</span>
-                        </a>
-                        <ul class="dropdown-menu">
-                            <!-- The user image in the menu -->
-                            <li class="user-header" style="height: 100px;">
-                                <p>
-                                    登录人信息
-                                    <small>登录人信息</small>
-                                </p>
-                            </li>
-                            <!-- Menu Body -->
-                            <li class="user-body">
-                                <div class="row">
-                                    <div class="col-xs-4 text-center">
-                                        <a href="#">Followers</a>
-                                    </div>
-                                    <div class="col-xs-4 text-center">
-                                        <a href="#">Sales</a>
-                                    </div>
-                                    <div class="col-xs-4 text-center">
-                                        <a href="#">Friends</a>
-                                    </div>
-                                </div>
-                                <!-- /.row -->
-                            </li>
-                            <!-- Menu Footer-->
-                            <li class="user-footer">
-                                <div class="pull-left">
-                                    <a href="#" class="btn btn-default btn-flat">Profile</a>
-                                </div>
-                                <div class="pull-right">
-                                    <a href="#" class="btn btn-default btn-flat">Sign out</a>
-                                </div>
-                            </li>
-                        </ul>
-                    </li>
-                    <!-- Control Sidebar Toggle Button -->
-                    <li>
-                        <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
-                    </li>
-                </ul>
-            </div>
-        </nav>
-    </header>
+<div id="main-panel">
 
-    <!--左侧工具栏-->
-    <aside class="main-sidebar">
-        <section class="sidebar">
-            <!-- 菜单信息 -->
-            <!-- 菜单信息 -->
-            <ul class="sidebar-menu" data-widget="tree">
-                <menu-item :item="item" v-for="item in menuList" :key="item.id"></menu-item>
-            </ul>
-        </section>
-    </aside>
+    <!--头部区域-->
+    <el-row class="header">
+        <el-col :span="4" :class="collapse?'logo':'logo-collapse'">LOG</el-col>
+        <el-col :span="20" class="bar"></el-col>
+    </el-row>
 
-    <!--功能页面加载区域-->
-    <div class="content-wrapper">
-        <!-- 功能标题 -->
-        <section class="content-header">
-            <ol class="breadcrumb" id="nav_title" style="position:static;float:none;">
-                <li class="active">
-                    <i class="fa fa-home" style="font-size:20px;position:relative;top:2px;left:-3px;"></i> &nbsp;首页
-                </li>
-                <li class="active">{{navTitle}}</li>
-            </ol>
-        </section>
-        <!-- 动态加载区 -->
-        <section class="content" style="background:#fff;">
-            <iframe scrolling="yes" frameborder="0"
-                    style="width:100%;min-height:200px;overflow:visible;background:#fff;" :src="loadUrl"
-                    ></iframe>
-        </section>
+    <!--内容区域-->
+    <el-row class="container">
+        <!--左侧菜单区域-->
+        <el-col :span="4" class="nav-menu">
+            <el-menu default-active="1" class="el-menu-vertical-demo" theme="dark" :collapse="collapse">
+                <menu-item :item="item" v-for="item in menuList" :key="item.name"></menu-item>
+            </el-menu>
+        </el-col>
+        <!--右侧内容区域-->
+        <el-col :span="20" class="content">
+            <iframe ref="main-frame" width="100%" height="100%" :src="loadUrl" frameborder="0"></iframe>
+        </el-col>
+    </el-row>
 
-    </div>
-
-    <!-- Control Sidebar -->
-    <aside class="control-sidebar control-sidebar-dark">
-        <!-- Create the tabs -->
-        <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
-            <li class="active"><a href="#control-sidebar-home-tab" data-toggle="tab"><i class="fa fa-home"></i></a></li>
-            <li><a href="#control-sidebar-settings-tab" data-toggle="tab"><i class="fa fa-gears"></i></a></li>
-        </ul>
-        <!-- Tab panes -->
-        <div class="tab-content">
-            <!-- Home tab content -->
-            <div class="tab-pane active" id="control-sidebar-home-tab">
-                <h3 class="control-sidebar-heading">Recent Activity</h3>
-                <ul class="control-sidebar-menu">
-                    <li>
-                        <a href="javascript:;">
-                            <i class="menu-icon fa fa-birthday-cake bg-red"></i>
-
-                            <div class="menu-info">
-                                <h4 class="control-sidebar-subheading">Langdon's Birthday</h4>
-
-                                <p>Will be 23 on April 24th</p>
-                            </div>
-                        </a>
-                    </li>
-                </ul>
-                <!-- /.control-sidebar-menu -->
-
-                <h3 class="control-sidebar-heading">Tasks Progress</h3>
-                <ul class="control-sidebar-menu">
-                    <li>
-                        <a href="javascript:;">
-                            <h4 class="control-sidebar-subheading">
-                                Custom Template Design
-                                <span class="pull-right-container">
-                    <span class="label label-danger pull-right">70%</span>
-                  </span>
-                            </h4>
-
-                            <div class="progress progress-xxs">
-                                <div class="progress-bar progress-bar-danger" style="width: 70%"></div>
-                            </div>
-                        </a>
-                    </li>
-                </ul>
-                <!-- /.control-sidebar-menu -->
-
-            </div>
-            <!-- /.tab-pane -->
-            <!-- Stats tab content -->
-            <div class="tab-pane" id="control-sidebar-stats-tab">Stats Tab Content</div>
-            <!-- /.tab-pane -->
-            <!-- Settings tab content -->
-            <div class="tab-pane" id="control-sidebar-settings-tab">
-                <form method="post">
-                    <h3 class="control-sidebar-heading">General Settings</h3>
-
-                    <div class="form-group">
-                        <label class="control-sidebar-subheading">
-                            Report panel usage
-                            <input type="checkbox" class="pull-right" checked>
-                        </label>
-
-                        <p>
-                            Some information about this general settings option
-                        </p>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </aside>
-    <!-- /.control-sidebar -->
-    <!-- Add the sidebar's background. This div must be placed
-    immediately after the control sidebar -->
-    <div class="control-sidebar-bg"></div>
 </div>
 
 <script src="common/js/index.js"></script>

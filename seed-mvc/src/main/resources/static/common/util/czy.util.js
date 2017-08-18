@@ -1,6 +1,6 @@
 (function () {
     window.czy = {
-        win:{
+        win: {
             open: function (title, url, area) {
                 if (parent.mainPanel != undefined) {
                     parent.mainPanel.openWin(title, url, area);
@@ -31,6 +31,57 @@
                 parent.layer.close(index);
             }
         },
+
+        /**
+         * 参数处理
+         */
+        param: {
+            temp: {
+                _tempValue: {},
+                entityEditKey: 'ENTITY_EDIT_KEY',
+                set: function (key, value) {
+                    if (parent.mainPanel != undefined) {
+                        parent.mainPanel.tempValue[key] = value;
+                    } else {
+                        this._tempValue[key] = value;
+                    }
+                },
+                get: function (key) {
+                    if (parent.mainPanel != undefined) {
+                        return parent.mainPanel.tempValue[key];
+                    } else {
+                        return this._tempValue[key];
+                    }
+                },
+                /**
+                 * 传递修改对象
+                 * @param value
+                 */
+                setEntity: function (value) {
+                    var view = value.view;
+                    if (view) {
+                        if(typeof view.window == 'object') {
+                            this.set(this.entityEditKey, {});
+                            return;
+                        }
+                    }
+                    this.set(this.entityEditKey, value);
+                },
+                /**
+                 * 获取修改对象
+                 */
+                getEntity: function () {
+                    var entity = this.get(this.entityEditKey);
+                    if (entity) {
+                        return entity;
+                    } else {
+                        return {};
+                    }
+                }
+            }
+
+        },
+
         /**
          * ajax封装
          */
