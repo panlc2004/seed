@@ -43,6 +43,10 @@ var router = new VueRouter({
  * @param menu
  */
 function loadComponent(url) {
+    //进入首页时不执行动作
+    if(url == '' || url == '/'){
+        return;
+    }
     $("#component-cache").load(ctx + url,function (data,status) {
         if(status=='success') {
             var component_name = buildComponentNameByUrl(url);
@@ -131,6 +135,7 @@ seed = new Vue({
     mounted:function () {
         //根据url加载对应页面
         var url = buildUrlByWindowLocationHash(window.location.hash);
+        if(url)
         loadComponent(url);
         this.defaultActive = '2';   //让指定菜单置为激活状态 TODO
     }
