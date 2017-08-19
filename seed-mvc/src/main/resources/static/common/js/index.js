@@ -51,7 +51,7 @@ function loadComponent(url) {
             router.addRoutes([{path: router_path, component: component}])
             router.push(router_path);
         } else {
-            alert('error');
+            alert('加载url：' + url + '失败');
         }
     });
 }
