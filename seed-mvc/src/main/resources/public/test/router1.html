@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <script src="/common/js/head.js"></script>
+    <script src="vue-router.js"></script>
+
+</head>
+<body>
+<div id="app">
+    <el-button @click="route">route</el-button>
+    <h1>Hello App!</h1>
+    <p>
+        <!-- 使用 router-link 组件来导航. -->
+        <!-- 通过传入 `to` 属性指定链接. -->
+        <!-- <router-link> 默认会被渲染成一个 `<a>` 标签 -->
+        <router-link to="/foo/:1">Go to Foo</router-link>
+        <router-link to="/bar/:2">Go to Bar</router-link>
+    </p>
+    <!-- 路由出口 -->
+    <!-- 路由匹配到的组件将渲染在这里 -->
+    <router-view></router-view>
+</div>
+
+<script type="text/javascript">
+
+    // 1. 定义（路由）组件。
+    // 可以从其他文件 import 进来
+    const Foo = {
+        template: '<div>foo- {{ $route.params.id }}</div>'}
+    const Bar = {template: '<div>bar- {{ $route.params.id }}</div>'}
+
+    // 2. 定义路由
+    // 每个路由应该映射一个组件。 其中"component" 可以是
+    // 通过 Vue.extend() 创建的组件构造器，
+    // 或者，只是一个组件配置对象。
+    // 我们晚点再讨论嵌套路由。
+    const routes = [
+        {path: '/foo/:id', component: Foo},
+        {path: '/bar/:id', component: Bar}
+    ]
+
+    // 3. 创建 router 实例，然后传 `routes` 配置
+    // 你还可以传别的配置参数, 不过先这么简单着吧。
+    const router1 = new VueRouter({
+        routes: routes // （缩写）相当于 routes: routes
+    })
+
+    // 4. 创建和挂载根实例。
+    // 记得要通过 router 配置参数注入路由，
+    // 从而让整个应用都有路由功能
+    const app = new Vue({
+        router: router1,
+        methods:{
+            route:function () {
+                router1.push('/foo/:1/')
+            }
+        }
+    }).$mount('#app')
+
+</script>
+
+</body>
+
+</html>

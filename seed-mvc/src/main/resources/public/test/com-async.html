@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <script src="/common/js/head.js"></script>
+</head>
+<body>
+
+<div id="app">
+    <el-button @click="load">load</el-button>
+    <async v-if="loadF"></async>
+</div>
+
+
+<script type="text/javascript">
+    Vue.component('async', function (resolve, reject) {
+        resolve({
+            template: '<div>I am async!</div>',
+            methods: {
+                tt: function () {
+                    alert('im async');
+                }
+            },
+            created:function () {
+                alert12('created')
+            }
+        }),reject({
+            error:123
+        })
+    })
+
+    new Vue({
+        el: '#app',
+        data: function () {
+            return {
+                loadF: false
+            }
+        },
+        methods: {
+            load: function () {
+                this.loadF = !this.loadF;
+            }
+        }
+    })
+</script>
+
+</body>
+
+</html>

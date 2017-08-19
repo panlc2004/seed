@@ -1,0 +1,22 @@
+123123123
+<template id="com1">
+    <h1>com1</h1>
+</template>
+
+<div id="rou1">
+    <com1></com1>
+</div>
+
+
+<script type="text/javascript">
+    Vue.component('com1',{
+        template:'#com1',
+    })
+    var rou1 = new Vue({
+        el: '#rou1'
+    });
+
+    var rou1 = Vue.extend({
+        template: '#rou1'
+    });
+</script>

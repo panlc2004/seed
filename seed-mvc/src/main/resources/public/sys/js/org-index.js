@@ -1,8 +1,11 @@
-var app = new Vue({
-    el: '#indexDiv',
+var orgIndex = Vue.extend({
+    template: '#indexDiv',
     mixins: [czyPageBar],
-    data: {
-        url: ctx + '/sys/org/selectPageByParams'
+    data:function() {
+        return{
+            url: ctx + '/sys/org/selectPageByParams'
+
+        }
     },
     methods: {
         search:function () {

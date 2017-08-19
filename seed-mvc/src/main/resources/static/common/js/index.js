@@ -29,6 +29,7 @@ var menuItem = Vue.extend({
     ].join(''),
     methods: {
         loadInFrame: function (child) {
+            console.log(child)
             window.location.hash = child.url
         },
         loadInTab:function (child) {

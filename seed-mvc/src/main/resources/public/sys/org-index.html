@@ -1,18 +1,11 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <script src="/common/js/head.js"></script>
-    <style type="text/css">
-        .el-form-item {
-            margin-bottom: 2px;
-        }
-    </style>
-</head>
-<body>
-<div id="indexDiv">
+<style type="text/css">
+    .el-form-item {
+        margin-bottom: 2px;
+    }
+</style>
+<template id="indexDiv">
+
+    <div>
     <el-row style="padding-right: 5px; padding-bottom: 5px">
         <el-input placeholder="机构名称" size="small" style="width: 100px"></el-input>
         <el-button type="primary" icon="search" size="small" @click="search">查询</el-button>
@@ -32,7 +25,7 @@
     </el-table>
     <el-pagination layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="sizeChange"
                    @current-change="turnPage" :page-size="pageSize" :current-page="currentPage"></el-pagination>
-</div>
-</body>
+    </div>
+
+</template>
 <script src="/sys/js/org-index.js"></script>
-</html>
