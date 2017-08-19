@@ -24,7 +24,6 @@
 
     <modules>
         <module>seed-mvc</module>
-        <module>seed-web</module>
         <module>seed-mybatis</module>
         <module>seed-dependencies</module>
         <module>demo</module>

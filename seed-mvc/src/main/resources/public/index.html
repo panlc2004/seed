@@ -7,7 +7,7 @@
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <title>Seed</title>
     <script src="/common/js/head.js"></script>
-    <script src="/lib/router.js"></script>
+    <script src="/lib/vue/vue-router.js"></script>
 
     <style type="text/css">
         body {
@@ -21,6 +21,7 @@
             top: 0px;
             bottom: 0px;
             width: 100%;
+            height: 100%;
         }
 
         #main-panel .header {
@@ -31,59 +32,74 @@
             color: #fff;
         }
 
-        #main-panel .header .logo {
+        #main-panel .left {
             height: 100%;
-            width: 4%;
-            line-height: 100%;
-            /*background-color: #324157;*/
+            background-color: #324057;
         }
 
-        #main-panel .header .logo-collapse {
-            height: 100%;
-            width: 14%;
+        #main-panel .left .nav-menu {
+            overflow: auto;
+            /*height: 94%;*/
+            background-color: #1f2d3d;
         }
 
-        #main-panel .header .bar {
-            /*overflow: auto;*/
-            height: 100%;
-            width: 86%;
-            line-height: 100%;
-            /*background-color: #b80494;*/
-        }
-
-        #main-panel .container {
-            height: 94%;
-        }
-
-        #main-panel .container .nav-menu {
-            /*overflow: auto;*/
-            height: 100%;
-            width: 14%;
-        }
-
-
-
-        #main-panel .container .content {
-            overflow: hidden;
-            height: 100%;
-            width: 86%;
-        }
-
-        .el-menu-item {
-            height: 40px !important;
-            line-height: 40px !important;
+        /*重写菜单栏高度*/
+        .el-submenu .el-menu-item {
+            height: 40px;
+            line-height: 40px;
         }
 
         .el-submenu__title {
-            height: 45px !important;
-            line-height: 45px !important;
+            height: 45px;
+            line-height: 45px;
         }
 
         .el-menu-vertical-demo:not(.el-menu--collapse) {
-            /*width: 200px;*/
-            /*min-height: 400px;*/
-            height:100%;
+            /*width: 250px;*/
+            /*max-height: 400px;*/
+            height: 100%;
         }
+        /*=======*/
+
+        /*#main-panel .header .logo {*/
+        /*height: 100%;*/
+        /*width: 4%;*/
+        /*line-height: 100%;*/
+        /*!*background-color: #324157;*!*/
+        /*}*/
+
+        /*#main-panel .header .logo-collapse {*/
+        /*height: 100%;*/
+        /*width: 14%;*/
+        /*}*/
+
+        /*#main-panel .header .bar {*/
+        /*!*overflow: auto;*!*/
+        /*height: 100%;*/
+        /*width: 86%;*/
+        /*line-height: 100%;*/
+        /*!*background-color: #b80494;*!*/
+        /*}*/
+
+        /*#main-panel .container {*/
+        /*!*height: 94%;*!*/
+        /*background-color: rgba(235, 57, 29, 0.51);*/
+
+        /*}*/
+
+        /*#main-panel .container .nav-menu {*/
+        /*!*overflow: auto;*!*/
+        /*height: 100%;*/
+        /*width: 14%;*/
+        /*}*/
+
+        /*#main-panel .container .content {*/
+        /*overflow: hidden;*/
+        /*height: 100%;*/
+        /*width: 86%;*/
+        /*}*/
+
+
 
     </style>
 
@@ -93,26 +109,31 @@
 
 <div id="main-panel">
 
-    <!--头部区域-->
-    <el-row class="header">
-        <el-col :span="4" :class="collapse?'logo':'logo-collapse'">LOG</el-col>
-        <el-col :span="20" class="bar"></el-col>
-    </el-row>
-
-    <!--内容区域-->
-    <el-row class="container">
-        <!--左侧菜单区域-->
-        <el-col :span="4" class="nav-menu">
-            <el-menu default-active="1" class="el-menu-vertical-demo" theme="dark" :collapse="collapse">
+    <!--左侧菜单区域-->
+    <el-col :span="4" class="left">
+        <!--header区域-->
+        <el-row class="header">
+            <el-col>LOGO</el-col>
+        </el-row>
+        <!--菜单栏区域-->
+        <el-row class="nav-menu">
+            <el-menu :default-active="defaultActive" class="el-menu-vertical-demo" theme="dark" :collapse="collapse">
                 <menu-item :item="item" v-for="item in menuList" :key="item.name"></menu-item>
             </el-menu>
-        </el-col>
-        <!--右侧内容区域-->
-        <el-col :span="20" class="content">
-            <iframe ref="main-frame" width="100%" height="100%" :src="loadUrl" frameborder="0"></iframe>
-        </el-col>
-    </el-row>
+        </el-row>
+    </el-col>
 
+    <!--右侧区域-->
+    <!--header-->
+    <el-col :span="20">
+        <el-row class="header">
+            <el-col>HDADER</el-col>
+        </el-row>
+        <!--&lt;!&ndash;组件加载缓冲区&ndash;&gt;-->
+        <div id="component-cache" style="display: none"></div>
+        <!--router-view-->
+        <router-view style="margin: 5px;"></router-view>
+    </el-col>
 </div>
 
 <script src="common/js/index.js"></script>
