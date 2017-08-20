@@ -51,6 +51,11 @@
             background-color: #1f2d3d;
         }
 
+        #main-panel .right {
+            overflow: auto;
+            height: 100%;
+        }
+
         /*重写菜单栏高度*/
         .el-submenu .el-menu-item {
             height: 40px;
@@ -66,6 +71,15 @@
             /*width: 250px;*/
             /*max-height: 400px;*/
             height: 100%;
+        }
+
+        #main-panel .right .el-tabs--border-card {
+            background: #fff;
+            border: 0px solid #d1dbe5;
+        }
+
+        #main-panel .right .el-popover, .el-tabs--border-card {
+            box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0), 0 0 6px 0 rgba(0, 0, 0, 0);
         }
 
         /*=======*/
@@ -133,7 +147,7 @@
 
     <!--右侧区域-->
     <!--header-->
-    <el-col :span="20">
+    <el-col :span="20" class="right">
         <el-row class="header">
             <el-col>
                 <el-button @click="testRouter">router</el-button>
@@ -141,7 +155,7 @@
         </el-row>
         <!--&lt;!&ndash;组件加载缓冲区&ndash;&gt;-->
         <div id="component-cache" style="display: none"></div>
-        <el-row style="height: 100%;">
+        <el-row>
             <el-tabs type="border-card" :closable="true" v-model="activeName" @tab-remove="removeTab">
                 <el-tab-pane v-for="(item, index) in pageTables"
                              :key="item.id"
