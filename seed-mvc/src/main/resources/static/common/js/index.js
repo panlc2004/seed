@@ -59,11 +59,23 @@ var router = new VueRouter({
  * @param child 菜单项
  */
 function openTab(child) {
-    seed.pageTables.push({
-        id: child.id,
-        label: child.name,
-        name: child.id
-    });
+    var newTab = true;
+    //查找要打开的页面是否已经打开
+    for(var i = 0; i < seed.pageTables.length; i++) {
+        if(seed.pageTables[i].id == child.id) {
+            newTab = false;
+            break;
+        }
+    }
+    //如果页面未打开，则打开
+    if(newTab) {
+        seed.pageTables.push({
+            id: child.id,
+            label: child.name,
+            name: child.id
+        });
+    }
+    //激活对应的tab
     seed.activeName = child.id;//tab选中
 }
 
@@ -200,12 +212,12 @@ seed = new Vue({
             var url = buildUrlByWindowLocationHash(window.location.hash);
             if (url != '/') {
                 var menu = this.findMenuByUrl(url);
-                if (menu != '') {
+                if (menu) {
                     openTab(menu);
                     loadComponent(url);
                     this.defaultActive = menu.id + '';   //让指定菜单置为激活状态 TODO
                 } else {
-                    alert("无法打开指定地址");
+                    alert("无法对输入地址进行功能定位");
                 }
             }
         },
