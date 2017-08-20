@@ -33,8 +33,9 @@
         }
 
         #main-panel .header {
-            height: 6%;
-            min-height: 45px;
+            /*height: 6%;*/
+            height: 45px;
+            line-height: 45px;
             /*background: #20a0ff;*/
             background: #1870b4;
             color: #fff;
@@ -48,7 +49,7 @@
         #main-panel .left .nav-menu {
             overflow: auto;
             /*height: 94%;*/
-            background-color: #1f2d3d;
+            /*background-color: #324057;*/
         }
 
         #main-panel .right {
@@ -69,7 +70,7 @@
 
         .el-menu-vertical-demo:not(.el-menu--collapse) {
             /*width: 250px;*/
-            /*max-height: 400px;*/
+            max-height: 400px;
             height: 100%;
         }
 
@@ -142,19 +143,22 @@
             <el-col>LOGO</el-col>
         </el-row>
         <!--菜单栏区域-->
-        <el-row class="nav-menu">
+        <!--<el-row class="nav-menu">-->
             <el-menu :default-active="defaultActive" class="el-menu-vertical-demo" theme="dark" :collapse="collapse">
                 <menu-item :item="item" v-for="item in menuList" :key="item.name"></menu-item>
             </el-menu>
-        </el-row>
+        <!--</el-row>-->
     </el-col>
 
     <!--右侧区域-->
     <!--header-->
     <el-col :span="20" class="right">
         <el-row class="header">
-            <el-col>
-                <el-button @click="testRouter">router</el-button>
+            <el-col :span="1">
+                <i class="fa fa-reorder" style="cursor:pointer" @click="collapseMenu"></i>
+            </el-col>
+            <el-col :span="23" style="text-align: right; padding-right: 10px">
+                <el-button>退出</el-button>
             </el-col>
         </el-row>
         <!--&lt;!&ndash;组件加载缓冲区&ndash;&gt;-->

@@ -93,6 +93,8 @@ function routeUpdate(url, component_name, router_path) {
     //组件已经加载，直接跳转
     if (routeCache.indexOf(component_name) != -1) {
         router.push(router_path);
+        //设置updated方法不再执行
+        seed.canUpdate = false;
         return;
     }
     //组件未加载，先加载组件，再跳转
@@ -104,6 +106,8 @@ function routeUpdate(url, component_name, router_path) {
             addRoutes(component_name, router_path);
             //路由跳转
             router.push(router_path);
+            //设置updated方法不再执行
+            seed.canUpdate = false;
         } else {
             alert('加载url：' + url + '失败');
         }
@@ -168,20 +172,45 @@ seed = new Vue({
         defaultActive: '1',
         pageTables: [],
         tabshow: {},
-        activeName: '0'
+        activeName: '0',
+        updateExe:true
+    },
+    computed:{
+        canUpdate:{
+            get:function () {
+                return this.updateExe;
+            },
+            set:function (v) {
+                this.updateExe = v;
+            }
+        }
     },
     methods: {
         getMenu: function () {
             $.get("/sys/resource/findResourceTreeForLoginUser?_" + $.now(), function (o) {
                 seed.menuList = o.data[0].children;
+                seed.initPage();
             });
         },
-        openWin: function (title, url, area) {
-            czy.win._open(title, url, area)
+        /**
+         * 尝试根据url加载对应功能页
+         */
+        initPage:function () {
+            //根据url加载对应页面
+            var url = buildUrlByWindowLocationHash(window.location.hash);
+            if (url != '/') {
+                var menu = this.findMenuByUrl(url);
+                if (menu != '') {
+                    openTab(menu);
+                    loadComponent(url);
+                    this.defaultActive = menu.id + '';   //让指定菜单置为激活状态 TODO
+                } else {
+                    alert("无法打开指定地址");
+                }
+            }
         },
-        testRouter: function () {
-            // this.tabshow.test=!this.tabshow.test;
-            this.$set(this.tabshow, 'tab2', !this.tabshow.tab2)
+        collapseMenu: function () {
+            this.collapse = !this.collapse;
         },
         /**
          * 关闭tab页
@@ -201,57 +230,31 @@ seed = new Vue({
                 })
             }
             this.activeName = active;
-            this.pageTables = tabs.filter(function(tab) {
+            this.pageTables = tabs.filter(function (tab) {
                 return tab.name !== targetName
             });
         },
-        findMenu: function (url) {
-            var menu;
-            menu = this.cfind(this.menuList, url);
-            if (menu) {
-                return menu;
-            }
-        },
-        cfind: function (item, url, res) {
-            debugger;
-            if (res) {
-                return res;
-            }
+        findMenuByUrl: function (url) {
             var _this = this;
-            if (item.types == 1 && item.url == url) {
-                return item;
-            }
+            var menu;
+            menu = this.findMenu(_this.menuList, url);
+            return menu;
+        },
+        findMenu: function (item, url) {
+            var _this = this;
             for (var i = 0; i < item.length; i++) {
                 if (item[i].types == 2) {
-                    _this.cfind(item[i], url, res);
-                } else if (item[i].types == 1) {
-                    if (item[i].url == url) {
-                        res = item;
-                    }
+                    return _this.findMenu(item[i].children, url)
+                } else if(item[i].types == 1 && item[i].url == url) {
+                    return item[i];
                 }
             }
-            return res;
-        }
+        },
+
     },
     created: function () {
         this.getMenu();
-    },
-    updated: function () {
-        // if (this.menuList.length && this.menuList.length > 0) {
-        //     //根据url加载对应页面
-        //     var url = buildUrlByWindowLocationHash(window.location.hash);
-        //     if(url != '/') {
-        //         var menu = this.findMenu(url);
-        //         console.log(menu);
-        //         if (menu != '') {
-        //             openTab(menu);
-        //             loadComponent(url);
-        //             this.defaultActive = '2';   //让指定菜单置为激活状态 TODO
-        //         } else {
-        //             alert("未找到指定资源");
-        //         }
-        //     }
-        // }
     }
+
 });
 
