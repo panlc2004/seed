@@ -5,7 +5,6 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <title>Seed</title>
-
     <script src="/lib/jquery/jquery.min.js"></script>
     <script src="/lib/vue/2.4.2/vue.js"></script>
     <script src="/lib/vue/vue-router.js"></script>
@@ -68,6 +67,7 @@
             /*max-height: 400px;*/
             height: 100%;
         }
+
         /*=======*/
 
         /*#main-panel .header .logo {*/
@@ -109,7 +109,6 @@
         /*}*/
 
 
-
     </style>
 
 </head>
@@ -136,12 +135,22 @@
     <!--header-->
     <el-col :span="20">
         <el-row class="header">
-            <el-col>HDADER</el-col>
+            <el-col>
+                <el-button @click="testRouter">router</el-button>
+            </el-col>
         </el-row>
         <!--&lt;!&ndash;组件加载缓冲区&ndash;&gt;-->
         <div id="component-cache" style="display: none"></div>
-        <!--router-view-->
-        <router-view style="margin: 5px;"></router-view>
+        <el-row style="height: 100%;">
+            <el-tabs type="border-card" :closable="true" v-model="activeName" @tab-remove="removeTab">
+                <el-tab-pane v-for="(item, index) in pageTables"
+                             :key="item.id"
+                             :label="item.label"
+                             :name="item.name">
+                    <router-view :name="'view' + item.id"></router-view>
+                </el-tab-pane>
+            </el-tabs>
+        </el-row>
     </el-col>
 </div>
 

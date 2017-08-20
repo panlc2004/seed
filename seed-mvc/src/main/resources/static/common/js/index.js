@@ -1,8 +1,23 @@
 /**
  * Created by PLC on 2017/8/6.
  */
+String.prototype.startWith = function (str) {
+    var reg = new RegExp('^' + str);
+    return reg.test(this);
+}
+
+String.prototype.endWith = function (str) {
+    var reg = new RegExp(str + "$");
+    return reg.test(this);
+}
+
+String.prototype.replaceAll = function (str, value) {
+    var regExp = new RegExp(str, 'gm');
+    return this.replace(regExp, value);
+}
+
 // 菜单栏
-Vue.component('menuItem',{
+Vue.component('menuItem', {
     name: 'menu-item',
     props: {item: {}},
     template: [
@@ -17,10 +32,11 @@ Vue.component('menuItem',{
     methods: {
         loadInFrame: function (child) {
         },
-        loadInTab:function (child) {
+        loadInTab: function (child) {
 
         },
         loadPage: function (child) {
+            openTab(child);
             loadComponent(child.url);
             // if(window.pageloadInTab) {
             //     this.loadInTab(child);
@@ -29,30 +45,64 @@ Vue.component('menuItem',{
             // }
         }
     }
-
 })
 
 // 定义路由
 var routes = [];
+var routeCache = [];
 var router = new VueRouter({
     routes: routes
 });
 
 /**
+ * 打开tab页
+ * @param child 菜单项
+ */
+function openTab(child) {
+    seed.pageTables.push({
+        id: child.id,
+        label: child.name,
+        name: child.id
+    });
+    seed.activeName = child.id;//tab选中
+}
+
+/**
  * 加载组件并设置路由
- * @param menu
+ * @param url 请求url
  */
 function loadComponent(url) {
     //进入首页时不执行动作
-    if(url == '' || url == '/'){
+    if (url == '' || url == '/') {
         return;
     }
-    $("#component-cache").load(ctx + url,function (data,status) {
-        if(status=='success') {
-            var component_name = buildComponentNameByUrl(url);
-            var router_path = '/' + component_name;
-            var component = eval(component_name)
-            router.addRoutes([{path: router_path, component: component}])
+    //根据url计算组件名称
+    var component_name = buildComponentNameByUrl(url);
+    //路由路径
+    var router_path = '/' + component_name;
+    //更新路由
+    routeUpdate(url, component_name, router_path);
+}
+
+/**
+ * 页面跳转
+ * @param component_name    路由名称
+ * @param router_path   路由路径
+ */
+function routeUpdate(url, component_name, router_path) {
+    //组件已经加载，直接跳转
+    if (routeCache.indexOf(component_name) != -1) {
+        router.push(router_path);
+        return;
+    }
+    //组件未加载，先加载组件，再跳转
+    $("#component-cache").load(ctx + url, function (data, status) {
+        if (status == 'success') {
+            //缓存组件名称
+            routeCache.push(component_name);
+            //更新路由
+            addRoutes(component_name, router_path);
+            //路由跳转
             router.push(router_path);
         } else {
             alert('加载url：' + url + '失败');
@@ -60,19 +110,18 @@ function loadComponent(url) {
     });
 }
 
-String.prototype.startWith=function(str){
-    var reg=new RegExp('^'+str);
-    return reg.test(this);
-}
-
-String.prototype.endWith=function(str){
-    var reg=new RegExp(str+"$");
-    return reg.test(this);
-}
-
-String.prototype.replaceAll=function(str,value){
-    var regExp = new RegExp(str,'gm');
-    return this.replace(regExp, value);
+/**
+ * 更新路由
+ * @param component_name
+ * @param router_path
+ */
+function addRoutes(component_name, router_path) {
+    //动态增加路由
+    var component = eval(component_name)
+    var routeName = seed.activeName;
+    var componentRoute = {};
+    componentRoute['view' + routeName] = component;
+    router.addRoutes([{path: router_path, components: {view2: component}}]);
 }
 
 /**
@@ -80,12 +129,12 @@ String.prototype.replaceAll=function(str,value){
  * @param url
  */
 function buildComponentNameByUrl(url) {
-    if(!url.startWith('/')) {
+    if (!url.startWith('/')) {
         alert("url必须以'/'开头")
         return;
     }
-    var component_name = url.replace('/','').replaceAll('\/', '$').replaceAll('-', '_');
-    if(url.endWith('.html')){
+    var component_name = url.replace('/', '').replaceAll('\/', '$').replaceAll('-', '_');
+    if (url.endWith('.html')) {
         component_name = component_name.replace('.html', '_html');
     }
     return component_name
@@ -97,13 +146,13 @@ function buildComponentNameByUrl(url) {
  * @returns {*}
  */
 function buildUrlByWindowLocationHash(locationHash) {
-    locationHash = locationHash.replace('#','')
-    if(!locationHash.startWith('/')) {
+    locationHash = locationHash.replace('#', '')
+    if (!locationHash.startWith('/')) {
         alert("url必须以'/'开头")
         return;
     }
-    if(locationHash.endWith('_html')) {
-        locationHash = locationHash.replace('_html','.html');
+    if (locationHash.endWith('_html')) {
+        locationHash = locationHash.replace('_html', '.html');
     }
     var url = locationHash.replaceAll('\\$', '/').replaceAll('_', '-');
     return url;
@@ -115,9 +164,11 @@ seed = new Vue({
     data: {
         loadUrl: 'homePage.html',
         menuList: {},
-        navTitle: '',
         collapse: false,
-        defaultActive:'1'
+        defaultActive: '1',
+        pageTables: [],
+        tabshow: {},
+        activeName: '0'
     },
     methods: {
         getMenu: function () {
@@ -127,18 +178,80 @@ seed = new Vue({
         },
         openWin: function (title, url, area) {
             czy.win._open(title, url, area)
+        },
+        testRouter: function () {
+            // this.tabshow.test=!this.tabshow.test;
+            this.$set(this.tabshow, 'tab2', !this.tabshow.tab2)
+        },
+        /**
+         * 关闭tab页
+         * @param targetName
+         */
+        removeTab: function (targetName) {
+            var active = this.activeName;
+            var tabs = this.pageTables;
+            if (this.activeName == targetName) {
+                tabs.forEach(function (tab, index) {
+                    if (tab.name == targetName) {
+                        var nextTab = tabs[index + 1] || tabs[index - 1];
+                        if (nextTab) {
+                            active = nextTab.name;
+                        }
+                    }
+                })
+            }
+            this.activeName = active;
+            this.pageTables = tabs.filter(function(tab) {
+                return tab.name !== targetName
+            });
+        },
+        findMenu: function (url) {
+            var menu;
+            menu = this.cfind(this.menuList, url);
+            if (menu) {
+                return menu;
+            }
+        },
+        cfind: function (item, url, res) {
+            debugger;
+            if (res) {
+                return res;
+            }
+            var _this = this;
+            if (item.types == 1 && item.url == url) {
+                return item;
+            }
+            for (var i = 0; i < item.length; i++) {
+                if (item[i].types == 2) {
+                    _this.cfind(item[i], url, res);
+                } else if (item[i].types == 1) {
+                    if (item[i].url == url) {
+                        res = item;
+                    }
+                }
+            }
+            return res;
         }
     },
     created: function () {
         this.getMenu();
     },
-    mounted:function () {
-        //根据url加载对应页面
-        var url = buildUrlByWindowLocationHash(window.location.hash);
-        if(url)
-        loadComponent(url);
-        this.defaultActive = '2';   //让指定菜单置为激活状态 TODO
+    updated: function () {
+        // if (this.menuList.length && this.menuList.length > 0) {
+        //     //根据url加载对应页面
+        //     var url = buildUrlByWindowLocationHash(window.location.hash);
+        //     if(url != '/') {
+        //         var menu = this.findMenu(url);
+        //         console.log(menu);
+        //         if (menu != '') {
+        //             openTab(menu);
+        //             loadComponent(url);
+        //             this.defaultActive = '2';   //让指定菜单置为激活状态 TODO
+        //         } else {
+        //             alert("未找到指定资源");
+        //         }
+        //     }
+        // }
     }
-
 });
 
