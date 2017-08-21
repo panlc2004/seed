@@ -1,5 +1,6 @@
     sys$org_index_html = Vue.extend({
-    template: '#sys$org_index_html',
+    template: '#sys_org_index_html',
+
     mixins: [czyPageBar],
     data: function () {
         return {
