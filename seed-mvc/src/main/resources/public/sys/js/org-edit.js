@@ -1,7 +1,8 @@
 sys$org_edit_html = Vue.extend({
-    el: '#sys$org_edit_html',
+    template: '#sys__org_edit_html',
     data: function () {
         return {
+            show: false,
             entity: {},
             ru: {required: true, message: 'test'},
             rules: {
@@ -20,28 +21,21 @@ sys$org_edit_html = Vue.extend({
         }
     },
     methods: {
-        validatePass: function (rule, value, callback) {
-            if (value === '') {
-                callback(new Error('请输入密码'));
-            } else {
-                if (app.entity.name !== '') {
-                    // this.$refs.ruleForm2.validateField('checkPass');
-                }
-                callback();
-            }
+        open: function () {
+            this.show = true;
         },
-        cancel: function () {
-            czy.win.close();
+        close: function () {
+            this.show = false;
         },
         save: function () {
             var _this = this;
             this.$refs.editForm.validate(function (valid) {
                 if (valid) {
                     czy.ajax.postJson({
-                        url:ctx + '/sys/org/save',
-                        data:app.entity,
-                        success:function (data, status) {
-                            if(status) {
+                        url: ctx + '/sys/org/save',
+                        data: app.entity,
+                        success: function (data, status) {
+                            if (status) {
                                 _this.cancel();
                                 parent.app.search();    //TODO 刷新页面
                             }
@@ -54,8 +48,15 @@ sys$org_edit_html = Vue.extend({
 
         }
     },
-    created:function () {
-        this.entity = czy.param.temp.getEntity();
+    created: function () {
+        //创建定时器一定要在关闭方法里销毁！
+        this.timer = window.setInterval(function () {
+            console.log(66666)
+        }, 1000)
+    },
+    destroyed: function () {
+        //创建定时器一定要在destroyed里销毁！
+        window.clearInterval(this.timer);
     }
 });
 

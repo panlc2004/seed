@@ -1,20 +1,22 @@
-<template id="sys$org_edit_html">
+<template id="sys__org_edit_html">
     <div>
-        <el-form label-position="right" label-width="80px" :model="entity" :rules="rules" ref="editForm">
-            <el-form-item label="组织名称" prop="orgName">
-                <el-input v-model="entity.orgName" size="small"></el-input>
-            </el-form-item>
-            <el-form-item label="组织编码" prop="orgCode">
-                <el-input v-model="entity.orgCode" size="small"></el-input>
-            </el-form-item>
-            <el-form-item label="描述" prop="memo">
-                <el-input v-model="entity.memo" type="textarea" :rows="10" size="small"></el-input>
-            </el-form-item>
-        </el-form>
-        <el-row style="text-align: center">
-            <el-button type="primary" size="small" @click="save">提交</el-button>
-            <el-button size="small" @click="cancel">取消</el-button>
-        </el-row>
+        <el-dialog title="组织机构信息" :visible.sync="show">
+            <el-form label-position="right" label-width="80px" :model="entity" :rules="rules" ref="editForm">
+                <el-form-item label="组织名称" prop="orgName">
+                    <el-input v-model="entity.orgName" size="small"></el-input>
+                </el-form-item>
+                <el-form-item label="组织编码" prop="orgCode">
+                    <el-input v-model="entity.orgCode" size="small"></el-input>
+                </el-form-item>
+                <el-form-item label="描述" prop="memo">
+                    <el-input v-model="entity.memo" type="textarea" :rows="10" size="small"></el-input>
+                </el-form-item>
+            </el-form>
+            <el-row style="text-align: center">
+                <el-button type="primary" size="small" @click="save">提交</el-button>
+                <el-button size="small" @click="close">取消</el-button>
+            </el-row>
+        </el-dialog>
     </div>
 </template>
 <script src="/sys/js/org-edit.js"></script>

@@ -1,87 +1,37 @@
 (function () {
     window.czy = {
-        win: {
-            open: function (title, url, area) {
-                if (parent.mainPanel != undefined) {
-                    parent.mainPanel.openWin(title, url, area);
-                } else {
-                    this._open(title, url, area);
-                }
-            },
-
-            _open: function (title, url, area) {
-                var defaults = {
-                    type: 2,
-                    title: title,
-                    area: area,
-                    // closeBtn:2,
-                    fixed: false,
-                    maxmin: false,
-                    content: url
-                };
-                if (!area) {
-                    defaults.area = ['50%', '50%'];
-                }
-                var _options = $.extend({}, defaults);
-                layer.open(_options);
-            },
-
-            close: function () {
-                var index = parent.layer.getFrameIndex(window.name); //获取窗口索引
-                parent.layer.close(index);
-            }
-        },
-
         /**
-         * 参数处理
+         * 子组件操作
          */
-        param: {
-            temp: {
-                _tempValue: {},
-                entityEditKey: 'ENTITY_EDIT_KEY',
-                set: function (key, value) {
-                    debugger
-                    if (parent.mainPanel != undefined) {
-                        parent.mainPanel.tempValue[key] = value;
-                    } else {
-                        this._tempValue[key] = value;
-                    }
-                },
-                get: function (key) {
-                    debugger
-                    if (parent.mainPanel != undefined) {
-                        return parent.mainPanel.tempValue[key];
-                    } else {
-                        return this._tempValue[key];
-                    }
-                },
-                /**
-                 * 传递修改对象
-                 * @param value
-                 */
-                setEntity: function (value) {
-                    var view = value.view;
-                    if (view) {
-                        if(typeof view.window == 'object') {
-                            this.set(this.entityEditKey, {});
-                            return;
-                        }
-                    }
-                    this.set(this.entityEditKey, value);
-                },
-                /**
-                 * 获取修改对象
-                 */
-                getEntity: function () {
-                    var entity = this.get(this.entityEditKey);
-                    if (entity) {
-                        return entity;
-                    } else {
-                        return {};
-                    }
-                }
-            }
+        //子组件缓存
+        _compCache: {},
+        /**
+         * 尝试加载子组件，已经加载过的不再加载
+         * @param url 组件定义文件url
+         */
+        loadComponent: function (url, targetDiv, callback) {
+            //根据url计算组件名称
+            var component_name = buildComponentNameByUrl(url);
+            if (czy._compCache[component_name] == undefined) {  //未加载过的组件执行加载
+                $("#component-cache").load(url, function (data, status) {
+                    if (status == 'success') {
+                        var componentType = eval(component_name);       //取得组件定义
+                        var component = new componentType();            //创建组件实例
+                        component.$mount(targetDiv);                     //挂载组件到指定dom
+                        czy._compCache[component_name] = component;    //缓存组件名称及组件实例
 
+                        //调用回调方法
+                        callback(component);
+                    } else {
+                        alert('加载url：' + url + '失败');
+                    }
+                });
+
+            } else {    //组件已经加载，直接跳转
+                var component = czy._compCache[component_name];    //取得缓存组件
+                //调用回调方法
+                callback(component);
+            }
         },
 
         /**

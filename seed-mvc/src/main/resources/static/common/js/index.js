@@ -48,10 +48,10 @@ Vue.component('menuItem', {
 })
 
 // 定义路由
-var routes = [];
-var routeCache = [];
-var router = new VueRouter({
-    routes: routes
+var _routes = [];
+var menuRouteCache = [];
+var menuRouter = new VueRouter({
+    routes: _routes
 });
 
 /**
@@ -94,32 +94,27 @@ function loadComponent(url) {
     var router_path = '/' + component_name;
     //更新路由
     routeUpdate(url, component_name, router_path);
+    //路由跳转
+    menuRouter.push(router_path);
 }
 
 /**
- * 页面跳转
+ * 尝试加载组件并更新主路由
  * @param component_name    路由名称
  * @param router_path   路由路径
  */
 function routeUpdate(url, component_name, router_path) {
     //组件已经加载，直接跳转
-    if (routeCache.indexOf(component_name) != -1) {
-        router.push(router_path);
-        //设置updated方法不再执行
-        seed.canUpdate = false;
+    if (menuRouteCache.indexOf(component_name) != -1) {
         return;
     }
     //组件未加载，先加载组件，再跳转
     $("#component-cache").load(ctx + url, function (data, status) {
         if (status == 'success') {
             //缓存组件名称
-            routeCache.push(component_name);
+            menuRouteCache.push(component_name);
             //更新路由
             addRoutes(component_name, router_path);
-            //路由跳转
-            router.push(router_path);
-            //设置updated方法不再执行
-            seed.canUpdate = false;
         } else {
             alert('加载url：' + url + '失败');
         }
@@ -137,7 +132,7 @@ function addRoutes(component_name, router_path) {
     var routeName = seed.activeName;
     var componentRoute = {};
     componentRoute['view' + routeName] = component;
-    router.addRoutes([{path: router_path, components: {view2: component}}]);
+    menuRouter.addRoutes([{path: router_path, components: {view2: component}}]);
 }
 
 /**
@@ -176,7 +171,7 @@ function buildUrlByWindowLocationHash(locationHash) {
 
 seed = new Vue({
     el: '#main-panel',
-    router: router,
+    router: menuRouter,
     data: {
         loadUrl: 'homePage.html',
         menuList: {},
@@ -186,16 +181,6 @@ seed = new Vue({
         tabshow: {},
         activeName: '0',
         updateExe:true
-    },
-    computed:{
-        canUpdate:{
-            get:function () {
-                return this.updateExe;
-            },
-            set:function (v) {
-                this.updateExe = v;
-            }
-        }
     },
     methods: {
         getMenu: function () {

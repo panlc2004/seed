@@ -12,8 +12,13 @@
             alert(123);
         },
         toEdit: function (entity) {
-            czy.win.open('机构信息维护', ctx + '/sys/org-edit.html', ["400px", "450px"]);
-            czy.param.temp.setEntity(entity);
+            czy.loadComponent(ctx + '/sys/org-edit.html', '#test' ,function (a) {
+                // debugger;
+                // var a = new sys$org_edit_html();
+                // var target = '#' + 'test';
+                // a.$mount(target);
+                a.open();
+            });
         },
         del: function () {
 
