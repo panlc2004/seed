@@ -49,14 +49,10 @@ sys$org_edit_html = Vue.extend({
         }
     },
     created: function () {
-        //创建定时器一定要在关闭方法里销毁！
-        this.timer = window.setInterval(function () {
-            console.log(66666)
-        }, 1000)
+        //不能写
     },
     destroyed: function () {
-        //创建定时器一定要在destroyed里销毁！
-        window.clearInterval(this.timer);
+        //不能写
     }
 });
 
