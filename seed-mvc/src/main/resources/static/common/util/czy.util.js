@@ -40,6 +40,7 @@
                 _tempValue: {},
                 entityEditKey: 'ENTITY_EDIT_KEY',
                 set: function (key, value) {
+                    debugger
                     if (parent.mainPanel != undefined) {
                         parent.mainPanel.tempValue[key] = value;
                     } else {
@@ -47,6 +48,7 @@
                     }
                 },
                 get: function (key) {
+                    debugger
                     if (parent.mainPanel != undefined) {
                         return parent.mainPanel.tempValue[key];
                     } else {
