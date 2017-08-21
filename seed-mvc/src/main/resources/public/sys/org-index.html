@@ -3,29 +3,28 @@
         margin-bottom: 2px;
     }
 </style>
-<template id="indexDiv">
-
+<template id="sys$org_index_html">
     <div>
-    <el-row style="padding-right: 5px; padding-bottom: 5px">
-        <el-input placeholder="机构名称" size="small" style="width: 100px"></el-input>
-        <el-button type="primary" icon="search" size="small" @click="search">查询</el-button>
-        <el-button type="primary" icon="plus" size="small" @click="toEdit">新增</el-button>
-    </el-row>
+        <el-row style="padding-right: 5px; padding-bottom: 5px">
+            <el-input ref="xxx" placeholder="机构名称" size="small" style="width: 100px"></el-input>
+            <el-button type="primary" icon="search" size="small" @click="search">查询</el-button>
+            <el-button type="primary" icon="plus" size="small" @click="toEdit">新增</el-button>
+        </el-row>
 
+        <el-table :data="pageData" border="">
+            <el-table-column prop="orgName" label="机构名称"></el-table-column>
+            <el-table-column prop="orgCode" label="机构编码"></el-table-column>
+            <el-table-column label="操作" width="200">
+                <template scope="scope">
+                    <el-button size="mini" type="warning" icon="edit" @click="toEdit(scope.row)">修改</el-button>
+                    <el-button size="mini" type="danger" icon="delete" @click="del(scope.$index, scope.row)">删除
+                    </el-button>
+                </template>
+            </el-table-column>
+        </el-table>
 
-    <el-table :data="pageData" border="">
-        <el-table-column prop="orgName" label="机构名称"></el-table-column>
-        <el-table-column prop="orgCode" label="机构编码"></el-table-column>
-        <el-table-column label="操作" width="200">
-            <template scope="scope">
-                <el-button size="mini" type="warning" icon="edit" @click="toEdit(scope.row)">修改</el-button>
-                <el-button size="mini" type="danger" icon="delete" @click="del(scope.$index, scope.row)">删除</el-button>
-            </template>
-        </el-table-column>
-    </el-table>
-    <el-pagination layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="sizeChange"
-                   @current-change="turnPage" :page-size="pageSize" :current-page="currentPage"></el-pagination>
+        <el-pagination layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="sizeChange"
+                       @current-change="turnPage" :page-size="pageSize" :current-page="currentPage"></el-pagination>
     </div>
-
 </template>
 <script src="/sys/js/org-index.js"></script>

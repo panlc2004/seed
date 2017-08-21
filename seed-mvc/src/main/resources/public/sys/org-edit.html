@@ -1,29 +1,20 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <script src="/common/js/head.js"></script>
-</head>
-<body>
-<div id="app">
-    <el-form label-position="right" label-width="80px" :model="entity" :rules="rules" ref="editForm">
-        <el-form-item label="组织名称" prop="orgName">
-            <el-input v-model="entity.orgName" size="small"></el-input>
-        </el-form-item>
-        <el-form-item label="组织编码" prop="orgCode">
-            <el-input v-model="entity.orgCode" size="small"></el-input>
-        </el-form-item>
-        <el-form-item label="描述" prop="memo">
-            <el-input v-model="entity.memo" type="textarea" :rows="10" size="small"></el-input>
-        </el-form-item>
-    </el-form>
-    <el-row style="text-align: center">
-        <el-button type="primary" size="small" @click="save">提交</el-button>
-        <el-button size="small" @click="cancel">取消</el-button>
-    </el-row>
-</div>
-</body>
+<template id="sys$org_edit_html">
+    <div>
+        <el-form label-position="right" label-width="80px" :model="entity" :rules="rules" ref="editForm">
+            <el-form-item label="组织名称" prop="orgName">
+                <el-input v-model="entity.orgName" size="small"></el-input>
+            </el-form-item>
+            <el-form-item label="组织编码" prop="orgCode">
+                <el-input v-model="entity.orgCode" size="small"></el-input>
+            </el-form-item>
+            <el-form-item label="描述" prop="memo">
+                <el-input v-model="entity.memo" type="textarea" :rows="10" size="small"></el-input>
+            </el-form-item>
+        </el-form>
+        <el-row style="text-align: center">
+            <el-button type="primary" size="small" @click="save">提交</el-button>
+            <el-button size="small" @click="cancel">取消</el-button>
+        </el-row>
+    </div>
+</template>
 <script src="/sys/js/org-edit.js"></script>
-</html>

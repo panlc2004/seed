@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50155
 File Encoding         : 65001
 
-Date: 2017-08-16 18:17:29
+Date: 2017-08-21 15:07:16
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -23,7 +23,6 @@ CREATE TABLE `seed_sys_account` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `SYS_ORG_ID` bigint(20) NOT NULL COMMENT '组织机构ID',
   `SYS_USER_ID` bigint(20) NOT NULL COMMENT '关联用户信息',
-  `NAME` varchar(50) NOT NULL,
   `USERNAME` varchar(50) NOT NULL,
   `PASSWORD` varchar(50) NOT NULL,
   `EMAIL` varchar(50) DEFAULT NULL,
@@ -37,20 +36,20 @@ CREATE TABLE `seed_sys_account` (
 -- ----------------------------
 -- Records of seed_sys_account
 -- ----------------------------
-INSERT INTO `seed_sys_account` VALUES ('1', '0', '1', '超级管理员', 'suadmin', 'admin', 'admin@czy.inner.com', '1', '1', null, null);
-INSERT INTO `seed_sys_account` VALUES ('2', '0', '0', '1123456', '12346666', '1', '1123123', '1', '1', null, null);
-INSERT INTO `seed_sys_account` VALUES ('10', '0', '0', '11`12123123444', '11', '11', '11123123', '1', '1', null, null);
-INSERT INTO `seed_sys_account` VALUES ('13', '0', '0', '11123123', '11', '11', '11', '1', '1', null, null);
-INSERT INTO `seed_sys_account` VALUES ('20', '0', '0', '17', '17', '17', '17', '1', '1', null, null);
-INSERT INTO `seed_sys_account` VALUES ('21', '0', '0', '18', '18', '18', '18', '1', '1', null, null);
-INSERT INTO `seed_sys_account` VALUES ('22', '0', '0', '19', '19', '19', '19', '1', '1', null, null);
-INSERT INTO `seed_sys_account` VALUES ('23', '0', '0', '21123123', '21', '21', '21', '1', '1', null, null);
-INSERT INTO `seed_sys_account` VALUES ('24', '0', '0', '22123123', '22', '22', '22', '1', '1', null, null);
-INSERT INTO `seed_sys_account` VALUES ('27', '0', '0', '55', '55', '55', '55', '0', '0', null, null);
-INSERT INTO `seed_sys_account` VALUES ('28', '0', '0', '66', '66', '66', '66', '0', '0', null, null);
-INSERT INTO `seed_sys_account` VALUES ('29', '0', '0', '77', '77', '77', '77', '0', '0', null, null);
-INSERT INTO `seed_sys_account` VALUES ('30', '0', '0', '88', '88', '88', '88', '0', '0', null, null);
-INSERT INTO `seed_sys_account` VALUES ('31', '0', '0', '1324', '1324', '1234', '1234', '0', '0', null, null);
+INSERT INTO `seed_sys_account` VALUES ('1', '1', '1', 'suadmin', 'admin', 'admin@czy.inner.com', '1', '1', null, null);
+INSERT INTO `seed_sys_account` VALUES ('2', '0', '0', '12346666', '1', '1123123', '1', '1', null, null);
+INSERT INTO `seed_sys_account` VALUES ('10', '0', '0', '11', '11', '11123123', '1', '1', null, null);
+INSERT INTO `seed_sys_account` VALUES ('13', '0', '0', '11', '11', '11', '1', '1', null, null);
+INSERT INTO `seed_sys_account` VALUES ('20', '0', '0', '17', '17', '17', '1', '1', null, null);
+INSERT INTO `seed_sys_account` VALUES ('21', '0', '0', '18', '18', '18', '1', '1', null, null);
+INSERT INTO `seed_sys_account` VALUES ('22', '0', '0', '19', '19', '19', '1', '1', null, null);
+INSERT INTO `seed_sys_account` VALUES ('23', '0', '0', '21', '21', '21', '1', '1', null, null);
+INSERT INTO `seed_sys_account` VALUES ('24', '0', '0', '22', '22', '22', '1', '1', null, null);
+INSERT INTO `seed_sys_account` VALUES ('27', '0', '0', '55', '55', '55', '0', '0', null, null);
+INSERT INTO `seed_sys_account` VALUES ('28', '0', '0', '66', '66', '66', '0', '0', null, null);
+INSERT INTO `seed_sys_account` VALUES ('29', '0', '0', '77', '77', '77', '0', '0', null, null);
+INSERT INTO `seed_sys_account` VALUES ('30', '0', '0', '88', '88', '88', '0', '0', null, null);
+INSERT INTO `seed_sys_account` VALUES ('31', '0', '0', '1324', '1234', '1234', '0', '0', null, null);
 
 -- ----------------------------
 -- Table structure for `seed_sys_dept`
@@ -182,12 +181,13 @@ CREATE TABLE `seed_sys_org` (
   `ORG_NAME` varchar(200) NOT NULL,
   `MEMO` varchar(2000) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of seed_sys_org
 -- ----------------------------
-INSERT INTO `seed_sys_org` VALUES ('1', '1', '2017-08-16 17:22:01', null, null, 'SU_ORG', '超级管理员组', null);
+INSERT INTO `seed_sys_org` VALUES ('1', '1', '2017-08-16 17:22:01', '1', '2017-08-18 19:02:58', 'SU_ORG', '超级管理员组', '12412341234');
+INSERT INTO `seed_sys_org` VALUES ('2', '1', '2017-08-17 19:13:52', '1', '2017-08-18 19:02:54', '12341234', '1234', '13123123');
 
 -- ----------------------------
 -- Table structure for `seed_sys_param`
@@ -260,7 +260,7 @@ CREATE TABLE `seed_sys_resource` (
 -- Records of seed_sys_resource
 -- ----------------------------
 INSERT INTO `seed_sys_resource` VALUES ('1', '0', '0', '0', '0000-00-00 00:00:00', null, null, '2', 'sys', '系统管理', '', '999', null);
-INSERT INTO `seed_sys_resource` VALUES ('2', '0', '1', '0', '0000-00-00 00:00:00', null, null, '1', 'sys_org', '机构用户管理', 'sys/org-index', '999', 'el-icon-star-off');
+INSERT INTO `seed_sys_resource` VALUES ('2', '0', '1', '0', '0000-00-00 00:00:00', null, null, '1', 'sys_org', '机构用户管理', '/sys/org-index.html', '999', 'el-icon-star-off');
 INSERT INTO `seed_sys_resource` VALUES ('3', '0', '1', '0', '0000-00-00 00:00:00', null, null, '1', 'sys_param', '系统参数设置', 'sys/param/index', '999', null);
 INSERT INTO `seed_sys_resource` VALUES ('4', '0', '1', '0', '0000-00-00 00:00:00', null, null, '1', 'sys_resource', '菜单管理', 'sys/resource/index', '999', null);
 INSERT INTO `seed_sys_resource` VALUES ('5', '0', '0', '0', '0000-00-00 00:00:00', null, null, '2', 'process', '流程管理', '', '999', null);
@@ -369,17 +369,21 @@ INSERT INTO `seed_sys_role_resource` VALUES ('213', '1', '18');
 -- ----------------------------
 DROP TABLE IF EXISTS `seed_sys_user`;
 CREATE TABLE `seed_sys_user` (
-  `ID` bigint(20) DEFAULT NULL,
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `CREATE_BY` bigint(20) DEFAULT NULL,
   `CREATE_DT` datetime DEFAULT NULL,
   `UPDATE_BY` bigint(20) DEFAULT NULL,
   `UPDATE_DT` datetime DEFAULT NULL,
-  `NAME` varchar(200) DEFAULT NULL
-) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+  `NAME` varchar(200) DEFAULT NULL,
+  `SYS_ORG_ID` bigint(20) NOT NULL COMMENT '组织机构ID',
+  `SYS_DEPT_ID` bigint(20) NOT NULL COMMENT '部门ID',
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of seed_sys_user
 -- ----------------------------
+INSERT INTO `seed_sys_user` VALUES ('1', '1', '2017-08-17 14:30:15', null, null, '超级管理员', '1', '1');
 
 -- ----------------------------
 -- Table structure for `seed_sys_user_role`

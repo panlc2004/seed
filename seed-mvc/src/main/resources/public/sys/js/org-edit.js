@@ -1,5 +1,5 @@
-var app = new Vue({
-    el: '#app',
+sys$org_edit_html = Vue.extend({
+    el: '#sys$org_edit_html',
     data: function () {
         return {
             entity: {},
