@@ -1,4 +1,4 @@
-    sys$org_index_html = Vue.extend({
+sys$org_index_html = Vue.extend({
     template: '#sys_org_index_html',
 
     mixins: [czyPageBar],
@@ -12,12 +12,15 @@
             alert(123);
         },
         toEdit: function (entity) {
-            czy.loadComponent(ctx + '/sys/org-edit.html', '#test' ,function (a) {
+            alert(123);
+            czy.loadComponent(ctx + '/sys/org-edit.html', '#test', function (a) {
                 // debugger;
                 // var a = new sys$org_edit_html();
                 // var target = '#' + 'test';
                 // a.$mount(target);
+                debugger;
                 a.open();
+                a.entity = entity;
             });
         },
         del: function () {
