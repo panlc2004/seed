@@ -17,9 +17,7 @@
                     if (status == 'success') {
                         var componentType = eval(component_name);       //取得组件定义
                         var component = new componentType();            //创建组件实例
-                        component.$mount(targetDiv);                     //挂载组件到指定dom
                         czy._compCache[component_name] = component;    //缓存组件名称及组件实例
-
                         //调用回调方法
                         callback(component);
                     } else {

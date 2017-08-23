@@ -132,7 +132,7 @@ function addRoutes(component_name, router_path) {
     var routeName = seed.activeName;
     var componentRoute = {};
     componentRoute['view' + routeName] = component;
-    menuRouter.addRoutes([{path: router_path, components: {view2: component}}]);
+    menuRouter.addRoutes([{path: router_path, components: {view2: component},}]);
 }
 
 /**
@@ -144,7 +144,7 @@ function buildComponentNameByUrl(url) {
         alert("url必须以'/'开头")
         return;
     }
-    var component_name = url.replace('/', '').replaceAll('\/', '$').replaceAll('-', '_');
+    var component_name = url.replace('/', '').replaceAll('\/', '__').replaceAll('-', '_');
     if (url.endWith('.html')) {
         component_name = component_name.replace('.html', '_html');
     }
@@ -165,7 +165,7 @@ function buildUrlByWindowLocationHash(locationHash) {
     if (locationHash.endWith('_html')) {
         locationHash = locationHash.replace('_html', '.html');
     }
-    var url = locationHash.replaceAll('\\$', '/').replaceAll('_', '-');
+    var url = locationHash.replaceAll('\\__', '/').replaceAll('_', '-');
     return url;
 }
 
