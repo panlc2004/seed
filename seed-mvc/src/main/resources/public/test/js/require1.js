@@ -4,7 +4,6 @@ define(function (require) {
             alert(math.add(1, 1));
         });
     }
-
     test();
 })
 

@@ -4,46 +4,39 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <script src="/common/js/head.js"></script>
+    <script src="/lib/require.js" defer async="true" data-main="js/main"></script>
 </head>
 <body>
 
 <div id="app">
-    <el-button @click="load">load</el-button>
-    <async v-if="loadF"></async>
+    <!--<keep-alive>&lt;!&ndash; 使用keep-alive可以让动态被切出去的组件继续保存在内存中（只是隐藏看不到），却回来之后会继续之前的状态和数据 &ndash;&gt;-->
+        <comp1 v-if="flag"></comp1>
+    <!--</keep-alive>-->
+    <button type="button" @click="test">切换view</button>
 </div>
 
 
 <script type="text/javascript">
-    Vue.component('async', function (resolve, reject) {
-        resolve({
-            template: '<div>I am async!</div>',
-            methods: {
-                tt: function () {
-                    alert('im async');
-                }
-            },
-            created:function () {
-                alert12('created')
-            }
-        }),reject({
-            error:123
-        })
-    })
-
-    new Vue({
-        el: '#app',
-        data: function () {
-            return {
-                loadF: false
-            }
-        },
-        methods: {
-            load: function () {
-                this.loadF = !this.loadF;
-            }
-        }
-    })
+//    define(['vue'],function(Vue){
+//        Vue.component('comp1',function(resolve){
+//            require(['comp1'],resolve);
+//        });
+//        Vue.component('comp2',function(resolve){
+//            require(['component/comp2'],resolve);
+//        });
+//        var b = new Vue({
+//            el:"#app",
+//            data:{
+//                currentView:'comp1'
+//            },
+//            methods:{
+//                toggleView:function(){
+//                    console.log(this.currentView);
+//                    this.currentView = this.currentView=='comp1'?'comp2':'comp1';
+//                }
+//            }
+//        });
+//    })
 </script>
 
 </body>
