@@ -2,12 +2,11 @@ package com.czy.seed.mybatis.mapper;
 
 import com.czy.seed.mybatis.base.mapper.BaseMapper;
 import com.czy.seed.mybatis.config.mybatis.annotations.AutoMapper;
-import com.czy.seed.mybatis.entity.TestEntity;
+import com.czy.seed.mybatis.entity.DcsCountry;
 
 /**
- * Created by panlc on 2017-03-17.
+ * Created by 003914[panlc] on 2017-08-23.
  */
 @AutoMapper("ds1")
-public interface SqlServerMapper extends BaseMapper<TestEntity> {
-
+public interface DcsCountryMapper extends BaseMapper<DcsCountry> {
 }

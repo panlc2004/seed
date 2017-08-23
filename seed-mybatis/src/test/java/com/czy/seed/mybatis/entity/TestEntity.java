@@ -3,7 +3,6 @@ package com.czy.seed.mybatis.entity;
 import com.czy.seed.mybatis.config.mybatis.annotations.Cache;
 import com.czy.seed.mybatis.config.mybatis.annotations.One2Many;
 import com.czy.seed.mybatis.config.mybatis.annotations.One2One;
-import org.apache.ibatis.annotations.One;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
