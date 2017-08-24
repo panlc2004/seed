@@ -1,4 +1,7 @@
 define(['vue'],function(Vue){
+    // require(['comp1'],function() {
+    //     alert(123);
+    // });
     Vue.component('comp1',function(resolve){
         require(['comp1'],resolve);
     });
