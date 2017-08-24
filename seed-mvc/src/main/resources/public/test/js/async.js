@@ -5,9 +5,9 @@ define(['vue'],function(Vue){
     Vue.component('comp1',function(resolve){
         require(['comp1'],resolve);
     });
-    // Vue.component('comp2',function(resolve){
-    //     require(['comp2'],resolve);
-    // });
+    Vue.component('comp2',function(resolve){
+        require(['comp2'],resolve);
+    });
     var b = new Vue({
         el:"#app",
         data:{
@@ -23,5 +23,6 @@ define(['vue'],function(Vue){
                 this.currentView = this.currentView=='comp1'?'comp2':'comp1';
             }
         }
+
     });
 })
