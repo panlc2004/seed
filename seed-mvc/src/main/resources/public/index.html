@@ -4,18 +4,22 @@
     <meta charset="utf-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
-    <title>Seed</title>
-    <script src="/lib/jquery/jquery.min.js"></script>
-    <script src="/lib/vue/2.4.2/vue.js"></script>
-    <script src="/lib/vue/vue-router.js"></script>
-    <script src="/lib/elementui/1.4.2/index.js"></script>
+    <!--<title>Seed</title>-->
 
-    <script src="/lib/czyseed/index.js"></script>
-    <script src="/common/util/czy.util.js"></script>
-    <script src="/title.js"></script>
+    <script src="title.js"></script>
+    <script src="lib/jquery/jquery.min.js"></script>
+    <script src="lib/vue/2.4.2/vue.js"></script>
+    <script src="lib/vue/vue-router.js"></script>
+    <script src="lib/elementui/1.4.2/index.js"></script>
 
-    <link rel="stylesheet" href="/lib/elementui/1.4.2/theme-default/index.css">
-    <link rel="stylesheet" href="/lib/awesome/css/font-awesome.min.css">
+    <script src="lib/czyseed/index.js"></script>
+    <script src="common/util/czy.util.js"></script>
+
+    <!--<script src="/lib/requirejs/require-2.3.5.js" defer async="true" data-main="/common/js/main"></script>-->
+    <script src="lib/requirejs/require-2.3.5.js" defer async="false" data-main="seed-main"></script>
+
+    <link rel="stylesheet" href="lib/elementui/1.4.2/theme-default/index.css">
+    <link rel="stylesheet" href="lib/awesome/css/font-awesome.min.css">
 
     <style type="text/css">
         body {
@@ -87,6 +91,13 @@
             height: 35px;
             line-height: 35px;
         }
+
+        /*v-cloak解决vue解析闪烁问题*/
+        [v-cloak] {
+            display: none
+        }
+
+
         /*=======*/
 
         /*#main-panel .header .logo {*/
@@ -144,9 +155,9 @@
         </el-row>
         <!--菜单栏区域-->
         <!--<el-row class="nav-menu">-->
-            <el-menu :default-active="defaultActive" class="el-menu-vertical-demo" theme="dark" :collapse="collapse">
-                <menu-item :item="item" v-for="item in menuList" :key="item.name"></menu-item>
-            </el-menu>
+        <el-menu :default-active="defaultActive" class="el-menu-vertical-demo" theme="dark" :collapse="collapse">
+            <menu-item :item="item" v-for="item in menuList" :key="item.name"></menu-item>
+        </el-menu>
         <!--</el-row>-->
     </el-col>
 
@@ -176,7 +187,7 @@
     </el-col>
 </div>
 
-<script src="common/js/index.js"></script>
+<script src="index.js"></script>
 
 </body>
 </html>

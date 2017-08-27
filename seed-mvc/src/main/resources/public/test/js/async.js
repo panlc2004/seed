@@ -1,7 +1,10 @@
-define(['vue'],function(Vue){
-    // require(['comp1'],function() {
-    //     alert(123);
+define(['vue','vueRouter'],function(Vue,VueRouter){
+    // alert(1)
+    // Vue.use(VueRouter);
+
+    // require(["test"],function (t) {
     // });
+
     Vue.component('comp1',function(resolve){
         require(['comp1'],resolve);
     });

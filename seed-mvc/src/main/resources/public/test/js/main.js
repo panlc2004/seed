@@ -1,9 +1,12 @@
 require.config({
+    // baseUrl:'/',
     paths: {
-        "vue": "/lib/vue/2.4.2/vue",
-        "router": "/lib/vue/vue-router",
-        // "math":"math"
+        vue: "/lib/vue/2.4.2/vue",
+        vueRouter: "/lib/vue/vue-router",
+        elementui:"lib/elementui/1.4.2/index.js"
     }
 });
 
-require(['async'])
+require(['vue','vueRouter','async'],function (Vue, VueRouter, async) {
+    Vue.use(VueRouter);
+});
