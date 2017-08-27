@@ -180,6 +180,7 @@ seed = new Vue({
             this.pageTables = tabs.filter(function (tab) {
                 return tab.name !== targetName
             });
+            seedRouter.push(this.tabRouterPath[this.activeName]);   //跳转页面
         },
         findMenuByUrl: function (url) {
             var _this = this;

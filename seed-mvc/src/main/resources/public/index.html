@@ -73,12 +73,12 @@
             line-height: 45px;
         }
 
-        /*设置左侧菜单宽度*/
+        /*重写左侧菜单宽度*/
         .el-menu-vertical-demo:not(.el-menu--collapse) {
             width: 230px;
         }
 
-        /*设置tab样式*/
+        /*重写tab样式*/
         #main-panel .right .el-tabs--border-card {
             background: #fff;
             border: 0px solid #d1dbe5;
@@ -88,6 +88,10 @@
             box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0), 0 0 6px 0 rgba(0, 0, 0, 0);
         }
 
+        #main-panel .el-tabs--border-card>.el-tabs__content {
+            padding: 5px 0px 5px 5px;
+        }
+
         #main-panel .el-tabs__item {
             height: 35px;
             line-height: 35px;
@@ -95,7 +99,7 @@
 
         /*v-cloak解决vue解析闪烁问题*/
         [v-cloak] {
-            display: none
+            display: none!important;
         }
     </style>
 
@@ -103,7 +107,7 @@
 
 <body>
 
-<div id="main-panel">
+<div id="main-panel" v-cloak>
 
     <!--左侧菜单区域-->
     <div class="left">

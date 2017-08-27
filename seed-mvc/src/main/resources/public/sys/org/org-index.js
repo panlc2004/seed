@@ -33,6 +33,7 @@ define(['text!sys/org/org-index.html'],function (Template) {
         }
     };
 
+    // 定义子路由
     // var subRoute = [{
     //     path: 'edit/:entity',
     //     component: function (resolve) {
@@ -43,8 +44,8 @@ define(['text!sys/org/org-index.html'],function (Template) {
     // }];
 
     return {
-        component:component
-        // subRoute:subRoute
+        component:component         //返回组件
+        // subRoute:subRoute        //返回子路由
     }
 
 });
