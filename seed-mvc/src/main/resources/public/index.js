@@ -130,6 +130,9 @@ seed = new Vue({
         tabRouterPath: {}  //tab页对应的路由
     },
     methods: {
+        show:function () {
+            alert(1)
+        },
         getMenu: function () {
             $.get("sys/resource/findResourceTreeForLoginUser?_" + $.now(), function (o) {
                 seed.menuList = o.data[0].children;

@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <title>Title</title>
+    <script src="../lib/vue/2.4.2/vue.js"></script>
+    <script src="../lib/vueplugin/rightMenu/vue-context-menu.js"></script>
+    <link rel="stylesheet" href="../lib/vueplugin/rightMenu/vue-context-menu.css"></link>
+
+    <style type="text/css">
+
+        body {
+            height: 100%;
+            font-size: 14px;
+        }
+        #app {
+            font-family: 'Microsoft Yahei', 'Avenir', Helvetica, Arial, sans-serif;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+            text-align: center;
+            color: #2c3e50;
+            margin-top: 60px;
+            height: 100%;
+        }
+        h1,
+        h2 {
+            font-weight: normal;
+        }
+        /*a {*/
+            /*color: #333;*/
+        /*}*/
+
+    </style>
+
+</head>
+<body>
+
+<div id="app">
+    <context-menu class="right-menu" :target="contextMenuTarget" :show="contextMenuVisible" @update:show="(show) => contextMenuVisible = show">
+        <a href="javascript:;" @click="copyMsg">复制</a>
+        <a href="javascript:;" @click="quoteMsg">引用</a>
+        <a href="javascript:;" @click="deleteMsg">删除</a>
+    </context-menu>
+
+    <h1>Vue Context Menu</h1>
+
+    <h3>右键体验</h3>
+</div>
+
+
+</body>
+
+<script type="text/javascript">
+    new Vue({
+        el: '#app',
+        data: function () {
+            return {
+                contextMenuTarget: document.body,
+                contextMenuVisible: false,
+            }
+        },
+        methods: {
+            copyMsg: function () {
+                alert('copy')
+                this.contextMenuVisible = false
+            },
+            quoteMsg: function () {
+                alert('quote')
+                this.contextMenuVisible = false
+            },
+            deleteMsg: function () {
+                alert('delete')
+                this.contextMenuVisible = false
+            }
+        }
+    })
+</script>
+
+
+</html>
