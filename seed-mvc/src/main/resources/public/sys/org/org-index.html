@@ -1,12 +1,19 @@
 <div>
-    <div style="padding: 5px 5px;background-color: #EFF2F7;border:solid 1px #dfe6ec;border-bottom: 0px;">
-        <div style="float: left;background-color: #EFF2F7;">
-            <el-input ref="xxx" placeholder="机构名称" size="small" style="width: 100px"></el-input>
-            <el-button type="primary" icon="search" size="small" @click="search">查询</el-button>
-        </div>
-        <div style="text-align: right;float: right;background-color: #EFF2F7;">
-            <el-button type="primary" icon="plus" size="small" @click="toAdd">新增</el-button>
-        </div>
+    <!--<div style="padding: 5px 5px;background-color: #EFF2F7;border:solid 1px #dfe6ec;border-bottom: 0px;">-->
+    <!--<div style="float: left;background-color: #EFF2F7;">-->
+    <!--<el-input ref="xxx" placeholder="机构名称" size="small" style="width: 100px"></el-input>-->
+    <!--<el-button type="primary" icon="search" size="small" @click="search">查询</el-button>-->
+    <!--</div>-->
+    <!--<div style="text-align: right;float: right;background-color: #EFF2F7;">-->
+    <!--<el-button type="primary" icon="plus" size="small" @click="toAdd">新增</el-button>-->
+    <!--</div>-->
+    <!--</div>-->
+
+    <div style="padding: 5px 5px;background-color: #EFF2F7;border:solid 1px;border-color: #dfe6ec;">
+        <!--<legend style="background-color: #EFF2F7;">查询</legend>-->
+        <el-input ref="xxx" placeholder="机构名称" size="small" style="width: 100px"></el-input>
+        <el-button type="primary" icon="search" size="small" @click="search">查询</el-button>
+        <el-button type="primary" icon="plus" size="small" @click="toAdd">新增</el-button>
     </div>
 
     <el-table :data="pageData" border="" highlight-current-row>

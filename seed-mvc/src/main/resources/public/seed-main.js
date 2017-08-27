@@ -14,8 +14,4 @@ require.config({
 
 });
 
-require(['text']);
-// require(['vue', 'ELEMENT', 'vueRouter', 'jquery', '/index.js'], function (Vue, ELEMENT, VueRouter, jQuery) {
-//     Vue.use(VueRouter);
-//     Vue.use(ELEMENT);
-// });
+require(['text','index']);  //在此处引用index.js,防止因加载顺序出错而报错

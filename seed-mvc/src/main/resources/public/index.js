@@ -109,6 +109,9 @@ function loadComponent(url) {
  * @returns {*}
  */
 function buildUrlByWindowLocationHash(locationHash) {
+    if('#/' == locationHash) {
+        return locationHash;
+    }
     locationHash = locationHash.replace('#', '')
     if (locationHash.startWith('/')) {
         locationHash = locationHash.replace('/', '')
@@ -145,7 +148,7 @@ seed = new Vue({
         initPage: function () {
             //根据url加载对应页面
             var url = buildUrlByWindowLocationHash(window.location.hash);
-            if (url != '/') {
+            if (url != '/' && url != '#/') {
                 var menu = this.findMenuByUrl(url);
                 if (menu) {
                     openTab(menu);
@@ -180,7 +183,11 @@ seed = new Vue({
             this.pageTables = tabs.filter(function (tab) {
                 return tab.name !== targetName
             });
-            seedRouter.push(this.tabRouterPath[this.activeName]);   //跳转页面
+            if(tabs.length > 1) {
+                seedRouter.push(this.tabRouterPath[this.activeName]);   //跳转页面
+            } else {
+                seedRouter.push('/');       //tab页面全部关闭时，路由重置
+            }
         },
         findMenuByUrl: function (url) {
             var _this = this;
