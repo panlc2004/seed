@@ -5,6 +5,7 @@ define(['text!sys/org/org-edit.html'], function (Template) {
             return {
                 show: false,
                 entity: {},
+                callback: {},
                 ru: {required: true, message: 'test'},
                 rules: {
                     orgName: [
@@ -22,6 +23,11 @@ define(['text!sys/org/org-edit.html'], function (Template) {
             }
         },
         methods: {
+            open1:function () {
+                // this.$nextTick(function() {
+                //     alert(document.querySelector('.v-modal').parentNode.tagName);
+                // });
+            },
             open: function () {
                 this.show = true;
             },
@@ -34,11 +40,13 @@ define(['text!sys/org/org-edit.html'], function (Template) {
                     if (valid) {
                         czy.ajax.postJson({
                             url: 'sys/org/save',
-                            data: app.entity,
+                            data: _this.entity,
                             success: function (data, status) {
                                 if (status) {
-                                    _this.cancel();
-                                    parent.app.search();    //TODO 刷新页面
+                                    _this.close();
+                                    if(_this.callback.saveCallback) {
+                                        _this.callback.saveCallback();  //保存后执行回调方法
+                                    }
                                 }
                             }
                         })
@@ -46,12 +54,10 @@ define(['text!sys/org/org-edit.html'], function (Template) {
                         return false;
                     }
                 });
-
             }
         }
 
     };
-
     return component;
 })
 

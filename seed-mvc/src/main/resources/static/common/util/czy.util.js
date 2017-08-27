@@ -1,38 +1,6 @@
 (function () {
     window.czy = {
         /**
-         * 子组件操作
-         */
-        //子组件缓存
-        _compCache: {},
-        /**
-         * 尝试加载子组件，已经加载过的不再加载
-         * @param url 组件定义文件url
-         */
-        loadComponent: function (url, targetDiv, callback) {
-            //根据url计算组件名称
-            var component_name = buildComponentNameByUrl(url);
-            if (czy._compCache[component_name] == undefined) {  //未加载过的组件执行加载
-                $("#component-cache").load(url, function (data, status) {
-                    if (status == 'success') {
-                        var componentType = eval(component_name);       //取得组件定义
-                        var component = new componentType();            //创建组件实例
-                        czy._compCache[component_name] = component;    //缓存组件名称及组件实例
-                        //调用回调方法
-                        callback(component);
-                    } else {
-                        alert('加载url：' + url + '失败');
-                    }
-                });
-
-            } else {    //组件已经加载，直接跳转
-                var component = czy._compCache[component_name];    //取得缓存组件
-                //调用回调方法
-                callback(component);
-            }
-        },
-
-        /**
          * ajax封装
          */
         ajax: {

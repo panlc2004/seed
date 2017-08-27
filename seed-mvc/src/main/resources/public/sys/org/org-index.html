@@ -3,14 +3,14 @@
 <!--margin-bottom: 2px;-->
 <!--}-->
 <!--</style>-->
-<div>
+<div style="z-index: 2002;">
     <el-row style="padding-right: 5px; padding-bottom: 5px">
         <el-input ref="xxx" placeholder="机构名称" size="small" style="width: 100px"></el-input>
         <el-button type="primary" icon="search" size="small" @click="search">查询</el-button>
         <el-button type="primary" icon="plus" size="small" @click="toAdd">新增</el-button>
     </el-row>
 
-    <el-table :data="pageData" border="">
+    <el-table :data="pageData" border="" highlight-current-row>
         <el-table-column prop="orgName" label="机构名称"></el-table-column>
         <el-table-column prop="orgCode" label="机构编码"></el-table-column>
         <el-table-column label="操作" width="200">
@@ -25,6 +25,5 @@
                    @current-change="turnPage" :page-size="pageSize" :current-page="currentPage"></el-pagination>
 
     <edit ref="edit"></edit>
-
     <router-view></router-view>
 </div>

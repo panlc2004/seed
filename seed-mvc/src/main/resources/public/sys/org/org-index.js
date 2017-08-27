@@ -7,20 +7,24 @@ define(['text!sys/org/org-index.html'],function (Template) {
         mixins: [czyPageBar],
         data: function () {
             return {
-                url: 'sys/org/selectPageByParams'
+                url: 'sys/org/selectPageByParams',
+                editInit:false
             }
         },
         methods: {
             search: function () {
-                alert(123);
+                this.reload();
             },
             toAdd: function () {
                 var edit = this.$refs.edit;
+                edit.callback.saveCallback = this.search;
+                edit.entity = {};
                 edit.open();
             },
             toEdit: function (entity) {
                 var edit = this.$refs.edit;
-                edit.entity = entity;
+                edit.callback.saveCallback = this.search;
+                edit.entity = $.extend({},entity);
                 edit.open();
             },
             del: function () {

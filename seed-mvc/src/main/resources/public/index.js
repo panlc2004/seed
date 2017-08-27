@@ -16,10 +16,6 @@ String.prototype.replaceAll = function (str, value) {
     return this.replace(regExp, value);
 }
 
-
-// require(['vue', 'vueRouter','ELEMENT'], function (Vue, VueRouter) {
-// Vue.use(VueRouter);
-
 // 菜单栏
 Vue.component('menuItem', {
     name: 'menu-item',
@@ -75,11 +71,11 @@ function openTab(child) {
         seed.pageTables.push({
             id: child.id,
             label: child.name,
-            name: child.id
+            name: 'view' + child.id
         });
     }
     //激活对应的tab
-    seed.activeName = child.id;//tab选中
+    seed.activeName = 'view' + child.id;//tab选中
 }
 
 /**
@@ -94,78 +90,17 @@ function loadComponent(url) {
     var componentRoute = {};    //定义路由组件
     var jsPath = url.replace('.html', '');
     var router_path = '/' + jsPath;         //路由名称
-        require([jsPath], function (o) {
-            componentRoute['view' + seed.activeName] = o.component
-            seedRouter.addRoutes([{
-                path: router_path,
-                components: componentRoute,
-                children: o.subRoute
-            }]);
-        });
-    seedRouter.push(router_path);
-}
-
-/**
- * 尝试加载组件并更新主路由
- * @param component_name    路由名称
- * @param router_path   路由路径
- */
-function routeUpdate(url, component_name, router_path) {
-    //组件已经加载，直接跳转
-    // if (menuRouteCache.indexOf(component_name) != -1) {
-    //     return;
-    // }
-    //组件未加载，先加载组件，再跳转
-    addRoutes(component_name, router_path);
-}
-
-/**
- * 更新路由
- * @param component_name
- * @param router_path
- */
-function addRoutes(component_name, router_path) {
-    //动态增加路由
-    // var component = eval(component_name)
-    // var routeName = seed.activeName;
-    var componentRoute = {};
-    require(['test/js/comp1'], function (o) {
-        componentRoute['view' + seed.activeName] = o.comp
-
+    require([jsPath], function (o) {
+        componentRoute[seed.activeName] = o.component
         seedRouter.addRoutes([{
             path: router_path,
             components: componentRoute,
-            children: o.childRoute
+            children: o.subRoute
         }]);
-
-        // componentRoute.children = o.children;
+        seed.tabRouterPath[seed.activeName] = router_path;
     });
-
-
-    // componentRoute['view' + seed.activeName] = function (resolve) {
-    //     require([ctx + 'test/js/comp1'], function (o) {
-    //         resolve(o.comp)
-    //         // componentRoute.children = o.children;
-    //     });
-    // };
-
-
-}
-
-/**
- * 计算组件名称
- * @param url
- */
-function buildComponentNameByUrl(url) {
-    if (!url.startWith('/')) {
-        alert("url必须以'/'开头")
-        return;
-    }
-    var component_name = url.replace('/', '').replaceAll('\/', '__').replaceAll('-', '_');
-    if (url.endWith('.html')) {
-        component_name = component_name.replace('.html', '_html');
-    }
-    return component_name
+    seed.transition = getRandomTransition();
+    seedRouter.push(router_path);
 }
 
 /**
@@ -175,14 +110,10 @@ function buildComponentNameByUrl(url) {
  */
 function buildUrlByWindowLocationHash(locationHash) {
     locationHash = locationHash.replace('#', '')
-    // if (!locationHash.startWith('/')) {
-    //     alert("url必须以'/'开头")
-    //     return;
-    // }
-    if (locationHash.endWith('_html')) {
-        locationHash = locationHash.replace('_html', '.html');
+    if (locationHash.startWith('/')) {
+        locationHash = locationHash.replace('/', '')
     }
-    var url = locationHash.replaceAll('\\__', '/').replaceAll('_', '-');
+    var url = locationHash + '.html';
     return url;
 }
 
@@ -190,14 +121,13 @@ seed = new Vue({
     el: '#main-panel',
     router: seedRouter,
     data: {
-        loadUrl: 'homePage.html',
         menuList: {},
         collapse: false,
         defaultActive: '1',
         pageTables: [],
-        tabshow: {},
         activeName: '0',
-        updateExe: true
+        transition: '',  //加载动画
+        tabRouterPath: {}  //tab页对应的路由
     },
     methods: {
         getMenu: function () {
@@ -264,6 +194,14 @@ seed = new Vue({
                 }
             }
         },
+        /**
+         * 点击tab时，设置动画效果，并切换路由
+         * @param tab
+         */
+        tabClick: function (tab) {
+            this.transition = getRandomTransition();
+            seedRouter.push(this.tabRouterPath[this.activeName]);
+        }
 
     },
     created: function () {
@@ -272,4 +210,24 @@ seed = new Vue({
 
 });
 
-// });
+// 取随机动画
+function getRandomTransition() {
+    var all = ['el-zoom-in-top', 'el-zoom-in-center', 'el-zoom-in-bottom'];
+    var i = getRandomNum(0, 2);
+    return all[i];
+}
+
+/**
+ * 取随机数
+ * @param Min 最小值
+ * @param Max 最大值
+ * @returns {*}
+ * @constructor
+ */
+function getRandomNum(Min, Max) {
+    var range = Max - Min + 1;
+    var rand = Math.random();
+    var num = rand*range + Min;
+    var randInt = parseInt(num, 10);
+    return randInt;
+}

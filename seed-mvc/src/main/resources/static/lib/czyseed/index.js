@@ -18,6 +18,9 @@ var czyPageBar = {
             this.loadData();
         },
         reload: function (param) {
+            if(!param) {
+                param = {};
+            }
             this.param = param
             this.currentPage = 1;
             this.loadData();

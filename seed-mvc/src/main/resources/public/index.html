@@ -5,20 +5,19 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
     <!--<title>Seed</title>-->
-
     <script src="title.js"></script>
     <script src="lib/jquery/jquery.min.js"></script>
     <script src="lib/vue/2.4.2/vue.js"></script>
     <script src="lib/vue/vue-router.js"></script>
-    <script src="lib/elementui/1.4.2/index.js"></script>
+    <script src="lib/elementui/1.4.3/index.js"></script>
 
     <script src="lib/czyseed/index.js"></script>
     <script src="common/util/czy.util.js"></script>
+    <script src="lib/requirejs/require-2.3.5.js" data-main="seed-main"></script>
 
     <!--<script src="/lib/requirejs/require-2.3.5.js" defer async="true" data-main="/common/js/main"></script>-->
-    <script src="lib/requirejs/require-2.3.5.js" defer async="false" data-main="seed-main"></script>
 
-    <link rel="stylesheet" href="lib/elementui/1.4.2/theme-default/index.css">
+    <link rel="stylesheet" href="lib/elementui/1.4.3/theme-default/index.css">
     <link rel="stylesheet" href="lib/awesome/css/font-awesome.min.css">
 
     <style type="text/css">
@@ -97,7 +96,6 @@
             display: none
         }
 
-
         /*=======*/
 
         /*#main-panel .header .logo {*/
@@ -175,12 +173,17 @@
         <!--&lt;!&ndash;组件加载缓冲区&ndash;&gt;-->
         <div id="component-cache" style="display: none"></div>
         <el-row>
-            <el-tabs type="border-card" :closable="true" v-model="activeName" @tab-remove="removeTab">
+            <el-tabs type="border-card" :closable="true" v-model="activeName" @tab-remove="removeTab"
+                     @tab-click="tabClick">
                 <el-tab-pane v-for="(item, index) in pageTables"
                              :key="item.id"
                              :label="item.label"
                              :name="item.name">
-                    <router-view :name="'view' + item.id"></router-view>
+                    <transition :name="transition">
+                        <keep-alive>
+                            <router-view :name="'view' + item.id"></router-view>
+                        </keep-alive>
+                    </transition>
                 </el-tab-pane>
             </el-tabs>
         </el-row>
