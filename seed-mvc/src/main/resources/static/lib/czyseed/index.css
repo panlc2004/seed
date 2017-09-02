@@ -1,0 +1,47 @@
+.czy-toolbar {
+    padding: 5px 5px;
+    margin-bottom: 5px;
+    background-color: #EFF2F7;
+    border: solid 1px #dfe6ec;
+    /*border-color: #dfe6ec;*/
+}
+
+.czy-toolbar-btn-line {
+    /*background-color: #EFF2F7;*/
+    text-align: center;
+}
+
+.czy-toolbar-btn {
+    padding-left: 5px;
+    height: 30px;
+    line-height: 30px;
+}
+
+.czy-toolbar-item {
+    height: 30px;
+    line-height: 30px;
+}
+
+.czy-toolbar-item-label {
+    /*line-height: 100%;*/
+    text-align: right;
+    padding-right: 5px;
+
+}
+
+/*输入栏宽度*/
+.czy-toolbar-item input{
+    height: 100%;
+    width: 100%;
+}
+
+/*日期控件宽度*/
+.czy-toolbar-item .el-date-editor.el-input {
+    /* width: 193px; */
+    width: 100%;
+}
+
+/*下拉列表宽度*/
+.czy-toolbar-item .el-select {
+    width: 100%;
+}

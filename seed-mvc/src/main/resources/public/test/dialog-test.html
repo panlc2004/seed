@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
+    <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
+    <script src="../common/js/head.js"></script>
+    <script src="element-dialog2.min.js"></script>
+
+    <style>
+        body {
+            height: 100%;
+            width: 100%;
+        }
+
+        #wrap {
+            display: flex;
+            height: 95vh;
+        }
+
+        #sidebar {
+            z-index: 2;
+            background: red;
+            flex: 50% 0 0;
+        }
+
+        #app {
+            z-index: 1;
+            flex: 50% 0 0;
+        }
+
+        /*.v-modal {*/
+        /*z-index: -999 !important;*/
+        /*}*/
+    </style>
+
+</head>
+
+<body>
+<div id="wrap">
+    <div id="sidebar">
+        z-index: 2
+    </div>
+    <div id="app">
+        <el-button type="text" @click="dialogVisible = true">Open Dialog</el-button>
+
+        <el-dialog title="Title" :modal-append-to-body="false" :visible.sync="dialogVisible">
+            <span>Message</span>
+            <span slot="footer" class="dialog-footer">
+                <el-button @click="dialogVisible = false">Cancel</el-button>
+                <el-button type="primary" @click="dialogVisible = false">OK</el-button>
+              </span>
+        </el-dialog>
+    </div>
+</div>
+
+<script types="text/javascript">
+
+    var Main = {
+        data: function () {
+            return {
+                dialogVisible: false
+            };
+        }
+    };
+    var Ctor = Vue.extend(Main)
+    new Ctor().$mount('#app')
+
+
+</script>
+
+</body>
+</html>
