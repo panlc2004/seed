@@ -8,7 +8,11 @@ define(['text!sys/org/org-index.html'],function (Template) {
         data: function () {
             return {
                 url: 'sys/org/selectPageByParams',
-                editInit:false
+                queryParams:{
+                    like:{
+                        orgName:''
+                    }
+                }
             }
         },
         methods: {
@@ -17,13 +21,11 @@ define(['text!sys/org/org-index.html'],function (Template) {
             },
             toAdd: function () {
                 var edit = this.$refs.edit;
-                edit.callback.saveCallback = this.search;
                 edit.entity = {};
                 edit.open();
             },
             toEdit: function (entity) {
                 var edit = this.$refs.edit;
-                edit.callback.saveCallback = this.search;
                 edit.entity = $.extend({},entity);
                 edit.open();
             },

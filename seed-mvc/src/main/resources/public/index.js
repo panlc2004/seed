@@ -109,7 +109,7 @@ function loadComponent(url) {
  * @returns {*}
  */
 function buildUrlByWindowLocationHash(locationHash) {
-    if('#/' == locationHash) {
+    if ('#/' == locationHash) {
         return locationHash;
     }
     locationHash = locationHash.replace('#', '')
@@ -126,14 +126,24 @@ seed = new Vue({
     data: {
         menuList: {},
         collapse: false,
+        // logo:'test',
         defaultActive: '1',
         pageTables: [],
         activeName: '0',
         transition: '',  //加载动画
         tabRouterPath: {}  //tab页对应的路由
     },
+    computed: {
+        logo: function () {
+            if(this.collapse) {
+                return 'logo';
+            } else {
+                return 'logo-long'
+            }
+        }
+    },
     methods: {
-        show:function () {
+        show: function () {
             alert(1)
         },
         getMenu: function () {
@@ -183,7 +193,7 @@ seed = new Vue({
             this.pageTables = tabs.filter(function (tab) {
                 return tab.name !== targetName
             });
-            if(tabs.length > 1) {
+            if (tabs.length > 1) {
                 seedRouter.push(this.tabRouterPath[this.activeName]);   //跳转页面
             } else {
                 seedRouter.push('/');       //tab页面全部关闭时，路由重置
@@ -238,7 +248,7 @@ function getRandomTransition() {
 function getRandomNum(Min, Max) {
     var range = Max - Min + 1;
     var rand = Math.random();
-    var num = rand*range + Min;
+    var num = rand * range + Min;
     var randInt = parseInt(num, 10);
     return randInt;
 }

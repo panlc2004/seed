@@ -18,7 +18,7 @@ var czyPageBar = {
             this.loadData();
         },
         reload: function (param) {
-            if(!param) {
+            if (!param) {
                 param = {};
             }
             this.param = param
@@ -60,3 +60,61 @@ var czyPageBar = {
         }
     }
 };
+
+//=======================查询工具栏布局控件=========================
+
+var czy_toolbar_btn_line = {
+    template: [
+        '<el-col :span=24 class="czy-toolbar-btn-line">',
+        '<slot></slot>',
+        '</el-col>'
+    ].join('')
+}
+
+var czy_toolbar_btn = {
+    template: [
+        '<el-col :xs="24" :sm="12" :md="8" :lg="6" class="czy-toolbar-btn">',
+        '<slot></slot>',
+        '</el-col>'
+    ].join('')
+}
+
+var czy_toolbar_item = Vue.extend({
+    props: {
+        label: {
+            type: Number,
+            default: 9
+        },
+        layout2: {
+            type: String,
+            default: ':xs="24" :sm="12" :md="8" :lg="6"'
+        }
+    },
+    data:function () {
+        return {
+            _layout:this.layout2
+        }
+    },
+    template: [
+        '<el-col :xs="24" :sm="12" :md="8" :lg="6" class="czy-toolbar-item">',
+        '<el-col :span="' + 'this.label' + '" class="czy-toolbar-item-label"><slot name="label"></slot>:</el-col>',
+        '<el-col :span="' + '24 - this.label' + '" class="czy-toolbar-item"><slot name="item"></slot></el-col>',
+        '</el-col>'
+    ].join('')
+})
+
+var czy_toolbar = Vue.extend({
+    template: [
+        '<el-row class="czy-toolbar">',
+        // '<div><h5>查询</h5></div>',
+        '<slot></slot>',
+        '</el-row>',
+    ].join('')
+});
+
+Vue.component('czyToolbar', czy_toolbar);
+Vue.component('czy-toolbar-btn', czy_toolbar_btn);
+Vue.component('czy-toolbar-btn-line', czy_toolbar_btn_line);
+Vue.component('czy-toolbar-item', czy_toolbar_item);
+
+//=======================XXX控件=========================

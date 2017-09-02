@@ -5,7 +5,6 @@ define(['text!sys/org/org-edit.html'], function (Template) {
             return {
                 show: false,
                 entity: {},
-                callback: {},
                 ru: {required: true, message: 'test'},
                 rules: {
                     orgName: [
@@ -17,7 +16,7 @@ define(['text!sys/org/org-edit.html'], function (Template) {
                         {max: 50, message: '输入长度不能超过50字符'}
                     ],
                     memo: [
-                        {max: 600, message: '输入长度不能超过50字符'}
+                        {max: 600, message: '输入长度不能超过500字符'}
                     ]
                 }
             }
@@ -44,9 +43,7 @@ define(['text!sys/org/org-edit.html'], function (Template) {
                             success: function (data, status) {
                                 if (status) {
                                     _this.close();
-                                    if(_this.callback.saveCallback) {
-                                        _this.callback.saveCallback();  //保存后执行回调方法
-                                    }
+                                    _this.$emit("save-success")
                                 }
                             }
                         })

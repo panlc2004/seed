@@ -1,20 +1,16 @@
-<div>
-    <!--<div style="padding: 5px 5px;background-color: #EFF2F7;border:solid 1px #dfe6ec;border-bottom: 0px;">-->
-    <!--<div style="float: left;background-color: #EFF2F7;">-->
-    <!--<el-input ref="xxx" placeholder="机构名称" size="small" style="width: 100px"></el-input>-->
-    <!--<el-button type="primary" icon="search" size="small" @click="search">查询</el-button>-->
-    <!--</div>-->
-    <!--<div style="text-align: right;float: right;background-color: #EFF2F7;">-->
-    <!--<el-button type="primary" icon="plus" size="small" @click="toAdd">新增</el-button>-->
-    <!--</div>-->
-    <!--</div>-->
-
-    <div style="padding: 5px 5px;background-color: #EFF2F7;border:solid 1px;border-color: #dfe6ec;">
-        <!--<legend style="background-color: #EFF2F7;">查询</legend>-->
-        <el-input ref="xxx" placeholder="机构名称" size="small" style="width: 100px"></el-input>
-        <el-button type="primary" icon="search" size="small" @click="search">查询</el-button>
-        <el-button type="primary" icon="plus" size="small" @click="toAdd">新增</el-button>
-    </div>
+<div >
+    <czy-toolbar>
+        <czy-toolbar-item>
+            <span slot="label">机构名称</span>
+            <span slot="item"><el-input v-model="queryParams.like.orgName"></el-input></span>
+        </czy-toolbar-item>
+        <czy-toolbar-btn>
+            <el-button-group>
+                <el-button type="primary" icon="search" size="small" @click="search">查询</el-button>
+                <el-button type="primary" icon="plus" size="small" @click="toAdd">新增</el-button>
+            </el-button-group>
+        </czy-toolbar-btn>
+    </czy-toolbar>
 
     <el-table :data="pageData" border="" highlight-current-row>
         <el-table-column prop="orgName" label="机构名称"></el-table-column>
@@ -30,6 +26,5 @@
     <el-pagination layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="sizeChange"
                    @current-change="turnPage" :page-size="pageSize" :current-page="currentPage"></el-pagination>
 
-    <edit ref="edit"></edit>
-    <router-view></router-view>
+    <edit @save-success="search" ref="edit"></edit>
 </div>

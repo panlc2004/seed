@@ -11,8 +11,8 @@
             <el-input v-model="entity.memo" type="textarea" :rows="10" size="small"></el-input>
         </el-form-item>
     </el-form>
-    <el-row style="text-align: center">
+    <div slot="footer">
         <el-button type="primary" size="small" @click="save">提交</el-button>
         <el-button size="small" @click="close">取消</el-button>
-    </el-row>
+    </div>
 </el-dialog>

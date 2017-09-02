@@ -13,12 +13,14 @@
 
     <script src="lib/czyseed/index.js"></script>
     <script src="common/util/czy.util.js"></script>
+
     <script src="lib/requirejs/require-2.3.5.js" data-main="seed-main"></script>
 
     <!--<script src="/lib/requirejs/require-2.3.5.js" defer async="true" data-main="/common/js/main"></script>-->
 
     <link rel="stylesheet" href="lib/elementui/1.4.3/theme-default/index.css">
     <link rel="stylesheet" href="lib/awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="lib/czyseed/index.css">
 
     <style type="text/css">
         body {
@@ -113,7 +115,7 @@
     <div class="left">
         <!--header区域-->
         <el-row class="header">
-            <el-col>LOGO</el-col>
+            <el-col><div style="min-width: 100%;text-align: center">{{logo}}</div></el-col>
         </el-row>
         <!--菜单栏区域-->
         <!--<el-row class="nav-menu">-->
@@ -138,11 +140,11 @@
         <!--功能页面加载区-->
         <el-row>
             <el-tabs type="border-card" :closable="true" v-model="activeName" @tab-remove="removeTab"
-                     @tab-click="tabClick">
+                     @tab-click="tabClick" style="z-index: 2">
                 <el-tab-pane v-for="(item, index) in pageTables"
                              :key="item.id"
                              :label="item.label"
-                             :name="item.name">
+                             :name="item.name" >
                     <transition :name="transition">
                         <keep-alive>
                             <router-view :name="'view' + item.id"></router-view>
