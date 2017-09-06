@@ -52,16 +52,16 @@ public class Group implements Serializable {
         if (this.getBetween() != null) {
             for (Map.Entry<String, Between> between : this.getBetween().entrySet()) {
                 Between value = between.getValue();
-                if (value != null && NullUtil.isNotEmpty(value.getBengin()) && NullUtil.isNotEmpty(value.getEnd()))
-                    criteria.andBetween(between.getKey(), value.getBengin(), value.getEnd());
+                if (value != null && NullUtil.isNotEmpty(value.getBegin()) && NullUtil.isNotEmpty(value.getEnd()))
+                    criteria.andBetween(between.getKey(), value.getBegin(), value.getEnd());
             }
         }
 
         if (this.getNotBetween() != null) {
             for (Map.Entry<String, Between> notBetween : this.getNotBetween().entrySet()) {
                 Between value = notBetween.getValue();
-                if (value != null && NullUtil.isNotEmpty(value.getBengin()) && NullUtil.isNotEmpty(value.getEnd())) {
-                    criteria.andNotBetween(notBetween.getKey(), value.getBengin(), value.getEnd());
+                if (value != null && NullUtil.isNotEmpty(value.getBegin()) && NullUtil.isNotEmpty(value.getEnd())) {
+                    criteria.andNotBetween(notBetween.getKey(), value.getBegin(), value.getEnd());
                 }
             }
         }
@@ -284,15 +284,15 @@ public class Group implements Serializable {
     }
 
     static class Between {
-        private Object bengin;
+        private Object begin;
         private Object end;
 
-        public Object getBengin() {
-            return bengin;
+        public Object getBegin() {
+            return begin;
         }
 
-        public void setBengin(Object bengin) {
-            this.bengin = bengin;
+        public void setBegin(Object begin) {
+            this.begin = begin;
         }
 
         public Object getEnd() {

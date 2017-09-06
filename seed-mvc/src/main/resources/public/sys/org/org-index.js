@@ -1,23 +1,21 @@
-define(['text!sys/org/org-index.html'],function (Template) {
+define(['text!sys/org/org-index.html'], function (Template) {
     var component = {
         template: Template,
-        components:{'edit':function(resolve){
-            require(['sys/org/org-edit'], resolve);
-        }},
-        mixins: [czyPageBar],
+        components: {
+            'edit': function (resolve) {
+                require(['sys/org/org-edit'], resolve);
+            }
+        },
+        mixins: [czyPageBar, queryParam],
         data: function () {
             return {
                 url: 'sys/org/selectPageByParams',
-                queryParams:{
-                    like:{
-                        orgName:''
-                    }
-                }
+                queryParam:this.createQueryParam()
             }
         },
         methods: {
             search: function () {
-                this.reload();
+                this.reload(this.queryParam);
             },
             toAdd: function () {
                 var edit = this.$refs.edit;
@@ -26,7 +24,7 @@ define(['text!sys/org/org-index.html'],function (Template) {
             },
             toEdit: function (entity) {
                 var edit = this.$refs.edit;
-                edit.entity = $.extend({},entity);
+                edit.entity = $.extend({}, entity);
                 edit.open();
             },
             del: function () {
@@ -46,7 +44,7 @@ define(['text!sys/org/org-index.html'],function (Template) {
     // }];
 
     return {
-        component:component         //返回组件
+        component: component         //返回组件
         // subRoute:subRoute        //返回子路由
     }
 

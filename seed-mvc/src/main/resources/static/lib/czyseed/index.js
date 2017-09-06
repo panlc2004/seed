@@ -17,16 +17,13 @@ var czyPageBar = {
             this.pageSize = size;
             this.loadData();
         },
-        reload: function (param) {
-            if (!param) {
-                param = {};
-            }
-            this.param = param
+        reload: function (params) {
+            this.param = buildQueryParams(params);
             this.currentPage = 1;
             this.loadData();
         },
         refresh: function (param) {
-            this.param = param;
+            this.param = buildQueryParams(params);
             this.currentPage = this.currentPageNum;
             this.loadData();
         },
@@ -61,6 +58,60 @@ var czyPageBar = {
     }
 };
 
+/**
+ * 构建查询参数
+ * @param params
+ * @returns {*}
+ */
+function buildQueryParams(params) {
+    if (!params) {
+        return {};
+    }
+    var paramArray = [];
+    for(var i = 0; i < params.length; i++) {
+        paramArray[i] = buildQueryParam(params[i]);
+    }
+    return {or: paramArray};
+}
+
+
+/**
+ * 构建查询参数
+ * @param param
+ */
+function buildQueryParam(param) {
+    var or = {};
+    for (var key in param) {
+        if (key == "between" || key == "notBetween") {
+            var betweenVal = param[key];
+            var begins = betweenVal["begin"];
+            var ends = betweenVal["end"];
+            var temp = {};
+            for (var attr in begins) {
+                var begin = begins[attr];
+                var end = ends[attr];
+                if (begin != undefined && begin != ""
+                    && end != undefined && end != "") {
+                    temp[attr] = {begin: begin, end: end};
+                }
+            }
+            or[key] = temp;
+        } else if (key == "in" || key == "notIn") {
+            var vals = param[key];
+            var temp = {};
+            for (var k in vals) {
+                temp[k] = vals[k].split(",");
+            }
+            or[key] = temp;
+        } else {
+            or[key] = param[key];
+        }
+    }
+
+    return or;
+}
+
+
 //=======================查询工具栏布局控件=========================
 
 var czy_toolbar_btn_line = {
@@ -84,15 +135,6 @@ var czy_toolbar_item = Vue.extend({
         label: {
             type: Number,
             default: 9
-        },
-        layout2: {
-            type: String,
-            default: ':xs="24" :sm="12" :md="8" :lg="6"'
-        }
-    },
-    data:function () {
-        return {
-            _layout:this.layout2
         }
     },
     template: [
@@ -117,4 +159,27 @@ Vue.component('czy-toolbar-btn', czy_toolbar_btn);
 Vue.component('czy-toolbar-btn-line', czy_toolbar_btn_line);
 Vue.component('czy-toolbar-item', czy_toolbar_item);
 
-//=======================XXX控件=========================
+//=======================查询参数组件=========================
+var queryParam = Vue.extend({
+    methods: {
+        createQueryParam: function () {
+            return {
+                like: {},
+                notLike: {},
+                between: {begin: {}, end: {}},
+                notBetween: {begin: {}, end: {}},
+                in: {},
+                notIn: {},
+                equalTo: {},
+                notEqualTo: {},
+                greatThan: {},
+                greatThanOrEqualTo: {},
+                lessThan: {},
+                lessThanOrEqualTo: {},
+                orderBy: {}
+            }
+        }
+    }
+})
+
+//=======================查询参数组件=========================

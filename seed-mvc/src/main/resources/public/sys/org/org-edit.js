@@ -5,7 +5,6 @@ define(['text!sys/org/org-edit.html'], function (Template) {
             return {
                 show: false,
                 entity: {},
-                ru: {required: true, message: 'test'},
                 rules: {
                     orgName: [
                         {required: true, message: '组织名称不能为空'},
