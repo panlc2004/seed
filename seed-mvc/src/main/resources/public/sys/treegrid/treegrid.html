@@ -1,0 +1,45 @@
+<div class="table-content">
+    <el-table :data="TableDate" border style="width: 18.82rem">
+        <el-table-column label="部门名称" min-width="400">
+            <template scope="scope">
+                <span v-for="(space, levelIndex) in scope.row._level" :key="levelIndex" class="ms-tree-space"></span>
+                <span class="button is-outlined is-primary is-small" v-if="toggleIconShow(scope.row)"
+                      @click="toggle(scope.row)">
+                      <i v-if="!scope.row._expanded" class="el-icon-arrow-right" aria-hidden="true"></i>
+                      <i v-if="scope.row._expanded" class="el-icon-arrow-down" aria-hidden="true"></i>
+                  </span>
+                <span v-else class="ms-tree-space"></span>
+                <span :title="scope.row.dpmName">
+                      {{ scope.row.dpmName }}
+                  </span>
+            </template>
+        </el-table-column>
+        <el-table-column
+                label="组织机构代码"
+                min-width="300">
+            <template scope="scope">
+                  <span :title="scope.row.dpmAdc">
+                      {{ scope.row.dpmAdc }}
+                  </span>
+            </template>
+        </el-table-column>
+        <el-table-column
+                label="所属地区"
+                min-width="300">
+            <template scope="scope">
+                  <span :title="scope.row.areaName">
+                      {{ scope.row.areaName }}
+                  </span>
+            </template>
+        </el-table-column>
+        <el-table-column
+                label="上级部门"
+                min-width="315">
+            <template scope="scope">
+                  <span :title="scope.row.parentName">
+                      {{ scope.row.parentName }}
+                  </span>
+            </template>
+        </el-table-column>
+    </el-table>
+</div>
