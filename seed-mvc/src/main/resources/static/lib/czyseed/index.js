@@ -68,12 +68,24 @@ function buildQueryParams(params) {
         return {};
     }
     var paramArray = [];
-    for(var i = 0; i < params.length; i++) {
-        paramArray[i] = buildQueryParam(params[i]);
+    if (!isArray(params)) {
+        paramArray[0] = buildQueryParam(params)
+    } else {
+        for (var i = 0; i < params.length; i++) {
+            paramArray[i] = buildQueryParam(params[i]);
+        }
     }
     return {or: paramArray};
 }
 
+/**
+ * 判断是否为Array类型
+ * @param o
+ * @returns {boolean}
+ */
+function isArray(o) {
+    return Object.prototype.toString.call(o) == '[object Array]';
+}
 
 /**
  * 构建查询参数
@@ -82,9 +94,15 @@ function buildQueryParams(params) {
 function buildQueryParam(param) {
     var or = {};
     for (var key in param) {
+        if(JSON.stringify(param[key]) == "{}") {
+            continue;
+        }
         if (key == "between" || key == "notBetween") {
             var betweenVal = param[key];
             var begins = betweenVal["begin"];
+            if(JSON.stringify(begins) == "{}") {
+                continue;
+            }
             var ends = betweenVal["end"];
             var temp = {};
             for (var attr in begins) {
@@ -159,27 +177,5 @@ Vue.component('czy-toolbar-btn', czy_toolbar_btn);
 Vue.component('czy-toolbar-btn-line', czy_toolbar_btn_line);
 Vue.component('czy-toolbar-item', czy_toolbar_item);
 
-//=======================查询参数组件=========================
-var queryParam = Vue.extend({
-    methods: {
-        createQueryParam: function () {
-            return {
-                like: {},
-                notLike: {},
-                between: {begin: {}, end: {}},
-                notBetween: {begin: {}, end: {}},
-                in: {},
-                notIn: {},
-                equalTo: {},
-                notEqualTo: {},
-                greatThan: {},
-                greatThanOrEqualTo: {},
-                lessThan: {},
-                lessThanOrEqualTo: {},
-                orderBy: {}
-            }
-        }
-    }
-})
 
 //=======================查询参数组件=========================

@@ -83,5 +83,28 @@
                 czy.ajax.postWithMask(_options);
             }
         },
+
+        /**
+         * 查询参数操作
+         */
+        queryParam:{
+            create:function() {
+                return {
+                    like: {},
+                    notLike: {},
+                    between: {begin: {}, end: {}},
+                    notBetween: {begin: {}, end: {}},
+                    in: {},
+                    notIn: {},
+                    equalTo: {},
+                    notEqualTo: {},
+                    greatThan: {},
+                    greatThanOrEqualTo: {},
+                    lessThan: {},
+                    lessThanOrEqualTo: {},
+                    orderBy: {}
+                }
+            }
+        }
     };
 })();

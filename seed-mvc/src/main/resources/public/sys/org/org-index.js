@@ -6,11 +6,11 @@ define(['text!sys/org/org-index.html'], function (Template) {
                 require(['sys/org/org-edit'], resolve);
             }
         },
-        mixins: [czyPageBar, queryParam],
+        mixins: [czyPageBar],
         data: function () {
             return {
                 url: 'sys/org/selectPageByParams',
-                queryParam:this.createQueryParam()
+                queryParam: czy.queryParam.create()
             }
         },
         methods: {
