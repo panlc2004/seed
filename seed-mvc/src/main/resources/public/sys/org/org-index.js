@@ -28,7 +28,17 @@ define(['text!sys/org/org-index.html'], function (Template) {
                 edit.open();
             },
             del: function () {
-
+                var _this = this;
+                this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'error'
+                }).then(function () {
+                    _this.$message({
+                        type: 'success',
+                        message: '删除成功!'
+                    });
+                }).catch(function () {});
             }
         }
     };
