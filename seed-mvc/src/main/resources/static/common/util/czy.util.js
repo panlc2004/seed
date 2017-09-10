@@ -1,5 +1,5 @@
 (function () {
-    window.czy = {
+    window.seed = {
         /**
          * ajax封装
          */
@@ -105,6 +105,27 @@
                     orderBy: {}
                 }
             }
+        },
+        //校验封装
+        validate:{
+            /**
+             * 输入指定长度的中文
+             * @param min 最小长度
+             * @param max 最大长度
+             * @returns {{pattern, message}}
+             */
+            chinese: function (min, max) {
+                var exp = '^[\u4e00-\u9fa5]{' + min + ',' + max + '}$';
+                var msg = '必须输入' + min + '-' + max + '位中文';
+                return buildValidate(exp, msg);
+            }
         }
     };
 })();
+
+function buildValidate(exp, msg) {
+    return {
+        pattern: new RegExp(exp),
+        message: msg
+    }
+}
