@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50096
 File Encoding         : 65001
 
-Date: 2017-09-10 21:25:44
+Date: 2017-09-11 00:04:18
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -390,18 +390,17 @@ CREATE TABLE `seed_sys_user` (
   `SEX` tinyint(1) NOT NULL COMMENT '性别',
   `TELEPHONE` varchar(50) default NULL COMMENT '联系电话',
   `EMAIL` varchar(100) default NULL COMMENT '邮箱',
-  `BIRTHDAY` date default NULL,
-  `EDUCATION` varchar(100) default NULL COMMENT '学历',
   `NON_LOCKED` tinyint(1) NOT NULL default '1' COMMENT '账号是否锁定；1:未锁定; 2:锁定',
   `CREDENTIALS_EXPIRED_TIME` datetime default NULL COMMENT '密码过期时间',
   `ACCOUNT_EXPIRED_TIME` datetime default NULL COMMENT '账号过期时间',
+  `ENABLED` tinyint(1) default NULL COMMENT '账号是否可用',
   PRIMARY KEY  (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of seed_sys_user
 -- ----------------------------
-INSERT INTO `seed_sys_user` VALUES ('1', '1', '2017-08-18 23:22:41', null, null, '1', '1', '超级管理员', '', '', '0', null, null, null, null, '1', null, null);
+INSERT INTO `seed_sys_user` VALUES ('1', '1', '2017-08-18 23:22:41', null, null, '1', '1', '超级管理员', 'suadmin', 'admin', '0', null, null, '1', null, null, null);
 
 -- ----------------------------
 -- Table structure for `seed_sys_user_role`

@@ -3,19 +3,15 @@ package com.czy.seed.mvc.auth;
 import com.czy.seed.mvc.sys.entity.SysRole;
 import com.czy.seed.mvc.sys.entity.SysUser;
 import com.czy.seed.mvc.sys.mapper.SysUserRoleMapper;
-import com.czy.seed.mybatis.config.mybatis.annotations.Cache;
 import com.czy.seed.mybatis.tool.SpringContextHelper;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
-import javax.persistence.Entity;
 import javax.persistence.Transient;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-@Entity
-@Cache
 public class SecurityUser extends SysUser implements UserDetails {
 
     private static final long serialVersionUID = -53674055969551571L;
