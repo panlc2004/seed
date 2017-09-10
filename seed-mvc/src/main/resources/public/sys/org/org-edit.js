@@ -8,11 +8,11 @@ define(['text!sys/org/org-edit.html'], function (Template) {
                 rules: {
                     orgName: [
                         {required: true, message: '组织名称不能为空'},
-                        seed.validate.chinese(1,5)
+                        {max: 50, message: '输入长度不能超过50字符'}
                     ],
                     orgCode: [
                         {required: true, message: '组织编码不能为空'},
-                        {max: 50, message: '输入长度不能超过50字符'}
+                        seed.validate.englishNumberUnderLine(1,50)
                     ],
                     memo: [
                         {max: 600, message: '输入长度不能超过500字符'}
