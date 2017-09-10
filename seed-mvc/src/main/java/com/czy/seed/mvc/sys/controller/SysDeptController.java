@@ -1,48 +1,42 @@
 package com.czy.seed.mvc.sys.controller;
 
+import com.czy.seed.mvc.base.controller.BaseController;
 import com.czy.seed.mvc.sys.entity.SysDept;
 import com.czy.seed.mvc.sys.service.SysDeptService;
 import com.czy.seed.mvc.util.Res;
 import com.czy.seed.mybatis.base.QueryParams;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
 
 @RestController
-@RequestMapping("/sys/dept")
-public class SysDeptController {
+@RequestMapping("sys/dept")
+public class SysDeptController extends BaseController<SysDept> {
 
     @Autowired
-    private SysDeptService sysOrgService;
+    private SysDeptService sysDeptService;
 
-    @RequestMapping("/index")
-    public ModelAndView index() {
-        ModelAndView mv = new ModelAndView("/sys/org");
-        return mv;
+    /**
+     * 根据父级部门id查找其下级部门
+     * @param parentId 父级部门id
+     * @return
+     */
+    @RequestMapping("/selectListByParentId")
+    public Res selectListByParentId(long parentId) {
+        List<SysDept> subDepts = sysDeptService.selectChildNumListByParentId(parentId);
+        return Res.ok(subDepts);
     }
 
-    @RequestMapping("/selectOrgTree")
+    @RequestMapping("selectOrgTree")
     public List<SysDept> selectOrgTree() {
-        return sysOrgService.selectOrgTree();
-    }
-
-    @RequestMapping("/save")
-    public String save(@RequestBody SysDept sysOrg) {
-        if (sysOrg.getId() == null) {
-            sysOrgService.insert(sysOrg);
-        } else {
-            sysOrgService.updateSelectiveByPrimaryKey(sysOrg);
-        }
-        return sysOrg.getId().toString();
+        return sysDeptService.selectOrgTree();
     }
 
     @RequestMapping("/loadData")
     public SysDept loadData(long id) {
-        return sysOrgService.selectByPrimaryKey(id);
+        return sysDeptService.selectByPrimaryKey(id);
     }
 
     @RequestMapping("/deleteOrg")
@@ -50,11 +44,11 @@ public class SysDeptController {
         QueryParams params = new QueryParams(SysDept.class);
         QueryParams.Criteria criteria = params.createCriteria();
         criteria.andEqualTo("parentId", id);
-        int count = sysOrgService.selectCountByParams(params);
+        int count = sysDeptService.selectCountByParams(params);
         if (count > 0) {
             return Res.error("当前机构有下属机构，无法删除");
         }
-        sysOrgService.deleteByPrimaryKey(id);
+        sysDeptService.deleteByPrimaryKey(id);
         return Res.ok();
     }
 

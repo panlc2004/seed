@@ -10,6 +10,7 @@ define(['text!sys/treegrid/treegrid.html'], function (Template) {
     };
     var treegrid = {
         name: 'TreeGrid',
+        template:Template,
         components: {},
         data: function () {
             return {
@@ -22,6 +23,14 @@ define(['text!sys/treegrid/treegrid.html'], function (Template) {
                 var newData = $.extend({}, me.$store.getters.Data);
                 return newData;
             }
+            // ,
+            // allData:{
+            //     get:function () {
+            //         var me = this;
+            //         var newData = $.extend({}, me.$store.getters.Data);
+            //         return newData;
+            //     }
+            // }
         },
         watch: {
             allData: function (val) {
@@ -100,5 +109,9 @@ define(['text!sys/treegrid/treegrid.html'], function (Template) {
                 return data;
             }
         }
+    }
+
+    return {
+        component:treegrid
     }
 });
