@@ -60,22 +60,22 @@ var seedRouter = new VueRouter({
 function openTab(child) {
     var newTab = true;
     //查找要打开的页面是否已经打开
-    for (var i = 0; i < seed.pageTables.length; i++) {
-        if (seed.pageTables[i].id == child.id) {
+    for (var i = 0; i < seedMainPanel.pageTables.length; i++) {
+        if (seedMainPanel.pageTables[i].id == child.id) {
             newTab = false;
             break;
         }
     }
     //如果页面未打开，则打开
     if (newTab) {
-        seed.pageTables.push({
+        seedMainPanel.pageTables.push({
             id: child.id,
             label: child.name,
             name: 'view' + child.id
         });
     }
     //激活对应的tab
-    seed.activeName = 'view' + child.id;//tab选中
+    seedMainPanel.activeName = 'view' + child.id;//tab选中
 }
 
 /**
@@ -91,15 +91,15 @@ function loadComponent(url) {
     var jsPath = url.replace('.html', '');
     var router_path = '/' + jsPath;         //路由名称
     require([jsPath], function (o) {
-        componentRoute[seed.activeName] = o.component
+        componentRoute[seedMainPanel.activeName] = o.component
         seedRouter.addRoutes([{
             path: router_path,
             components: componentRoute,
             children: o.subRoute
         }]);
-        seed.tabRouterPath[seed.activeName] = router_path;
+        seedMainPanel.tabRouterPath[seedMainPanel.activeName] = router_path;
     });
-    seed.transition = getRandomTransition();
+    seedMainPanel.transition = getRandomTransition();
     seedRouter.push(router_path);
 }
 
@@ -120,7 +120,7 @@ function buildUrlByWindowLocationHash(locationHash) {
     return url;
 }
 
-seed = new Vue({
+seedMainPanel = new Vue({
     el: '#main-panel',
     router: seedRouter,
     data: {
@@ -148,8 +148,8 @@ seed = new Vue({
         },
         getMenu: function () {
             $.get("sys/resource/findResourceTreeForLoginUser?_" + $.now(), function (o) {
-                seed.menuList = o.data[0].children;
-                seed.initPage();
+                seedMainPanel.menuList = o.data[0].children;
+                seedMainPanel.initPage();
             });
         },
         /**

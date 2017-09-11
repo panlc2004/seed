@@ -66,7 +66,8 @@ public class SeedSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("**/js/**", "**/css/**", "/lib/**", "/common/**", "/title.js");
+        web.ignoring().antMatchers("**/js/**", "**/css/**", "/lib/**", "/common/**",
+                "/title.js");
     }
 
     @Autowired

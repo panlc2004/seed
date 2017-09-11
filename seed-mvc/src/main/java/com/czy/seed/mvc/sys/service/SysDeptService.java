@@ -9,4 +9,6 @@ public interface SysDeptService extends BaseService<SysDept> {
 
     List<SysDept> selectOrgTree();
 
+    List<SysDept> selectChildNumListByParentId(long parentId);
+
 }

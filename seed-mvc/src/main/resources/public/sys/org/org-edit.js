@@ -7,18 +7,18 @@ define(['text!sys/org/org-edit.html'], function (Template) {
                 entity: {},
                 rules: {
                     orgName: [
-                        {required: true, message: '组织名称不能为空'},
+                        {required: true, message: '请输入组织名称'},
                         {max: 50, message: '输入长度不能超过50字符'}
                     ],
                     orgCode: [
-                        {required: true, message: '组织编码不能为空'},
-                        {max: 50, message: '输入长度不能超过50字符'}
+                        {required: true, message: '请输入组织编码'},
+                        seed.validate.englishNumberUnderLine(1,50)
                     ],
                     memo: [
                         {max: 600, message: '输入长度不能超过500字符'}
                     ]
                 }
-            }
+            };
         },
         methods: {
             open1:function () {
@@ -36,7 +36,7 @@ define(['text!sys/org/org-edit.html'], function (Template) {
                 var _this = this;
                 this.$refs.editForm.validate(function (valid) {
                     if (valid) {
-                        czy.ajax.postJson({
+                        seed.ajax.postJson({
                             url: 'sys/org/save',
                             data: _this.entity,
                             success: function (data, status) {
@@ -51,8 +51,10 @@ define(['text!sys/org/org-edit.html'], function (Template) {
                     }
                 });
             }
+        },
+        created:function () {
+            // seed.validate.test();
         }
-
     };
     return component;
 })

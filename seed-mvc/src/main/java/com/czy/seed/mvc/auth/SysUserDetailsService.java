@@ -1,7 +1,8 @@
 package com.czy.seed.mvc.auth;
 
 import com.czy.seed.mvc.sys.entity.SysUser;
-import com.czy.seed.mvc.sys.mapper.SysUserDetailsMapper;
+import com.czy.seed.mvc.sys.mapper.SysUserMapper;
+import com.czy.seed.mybatis.base.QueryParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -12,13 +13,16 @@ import org.springframework.stereotype.Service;
 public class SysUserDetailsService implements UserDetailsService {
 
     @Autowired
-    private SysUserDetailsMapper sysUserDetailsMapper;
+    private SysUserMapper sysUserMapper;
 
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         if (username == null || username.trim().equals("")) {
             throw new UsernameNotFoundException("username maybe is null or empty");
         }
-        SysUser sysUser = sysUserDetailsMapper.selectByUsername(username);
+        QueryParams params = new QueryParams(SysUser.class);
+        QueryParams.Criteria criteria = params.createCriteria();
+        criteria.andEqualTo("username", username);
+        SysUser sysUser = sysUserMapper.selectOneByParams(params);
         if (sysUser == null) {
             throw new UsernameNotFoundException("User:" + username + "not found");
         }

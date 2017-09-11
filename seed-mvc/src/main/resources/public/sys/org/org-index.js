@@ -10,7 +10,7 @@ define(['text!sys/org/org-index.html'], function (Template) {
         data: function () {
             return {
                 url: 'sys/org/selectPageByParams',
-                queryParam: czy.queryParam.create()
+                queryParam: seed.queryParam.create()
             }
         },
         methods: {
