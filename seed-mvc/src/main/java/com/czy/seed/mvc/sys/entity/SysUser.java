@@ -1,6 +1,7 @@
 package com.czy.seed.mvc.sys.entity;
 
 import com.czy.seed.mvc.base.entity.IPrepare;
+import com.czy.seed.mybatis.config.mybatis.annotations.One2One;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -29,6 +30,9 @@ public class SysUser implements IPrepare {
     private boolean nonLocked;              //账号是否锁定
     private Date credentialsExpiredTime;    //密码过期时间
     private Date accountExpiredTime;        //账号过期时间
+
+    @One2One(columns = "sysDeptId=id")
+    private SysDept sysDept;
 
     public Long getId() {
         return id;
@@ -164,5 +168,13 @@ public class SysUser implements IPrepare {
 
     public void setAccountExpiredTime(Date accountExpiredTime) {
         this.accountExpiredTime = accountExpiredTime;
+    }
+
+    public SysDept getSysDept() {
+        return sysDept;
+    }
+
+    public void setSysDept(SysDept sysDept) {
+        this.sysDept = sysDept;
     }
 }

@@ -7,13 +7,13 @@ import org.springframework.boot.autoconfigure.condition.ConditionalOnWebApplicat
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfiguration;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
 
@@ -61,7 +61,7 @@ public class SeedSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(sysUserDetailsService);
+        auth.userDetailsService(sysUserDetailsService).passwordEncoder(passwordEncoder());
     }
 
     @Override
@@ -70,17 +70,18 @@ public class SeedSecurityConfig extends WebSecurityConfigurerAdapter {
                 "/title.js");
     }
 
-    @Autowired
-    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
-//        指定密码加密所使用的加密器为passwordEncoder()
-//        需要将密码加密后写入数据库
-        auth.userDetailsService(sysUserDetailsService).passwordEncoder(passwordEncoder());
-        auth.eraseCredentials(false);   //不删除凭据，以便记住用户
-    }
+//    @Autowired
+//    public void configureGlobal(AuthenticationManagerBuilder auth) throws Exception {
+////        指定密码加密所使用的加密器为passwordEncoder()
+////        需要将密码加密后写入数据库
+//        auth.userDetailsService(sysUserDetailsService).passwordEncoder(passwordEncoder());
+//        auth.eraseCredentials(false);   //不删除凭据，以便记住用户
+//    }
 
     @Bean
-    public Md5PasswordEncoder passwordEncoder() {
-        return new Md5PasswordEncoder();
+    public BCryptPasswordEncoder passwordEncoder() {
+        BCryptPasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
+        return passwordEncoder;
     }
 
     @Bean
