@@ -3,8 +3,11 @@ define(['text!sys/user/user-edit.html'], function (Template) {
         template: Template,
         data: function () {
             return {
-                show: false,
-                entity: {},
+                show: false,    //编辑页面是否弹出
+                sysDeptList: [], //部门下拉数据
+                entity: {
+                    sysDeptId: ''
+                },     //保存表单提交数据
                 rules: {
                     orgName: [
                         {required: true, message: '请输入组织名称'},
@@ -12,7 +15,7 @@ define(['text!sys/user/user-edit.html'], function (Template) {
                     ],
                     orgCode: [
                         {required: true, message: '请输入组织编码'},
-                        seed.validate.englishNumberUnderLine(1,50)
+                        seed.validate.englishNumberUnderLine(1, 50)
                     ],
                     memo: [
                         {max: 600, message: '输入长度不能超过500字符'}
@@ -21,7 +24,7 @@ define(['text!sys/user/user-edit.html'], function (Template) {
             };
         },
         methods: {
-            open1:function () {
+            open1: function () {
                 // this.$nextTick(function() {
                 //     alert(document.querySelector('.v-modal').parentNode.tagName);
                 // });
@@ -50,10 +53,20 @@ define(['text!sys/user/user-edit.html'], function (Template) {
                         return false;
                     }
                 });
+            },
+            getsysDeptList: function () {
+                var _this = this;
+                seed.ajax.post({
+                    url: 'sys/dept/selectOwnOrgDeptList',
+                    success: function (response) {
+                        _this.sysDeptList = response.data;
+                    }
+                })
             }
         },
-        created:function () {
+        created: function () {
             // seed.validate.test();
+            this.getsysDeptList();
         }
     };
     return component;

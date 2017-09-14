@@ -3,6 +3,7 @@ package com.czy.seed.mvc.sys.controller;
 import com.czy.seed.mvc.base.controller.BaseController;
 import com.czy.seed.mvc.sys.entity.SysDept;
 import com.czy.seed.mvc.sys.service.SysDeptService;
+import com.czy.seed.mvc.util.ILoginUserTool;
 import com.czy.seed.mvc.util.Res;
 import com.czy.seed.mybatis.base.QueryParams;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,6 +19,9 @@ public class SysDeptController extends BaseController<SysDept> {
     @Autowired
     private SysDeptService sysDeptService;
 
+    @Autowired
+    private ILoginUserTool loginUserTool;
+
     /**
      * 根据父级部门id查找其下级部门
      * @param parentId 父级部门id
@@ -28,6 +32,20 @@ public class SysDeptController extends BaseController<SysDept> {
         List<SysDept> subDepts = sysDeptService.selectChildNumListByParentId(parentId);
         return Res.ok(subDepts);
     }
+
+    /**
+     * 查询本组织下的所有部门
+     * @return
+     */
+    @RequestMapping("/selectOwnOrgDeptList")
+    public Res selectOwnOrgDeptList() {
+        QueryParams queryParams = new QueryParams(SysDept.class);
+        QueryParams.Criteria criteria = queryParams.createCriteria();
+        criteria.andEqualTo("sysOrgId", loginUserTool.getLoginUser().getSysOrgId());
+        List<SysDept> sysDepts = sysDeptService.selectListByParams(queryParams);
+        return Res.ok(sysDepts);
+    }
+
 
     @RequestMapping("selectOrgTree")
     public List<SysDept> selectOrgTree() {

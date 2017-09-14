@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50096
 File Encoding         : 65001
 
-Date: 2017-09-11 00:04:18
+Date: 2017-09-14 22:19:21
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -268,10 +268,11 @@ CREATE TABLE `seed_sys_resource` (
 -- Records of seed_sys_resource
 -- ----------------------------
 INSERT INTO `seed_sys_resource` VALUES ('1', '0', '0', '0', '2017-09-10 16:28:51', null, null, '2', 'sys', '系统管理', '', '999', null);
-INSERT INTO `seed_sys_resource` VALUES ('2', '0', '1', '0', '2017-09-10 16:28:55', null, null, '1', 'sys_org', '机构用户管理', 'sys/org/org-index.html', '999', 'el-icon-star-off');
+INSERT INTO `seed_sys_resource` VALUES ('2', '0', '1', '0', '2017-09-10 16:28:55', null, null, '1', 'sys_org', '机构管理', 'sys/org/org-index.html', '999', 'el-icon-star-off');
 INSERT INTO `seed_sys_resource` VALUES ('3', '0', '1', '0', '2017-09-10 16:28:57', null, null, '1', 'sys_param', '系统参数设置', 'sys/param/param-index.html', '999', null);
 INSERT INTO `seed_sys_resource` VALUES ('4', '0', '1', '0', '2017-09-10 16:28:59', null, null, '1', 'sys_resource', '菜单管理', 'sys/resource/index', '999', null);
 INSERT INTO `seed_sys_resource` VALUES ('5', '0', '0', '0', '2017-09-10 16:29:02', null, null, '2', 'process', '流程管理', '', '999', null);
+INSERT INTO `seed_sys_resource` VALUES ('6', '0', '1', '1', '2017-09-11 21:41:12', null, null, '1', 'sys_user', '用户管理', 'sys/user/user-index.html', '999', null);
 INSERT INTO `seed_sys_resource` VALUES ('9', '0', '0', '0', '2017-09-10 16:29:05', null, null, '2', '476', '4567', '4567', '999', null);
 INSERT INTO `seed_sys_resource` VALUES ('10', '0', '9', '0', '2017-09-10 16:29:07', null, null, '2', '2345', '45', '', '999', null);
 INSERT INTO `seed_sys_resource` VALUES ('11', '0', '10', '0', '2017-09-10 16:29:10', null, null, '2', '12341', '12341234', '', '999', null);
@@ -336,6 +337,7 @@ CREATE TABLE `seed_sys_role_resource` (
 -- ----------------------------
 -- Records of seed_sys_role_resource
 -- ----------------------------
+INSERT INTO `seed_sys_role_resource` VALUES ('1', '1', '6');
 INSERT INTO `seed_sys_role_resource` VALUES ('42', '2', '3');
 INSERT INTO `seed_sys_role_resource` VALUES ('43', '2', '4');
 INSERT INTO `seed_sys_role_resource` VALUES ('44', '2', '5');
@@ -385,8 +387,8 @@ CREATE TABLE `seed_sys_user` (
   `SYS_ORG_ID` bigint(20) NOT NULL COMMENT '组织机构id',
   `SYS_DEPT_ID` bigint(20) NOT NULL COMMENT '部门id',
   `NAME` varchar(200) NOT NULL,
-  `USERNAME` varchar(50) NOT NULL,
-  `PASSWORD` varchar(50) NOT NULL,
+  `USERNAME` varchar(100) NOT NULL,
+  `PASSWORD` varchar(200) NOT NULL,
   `SEX` tinyint(1) NOT NULL COMMENT '性别',
   `TELEPHONE` varchar(50) default NULL COMMENT '联系电话',
   `EMAIL` varchar(100) default NULL COMMENT '邮箱',
@@ -395,12 +397,15 @@ CREATE TABLE `seed_sys_user` (
   `ACCOUNT_EXPIRED_TIME` datetime default NULL COMMENT '账号过期时间',
   `ENABLED` tinyint(1) default NULL COMMENT '账号是否可用',
   PRIMARY KEY  (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of seed_sys_user
 -- ----------------------------
-INSERT INTO `seed_sys_user` VALUES ('1', '1', '2017-08-18 23:22:41', null, null, '1', '1', '超级管理员', 'suadmin', 'admin', '0', null, null, '1', null, null, null);
+INSERT INTO `seed_sys_user` VALUES ('1', '1', '2017-09-11 23:07:33', '1', '2017-09-12 22:49:40', '1', '1', '超级管理员', 'suadmin', '$2a$10$6FsiWKQJ7TUmZD9o9tHxve3QqDOvY87FdHVIg49VbtCeIJbbHcR5i', '4', '1231231324', '4123123', '0', null, null, '0');
+INSERT INTO `seed_sys_user` VALUES ('2', '1', '2017-09-11 22:40:41', '1', '2017-09-12 22:49:48', '1', '1', '123', '123456123123', '$2a$10$6FsiWKQJ7TUmZD9o9tHxve3QqDOvY87FdHVIg49VbtCeIJbbHcR5i', '123', '13412342341', '123', '0', null, null, '0');
+INSERT INTO `seed_sys_user` VALUES ('3', '1', '2017-09-11 22:41:11', '1', '2017-09-12 22:36:01', '1', '1', '35', '345', 'd705499792ca451640ad824cbdd3abf5', '1', '1324123414', '345', '0', null, null, '0');
+INSERT INTO `seed_sys_user` VALUES ('4', '1', '2017-09-11 22:41:25', '1', '2017-09-12 22:49:44', '1', '1', '2', '2', 'd705499792ca451640ad824cbdd3abf5', '2', '13412341223123', '2', '0', null, null, '0');
 
 -- ----------------------------
 -- Table structure for `seed_sys_user_role`

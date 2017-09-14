@@ -20,16 +20,16 @@
         <el-table-column prop="telephone" label="电话"></el-table-column>
         <el-table-column label="操作" width="200">
             <template scope="scope">
-                <el-tooltip content="修改" placement="top" effect="light">
+                <el-tooltip content="修改" placement="top" effect="light" :enterable="false">
                     <el-button size="mini" type="warning" icon="edit" @click="toEdit(scope.row)"></el-button>
                 </el-tooltip>
-                <el-tooltip content="删除" placement="top" effect="light">
+                <el-tooltip content="删除" placement="top" effect="light" :enterable="false">
                     <el-button size="mini" type="danger" icon="delete"
                                @click="del(scope.$index, scope.row)"></el-button>
                 </el-tooltip>
-                <el-tooltip content="关联角色" placement="top" effect="light">
-                    <el-button size="mini" type="warning" icon="user"
-                               @click="del(scope.$index, scope.row)"></el-button>
+                <el-tooltip content="关联角色" placement="top" effect="light" :enterable="false">
+                    <el-button size="mini" type="warning"
+                               @click="del(scope.$index, scope.row)"><i class="fa fa-user-o"></i> </el-button>
                 </el-tooltip>
             </template>
         </el-table-column>
