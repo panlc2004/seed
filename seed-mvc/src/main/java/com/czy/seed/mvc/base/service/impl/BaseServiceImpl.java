@@ -17,6 +17,13 @@ import java.util.List;
 
 public class BaseServiceImpl<T> implements BaseService<T> {
 
+    private static final String CREATE_BY = "createBy";
+    private static final String CREATE_DT = "createDt";
+    private static final String UPDATE_BY = "updateBy";
+    private static final String UPDATE_DT = "updateDt";
+    private static final String SYS_ORG_ID = "sysOrgId";
+    private static final String SYS_DEPT_ID = "sysDeptId";
+
     @Autowired
     private BaseMapper<T> mapper;
 
@@ -42,11 +49,11 @@ public class BaseServiceImpl<T> implements BaseService<T> {
         if(record instanceof IPrepare) {
             SecurityUser loginUser = loginUserTool.getLoginUser();
             if (loginUser != null) {
-                EntityUtil.setPreparedValue(record, "createBy", loginUser.getId());
-                EntityUtil.setPreparedValue(record, "orgId", loginUser.getSysOrgId());
-                EntityUtil.setPreparedValue(record, "deptId", loginUser.getSysDeptId());
+                EntityUtil.setPreparedValue(record, CREATE_BY, loginUser.getId());
+                EntityUtil.setPreparedValue(record, SYS_ORG_ID, loginUser.getSysOrgId());
+                EntityUtil.setPreparedValue(record, SYS_DEPT_ID, loginUser.getSysDeptId());
             }
-            EntityUtil.setPreparedValue(record, "createDt", new Date());
+            EntityUtil.setPreparedValue(record, CREATE_DT, new Date());
         }
     }
 
@@ -142,9 +149,9 @@ public class BaseServiceImpl<T> implements BaseService<T> {
     private void beforeUpdate(T record) {
         SecurityUser loginUser = loginUserTool.getLoginUser();
         if (loginUser != null) {
-            EntityUtil.setPreparedValue(record, "updateBy", loginUser.getId());
+            EntityUtil.setPreparedValue(record, UPDATE_BY, loginUser.getId());
         }
-        EntityUtil.setPreparedValue(record, "updateDt", new Date());
+        EntityUtil.setPreparedValue(record, UPDATE_DT, new Date());
     }
 
     public int deleteByPrimaryKey(long id) {

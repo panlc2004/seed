@@ -1,8 +1,8 @@
 <div>
     <czy-toolbar>
         <czy-toolbar-item>
-            <span slot="label">机构名称</span>
-            <span slot="item"><el-input v-model="queryParam.like.orgName"></el-input></span>
+            <span slot="label">名称</span>
+            <span slot="item"><el-input v-model="queryParam.like.name"></el-input></span>
         </czy-toolbar-item>
         <czy-toolbar-btn>
             <el-button-group>
@@ -13,15 +13,22 @@
     </czy-toolbar>
 
     <el-table :data="pageData" border stripe highlight-current-row>
-        <el-table-column prop="orgName" label="机构名称"></el-table-column>
-        <el-table-column prop="orgCode" label="机构编码"></el-table-column>
-        <el-table-column label="操作" width="100">
+        <el-table-column prop="name" label="名称"></el-table-column>
+        <el-table-column prop="sex" label="性别"></el-table-column>
+        <el-table-column prop="sysDept.name" label="部门"></el-table-column>
+        <el-table-column prop="email" label="邮箱"></el-table-column>
+        <el-table-column prop="telephone" label="电话"></el-table-column>
+        <el-table-column label="操作" width="200">
             <template scope="scope">
                 <el-tooltip content="修改" placement="top" effect="light">
                     <el-button size="mini" type="warning" icon="edit" @click="toEdit(scope.row)"></el-button>
                 </el-tooltip>
                 <el-tooltip content="删除" placement="top" effect="light">
                     <el-button size="mini" type="danger" icon="delete"
+                               @click="del(scope.$index, scope.row)"></el-button>
+                </el-tooltip>
+                <el-tooltip content="关联角色" placement="top" effect="light">
+                    <el-button size="mini" type="warning" icon="user"
                                @click="del(scope.$index, scope.row)"></el-button>
                 </el-tooltip>
             </template>
