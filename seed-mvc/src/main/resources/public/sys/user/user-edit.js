@@ -9,16 +9,23 @@ define(['text!sys/user/user-edit.html'], function (Template) {
                     sysDeptId: ''
                 },     //保存表单提交数据
                 rules: {
-                    orgName: [
-                        {required: true, message: '请输入组织名称'},
+                    sysDeptId: [
+                        {required: true, message: '请选择用户部门'},
                         {max: 50, message: '输入长度不能超过50字符'}
                     ],
-                    orgCode: [
-                        {required: true, message: '请输入组织编码'},
-                        seed.validate.englishNumberUnderLine(1, 50)
+                    name: [
+                        {required: true, message: '请输入用户姓名'},
+                        {max: 60, message: '输入长度不能超过50字符'}
                     ],
-                    memo: [
-                        {max: 600, message: '输入长度不能超过500字符'}
+                    telephone: [
+                        seed.validate.number(0, 60)
+                    ],
+                    email: [
+                        {type: "email", message: '请输入邮箱'},
+                        {max: 100, message: '长度不能超过100字符'}
+                    ],
+                    username: [
+                        seed.validate.englishNumber(6,100)
                     ]
                 }
             };
@@ -54,7 +61,7 @@ define(['text!sys/user/user-edit.html'], function (Template) {
                     }
                 });
             },
-            getsysDeptList: function () {
+            getSysDeptList: function () {
                 var _this = this;
                 seed.ajax.post({
                     url: 'sys/dept/selectOwnOrgDeptList',
@@ -65,8 +72,7 @@ define(['text!sys/user/user-edit.html'], function (Template) {
             }
         },
         created: function () {
-            // seed.validate.test();
-            this.getsysDeptList();
+            this.getSysDeptList();
         }
     };
     return component;

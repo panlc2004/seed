@@ -19,7 +19,9 @@ define(['text!sys/user/user-index.html'], function (Template) {
             },
             toAdd: function () {
                 var edit = this.$refs.edit;
-                edit.entity = {};
+                edit.entity = {
+                    sysDeptId: ''
+                };
                 edit.open();
             },
             toEdit: function (entity) {
