@@ -2,6 +2,7 @@ require.config({
     // baseUrl: '/',
     paths: {
         text: 'lib/requirejs/text',
+        css: 'lib/requirejs/css.min',
         vue: 'lib/vue/2.4.2/vue',
         vueRouter: 'lib/vue/vue-router',
         ELEMENT: 'lib/elementui/1.4.2/index',
@@ -14,4 +15,4 @@ require.config({
 
 });
 
-require(['text','index']);  //在此处引用index.js,防止因加载顺序出错而报错
+require(['text', 'index']);  //在此处引用index.js,防止因加载顺序出错而报错
