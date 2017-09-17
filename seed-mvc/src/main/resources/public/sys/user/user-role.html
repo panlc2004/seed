@@ -5,7 +5,7 @@
             filterable
             :filter-method="filterRole"
             filter-placeholder="请输入角色名称"
-            :titles="['全部角色','现有角色']"
+            :titles="['可用角色','已有角色']"
             :button-texts="['移除', '增加']"
             v-model="userRoles"
             :props="{key: 'id', label: 'name'}"

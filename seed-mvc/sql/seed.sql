@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50096
 File Encoding         : 65001
 
-Date: 2017-09-14 22:19:21
+Date: 2017-09-17 22:43:42
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -75,11 +75,11 @@ CREATE TABLE `seed_sys_dept` (
 -- ----------------------------
 -- Records of seed_sys_dept
 -- ----------------------------
-INSERT INTO `seed_sys_dept` VALUES ('1', '0', '2017-09-10 16:30:18', null, null, '0', '0', '0', 'CZY', '春之翼', null);
-INSERT INTO `seed_sys_dept` VALUES ('2', '0', '2017-09-10 16:30:21', null, null, '1', '1', '0', 'depart_fir', '研发一部', null);
-INSERT INTO `seed_sys_dept` VALUES ('3', '0', '2017-09-10 16:30:24', null, null, '1', '1', '0', 'depart_sec', '研发二部', '');
-INSERT INTO `seed_sys_dept` VALUES ('4', '1', '2017-09-10 18:38:33', null, null, '2', '10', '0', 'test', 'test', 'test');
-INSERT INTO `seed_sys_dept` VALUES ('10', '0', '2017-09-10 16:30:27', null, null, '1', '1', '0', '99', '99', '99');
+INSERT INTO `seed_sys_dept` VALUES ('1', '0', '2017-09-10 16:30:18', null, null, '0', '0', '1', 'CZY', '春之翼', null);
+INSERT INTO `seed_sys_dept` VALUES ('2', '0', '2017-09-10 16:30:21', null, null, '1', '1', '1', 'depart_fir', '研发一部', null);
+INSERT INTO `seed_sys_dept` VALUES ('3', '0', '2017-09-10 16:30:24', null, null, '1', '1', '1', 'depart_sec', '研发二部', '');
+INSERT INTO `seed_sys_dept` VALUES ('4', '1', '2017-09-10 18:38:33', null, null, '2', '10', '1', 'test', 'test', 'test');
+INSERT INTO `seed_sys_dept` VALUES ('10', '0', '2017-09-10 16:30:27', null, null, '1', '1', '1', '99', '99', '99');
 
 -- ----------------------------
 -- Table structure for `seed_sys_dict`
@@ -276,7 +276,7 @@ INSERT INTO `seed_sys_resource` VALUES ('6', '0', '1', '1', '2017-09-11 21:41:12
 INSERT INTO `seed_sys_resource` VALUES ('9', '0', '0', '0', '2017-09-10 16:29:05', null, null, '2', '476', '4567', '4567', '999', null);
 INSERT INTO `seed_sys_resource` VALUES ('10', '0', '9', '0', '2017-09-10 16:29:07', null, null, '2', '2345', '45', '', '999', null);
 INSERT INTO `seed_sys_resource` VALUES ('11', '0', '10', '0', '2017-09-10 16:29:10', null, null, '2', '12341', '12341234', '', '999', null);
-INSERT INTO `seed_sys_resource` VALUES ('15', '0', '1', '0', '2017-09-10 16:29:13', null, null, '1', 'sys_role', '角色管理', 'sys/role/index', '999', null);
+INSERT INTO `seed_sys_resource` VALUES ('15', '0', '1', '0', '2017-09-10 16:29:13', null, null, '1', 'sys_role', '角色管理', 'sys/role/role-index.html', '999', null);
 INSERT INTO `seed_sys_resource` VALUES ('16', '0', '5', '0', '2017-09-10 16:29:15', null, null, '1', 'deploy', '流程发布', 'process/deploy/index', '999', null);
 INSERT INTO `seed_sys_resource` VALUES ('17', '0', '1', '0', '2017-09-10 16:29:17', null, null, '1', 'sys_dict', '数据字典', 'sys/dict/index', '999', null);
 INSERT INTO `seed_sys_resource` VALUES ('18', '0', '1', '0', '2017-09-10 16:29:21', null, null, '1', 'sys_attachment', '组织部门管理', 'sys/dept/dept-index.html', '999', null);
@@ -292,36 +292,43 @@ INSERT INTO `seed_sys_resource` VALUES ('25', '0', '20', '0', '2017-09-10 16:29:
 DROP TABLE IF EXISTS `seed_sys_role`;
 CREATE TABLE `seed_sys_role` (
   `ID` bigint(20) NOT NULL auto_increment,
-  `CODE` varchar(200) default NULL COMMENT '角色编码',
-  `NAME` varchar(100) default NULL COMMENT '角色名称',
+  `CREATE_BY` bigint(20) NOT NULL,
+  `CREATE_DT` datetime NOT NULL,
+  `UPDATE_BY` bigint(20) default NULL,
+  `UPDATE_DT` datetime default NULL,
+  `SYS_ORG_ID` bigint(20) NOT NULL COMMENT '组织机构id',
+  `SYS_DEPT_ID` bigint(20) NOT NULL COMMENT '部门id',
+  `CODE` varchar(200) NOT NULL COMMENT '角色编码',
+  `NAME` varchar(100) NOT NULL COMMENT '角色名称',
   `MEMO` varchar(2000) default NULL,
   PRIMARY KEY  (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of seed_sys_role
 -- ----------------------------
-INSERT INTO `seed_sys_role` VALUES ('1', 'admin', '系统管理员', '系统管理员');
-INSERT INTO `seed_sys_role` VALUES ('2', '134', '1341234234234', '123123');
-INSERT INTO `seed_sys_role` VALUES ('3', '3123', '12234234', '123');
-INSERT INTO `seed_sys_role` VALUES ('4', '123', '123345', '123');
-INSERT INTO `seed_sys_role` VALUES ('8', 'tyuiasdfasdf', 'tui', 'tui');
-INSERT INTO `seed_sys_role` VALUES ('9', 'fh', 'fhj', 'jfhjfhj');
-INSERT INTO `seed_sys_role` VALUES ('11', 'adf', '12341', 'adf');
-INSERT INTO `seed_sys_role` VALUES ('12', '356', '3456', '3456');
-INSERT INTO `seed_sys_role` VALUES ('14', 'fgs', 'kjukj', 'dfgsfg');
-INSERT INTO `seed_sys_role` VALUES ('15', 'jkl;jlk;', '[pou;l', ';jl;');
-INSERT INTO `seed_sys_role` VALUES ('17', '6yhn', '7uhjn', '6yhb');
-INSERT INTO `seed_sys_role` VALUES ('19', '2q3wsx', '3ed', '123qwsax');
-INSERT INTO `seed_sys_role` VALUES ('20', '1qwaszx', '3eds', '23wsx');
-INSERT INTO `seed_sys_role` VALUES ('21', '34esdc', '34erdf', '4ed');
-INSERT INTO `seed_sys_role` VALUES ('22', '7ythgn', '6yuhj', '56tygh');
-INSERT INTO `seed_sys_role` VALUES ('23', '23wesd', '23we', '23wed');
-INSERT INTO `seed_sys_role` VALUES ('24', '134', '1234', '134');
-INSERT INTO `seed_sys_role` VALUES ('25', '1234', '1324', '1234');
-INSERT INTO `seed_sys_role` VALUES ('26', '1234', '124', '1234');
-INSERT INTO `seed_sys_role` VALUES ('27', null, null, null);
-INSERT INTO `seed_sys_role` VALUES ('28', null, null, null);
+INSERT INTO `seed_sys_role` VALUES ('1', '0', '0000-00-00 00:00:00', null, null, '0', '0', 'admin', '系统管理员', '系统管理员');
+INSERT INTO `seed_sys_role` VALUES ('2', '0', '0000-00-00 00:00:00', null, null, '0', '0', '134', '1341234234234', '123123');
+INSERT INTO `seed_sys_role` VALUES ('3', '0', '0000-00-00 00:00:00', null, null, '0', '0', '3123', '12234234', '123');
+INSERT INTO `seed_sys_role` VALUES ('4', '0', '0000-00-00 00:00:00', null, null, '0', '0', '123', '123345', '123');
+INSERT INTO `seed_sys_role` VALUES ('8', '0', '0000-00-00 00:00:00', null, null, '0', '0', 'tyuiasdfasdf', 'tui', 'tui');
+INSERT INTO `seed_sys_role` VALUES ('9', '0', '0000-00-00 00:00:00', null, null, '0', '0', 'fh', 'fhj', 'jfhjfhj');
+INSERT INTO `seed_sys_role` VALUES ('11', '0', '0000-00-00 00:00:00', null, null, '0', '0', 'adf', '12341', 'adf');
+INSERT INTO `seed_sys_role` VALUES ('12', '0', '0000-00-00 00:00:00', null, null, '0', '0', '356', '3456', '3456');
+INSERT INTO `seed_sys_role` VALUES ('14', '0', '0000-00-00 00:00:00', null, null, '0', '0', 'fgs', 'kjukj', 'dfgsfg');
+INSERT INTO `seed_sys_role` VALUES ('15', '0', '0000-00-00 00:00:00', null, null, '0', '0', 'jkl;jlk;', '[pou;l', ';jl;');
+INSERT INTO `seed_sys_role` VALUES ('17', '0', '0000-00-00 00:00:00', null, null, '0', '0', '6yhn', '7uhjn', '6yhb');
+INSERT INTO `seed_sys_role` VALUES ('19', '0', '0000-00-00 00:00:00', null, null, '0', '0', '2q3wsx', '3ed', '123qwsax');
+INSERT INTO `seed_sys_role` VALUES ('20', '0', '0000-00-00 00:00:00', null, null, '0', '0', '1qwaszx', '3eds', '23wsx');
+INSERT INTO `seed_sys_role` VALUES ('21', '0', '0000-00-00 00:00:00', null, null, '0', '0', '34esdc', '34erdf', '4ed');
+INSERT INTO `seed_sys_role` VALUES ('22', '0', '0000-00-00 00:00:00', null, null, '0', '0', '7ythgn', '6yuhj', '56tygh');
+INSERT INTO `seed_sys_role` VALUES ('23', '0', '0000-00-00 00:00:00', null, null, '0', '0', '23wesd', '23we', '23wed');
+INSERT INTO `seed_sys_role` VALUES ('24', '0', '0000-00-00 00:00:00', null, null, '0', '0', '134', '1234', '134');
+INSERT INTO `seed_sys_role` VALUES ('25', '0', '0000-00-00 00:00:00', null, null, '0', '0', '1234', '1324', '1234');
+INSERT INTO `seed_sys_role` VALUES ('26', '0', '0000-00-00 00:00:00', null, null, '0', '0', '1234', '124', '1234');
+INSERT INTO `seed_sys_role` VALUES ('27', '0', '0000-00-00 00:00:00', null, null, '0', '0', '', '', null);
+INSERT INTO `seed_sys_role` VALUES ('28', '0', '0000-00-00 00:00:00', null, null, '0', '0', '', '', null);
+INSERT INTO `seed_sys_role` VALUES ('29', '0', '0000-00-00 00:00:00', null, null, '0', '0', 'test', 'test', 'test');
 
 -- ----------------------------
 -- Table structure for `seed_sys_role_resource`
@@ -397,15 +404,21 @@ CREATE TABLE `seed_sys_user` (
   `ACCOUNT_EXPIRED_TIME` datetime default NULL COMMENT '账号过期时间',
   `ENABLED` tinyint(1) default NULL COMMENT '账号是否可用',
   PRIMARY KEY  (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of seed_sys_user
 -- ----------------------------
-INSERT INTO `seed_sys_user` VALUES ('1', '1', '2017-09-11 23:07:33', '1', '2017-09-12 22:49:40', '1', '1', '超级管理员', 'suadmin', '$2a$10$6FsiWKQJ7TUmZD9o9tHxve3QqDOvY87FdHVIg49VbtCeIJbbHcR5i', '4', '1231231324', '4123123', '0', null, null, '0');
+INSERT INTO `seed_sys_user` VALUES ('1', '1', '2017-09-11 23:07:33', '1', '2017-09-12 22:49:40', '1', '1', '超级管理员', 'suadmin', '$2a$10$6FsiWKQJ7TUmZD9o9tHxve3QqDOvY87FdHVIg49VbtCeIJbbHcR5i', '4', '1231', 'test@seed.com', '0', null, null, '0');
 INSERT INTO `seed_sys_user` VALUES ('2', '1', '2017-09-11 22:40:41', '1', '2017-09-12 22:49:48', '1', '1', '123', '123456123123', '$2a$10$6FsiWKQJ7TUmZD9o9tHxve3QqDOvY87FdHVIg49VbtCeIJbbHcR5i', '123', '13412342341', '123', '0', null, null, '0');
 INSERT INTO `seed_sys_user` VALUES ('3', '1', '2017-09-11 22:41:11', '1', '2017-09-12 22:36:01', '1', '1', '35', '345', 'd705499792ca451640ad824cbdd3abf5', '1', '1324123414', '345', '0', null, null, '0');
 INSERT INTO `seed_sys_user` VALUES ('4', '1', '2017-09-11 22:41:25', '1', '2017-09-12 22:49:44', '1', '1', '2', '2', 'd705499792ca451640ad824cbdd3abf5', '2', '13412341223123', '2', '0', null, null, '0');
+INSERT INTO `seed_sys_user` VALUES ('5', '1', '2017-09-16 23:57:45', '1', '2017-09-17 22:38:54', '1', '2', 'test', 'test123', '$2a$10$Bq7iicFHywA49X6TdzZ7ae5oX2sJby9ArcO3fhRzEQ7OL.A7EcVCa', '1', '113', 'test@seec.com', '0', null, null, '0');
+INSERT INTO `seed_sys_user` VALUES ('6', '1', '2017-09-16 23:57:45', null, null, '1', '2', 'test', 'test123', '$2a$10$M9vQA/otCGEc4hFBAMk41eMBsFykYYXjLiL8m1f34bWZZDlMv97pu', '1', '11', 'test@seec.com', '0', null, null, '0');
+INSERT INTO `seed_sys_user` VALUES ('7', '1', '2017-09-16 23:57:45', null, null, '1', '2', 'test', 'test123', '$2a$10$fcOeDMyg.bEcOdRHBL/f6.FSUsA6QKcMitFiVOYY3Bcl//xlOlwcC', '1', '11', 'test@seec.com', '0', null, null, '0');
+INSERT INTO `seed_sys_user` VALUES ('8', '1', '2017-09-16 23:58:10', null, null, '1', '3', 'test2', 'test12345', '$2a$10$3aLjtyItYpNbtSniazLf1ehWMr13Ec.Bj0IIb7.HO7d9QAl0q.jYW', '2', '11', 'test@t.com', '0', null, null, '0');
+INSERT INTO `seed_sys_user` VALUES ('9', '1', '2017-09-16 23:58:10', null, null, '1', '3', 'test2', 'test12345', '$2a$10$lqRvECR/TaU1wEEhjph2GOB.mqcVY6CT9m87QZMzZrvXvgqnV/6AS', '2', '11', 'test@t.com', '0', null, null, '0');
+INSERT INTO `seed_sys_user` VALUES ('10', '1', '2017-09-16 23:58:10', null, null, '1', '3', 'test2', 'test12345', '$2a$10$DcfhcAgQ0kYxQDYx7Hase.ogJ2AXyvdiJPtWFM/CNPOoWuVe1Rq7y', '2', '11', 'test@t.com', '0', null, null, '0');
 
 -- ----------------------------
 -- Table structure for `seed_sys_user_role`
@@ -413,26 +426,32 @@ INSERT INTO `seed_sys_user` VALUES ('4', '1', '2017-09-11 22:41:25', '1', '2017-
 DROP TABLE IF EXISTS `seed_sys_user_role`;
 CREATE TABLE `seed_sys_user_role` (
   `ID` bigint(20) NOT NULL auto_increment,
-  `SYS_USER_ID` bigint(20) NOT NULL,
-  `SYS_ROLE_ID` bigint(20) NOT NULL,
+  `CREATE_BY` bigint(20) NOT NULL,
+  `CREATE_DT` datetime NOT NULL,
+  `UPDATE_BY` bigint(20) default NULL,
+  `UPDATE_DT` datetime default NULL,
+  `SYS_ORG_ID` bigint(20) NOT NULL COMMENT '组织机构id',
+  `SYS_DEPT_ID` bigint(20) NOT NULL COMMENT '部门id',
+  `SYS_USER_ID` bigint(20) NOT NULL COMMENT '用户id',
+  `SYS_ROLE_ID` bigint(20) NOT NULL COMMENT '角色id',
   PRIMARY KEY  (`ID`)
 ) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of seed_sys_user_role
 -- ----------------------------
-INSERT INTO `seed_sys_user_role` VALUES ('6', '22', '2');
-INSERT INTO `seed_sys_user_role` VALUES ('7', '10', '1');
-INSERT INTO `seed_sys_user_role` VALUES ('8', '10', '3');
-INSERT INTO `seed_sys_user_role` VALUES ('15', '13', '1');
-INSERT INTO `seed_sys_user_role` VALUES ('16', '13', '2');
-INSERT INTO `seed_sys_user_role` VALUES ('17', '2', '1');
-INSERT INTO `seed_sys_user_role` VALUES ('18', '2', '2');
-INSERT INTO `seed_sys_user_role` VALUES ('19', '21', '1');
-INSERT INTO `seed_sys_user_role` VALUES ('20', '21', '2');
-INSERT INTO `seed_sys_user_role` VALUES ('21', '24', '4');
-INSERT INTO `seed_sys_user_role` VALUES ('22', '24', '8');
-INSERT INTO `seed_sys_user_role` VALUES ('23', '24', '9');
-INSERT INTO `seed_sys_user_role` VALUES ('24', '23', '3');
-INSERT INTO `seed_sys_user_role` VALUES ('25', '23', '4');
-INSERT INTO `seed_sys_user_role` VALUES ('29', '1', '1');
+INSERT INTO `seed_sys_user_role` VALUES ('6', '0', '2017-09-17 21:11:41', null, null, '0', '0', '22', '2');
+INSERT INTO `seed_sys_user_role` VALUES ('7', '0', '2017-09-17 21:11:44', null, null, '0', '0', '10', '1');
+INSERT INTO `seed_sys_user_role` VALUES ('8', '0', '2017-09-17 21:11:41', null, null, '0', '0', '10', '3');
+INSERT INTO `seed_sys_user_role` VALUES ('15', '0', '2017-09-17 21:11:41', null, null, '0', '0', '13', '1');
+INSERT INTO `seed_sys_user_role` VALUES ('16', '0', '2017-09-17 21:11:41', null, null, '0', '0', '13', '2');
+INSERT INTO `seed_sys_user_role` VALUES ('17', '0', '2017-09-17 21:11:41', null, null, '0', '0', '2', '1');
+INSERT INTO `seed_sys_user_role` VALUES ('18', '0', '2017-09-17 21:11:41', null, null, '0', '0', '2', '2');
+INSERT INTO `seed_sys_user_role` VALUES ('19', '0', '2017-09-17 21:11:41', null, null, '0', '0', '21', '1');
+INSERT INTO `seed_sys_user_role` VALUES ('20', '0', '2017-09-17 21:11:41', null, null, '0', '0', '21', '2');
+INSERT INTO `seed_sys_user_role` VALUES ('21', '0', '2017-09-17 21:11:41', null, null, '0', '0', '24', '4');
+INSERT INTO `seed_sys_user_role` VALUES ('22', '0', '2017-09-17 21:11:41', null, null, '0', '0', '24', '8');
+INSERT INTO `seed_sys_user_role` VALUES ('23', '0', '2017-09-17 21:11:41', null, null, '0', '0', '24', '9');
+INSERT INTO `seed_sys_user_role` VALUES ('24', '0', '2017-09-17 21:11:41', null, null, '0', '0', '23', '3');
+INSERT INTO `seed_sys_user_role` VALUES ('25', '0', '2017-09-17 21:11:41', null, null, '0', '0', '23', '4');
+INSERT INTO `seed_sys_user_role` VALUES ('29', '0', '2017-09-17 21:11:41', null, null, '0', '0', '1', '1');
