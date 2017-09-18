@@ -1,20 +1,26 @@
 package com.czy.seed.mvc.sys.entity;
 
+import com.czy.seed.mvc.base.entity.IPrepare;
 import com.czy.seed.mybatis.config.mybatis.annotations.One2One;
 
 import javax.persistence.Table;
-import java.io.Serializable;
+import java.util.Date;
 
 @Table(name = "SEED_SYS_USER_ROLE")
-public class SysUserRole implements Serializable {
+public class SysUserRole implements IPrepare {
 
     private static final long serialVersionUID = 4511028982475620265L;
 
     private Long id;
+    private Date createDt;
+    private Long createBy;
+    private Date updateDt;
+    private Long updateBy;
+    private Long sysOrgId;
     private Long sysUserId;
     private Long sysRoleId;
 
-    @One2One(columns = "sys_role_id = id")
+    @One2One(columns = "sysRoleId = id")
     private SysRole sysRole;
 
     public Long getId() {
@@ -23,6 +29,46 @@ public class SysUserRole implements Serializable {
 
     public void setId(Long id) {
         this.id = id;
+    }
+
+    public Date getCreateDt() {
+        return createDt;
+    }
+
+    public void setCreateDt(Date createDt) {
+        this.createDt = createDt;
+    }
+
+    public Long getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(Long createBy) {
+        this.createBy = createBy;
+    }
+
+    public Date getUpdateDt() {
+        return updateDt;
+    }
+
+    public void setUpdateDt(Date updateDt) {
+        this.updateDt = updateDt;
+    }
+
+    public Long getUpdateBy() {
+        return updateBy;
+    }
+
+    public void setUpdateBy(Long updateBy) {
+        this.updateBy = updateBy;
+    }
+
+    public Long getSysOrgId() {
+        return sysOrgId;
+    }
+
+    public void setSysOrgId(Long sysOrgId) {
+        this.sysOrgId = sysOrgId;
     }
 
     public Long getSysUserId() {

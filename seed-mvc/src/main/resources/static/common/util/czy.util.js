@@ -15,7 +15,7 @@
                 $.ajax(_options);
             },
             post: function (options) {
-                var defaults = {};
+                var defaults = {type: "POST"};
                 var callbackOption = {
                     beforeSend: function (XMLHttpRequest) {
                         if (options.beforeSend && typeof options.beforeSend == 'function') {
@@ -43,19 +43,19 @@
                 var defaults = {};
                 var callbackOption = {
                     beforeSend: function (XMLHttpRequest) {
-                        czy.mask.open();   //打开遮罩
+                        seed.mask.open();   //打开遮罩
                         if (options.beforeSend && typeof options.beforeSend == 'function') {
                             options.beforeSend(XMLHttpRequest);
                         }
                     },
                     success: function (result) {
-                        czy.mask.close();   //取消遮罩
+                        seed.mask.close();   //取消遮罩
                         if (options.success && typeof options.success == 'function') {
                             options.success(result);
                         }
                     },
                     error: function (XMLHttpRequest, textStatus, errorThrown) {
-                        czy.mask.close();   //取消遮罩
+                        seed.mask.close();   //取消遮罩
                         if (options.error && typeof options.error == 'function') {
                             options.error(XMLHttpRequest, textStatus, errorThrown);
                         }
@@ -80,7 +80,7 @@
                 };
                 var _options = $.extend({}, defaults, options);
                 _options.data = JSON.stringify(options.data);
-                czy.ajax.postWithMask(_options);
+                seed.ajax.postWithMask(_options);
             }
         },
 

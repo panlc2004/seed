@@ -3,25 +3,35 @@ define(['text!sys/user/user-edit.html'], function (Template) {
         template: Template,
         data: function () {
             return {
-                show: false,
-                entity: {},
+                show: false,    //编辑页面是否弹出
+                sysDeptList: [], //部门下拉数据
+                entity: {
+                    sysDeptId: ''
+                },     //保存表单提交数据
                 rules: {
-                    orgName: [
-                        {required: true, message: '请输入组织名称'},
+                    sysDeptId: [
+                        {required: true, message: '请选择用户部门'},
                         {max: 50, message: '输入长度不能超过50字符'}
                     ],
-                    orgCode: [
-                        {required: true, message: '请输入组织编码'},
-                        seed.validate.englishNumberUnderLine(1,50)
+                    name: [
+                        {required: true, message: '请输入用户姓名'},
+                        {max: 60, message: '输入长度不能超过50字符'}
                     ],
-                    memo: [
-                        {max: 600, message: '输入长度不能超过500字符'}
+                    telephone: [
+                        seed.validate.number(0, 60)
+                    ],
+                    email: [
+                        {type: "email", message: '请输入邮箱'},
+                        {max: 100, message: '长度不能超过100字符'}
+                    ],
+                    username: [
+                        seed.validate.englishNumber(6,100)
                     ]
                 }
             };
         },
         methods: {
-            open1:function () {
+            open1: function () {
                 // this.$nextTick(function() {
                 //     alert(document.querySelector('.v-modal').parentNode.tagName);
                 // });
@@ -50,10 +60,19 @@ define(['text!sys/user/user-edit.html'], function (Template) {
                         return false;
                     }
                 });
+            },
+            getSysDeptList: function () {
+                var _this = this;
+                seed.ajax.post({
+                    url: 'sys/dept/selectOwnOrgDeptList',
+                    success: function (response) {
+                        _this.sysDeptList = response.data;
+                    }
+                })
             }
         },
-        created:function () {
-            // seed.validate.test();
+        created: function () {
+            this.getSysDeptList();
         }
     };
     return component;

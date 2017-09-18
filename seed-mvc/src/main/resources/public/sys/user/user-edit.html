@@ -1,6 +1,12 @@
-<el-dialog title="组织机构信息" :visible.sync="show" :modal-append-to-body="false" :close-on-click-modal="false"
-           @open="open1" >
+<el-dialog title="用户信息" :visible.sync="show" :modal-append-to-body="false" :close-on-click-modal="false"
+           size="tiny">
     <el-form label-position="right" label-width="80px" :model="entity" :rules="rules" ref="editForm">
+        <el-form-item label="部门" prop="sysDeptId">
+            <el-select v-model="entity.sysDeptId" filterable placeholder="请选择" size="small" style="min-width: 100%">
+                <el-option v-for="item in sysDeptList" :key="item.id" :label="item.name" :value="item.id">
+                </el-option>
+            </el-select>
+        </el-form-item>
         <el-form-item label="名称" prop="name">
             <el-input v-model="entity.name" size="small"></el-input>
         </el-form-item>

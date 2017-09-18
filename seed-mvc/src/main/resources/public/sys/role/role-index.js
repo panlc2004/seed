@@ -1,18 +1,15 @@
-define(['text!sys/user/user-index.html'], function (Template) {
+define(['text!sys/role/role-index.html'], function (Template) {
     var component = {
         template: Template,
         components: {
             'edit': function (resolve) {
-                require(['sys/user/user-edit'], resolve);
-            },
-            "role":function (resolve) {
-                require(['sys/user/user-role'], resolve);
+                require(['sys/role/role-edit'], resolve);
             }
         },
         mixins: [czyPageBar],
         data: function () {
             return {
-                url: 'sys/user/selectPageRelativeByParams',
+                url: 'sys/role/selectPageByParams',
                 queryParam: seed.queryParam.create()
             }
         },
@@ -22,9 +19,7 @@ define(['text!sys/user/user-index.html'], function (Template) {
             },
             toAdd: function () {
                 var edit = this.$refs.edit;
-                edit.entity = {
-                    sysDeptId: ''
-                };
+                edit.entity = {};
                 edit.open();
             },
             toEdit: function (entity) {
@@ -34,10 +29,6 @@ define(['text!sys/user/user-index.html'], function (Template) {
             },
             del: function () {
 
-            },
-            setRole:function (row) {
-                var role = this.$refs.role;
-                role.open(row.id);
             }
         }
     };

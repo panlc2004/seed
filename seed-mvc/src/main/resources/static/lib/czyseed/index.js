@@ -40,7 +40,7 @@ var czyPageBar = {
                     _this.total = Number(response.data.total);
                 },
                 error: function (response) {
-                    czy.msg.error("未知异常，请联系管理员");
+                    seed.msg.error("未知异常，请联系管理员");
                     _this.loading = false;
                 }
             });

@@ -1,5 +1,7 @@
 package com.czy.seed.mvc.base.entity;
 
+import com.czy.seed.mybatis.tool.NullUtil;
+
 import javax.persistence.Id;
 import java.beans.IntrospectionException;
 import java.beans.PropertyDescriptor;
@@ -22,9 +24,13 @@ public class EntityUtil {
         } catch (IntrospectionException e) {
             return;
         }
+        Method readMethod = idDes.getReadMethod();
         Method writeMethod = idDes.getWriteMethod();
         try {
-            writeMethod.invoke(record, value);
+            Object invoke = readMethod.invoke(record);
+            if (NullUtil.isNull(invoke)) {   //有值时不自动赋值
+                writeMethod.invoke(record, value);
+            }
         } catch (Exception e) {
             throw new RuntimeException("向对象:" + record.getClass().getName() + "的字段:" + targetField + "设置值时出错。" + e);
         }
