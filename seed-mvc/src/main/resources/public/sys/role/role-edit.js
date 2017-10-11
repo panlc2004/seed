@@ -6,36 +6,32 @@ define(['text!sys/role/role-edit.html'], function (Template) {
                 show: false,
                 entity: {},
                 rules: {
-                    orgName: [
+                    name: [
                         {required: true, message: '请输入组织名称'},
-                        {max: 50, message: '输入长度不能超过50字符'}
+                        seed.validate.chineseEnglishNumber(1, 50)
                     ],
-                    orgCode: [
+                    code: [
                         {required: true, message: '请输入组织编码'},
-                        seed.validate.englishNumberUnderLine(1,50)
+                        seed.validate.englishNumberUnderLine(1, 100)
                     ],
                     memo: [
-                        {max: 600, message: '输入长度不能超过500字符'}
+                        {max: 1000, message: '输入长度不能超过500字符'}
                     ]
                 }
             };
         },
         methods: {
-            open1:function () {
-                // this.$nextTick(function() {
-                //     alert(document.querySelector('.v-modal').parentNode.tagName);
-                // });
-            },
             open: function () {
                 this.show = true;
             },
             close: function () {
                 this.show = false;
             },
-            save: function () {
+            save: function (entity) {
                 var _this = this;
                 this.$refs.editForm.validate(function (valid) {
                     if (valid) {
+                        debugger;
                         seed.ajax.postJson({
                             url: 'sys/role/save',
                             data: _this.entity,
@@ -51,9 +47,6 @@ define(['text!sys/role/role-edit.html'], function (Template) {
                     }
                 });
             }
-        },
-        created:function () {
-            // seed.validate.test();
         }
     };
     return component;

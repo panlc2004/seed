@@ -2,6 +2,7 @@ package com.czy.seed.mvc.sys.service.impl;
 
 import com.czy.seed.mvc.auth.UserAuthority;
 import com.czy.seed.mvc.base.service.impl.BaseServiceImpl;
+import com.czy.seed.mvc.sys.entity.SysDept;
 import com.czy.seed.mvc.sys.entity.SysResource;
 import com.czy.seed.mvc.sys.mapper.SysResourceMapper;
 import com.czy.seed.mvc.sys.service.SysResourceService;
@@ -17,16 +18,19 @@ public class SysResourceServiceImpl extends BaseServiceImpl<SysResource> impleme
     @Autowired
     private SysResourceMapper sysResourceMapper;
 
-    public List<SysResource> findResourceTreeForLoginUser() {
-        //获取登陆用户角色
-//        List<UserAuthority> loginUserRoles = PrincipalUtil.getLoginUserRoles();
-//        String roleIds = getRoleIds(loginUserRoles);
+    public List<SysResource> selectChildNumListByParentId(long parentId) {
+        return sysResourceMapper.selectChildNumListByParentId(parentId);
+    }
 
+    public List<SysResource> selectListByName(String name) {
+        return sysResourceMapper.selectListByName(name);
+    }
+
+    public List<SysResource> findResourceTreeForLoginUser() {
         String roleIds = "(1)";
         List<SysResource> resources = sysResourceMapper.findResourceForLoginUser(roleIds);   //查询用户所有菜单
         //关联查询所有菜单的父级菜单
         List<SysResource> fullResourceList = findFullResources(resources, resources);
-
         return buildTree(fullResourceList);
     }
 
@@ -37,7 +41,7 @@ public class SysResourceServiceImpl extends BaseServiceImpl<SysResource> impleme
             sb.append(userAuthority.getRoleId()).append(",");
         }
         String substring = sb.substring(0, sb.length() - 1);
-        substring = substring +  ")";
+        substring = substring + ")";
         return substring;
     }
 
@@ -78,6 +82,11 @@ public class SysResourceServiceImpl extends BaseServiceImpl<SysResource> impleme
         return findFullResources(parentResources, fullResources);  //递归查找;
     }
 
+    @Override
+    public List<SysResource> selectListByParams() {
+        return null;
+    }
+
     public List<SysResource> selectResourceTree() {
         List<SysResource> allResources = sysResourceMapper.selectListAll();
         return buildTree(allResources);
@@ -94,13 +103,12 @@ public class SysResourceServiceImpl extends BaseServiceImpl<SysResource> impleme
         zeroNode.getChildren().addAll(rootResource);
         List<SysResource> resources = new ArrayList<SysResource>();
         resources.add(zeroNode);
-        //排序
         orderBy(resources);
         return resources;
     }
 
     private void orderBy(List<SysResource> resources) {
-        Collections.sort(resources,new Comparator<SysResource>() {
+        Collections.sort(resources, new Comparator<SysResource>() {
             @Override
             public int compare(SysResource o1, SysResource o2) {
                 int orderByDiff = o1.getOrderBy() - o2.getOrderBy();
@@ -154,5 +162,9 @@ public class SysResourceServiceImpl extends BaseServiceImpl<SysResource> impleme
         }
     }
 
-
+    @Override
+    public List<SysResource> selectOrgTree() {
+        List<SysResource> sysOrgs = sysResourceMapper.selectAllOrgs();
+        return buildTree(sysOrgs);
+    }
 }
