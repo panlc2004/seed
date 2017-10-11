@@ -1,6 +1,7 @@
 package com.czy.seed.mvc.sys.entity;
 
 import com.czy.seed.mvc.base.entity.IPrepare;
+import org.apache.ibatis.annotations.Param;
 
 import javax.persistence.Id;
 import javax.persistence.Table;

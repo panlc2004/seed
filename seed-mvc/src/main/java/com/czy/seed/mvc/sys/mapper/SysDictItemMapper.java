@@ -1,4 +1,4 @@
-package com.czy.seed.mvc.sys.mapper.xml;
+package com.czy.seed.mvc.sys.mapper;
 
 import com.czy.seed.mvc.sys.entity.SysDictItem;
 import com.czy.seed.mybatis.base.mapper.BaseMapper;

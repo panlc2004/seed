@@ -1,6 +1,7 @@
 package com.czy.seed.mvc.sys.service.impl;
 
 import com.czy.seed.mvc.base.service.impl.BaseServiceImpl;
+import com.czy.seed.mvc.sys.entity.SysDept;
 import com.czy.seed.mvc.sys.entity.SysDict;
 import com.czy.seed.mvc.sys.mapper.SysDictMapper;
 import com.czy.seed.mvc.sys.service.SysDictService;
@@ -24,7 +25,7 @@ public class SysDictServiceImpl extends BaseServiceImpl<SysDict> implements SysD
         return buildTree(sysDicts);
     }
 
-    public List<SysDict> selectChildNumListByParentId(long parentId, String code) {
+    public List<SysDict> selectChildNumListByParentId(long parentId,String code) {
         return sysDictMapper.selectChildNumListByParentId(parentId,code);
     }
 

@@ -54,7 +54,6 @@ define(['text!sys/dict/dict-group.html'], function (Template) {
                 seed.ajax.postJson({
                     url: 'sys/dict/selectListByParentId/' + parentId + "/" + code,
                     success: function (response) {
-                        debugger;
                         callback(response);
                     }
                 })
