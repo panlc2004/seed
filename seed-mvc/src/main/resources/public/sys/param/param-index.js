@@ -1,75 +1,109 @@
-/**
- * Created by PLC on 2017/6/3.
- */
 define(['text!sys/param/param-index.html'], function (Template) {
     var component = {
         template: Template,
-        data: function() {
+        components: {
+            'edit': function (resolve) {
+                require(['sys/param/param-edit'], resolve);
+            }
+        },
+        mixins: [czyPageBar],
+        data: function () {
             return {
-                selectedRow: null,      //列表选中行
-                queryParam: {           //查询参数
-                    pageNum: 1,
-                    pageSize: 10
-                },
-                pageData: null,         //分页数据
-                total: 0,               //数据总量
-                // 表单数据
-                formData: {},            //表单数据
-                editDialogShow: false,   //新增、修改表单是否显示
-                formLabelWidth: '70px'   //表单标题宽度
+                dialogVisible: false,
+                currentRow: {},
+                tips: '',
+                pageData: null,
+                total: 0,
+                url: 'sys/param/selectPageRelativeByParams',
+                entity: {},
+                queryParam: seed.queryParam.create(),
             }
         },
-
         methods: {
-            query: function () {
-                this.queryParam.pageNum = 1;
-                this.loadData();
-            },
-            loadData: function () {
+            test: function (entity) {
                 var _this = this;
-                $.post("sys/param/selectPageByParams", this.queryParam, function (data) {
-                    _this.pageData = data.data.page;
-                    _this.total = data.data.total;
-                });
-            },
-            add: function () {
-                this.formData = {};
-                this.editDialogShow = true;
-            },
-            edit: function () {
-                if (this.selectedRow == null) {
-                    czy.msg.error("请选择要操作的数据");
-                    return;
+                _this.currentRow = entity;
+                if (this.currentRow.active === 1) {
+                    _this.$confirm('已激活, 是否取消?', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(function () {
+                        _this.currentRow.active === 1 ? _this.currentRow.active = 0 : _this.currentRow.active = 1;
+                        seed.ajax.post({
+                            url: "sys/param/updateActiveByPrimaryKey/" + _this.currentRow.id + "/" + _this.currentRow.active,
+                            success: function (data, status) {
+                                if (status) {
+                                    this.search();
+                                }
+                            }
+                        });
+                    }).catch(function () {
+                    });
                 }
-                this.formData = this.selectedRow;
-                this.editDialogShow = true;
+                else {
+
+                    _this.$confirm('未激活, 是否激活?', '提示', {
+                        confirmButtonText: '确定',
+                        cancelButtonText: '取消',
+                        type: 'warning'
+                    }).then(function () {
+                        _this.currentRow.active === 1 ? _this.currentRow.active = 0 : _this.currentRow.active = 1;
+                        seed.ajax.post({
+                            url: "sys/param/updateActiveByPrimaryKey/" + _this.currentRow.id + "/" + _this.currentRow.active,
+                            success: function (data, status) {
+                                if (status) {
+                                    this.search();
+                                }
+                            }
+                        });
+                    }).catch(function () {
+                    });
+                }
+
+
             },
-            save: function () {
-                czy.ajax.postJson({
-                    utl: "sys/param/save",
-                    data: this.formData,
-                    success: function (result) {
-                        param_panel.editDialogShow = false;
-                        param_panel.loadData();
-                    }
+
+            search: function () {
+                this.reload(this.queryParam);
+            },
+            toAdd: function () {
+
+                var edit = this.$refs.edit;
+                edit.entity = {};
+                edit.open();
+            },
+            toEdit: function (entity) {
+                var edit = this.$refs.edit;
+                edit.entity = $.extend({}, entity);
+                edit.open();
+            },
+            del: function (entity) {
+
+                console.log(entity);
+                var _this = this;
+                _this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(function () {
+                    seed.ajax.postJson({
+                        url: "sys/param/deleteByPrimaryKey/" + entity.id,
+                        success: function (data, status) {
+                            if (status) {
+                                _this.search();
+                            }
+                        }
+                    });
+                }).catch(function () {
                 });
             },
-            gridSelect: function (selectedRow) {
-                this.selectedRow = selectedRow;
-            },
-            changePage: function (pageNum) {
-                this.queryParam.pageNum = pageNum;
-                this.loadData();
-            }
-        },
-        created: function () {
-            this.loadData();
-        }
-    };
 
-    return {
-        component:component
+        }
     }
 
+    return {
+        component: component         //返回组件
+    }
 
 });
