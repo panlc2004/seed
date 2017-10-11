@@ -9,11 +9,9 @@ import com.czy.seed.mvc.sys.model.Resources;
 import com.czy.seed.mvc.sys.service.SysResourceService;
 import com.czy.seed.mvc.sys.service.SysRoleResourceService;
 import com.czy.seed.mybatis.base.QueryParams;
-import com.sun.xml.internal.bind.v2.runtime.reflect.Lister;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.awt.font.FontRenderContext;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -25,7 +23,6 @@ public class SysRoleResourceServiceImpl extends BaseServiceImpl<SysRoleResource>
     @Autowired
     private SysRoleResourceMapper sysRoleResourceMapper;
 
-
     @Override
     public void saveRoleResources(List<SysRoleResource> roleResourceList) {
         QueryParams queryParams = new QueryParams(SysRoleResource.class);
@@ -35,41 +32,34 @@ public class SysRoleResourceServiceImpl extends BaseServiceImpl<SysRoleResource>
         super.insertList(roleResourceList);
     }
 
-
-    /**
-     * 查询所有资源
-     * @param roleId  角色Id
-     * @return  Resourece
-     */
+    @Override
     public Resources selectResources(long roleId) {
-        Resources resources = new Resources();//所有的资源，用户资源，以及父级资源ID 的存储
-        resources.setResourceData(getResourceData());//查询父级资源（id name）以及父级资源下所有子资源
-       resources.setCheckIds(getCheckIds(roleId));//查询用户所拥有的资源（id）
-
-       // resources.setParentIds(resources.getCheckIds());
+        Resources resources = new Resources();  //定义一个资源对象
+        resources.setResourceData(getResourceData());//获取所有资源
+        resources.setCheckIds(getCheckIds(roleId));
+        resources.setParentIds(resources.getCheckIds());
         return resources;
     }
-
     /**
-     * 通过角色Id查询用户已有资源
-     * @param sysRoleId 角色Id
-     * @return Long 返回资源菜单的ID
+     * 角色具有的资源
+     *
+     * @param checkIDs
+     * @return
      */
     private List<Long> getCheckIds(long sysRoleId) {
-            QueryParams queryParams = new QueryParams(SysRoleResource.class);
-            QueryParams.Criteria criteria = queryParams.createCriteria();
-            criteria.andEqualTo("sysRoleId",sysRoleId);
-            List<SysRoleResource> childId = sysRoleResourceMapper.selectListByParams(queryParams);
-            List<Long> result = new ArrayList<>();
-            for (SysRoleResource sysRoleResource :childId)
-            {
-                result.add(sysRoleResource.getSysResourceId());
-            }
-            return  result;
+        QueryParams params = new QueryParams(SysRoleResource.class);
+        QueryParams.Criteria paramsCriteria = params.createCriteria();
+        paramsCriteria.andEqualTo("sysRoleId", sysRoleId);
+        List<SysRoleResource> childId = sysRoleResourceMapper.selectListByParams(params);
+        List<Long> result = new ArrayList<>();
+        for (SysRoleResource sysRoleResource : childId) {
+            result.add(sysRoleResource.getSysResourceId());
+        }
+        return result;
     }
 
     /**
-     * @return   查询父级资源
+     * @return
      */
     private List<Resource> getResourceData() {
         return selectResourceByParentId(0);
@@ -77,21 +67,21 @@ public class SysRoleResourceServiceImpl extends BaseServiceImpl<SysRoleResource>
 
     /**
      * 根据父节点ID查询子节点数据
-     * @param parentId  父节点ID
-     * @return List<Resource>
+     *
+     * @param parentId
+     * @return
      */
     private List<Resource> selectResourceByParentId(long parentId) {
         QueryParams params = new QueryParams(SysResource.class);
         QueryParams.Criteria paramsCriteria = params.createCriteria();
-        paramsCriteria.andEqualTo("parentId", parentId); //设置查询条件 parentId 开始为0
-        List<SysResource> children = sysResourceService.selectListByParams(params);//查询到父级资源
+        paramsCriteria.andEqualTo("parentId", parentId);
+        List<SysResource> children = sysResourceService.selectListByParams(params);
         List<Resource> result = new ArrayList<>();
         for (SysResource sysResource : children) {
             Resource resource = new Resource();
             resource.setId(sysResource.getId());
             resource.setLabel(sysResource.getName());
-            //把父级资源的id name 存放进去
-            List<Resource> resources = selectResourceByParentId(sysResource.getId());//查找父级下子资源下的资源。。
+            List<Resource> resources = selectResourceByParentId(sysResource.getId());
             resource.setChildren(resources);
             result.add(resource);
         }

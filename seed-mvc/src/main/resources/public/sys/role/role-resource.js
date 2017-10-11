@@ -1,11 +1,12 @@
-define(['text!sys/role/role-resource.html'], function (Template) {
+define(['text!sys/role/role-resource.html', 'css!sys/role/role-resource.css'], function (Template) {
     var component = {
         template: Template,
         data: function () {
             return {
-                roleId: '',
+                roleId: -1,
                 show: false,    //编辑页面是否弹出
                 resources: [{
+                    parentIds: [],//checkIds的父ID
                     checkIds: [],//用户拥有的资源的ID
                     resourceData: []//所有的资源
                 }],
@@ -19,26 +20,27 @@ define(['text!sys/role/role-resource.html'], function (Template) {
             open: function (roleId) {
                 this.roleId = roleId;
                 this.show = true;
-                this.getResources(roleId);
+                this.getResources(roleId)
             },
             close: function () {
                 this.show = false;
             },
-
             getCheckedKeys: function () {
                 var _this = this;
-                _this.resources.checkIds = this.$refs.tree.getCheckedKeys();
-                var param = [];
-                this.resources.checkIds.forEach(function (t) {
-                    param.push({sysRoleId: _this.roleId, sysResourceId: t});
+                var roleResources = [];
+                this.$refs.tree.getCheckedKeys().forEach(function (t) {
+                    roleResources.push({sysRoleId: _this.roleId, sysResourceId: t});
                 })
+                console.log(roleResources);
                 seed.ajax.postJson({
                     url: 'sys/roleResource/saveRoleResource',
-                    data: param,
+                    data: roleResources,
                     success: function (data, status) {
                         if (status) {
                             _this.close();
                         }
+                    },
+                    error: function (data, status) {
                     }
                 })
             },

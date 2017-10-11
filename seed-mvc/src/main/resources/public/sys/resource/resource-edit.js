@@ -36,9 +36,6 @@ define(['text!sys/resource/resource-edit.html'], function (Template) {
             }
         },
         methods: {
-            open1: function () {
-
-            },
             open: function () {
                 this.show = true;
             },

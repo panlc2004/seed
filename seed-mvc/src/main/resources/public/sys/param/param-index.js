@@ -1,75 +1,98 @@
-/**
- * Created by PLC on 2017/6/3.
- */
 define(['text!sys/param/param-index.html'], function (Template) {
     var component = {
         template: Template,
-        data: function() {
-            return {
-                selectedRow: null,      //列表选中行
-                queryParam: {           //查询参数
-                    pageNum: 1,
-                    pageSize: 10
-                },
-                pageData: null,         //分页数据
-                total: 0,               //数据总量
-                // 表单数据
-                formData: {},            //表单数据
-                editDialogShow: false,   //新增、修改表单是否显示
-                formLabelWidth: '70px'   //表单标题宽度
+        components: {
+            'edit': function (resolve) {
+                require(['sys/param/param-edit'], resolve);
             }
         },
-
+        mixins: [czyPageBar],
+        data: function () {
+            return {
+                pageData: null,
+                total: 0,
+                dialogVisible: false,
+                dialogVisible1: false,
+                url: 'sys/param/selectPageRelativeByParams',
+                queryParam: seed.queryParam.create()
+            }
+        },
         methods: {
-            query: function () {
-                this.queryParam.pageNum = 1;
-                this.loadData();
+            search: function () {
+                this.reload(this.queryParam);
             },
-            loadData: function () {
+            toAdd: function () {
+                var edit = this.$refs.edit;
+                edit.entity = {};
+                edit.open();
+            },
+            toEdit: function (entity) {
+                var edit = this.$refs.edit;
+                edit.entity = $.extend({}, entity);
+                edit.open();
+            },
+            del: function (entity) {
                 var _this = this;
-                $.post("sys/param/selectPageByParams", this.queryParam, function (data) {
-                    _this.pageData = data.data.page;
-                    _this.total = data.data.total;
+                _this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'error'
+                }).then(function () {
+                    seed.ajax.postJson({
+                        url: "sys/param/deleteByPrimaryKey/" + entity.id,
+                        success: function (data, status) {
+                            if (status) {
+                                _this.search();
+                            }
+                        }
+                    });
+                }).catch(function () {
                 });
             },
-            add: function () {
-                this.formData = {};
-                this.editDialogShow = true;
-            },
-            edit: function () {
-                if (this.selectedRow == null) {
-                    czy.msg.error("请选择要操作的数据");
-                    return;
-                }
-                this.formData = this.selectedRow;
-                this.editDialogShow = true;
-            },
-            save: function () {
-                czy.ajax.postJson({
-                    utl: "sys/param/save",
-                    data: this.formData,
-                    success: function (result) {
-                        param_panel.editDialogShow = false;
-                        param_panel.loadData();
-                    }
+            delActive: function (entity) {
+                var _this = this;
+                _this.$confirm('是否取消激活?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(function () {
+                    seed.ajax.postJson({
+                        url: "sys/param/updateActiveByPrimaryKey/" + entity.id+"/"+entity.active,
+                        success: function (data, status) {
+                            if (status) {
+                                _this.search();
+                            }
+                        }
+                    });
+                }).catch(function () {
                 });
             },
-            gridSelect: function (selectedRow) {
-                this.selectedRow = selectedRow;
-            },
-            changePage: function (pageNum) {
-                this.queryParam.pageNum = pageNum;
-                this.loadData();
+            setActive: function (entity) {
+                var _this = this;
+                debugger;
+                _this.$confirm('是否激活?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'warning'
+                }).then(function () {
+                    seed.ajax.postJson({
+                        url: "sys/param/updateActiveByPrimaryKey/" +  entity.id+"/"+entity.active,
+                        success: function (data, status) {
+                            if (status) {
+                                _this.search();
+                            }
+                        }
+                    });
+                }).catch(function () {
+                });
             }
         },
         created: function () {
             this.loadData();
         }
-    };
+    }
 
     return {
         component:component
     }
-
-
 });

@@ -1,4 +1,4 @@
-<el-dialog title="组织机构信息" :visible.sync="show" :modal-append-to-body="false" :close-on-click-modal="false">
+<el-dialog title="角色信息" :visible.sync="show" :modal-append-to-body="false" :close-on-click-modal="false">
 
     <el-form label-position="right" label-width="80px" :model="entity" :rules="rules" ref="editForm">
         <el-form-item label="角色名称" prop="name">
@@ -14,7 +14,7 @@
 
     <div slot="footer">
         <el-button size="small" @click="close">取消</el-button>
-        <el-button type="primary" size="small" @click="save">提交</el-button>
+        <el-button type="primary" size="small" @click="save" :disabled="disabled">提交</el-button>
     </div>
 
 </el-dialog>

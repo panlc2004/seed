@@ -10,7 +10,8 @@ import java.util.Date;
 public class SysRole implements IPrepare {
 
     private static final long serialVersionUID = 4659702439449421452L;
-@Id
+
+    @Id
     private Long id;
     private Date createDt;
     private Long createBy;
@@ -20,7 +21,15 @@ public class SysRole implements IPrepare {
     private String code;
     private String name;
     private String memo;
+    private Long sysDeptId;
 
+    public Long getSysDeptId() {
+        return sysDeptId;
+    }
+
+    public void setSysDeptId(Long sysDeptId) {
+        this.sysDeptId = sysDeptId;
+    }
 
     public Long getId() {
         return id;
