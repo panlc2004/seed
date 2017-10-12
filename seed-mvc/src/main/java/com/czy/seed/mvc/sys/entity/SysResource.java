@@ -1,14 +1,16 @@
 package com.czy.seed.mvc.sys.entity;
 
+import com.czy.seed.mvc.base.entity.IPrepare;
+
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @Table(name = "SEED_SYS_RESOURCE")
-public class SysResource implements Serializable{
+public class SysResource implements IPrepare{
 
     public SysResource() {
     }
@@ -29,7 +31,71 @@ public class SysResource implements Serializable{
     private String url;      //资源链接
     private Integer orderBy;
     private String icon;     //资源图标
+    private int depth;  //深度
+    private Date createDt;
+    private Long createBy;
+    private Date updateDt;
+    private Long updateBy;
+    private Long sysOrgId;
 
+    public Long getSysOrgId() {
+        return sysOrgId;
+    }
+
+    public void setSysOrgId(Long sysOrgId) {
+        this.sysOrgId = sysOrgId;
+    }
+
+    public Date getCreateDt() {
+        return createDt;
+    }
+
+    public void setCreateDt(Date createDt) {
+        this.createDt = createDt;
+    }
+
+    public Long getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(Long createBy) {
+        this.createBy = createBy;
+    }
+
+    public Date getUpdateDt() {
+        return updateDt;
+    }
+
+    public void setUpdateDt(Date updateDt) {
+        this.updateDt = updateDt;
+    }
+
+    public Long getUpdateBy() {
+        return updateBy;
+    }
+
+    public void setUpdateBy(Long updateBy) {
+        this.updateBy = updateBy;
+    }
+
+    public int getDepth() {
+        return depth;
+    }
+
+    public void setDepth(int depth) {
+        this.depth = depth;
+    }
+
+    public int getChildNum() {
+        return childNum;
+    }
+
+    public void setChildNum(int childNum) {
+        this.childNum = childNum;
+    }
+
+    @Transient
+    private int childNum;
     @Transient
     private List<SysResource> children; //子资源
 

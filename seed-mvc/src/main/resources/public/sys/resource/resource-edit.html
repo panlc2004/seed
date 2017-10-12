@@ -1,27 +1,28 @@
-<el-dialog title="菜单维护" :visible.sync="show" :modal-append-to-body="false" :close-on-click-modal="false">
+<el-dialog title="资源信息" :visible.sync="show" :modal-append-to-body="false" :close-on-click-modal="false">
+
     <el-form label-position="right" label-width="80px" :model="entity" :rules="rules" ref="editForm">
+        <el-input v-model="entity.parentId" size="small" style="display: none"></el-input>
         <el-form-item label="资源名称" prop="name">
             <el-input v-model="entity.name" size="small"></el-input>
         </el-form-item>
         <el-form-item label="资源编码" prop="code">
             <el-input v-model="entity.code" size="small"></el-input>
         </el-form-item>
-        <el-form-item label="资源地址" prop="url">
+        <el-form-item label="资源标识" prop="url">
             <el-input v-model="entity.url" size="small"></el-input>
         </el-form-item>
-        <el-input v-model="entity.parentId" size="small" style="display: none"></el-input>
-
-        <el-form-item label="资源类型" prop="types">
-            <el-radio-group v-model="entity.types">
-                <el-radio-button name="types"  label=1>菜单</el-radio-button>
-                <el-radio-button name="types"  label=2>目录</el-radio-button>
-                <el-radio-button name="types"  label=3>按钮</el-radio-button>
+        <el-form-item label="类型" prop="types">
+            <el-radio-group v-model="entity.types" size="small">
+                <el-radio-button name="resType" label=1>菜单</el-radio-button>
+                <el-radio-button name="resType" label=2>目录</el-radio-button>
+                <el-radio-button name="resType" label=3>按钮</el-radio-button>
             </el-radio-group>
         </el-form-item>
     </el-form>
 
     <div slot="footer">
-        <el-button type="primary" :disabled="buttonshow" size="small" @click="save"  >提交</el-button>
         <el-button size="small" @click="close">取消</el-button>
+        <el-button type="primary" size="small" @click="save" :disabled="saveDisabled">提交</el-button>
     </div>
+
 </el-dialog>

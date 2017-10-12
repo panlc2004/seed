@@ -1,5 +1,6 @@
 define(['text!sys/resource/resource-index.html'], function (Template) {
-    var component = {
+    var component;
+    component = {
         template: Template,
         components: {
             'edit': function (resolve) {
@@ -8,23 +9,18 @@ define(['text!sys/resource/resource-index.html'], function (Template) {
         },
         data: function () {
             return {
-
-                deptData: [],
+                resData: [],
                 queryParam: seed.queryParam.create()
-            }
+            };
         },
         methods: {
             search: function () {
                 var _this = this;
                 this.selectListByParentId(0, function (response) {
-                    _this.deptData = response.data;
-
-                    console.log(_this.deptData)
+                    _this.resData = response.data;
                 });
-
-                /* this.reload(this.queryParam);*/
             },
-            selectSubRerouce: function (row, callback) {
+            selectSubResource: function (row, callback) {
                 this.selectListByParentId(row.id, function (response) {
                     callback(response.data);
                 })
@@ -45,7 +41,7 @@ define(['text!sys/resource/resource-index.html'], function (Template) {
                 edit.entity = {parentId: 0};
                 edit.open();
             },
-            toAdd1: function (entity) {
+            toInsert: function (entity) {
                 var edit = this.$refs.edit;
                 edit.entity = {
                     parentId: entity.id,
@@ -75,21 +71,17 @@ define(['text!sys/resource/resource-index.html'], function (Template) {
                     });
                 }).catch(function () {
                 });
-            }
+            },
         },
         created: function () {
-            //查找一级部门
             var _this = this;
             this.selectListByParentId(0, function (response) {
-                _this.deptData = response.data;
-
-                console.log(_this.deptData)
+                _this.resData = response.data;
             });
         }
     };
 
     return {
-        component: component         //返回组件
+        component: component
     }
-
 });

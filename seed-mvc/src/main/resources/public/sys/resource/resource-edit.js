@@ -4,34 +4,40 @@ define(['text!sys/resource/resource-edit.html'], function (Template) {
         data: function () {
             return {
                 show: false,
-                buttonshow: false,
+                saveDisabled: false,
                 entity: {},
                 rules: {
-                    code: [
-                        {required: true, message: '请输入资源编码'},
-                        seed.validate.englishNumberUnderLine(1, 30)
-                    ]
-                    ,
                     name: [
                         {required: true, message: '请输入资源名称'},
+                        {max: 25, message: '输入长度不能超过25字符'},
                         seed.validate.chineseEnglishNumber(1, 25)
-
+                    ],
+                    code: [
+                        {required: true, message: '请输入资源编码'},
+                        {max: 30, message: '输入长度不能超过30字符'}
                     ],
                     url: [
                         {required: true, message: '请输入资源标识'},
-                        seed.validate.englishNumber(1, 50)
+                        {max: 50, message: '输入长度不能超过50字符'},
+                        seed.validate.englishNumberUnderLine(1, 50)
                     ],
                     types: [
-                        {required: true, message: '请输入资源标识'},
+                        {required: true, message: '请选择类型'},
+
                     ]
                 }
             };
         },
+        watch: {
+            show: function (val, oldVal) {
+                if (!val) {
+                    this.$refs['editForm'].resetFields();
+                }
+            }
+        },
         methods: {
             open1: function () {
-                // this.$nextTick(function() {
-                //     alert(document.querySelector('.v-modal').parentNode.tagName);
-                // });
+
             },
             open: function () {
                 this.show = true;
@@ -39,23 +45,24 @@ define(['text!sys/resource/resource-edit.html'], function (Template) {
             close: function () {
                 this.show = false;
             },
-            save: function (entity) {
+            save: function () {
                 var _this = this;
                 this.$refs.editForm.validate(function (valid) {
                     if (valid) {
-                        _this.buttonshow = true;
+                        _this.saveDisabled = true;
+                        _this.parentId = 0;
                         seed.ajax.postJson({
                             url: 'sys/resource/save',
                             data: _this.entity,
                             success: function (data, status) {
                                 if (status) {
                                     _this.close();
-                                    _this.$emit("save-success")
+                                    _this.$emit("save-success");
                                 }
-                                _this.buttonshow = false;
+                                _this.saveDisabled = false;
                             },
                             error: function (data, status) {
-                                _this.buttonshow = false;
+                                _this.saveDisabled = false;
                             }
                         })
                     } else {
@@ -63,7 +70,7 @@ define(['text!sys/resource/resource-edit.html'], function (Template) {
                     }
                 });
             }
-        }
+        },
     };
     return component;
 })
