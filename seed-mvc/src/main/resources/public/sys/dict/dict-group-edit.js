@@ -11,16 +11,16 @@ define(['text!sys/dict/dict-group-edit.html'], function (Template) {
                 },     //保存表单提交数据
                 rules: {
                     code: [
-                        {required: true, message: '请选择用户编码'},
-                        {max: 50, message: '输入长度不能超过50字符'}
+                        {required: true, message: '请选择编码'},
+                        seed.validate.englishNumberUnderLine(1, 300),
+                        {max: 50, message: '输入长度不能超过100字符'}
                     ],
                     name: [
-                        {required: true, message: '请输入用户名称'},
-                        {max: 60, message: '输入长度不能超过50字符'}
+                        {required: true, message: '请输入名称'},
+                        {max: 60, message: '输入长度不能超过150字符'}
                     ],
                     memo: [
-                        {required: true, message: '请输入备注'},
-                        {max: 60, message: '输入长度不能超过50字符'}
+                        {max: 60, message: '输入长度不能超过150字符'}
                     ]
                 }
             };
@@ -70,6 +70,7 @@ define(['text!sys/dict/dict-group-edit.html'], function (Template) {
                 })
             }
         },
+
         created: function () {
             this.getSysDeptList();
         }

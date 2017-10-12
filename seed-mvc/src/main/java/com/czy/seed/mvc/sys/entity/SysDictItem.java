@@ -18,15 +18,39 @@ public class SysDictItem implements IPrepare {
     private String name;
     private Long createBy;
     private Date updateDt;
-    private Date createDt;
     private Long updateBy;
 
-    public Date getCreateDt() {
-        return createDt;
+    public Long getSysDictId() {
+        return sysDictId;
     }
 
-    public void setCreateDt(Date createDt) {
-        this.createDt = createDt;
+    public void setSysDictId(Long sysDictId) {
+        this.sysDictId = sysDictId;
+    }
+
+    public Date getUpdateDt() {
+        return updateDt;
+    }
+
+    public void setUpdateDt(Date updateDt) {
+        this.updateDt = updateDt;
+    }
+
+    public Long getUpdateBy() {
+        return updateBy;
+    }
+
+    public void setUpdateBy(Long updateBy) {
+        this.updateBy = updateBy;
+    }
+
+
+    public Long getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(Long createBy) {
+        this.createBy = createBy;
     }
 
     public Long getId() {
@@ -37,20 +61,20 @@ public class SysDictItem implements IPrepare {
         this.id = id;
     }
 
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
     public Long getParentId() {
         return parentId;
     }
 
     public void setParentId(Long parentId) {
         this.parentId = parentId;
-    }
-
-    public Long getSysDictId() {
-        return sysDictId;
-    }
-
-    public void setSysDictId(Long sysDictId) {
-        this.sysDictId = sysDictId;
     }
 
     public String getItemCode() {
@@ -75,37 +99,5 @@ public class SysDictItem implements IPrepare {
 
     public void setMemo(String memo) {
         this.memo = memo;
-    }
-
-    public String getName() {
-        return name;
-    }
-
-    public void setName(String name) {
-        this.name = name;
-    }
-
-    public Long getCreateBy() {
-        return createBy;
-    }
-
-    public void setCreateBy(Long createBy) {
-        this.createBy = createBy;
-    }
-
-    public Date getUpdateDt() {
-        return updateDt;
-    }
-
-    public void setUpdateDt(Date updateDt) {
-        this.updateDt = updateDt;
-    }
-
-    public Long getUpdateBy() {
-        return updateBy;
-    }
-
-    public void setUpdateBy(Long updateBy) {
-        this.updateBy = updateBy;
     }
 }

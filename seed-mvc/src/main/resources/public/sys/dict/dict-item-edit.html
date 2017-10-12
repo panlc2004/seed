@@ -8,8 +8,8 @@
         <el-form-item label="值" prop="value">
             <el-input v-model="entity.value" size="small"></el-input>
         </el-form-item>
-        <el-form-item label="MEMO" prop="memo">
-            <el-input v-model="entity.memo" size="small"></el-input>
+        <el-form-item label="备注" prop="memo">
+            <el-input type="textarea" :rows="5" v-model="entity.memo" size="small"></el-input>
         </el-form-item>
     </el-form>
     <div slot="footer">

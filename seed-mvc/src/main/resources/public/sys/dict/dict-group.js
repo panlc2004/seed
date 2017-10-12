@@ -9,9 +9,9 @@ define(['text!sys/dict/dict-group.html'], function (Template) {
         mixins: [czyPageBar],
         data: function () {
             return {
-                name:null,
-                dictData: [],
-                entity: {},
+                autoLoad: true,
+                code: null,
+                deptData: [],
                 url: 'sys/dict/selectPageByParams',
                 queryParam: seed.queryParam.create()
             }
@@ -19,16 +19,17 @@ define(['text!sys/dict/dict-group.html'], function (Template) {
         methods: {
             search: function () {
                 var _this = this;
-                this.selectListByParentId(0,_this.name, function (response) {
-                    _this.dictData = response.data;
+                this.selectListByParentId(0, _this.code, function (response) {
+                    _this.deptData = response.data;
                 })
             },
+
             toAdd: function () {
                 var edit = this.$refs.edit;
                 edit.entity = {};
                 edit.open();
             },
-            toAdd1: function (entity) {
+            toAddChild: function (entity) {
                 var edit = this.$refs.edit;
                 edit.entity = {
                     depth: entity.depth + 1,
@@ -41,19 +42,17 @@ define(['text!sys/dict/dict-group.html'], function (Template) {
                 edit.entity = $.extend({}, entity);
                 edit.open();
             },
-            selectSubDict: function (row, callback) {
-                var _this = this;
-                this.selectListByParentId(row.id,_this.name,function (response) {
+            selectSubDept: function (row,callback) {
+                this.selectListByParentId(row.id, "null", function (response) {
                     callback(response.data);
                 })
             },
-            selectListByParentId: function (parentId,name, callback) {
-                seed.ajax.post({
-                    url: 'sys/dict/selectListByParentId',
-                    data: {
-                        parentId: parentId,
-                        name:name
-                    },
+            selectListByParentId: function (parentId, code, callback) {
+                if(code == null || code == "") {
+                    code = "null";
+                }
+                seed.ajax.postJson({
+                    url: 'sys/dict/selectListByParentId/' + parentId + "/" + code,
                     success: function (response) {
                         callback(response);
                     }
@@ -82,8 +81,8 @@ define(['text!sys/dict/dict-group.html'], function (Template) {
                 var role = this.$refs.role;
                 role.open(row.id);
             },
-            groupChange:function (currentRow) {
-                if(currentRow!=null){
+            groupChange: function (currentRow) {
+                if (currentRow != null) {
                     this.$emit("group-changed", currentRow);
                 }
             }
@@ -92,7 +91,8 @@ define(['text!sys/dict/dict-group.html'], function (Template) {
             //查找一级部门
             this.search();
         }
-
     };
+
     return component         //返回组件
+
 });

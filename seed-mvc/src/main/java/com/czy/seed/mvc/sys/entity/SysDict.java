@@ -1,10 +1,12 @@
 package com.czy.seed.mvc.sys.entity;
 
 import com.czy.seed.mvc.base.entity.IPrepare;
+import org.apache.ibatis.annotations.Param;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
 import javax.persistence.Transient;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -33,11 +35,23 @@ public class SysDict implements IPrepare {
         this.depth = depth;
     }
 
-    @Transient
+    @Transient   //标识数据库中没有的
     private int childNum;
-
     @Transient
     private List<SysDict> children;
+
+
+
+
+    public List<SysDict> getChildren() {
+        if (children == null) {
+            children = new ArrayList<SysDict>(0);
+        }
+        return children;
+    }
+
+
+
 
     public int getChildNum() {
         return childNum;
@@ -45,14 +59,6 @@ public class SysDict implements IPrepare {
 
     public void setChildNum(int childNum) {
         this.childNum = childNum;
-    }
-
-    public List<SysDict> getChildren() {
-        return children;
-    }
-
-    public void setChildren(List<SysDict> children) {
-        this.children = children;
     }
 
     public Long getId() {
@@ -71,7 +77,7 @@ public class SysDict implements IPrepare {
         this.sysOrgId = sysOrgId;
     }
 
-    public Date getCreateDt() {
+     public Date getCreateDt() {
         return createDt;
     }
 

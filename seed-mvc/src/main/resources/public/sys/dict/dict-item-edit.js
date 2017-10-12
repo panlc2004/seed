@@ -3,24 +3,24 @@ define(['text!sys/dict/dict-item-edit.html'], function (Template) {
         template: Template,
         data: function () {
             return {
+                dictId: '',
                 show: false,    //编辑页面是否弹出
                 sysDeptList: [], //部门下拉数据
                 disabled: false,
                 entity: {
-                    sysDeptId: ''
+                    sysDictId: ''
                 },     //保存表单提交数据
                 rules: {
                     itemCode: [
-                        {required: true, message: '请选择用户编码'},
-                        {max: 50, message: '输入长度不能超过50字符'}
+                        {required: true, message: '请选择编码'},
+                        seed.validate.englishNumberUnderLine(1, 300),
                     ],
                     value: [
                         {required: true, message: '请输入值'},
-                        {max: 60, message: '输入长度不能超过50字符'}
+                        {max: 60, message: '输入长度不能超过150字符'}
                     ],
                     memo: [
-                        {required: true, message: '请输入备注'},
-                        {max: 60, message: '输入长度不能超过50字符'}
+                        {max: 60, message: '输入长度不能超过150字符'}
                     ]
                 }
             };
@@ -33,19 +33,22 @@ define(['text!sys/dict/dict-item-edit.html'], function (Template) {
             }
         },
         methods: {
-            open: function () {
+            open: function (en) {
                 this.show = true;
+                this.dictId = en;
             },
             close: function () {
                 this.show = false;
             },
             save: function () {
+                debugger;
                 var _this = this;
+                _this.entity.sysDictId = _this.dictId;
                 this.$refs.editForm.validate(function (valid) {
                     if (valid) {
                         _this.disabled = true;
                         seed.ajax.postJson({
-                            url: 'sys/dictItem/save',
+                            url: 'sys/dictItem/insertItem',
                             data: _this.entity,
                             success: function (data, status) {
                                 _this.disabled = false;

@@ -18,5 +18,7 @@ public interface SysResourceMapper extends BaseMapper<SysResource> {
     @Select("select id,parent_id as parentId, types, code, name, url, order_by as orderBy, icon " +
             "from SEED_SYS_RESOURCE")
     List<SysResource> selectListAll();
-
+    List<SysResource> selectAllOrgs();
+    List<SysResource> selectChildNumListByParentId(@Param("parentId") long parentId);
+    List<SysResource> selectListByName(@Param("name") String name );
 }

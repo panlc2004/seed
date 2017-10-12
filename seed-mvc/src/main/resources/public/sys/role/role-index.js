@@ -5,13 +5,14 @@ define(['text!sys/role/role-index.html'], function (Template) {
             'edit': function (resolve) {
                 require(['sys/role/role-edit'], resolve);
             },
-            'role': function (resolve) {
-                require(['sys/role/role-resource'], resolve);
+            'resource':function (resolve) {
+                require(['sys/role/role-resource'],resolve);
             }
         },
         mixins: [czyPageBar],
         data: function () {
             return {
+                pageDate:null,
                 url: 'sys/role/selectPageByParams',
                 queryParam: seed.queryParam.create()
             }
@@ -26,17 +27,20 @@ define(['text!sys/role/role-index.html'], function (Template) {
                 edit.open();
             },
             toEdit: function (entity) {
-                var edit = this.$refs.edit;
-                edit.entity = $.extend({}, entity);
-                edit.open();
+                    var edit = this.$refs.edit;
+                    edit.entity = $.extend({}, entity);
+                    edit.open();
+                },
+            toSett:function (entity) {
+                    var use = this.$refs.resource;
+                  use.open(entity.id);
             },
             del: function (entity) {
                 var _this = this;
-                debugger;
                 _this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
-                    type: 'error'
+                    type: 'warning'
                 }).then(function () {
                     seed.ajax.postJson({
                         url: "sys/role/deleteByPrimaryKey/" + entity.id,
@@ -48,19 +52,11 @@ define(['text!sys/role/role-index.html'], function (Template) {
                     });
                 }).catch(function () {
                 });
-            },
-            setRole:function (row) {
-                var role = this.$refs.role;
-                role.open(row.id);
             }
-        },
-        created: function () {
-            this.loadData();
         }
-
     };
-
     return {
         component: component         //返回组件
     }
+
 });

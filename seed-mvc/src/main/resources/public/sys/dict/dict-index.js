@@ -12,10 +12,9 @@ define(['text!sys/dict/dict-index.html'], function (Template) {
         methods: {
             searchItem: function (groupRow) {
                 var item = this.$refs.item;
-                item.addSysDictID(groupRow.id);
+                item.cacheDictId(groupRow.id)
                 item.search();
             }
-
         }
     };
 

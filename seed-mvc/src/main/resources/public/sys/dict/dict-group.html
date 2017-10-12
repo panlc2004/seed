@@ -2,7 +2,7 @@
     <czy-toolbar>
         <czy-toolbar-item>
             <span slot="label">名称</span>
-            <span slot="item"><el-input v-model="name"></el-input></span>
+            <span slot="item"><el-input v-model="code"></el-input></span>
         </czy-toolbar-item>
         <czy-toolbar-btn>
             <el-button-group>
@@ -11,18 +11,18 @@
             </el-button-group>
         </czy-toolbar-btn>
     </czy-toolbar>
-    <el-table :data="dictData" border stripe highlight-current-row @current-change="groupChange">
-        <el-table-tree-column :expand-all="false" :remote="selectSubDict" parentKey="parentId"
+    <el-table :data="deptData" border stripe highlight-current-row @current-change="groupChange">
+        <el-table-tree-column :expand-all="false" :remote="selectSubDept" parentKey="parentId"
                               levelKey="depth" childNumKey="childNum"
                               file-icon="fa fa-file" folder-icon="fa fa-folder"
-                              prop="name" label="名称">
+                              prop="code" label="编码">
         </el-table-tree-column>
-        <el-table-column prop="memo" label="备注"></el-table-column>
-        <el-table-column label="操作" width="200">
+        <el-table-column prop="name" label="名称"></el-table-column>
+        <el-table-column label="操作" width="150">
             <template scope="scope">
                 <el-tooltip content="新增" placement="top" effect="light" :enterable="false">
                     <el-button size="mini" type="primary" icon="plus"
-                               @click="toAdd1(scope.row)"></el-button>
+                               @click="toAddChild(scope.row)"></el-button>
                 </el-tooltip>
                 <el-tooltip content="修改" placement="top" effect="light" :enterable="false">
                     <el-button size="mini" type="warning" icon="edit"

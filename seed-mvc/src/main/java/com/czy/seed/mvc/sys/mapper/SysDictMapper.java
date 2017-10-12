@@ -11,7 +11,8 @@ import java.util.List;
 
 @AutoMapper
 public interface SysDictMapper extends BaseMapper<SysDict> {
-    @Select("select id, parent_id as parentId, code, name, memo from sys_org")
-    List<SysDict> selectAllOrgs();
-    List<SysDict> selectChildNumListByParentId(@Param("parentId") long parentId,@Param("name") String name);
+
+    List<SysDict> selectChildNumListByParentId(@Param("parentId") long parentId, @Param("code") String code);
+
+    List<SysDict>  selectAllOrgs();
 }

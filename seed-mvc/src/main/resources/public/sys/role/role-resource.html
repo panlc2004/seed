@@ -1,10 +1,9 @@
-<el-dialog title="用户角色设置" :visible.sync="show" :modal-append-to-body="false"
-           :close-on-click-modal="false" custom-class="userRoleDialog"
-           @close="afterClose">
+<el-dialog title="角色资源配置" :visible.sync="show">
+
     <el-tree
-            :data="data2"
+            :data="resources"
             show-checkbox
-            default-expand-all
+            :default-checked-keys="resources.checkIds"
             node-key="id"
             ref="tree"
             highlight-current
@@ -12,7 +11,7 @@
     </el-tree>
 
     <div slot="footer">
-        <el-button type="primary" size="small" @click="saveRole">确认</el-button>
         <el-button size="small" @click="close">取消</el-button>
+        <el-button type="primary" size="small" @click="getCheckedKeys">确认</el-button>
     </div>
 </el-dialog>
