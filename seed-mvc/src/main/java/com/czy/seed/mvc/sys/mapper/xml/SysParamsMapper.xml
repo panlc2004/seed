@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.czy.seed.mvc.sys.mapper.SysParamMapper">
+
+    <resultMap id="ChildNumResultMap" extends="BaseResultMap" type="com.czy.seed.mvc.sys.entity.SysParam">
+        <result column="CHILD_NUM" property="childNum"/>
+    </resultMap>
+
+    <update id="updateActive"  parameterType="Long">
+    UPDATE SEED_SYS_PARAM a
+    SET a.active=1
+    where a.id = #{id}
+    </update>
+
+    <update id="deleteActive" parameterType="Long">
+    UPDATE SEED_SYS_PARAM a
+    SET a.active=0
+    where a.id = #{id}
+    </update>
+
+</mapper>

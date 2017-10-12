@@ -13,7 +13,7 @@ public class SysParam implements Serializable {
     private String code;
     private String name;
     private String value;
-    private Long active;
+    private Integer active;
     private String memo;
 
     public Long getId() {
@@ -48,12 +48,13 @@ public class SysParam implements Serializable {
         this.value = value;
     }
 
-    public Long getActive() {
-        return active;
+
+    public void setActive(Integer active) {
+        this.active = active;
     }
 
-    public void setActive(Long active) {
-        this.active = active;
+    public Integer getActive() {
+        return active;
     }
 
     public String getMemo() {
