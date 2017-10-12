@@ -1,28 +1,35 @@
-define(['text!sys/role/role-index.html'], function (Template) {
+define(['text!sys/dict/dict-item.html'], function (Template) {
     var component = {
         template: Template,
         components: {
             'edit': function (resolve) {
-                require(['sys/role/role-edit'], resolve);
-            },
-            'role': function (resolve) {
-                require(['sys/role/role-resource'], resolve);
+                require(['sys/dict/dict-item-edit'], resolve);
             }
         },
         mixins: [czyPageBar],
         data: function () {
             return {
-                url: 'sys/role/selectPageByParams',
+                dictId:'',
+                autoLoad: false,
+                url: 'sys/dictItem/selectPageByParams',
                 queryParam: seed.queryParam.create()
             }
         },
         methods: {
+            addSysDictID:function (dictId) {
+                var _this = this;
+                _this.dictId=dictId;
+                },
             search: function () {
-                this.reload(this.queryParam);
+                var querpParam = {equalTo: {'sysDictId': this.dictId}};
+                this.reload(querpParam);
             },
             toAdd: function () {
                 var edit = this.$refs.edit;
-                edit.entity = {};
+                var _this = this;
+                edit.entity = {
+                    sysDictId:_this.dictId
+                };
                 edit.open();
             },
             toEdit: function (entity) {
@@ -32,14 +39,14 @@ define(['text!sys/role/role-index.html'], function (Template) {
             },
             del: function (entity) {
                 var _this = this;
-                debugger;
                 _this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'error'
                 }).then(function () {
+                    var url = 'sys/dictItem/deleteByPrimaryKey/' + entity.id
                     seed.ajax.postJson({
-                        url: "sys/role/deleteByPrimaryKey/" + entity.id,
+                        url: url,
                         success: function (data, status) {
                             if (status) {
                                 _this.search();
@@ -49,18 +56,12 @@ define(['text!sys/role/role-index.html'], function (Template) {
                 }).catch(function () {
                 });
             },
-            setRole:function (row) {
+            setRole: function (row) {
                 var role = this.$refs.role;
                 role.open(row.id);
             }
-        },
-        created: function () {
-            this.loadData();
         }
-
     };
+     return component         //返回组件
 
-    return {
-        component: component         //返回组件
-    }
 });

@@ -1,4 +1,4 @@
-define(['text!sys/param/param-index.html'], function (Template) {
+define(['text!sys/upload/upload-index.html'], function (Template) {
     var component = {
         template: Template,
         components: {
@@ -10,10 +10,18 @@ define(['text!sys/param/param-index.html'], function (Template) {
         data: function () {
             return {
                 url: 'sys/param/selectPageByParams',
-                queryParam: seed.queryParam.create()
+                queryParam: seed.queryParam.create(),
+                fileList3: [{
+                    name:'',
+                    url:'',
+                    status:''
+                }]
             }
         },
         methods: {
+            handleChange: function(file, fileList) {
+                this.fileList3 = fileList.slice(-3);
+            },
             search: function () {
                 this.reload(this.queryParam);
             },

@@ -6,11 +6,11 @@ define(['text!sys/role/role-edit.html'], function (Template) {
                 show: false,
                 entity: {},
                 rules: {
-                    orgName: [
+                    name: [
                         {required: true, message: '请输入组织名称'},
                         {max: 50, message: '输入长度不能超过50字符'}
                     ],
-                    orgCode: [
+                    code: [
                         {required: true, message: '请输入组织编码'},
                         seed.validate.englishNumberUnderLine(1,50)
                     ],
@@ -50,7 +50,7 @@ define(['text!sys/role/role-edit.html'], function (Template) {
                         return false;
                     }
                 });
-            }
+            },
         },
         created:function () {
             // seed.validate.test();
