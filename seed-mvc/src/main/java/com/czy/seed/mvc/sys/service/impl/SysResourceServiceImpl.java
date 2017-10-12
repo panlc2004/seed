@@ -83,6 +83,15 @@ public class SysResourceServiceImpl extends BaseServiceImpl<SysResource> impleme
         return buildTree(allResources);
     }
 
+  public int insert1 (SysResource sysResource){
+        return sysResourceMapper.insert1(sysResource);
+  }
+
+    @Override
+    public List<SysResource> selectChildNumListByParentId(long parentId) {
+        return sysResourceMapper.selectChildNumListByParentId(parentId);
+    }
+
     public List<SysResource> buildTree(List<SysResource> allResources) {
         List<SysResource> rootResource = findRootResource(allResources);
         findChildrenResource(allResources, rootResource);
@@ -129,6 +138,12 @@ public class SysResourceServiceImpl extends BaseServiceImpl<SysResource> impleme
         }
         allResources.removeAll(rootResource);
         return rootResource;
+    }
+
+    @Override
+    public List<SysResource> selectOrgTree() {
+        List<SysResource> sysOrgs = sysResourceMapper.selectAllOrgs();
+        return buildTree(sysOrgs);
     }
 
     public void findChildrenResource(List<SysResource> allResourcesWithoutRoot, List<SysResource> rootResourceList) {

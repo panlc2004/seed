@@ -75,7 +75,7 @@ public class JacksonCustomObjectMapper extends ObjectMapper {
     
     public static final class LongArraySerializer extends StdScalarSerializer<Long[]> {
         private static final long serialVersionUID = 1L;
-        static final JacksonCustomObjectMapper.LongArraySerializer instance = new JacksonCustomObjectMapper.LongArraySerializer();
+        static final LongArraySerializer instance = new LongArraySerializer();
 
         public LongArraySerializer() {
             super(Long[].class);
@@ -96,7 +96,7 @@ public class JacksonCustomObjectMapper extends ObjectMapper {
     
     public static final class LongArray2Serializer extends StdScalarSerializer<long[]> {
         private static final long serialVersionUID = 1L;
-        static final JacksonCustomObjectMapper.LongArray2Serializer instance = new JacksonCustomObjectMapper.LongArray2Serializer();
+        static final LongArray2Serializer instance = new LongArray2Serializer();
 
         public LongArray2Serializer() {
             super(long[].class);

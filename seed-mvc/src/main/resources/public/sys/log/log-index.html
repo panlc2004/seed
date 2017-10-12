@@ -1,0 +1,36 @@
+<div>
+    <czy-toolbar>
+        <czy-toolbar-item>
+            <span slot="label">操作用户</span>
+            <span slot="item"><el-input v-model="log.name"   placeholder="选输入用户名/可不填"></el-input></span>
+        </czy-toolbar-item>
+
+        <czy-toolbar-item>
+            <span slot="label">操作时间</span>
+            <span slot="item" >
+           <el-date-picker v-model="log.createDt" type="datetimerange" placeholder="选择时间范围/可不选">
+           </el-date-picker>
+                </el-date-picker></span>
+        </czy-toolbar-item>
+
+        <czy-toolbar-item>
+            <span slot="label">操作内容</span>
+            <span slot="item"><el-input v-model="log.operation"   placeholder="请输入操作内容关键字/可不填"></el-input></span>
+        </czy-toolbar-item>
+        <czy-toolbar-btn>
+            <el-button-group>
+                <el-button type="primary" icon="search" size="small" @click="search">查询</el-button>
+            </el-button-group>
+        </czy-toolbar-btn>
+    </czy-toolbar>
+
+    <el-table :data="pageData" border stripe highlight-current-row>
+        <el-table-column prop="name" label="操作用户"></el-table-column>
+        <el-table-column prop="createDt" label="操作时间"></el-table-column>
+        <el-table-column prop="operation" label="操作内容"></el-table-column>
+    </el-table>
+
+    <el-pagination layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="sizeChange"
+                   @current-change="turnPage" :page-size="pageSize" :current-page="currentPage"></el-pagination>
+
+</div>

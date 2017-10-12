@@ -1,51 +1,57 @@
-define(['text!sys/user/user-edit.html'], function (Template) {
+define(['text!sys/dict/dict-item-edit.html'], function (Template) {
     var component = {
         template: Template,
         data: function () {
             return {
+                dictId: '',
                 show: false,    //编辑页面是否弹出
                 sysDeptList: [], //部门下拉数据
+                disabled: false,
                 entity: {
-                    sysDeptId: '',
-
+                    sysDictId: ''
                 },     //保存表单提交数据
                 rules: {
-                    sysDeptId: [
-                        {required: true, message: '请选择用户部门'},
-                        {max: 50, message: '输入长度不能超过50字符'}
+                    itemCode: [
+                        {required: true, message: '请选择编码'},
+                        seed.validate.englishNumberUnderLine(1, 300),
                     ],
-                    name: [
-                        {required: true, message: '请输入用户姓名'},
-                        {max: 60, message: '输入长度不能超过50字符'}
+                    value: [
+                        {required: true, message: '请输入值'},
+                        {max: 60, message: '输入长度不能超过150字符'}
                     ],
-                    telephone: [
-                        seed.validate.number(0, 60)
-                    ],
-                    email: [
-                        {type: "email", message: '请输入邮箱'},
-                        {max: 100, message: '长度不能超过100字符'}
-                    ],
-                    username: [
-                        seed.validate.englishNumber(6,100)
+                    memo: [
+                        {max: 60, message: '输入长度不能超过150字符'}
                     ]
                 }
             };
         },
+        watch: {
+            show: function (val, oldVal) {
+                if (!val) {
+                    this.$refs['editForm'].resetFields();
+                }
+            }
+        },
         methods: {
-            open: function () {
+            open: function (en) {
                 this.show = true;
+                this.dictId = en;
             },
             close: function () {
                 this.show = false;
             },
             save: function () {
+                debugger;
                 var _this = this;
+                _this.entity.sysDictId = _this.dictId;
                 this.$refs.editForm.validate(function (valid) {
                     if (valid) {
+                        _this.disabled = true;
                         seed.ajax.postJson({
-                            url: 'sys/user/save',
+                            url: 'sys/dictItem/insertItem',
                             data: _this.entity,
                             success: function (data, status) {
+                                _this.disabled = false;
                                 if (status) {
                                     _this.close();
                                     _this.$emit("save-success")

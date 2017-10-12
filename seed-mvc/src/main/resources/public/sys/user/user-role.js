@@ -28,7 +28,7 @@ define(['text!sys/user/user-role.html', 'css!sys/user/user-role.css'], function 
                     type: "POST",
                     contentType: "application/json;charset=utf-8",
                     dataType: "json",
-                    url: 'sys/user/saveUserRoles/',
+                    url: 'sys/userRole/saveUserRole',
                     data: JSON.stringify(param),
                     success: function (response) {
 

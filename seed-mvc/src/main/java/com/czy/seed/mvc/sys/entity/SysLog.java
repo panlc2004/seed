@@ -1,22 +1,53 @@
 package com.czy.seed.mvc.sys.entity;
 
 
-import com.czy.seed.mvc.base.entity.BaseEntity;
+import com.czy.seed.mvc.base.entity.IPrepare;
+import com.czy.seed.mybatis.config.mybatis.annotations.One2One;
 
+import javax.persistence.Id;
 import javax.persistence.Table;
-import java.io.Serializable;
+import javax.persistence.Transient;
 import java.util.Date;
 
-@Table(name="SYS_LOG")
-public class SysLog extends BaseEntity implements Serializable {
+@Table(name = "SEED_SYS_LOG")
+public class SysLog implements IPrepare {
 
     private static final long serialVersionUID = -5605619995509261468L;
+    @Id
+    private Long id; //主键
+    private Long createBy;//对应SysRole 中的id
+    private Date createDt;
     private String operation;
     private String method;
     private String params;
     private String ip;
-    private Long opeId;
-    private Date opeTime;
+
+    @Transient
+    private String name;
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Long getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(Long createBy) {
+        this.createBy = createBy;
+    }
+
+    public Date getCreateDt() {
+        return createDt;
+    }
+
+    public void setCreateDt(Date createDt) {
+        this.createDt = createDt;
+    }
 
     public String getOperation() {
         return operation;
@@ -50,19 +81,11 @@ public class SysLog extends BaseEntity implements Serializable {
         this.ip = ip;
     }
 
-    public Long getOpeId() {
-        return opeId;
+    public String getName() {
+        return name;
     }
 
-    public void setOpeId(Long opeId) {
-        this.opeId = opeId;
-    }
-
-    public Date getOpeTime() {
-        return opeTime;
-    }
-
-    public void setOpeTime(Date opeTime) {
-        this.opeTime = opeTime;
+    public void setName(String name) {
+        this.name = name;
     }
 }

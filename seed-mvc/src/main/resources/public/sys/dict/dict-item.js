@@ -1,37 +1,42 @@
-define(['text!sys/user/user-index.html'], function (Template) {
+define(['text!sys/dict/dict-item.html'], function (Template) {
     var component = {
         template: Template,
         components: {
             'edit': function (resolve) {
-                require(['sys/user/user-edit'], resolve);
-            },
-            "role": function (resolve) {
-                require(['sys/user/user-role'], resolve);
+                require(['sys/dict/dict-item-edit'], resolve);
             }
         },
         mixins: [czyPageBar],
         data: function () {
             return {
-                url: 'sys/user/selectPageRelativeByParams',
+                autoLoad: false,
+                dictId: '',
+                deptData: [],
+                url: 'sys/dictItem/selectPageByParams',
                 queryParam: seed.queryParam.create()
             }
         },
         methods: {
             search: function () {
-                this.reload(this.queryParam);
+                var querpParam = {equalTo: {'sysDictId': this.dictId}};
+                this.reload(querpParam);
             },
+
+            cacheDictId: function (dictId) {
+                this.dictId = dictId;
+            },
+
             toAdd: function () {
+                var _this = this;
                 var edit = this.$refs.edit;
-                edit.entity = {
-                    sysDeptId: ''
-                };
-                edit.open();
+                edit.open(_this.dictId);
             },
             toEdit: function (entity) {
                 var edit = this.$refs.edit;
                 edit.entity = $.extend({}, entity);
                 edit.open();
             },
+
             del: function (entity) {
                 var _this = this;
                 _this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
@@ -39,8 +44,9 @@ define(['text!sys/user/user-index.html'], function (Template) {
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(function () {
+                    var url = 'sys/dictItem/deleteByPrimaryKey/' + entity.id
                     seed.ajax.postJson({
-                        url: "sys/user/deleteByPrimaryKey/" + entity.id,
+                        url: url,
                         success: function (data, status) {
                             if (status) {
                                 _this.search();
@@ -54,22 +60,12 @@ define(['text!sys/user/user-index.html'], function (Template) {
                 var role = this.$refs.role;
                 role.open(row.id);
             }
+        },
+        created: function () {
+            //查找一级部门
         }
     };
 
-    // 定义子路由
-    // var subRoute = [{
-    //     path: 'edit/:entity',
-    //     component: function (resolve) {
-    //         require(['sys/org/org-edit'], function (o) {
-    //             resolve(o)
-    //         });
-    //     }
-    // }];
-
-    return {
-        component: component         //返回组件
-        // subRoute:subRoute        //返回子路由
-    }
+    return component         //返回组件
 
 });

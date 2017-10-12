@@ -74,6 +74,11 @@ public class SysUserController extends BaseController<SysUser> {
         return Res.ok();
     }
 
+    /**
+     * 删除角色
+     * @param id 主键
+     * @return
+     */
     @RequestMapping("/deleteByPrimary/{id}")
     public Res deleteByPrimary(@PathVariable("id") long id) {
         sysUserService.deleteByPrimaryKey(id);

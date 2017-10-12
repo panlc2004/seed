@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.czy.seed.mvc.sys.mapper.SysResourceMapper">
+
+    <resultMap id="ChildNumResultMap" extends="BaseResultMap" type="com.czy.seed.mvc.sys.entity.SysResource">
+        <result column="CHILD_NUM" property="childNum"/>
+    </resultMap>
+
+    <select id="selectChildNumListByParentId" resultMap="ChildNumResultMap" parameterType="long">
+    SELECT
+    T.*,
+    (SELECT COUNT(0) FROM SEED_SYS_RESOURCE SSD WHERE SSD.PARENT_ID =  T.ID) AS CHILD_NUM
+    FROM SEED_SYS_RESOURCE T
+    where T.PARENT_ID=#{parentId}
+</select>
+
+
+    <insert id="insert1" parameterType="com.czy.seed.mvc.sys.entity.SysResource">
+      insert into SEED_SYS_RESOURCE
+        (SYS_ORG_ID,PARENT_ID,CREATE_BY,CREATE_DT,TYPES,CODE,NAME,URL,ORDER_BY,DEPTH)
+        values (0,0,0,'2017-09-26 15:08:10',1,#{code},#{name},#{url},999,0)
+  </insert>
+
+
+
+
+
+
+</mapper>

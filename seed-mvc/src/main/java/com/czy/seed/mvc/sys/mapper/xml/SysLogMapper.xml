@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.czy.seed.mvc.sys.mapper.SysLogMapper">
+    <resultMap id="ExtendResultMap" extends="BaseResultMap" type="com.czy.seed.mvc.sys.entity.SysLog">
+        <id column="ID" property="id"/>
+        <result column="CREATE_BY" property="createBy"/>
+        <result column="CREATE_DT" property="createDt"/>
+        <result column="OPERATION" property="operation"/>
+        <result column="METHOD" property="method"/>
+        <result column="PARAMS" property="params"/>
+        <result column="IP" property="ip"/>
+        <result column="NAME" property="name"/>
+    </resultMap>
+
+    <select id="selectListRelative" resultMap="BaseResultMap"
+            parameterType="com.czy.seed.mybatis.base.QueryParams">
+        select
+        <trim prefix=" " suffix=" " suffixOverrides=",">
+            SEED_SYS_LOG.ID,
+            SEED_SYS_LOG.CREATE_BY,
+            SEED_SYS_LOG.CREATE_DT,
+            SEED_SYS_LOG.OPERATION,
+            SEED_SYS_LOG.METHOD,
+            SEED_SYS_LOG.PARAMS,
+            SEED_SYS_LOG.IP,
+            SEED_SYS_USER.NAME,
+        </trim>
+        from SEED_SYS_LOG
+        LEFT JOIN SEED_SYS_USER ON SEED_SYS_LOG.CREATE_BY = SEED_SYS_USER.ID
+        ORDER BY SEED_SYS_LOG.ID DESC
+    </select>
+</mapper>

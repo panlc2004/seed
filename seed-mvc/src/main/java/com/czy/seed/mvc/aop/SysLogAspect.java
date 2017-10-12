@@ -1,3 +1,4 @@
+
 package com.czy.seed.mvc.aop;
 
 import com.alibaba.druid.util.StringUtils;
@@ -46,8 +47,8 @@ public class SysLogAspect {
         Method method = signature.getMethod();
 
         SysLog sysLog = new SysLog();
-        sysLog.setOpeTime(new Date());
-        sysLog.setOpeId(principalUtil.getLoginUser().getId());
+     /*   sysLog.setOpeTime(new Date());
+        sysLog.setOpeId(principalUtil.getLoginUser().getId());*/
 
 //		解析注解
         AutoLog autoLog = method.getAnnotation(AutoLog.class);
@@ -70,7 +71,7 @@ public class SysLogAspect {
         sysLog.setIp(getIpAddr(request));
 
         //保存系统日志
-        sysLogService.insert(sysLog);
+      /*  sysLogService.insert(sysLog);*/
     }
 
     public static HttpServletRequest getHttpServletRequest() {
@@ -110,3 +111,4 @@ public class SysLogAspect {
         return ip;
     }
 }
+
