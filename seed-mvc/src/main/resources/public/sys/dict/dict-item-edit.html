@@ -1,0 +1,19 @@
+<el-dialog title="新增数据" :visible.sync="show" :modal-append-to-body="false" :close-on-click-modal="false"
+           size="tiny">
+    <el-form label-position="right" label-width="80px" :model="entity" :rules="rules" ref="editForm">
+        </el-form-item>
+        <el-form-item label="编码" prop="code">
+            <el-input v-model="entity.itemCode" size="small"></el-input>
+        </el-form-item>
+        <el-form-item label="名称" prop="name">
+            <el-input v-model="entity.value" size="small"></el-input>
+        </el-form-item>
+        <el-form-item label="MEMO" prop="memo">
+            <el-input v-model="entity.memo" size="small" width></el-input>
+        </el-form-item>
+    </el-form>
+    <div slot="footer">
+        <el-button type="primary" size="small" @click="save" >提交</el-button>
+        <el-button size="small" @click="close">取消</el-button>
+    </div>
+</el-dialog>

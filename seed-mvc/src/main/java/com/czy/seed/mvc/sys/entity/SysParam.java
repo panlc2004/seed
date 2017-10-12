@@ -48,9 +48,6 @@ public class SysParam implements Serializable {
         this.value = value;
     }
 
-//    public boolean isActive() {
-//        return active;
-//    }
 
     public void setActive(Integer active) {
         this.active = active;
