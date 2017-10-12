@@ -4,54 +4,55 @@ define(['text!sys/dict/dict-group.html'], function (Template) {
         components: {
             'edit': function (resolve) {
                 require(['sys/dict/dict-group-edit'], resolve);
-            },
-
+            }
         },
         mixins: [czyPageBar],
         data: function () {
             return {
+                autoLoad: true,
+                code: null,
                 deptData: [],
                 url: 'sys/dict/selectPageByParams',
                 queryParam: seed.queryParam.create()
             }
         },
-        watch: {
-            show: function (val, oldVal) {
-                if (!val) {
-                    this.$refs['editForm'].resetFields();
-                }
-            }
-        },
         methods: {
             search: function () {
                 var _this = this;
-                this.selectListByParentId(0, function (response) {
+                this.selectListByParentId(0, _this.code, function (response) {
                     _this.deptData = response.data;
                 })
             },
 
-            toAdd: function (entity) {
+            toAdd: function () {
                 var edit = this.$refs.edit;
-                edit.entity = {parentId:entity.id,depth:entity.depth+1};
+                edit.entity = {};
                 edit.open();
             },
-
+            toAddChild: function (entity) {
+                var edit = this.$refs.edit;
+                edit.entity = {
+                    depth: entity.depth + 1,
+                    parentId: entity.id
+                };
+                edit.open();
+            },
             toEdit: function (entity) {
                 var edit = this.$refs.edit;
                 edit.entity = $.extend({}, entity);
                 edit.open();
             },
-            selectSubDept: function (row, callback) {
-                this.selectListByParentId(row.id, function (response) {
+            selectSubDept: function (row,callback) {
+                this.selectListByParentId(row.id, "null", function (response) {
                     callback(response.data);
                 })
             },
-            selectListByParentId: function (parentId, callback) {
-                seed.ajax.post({
-                    url: 'sys/dict/selectListByParentId',
-                    data: {
-                        parentId: parentId
-                    },
+            selectListByParentId: function (parentId, code, callback) {
+                if(code == null || code == "") {
+                    code = "null";
+                }
+                seed.ajax.postJson({
+                    url: 'sys/dict/selectListByParentId/' + parentId + "/" + code,
                     success: function (response) {
                         callback(response);
                     }
@@ -80,16 +81,16 @@ define(['text!sys/dict/dict-group.html'], function (Template) {
                 var role = this.$refs.role;
                 role.open(row.id);
             },
-            groupChange:function (currentRow) {
-                if(currentRow!==null){
+            groupChange: function (currentRow) {
+                if (currentRow != null) {
                     this.$emit("group-changed", currentRow);
                 }
             }
         },
         created: function () {
+            //查找一级部门
             this.search();
         }
-
     };
 
     return component         //返回组件

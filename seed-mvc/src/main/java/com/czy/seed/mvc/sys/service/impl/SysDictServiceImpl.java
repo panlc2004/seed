@@ -1,6 +1,7 @@
 package com.czy.seed.mvc.sys.service.impl;
 
 import com.czy.seed.mvc.base.service.impl.BaseServiceImpl;
+import com.czy.seed.mvc.sys.entity.SysDept;
 import com.czy.seed.mvc.sys.entity.SysDict;
 import com.czy.seed.mvc.sys.mapper.SysDictMapper;
 import com.czy.seed.mvc.sys.service.SysDictService;
@@ -15,25 +16,25 @@ import java.util.List;
 public class SysDictServiceImpl extends BaseServiceImpl<SysDict> implements SysDictService {
 
     @Autowired
-    private SysDictMapper sysOrgMapper;
-
-
-    public List<SysDict> selectChildNumListByParentId(long parentId) {
-        return sysOrgMapper.selectChildNumListByParentId(parentId);
-    }
+    private SysDictMapper sysDictMapper;
 
 
     @Override
     public List<SysDict> selectOrgTree() {
-        List<SysDict> sysOrgs = sysOrgMapper.selectAllOrgs();
-        return buildTree(sysOrgs);
+        List<SysDict> sysDicts = sysDictMapper.selectAllOrgs();
+        return buildTree(sysDicts);
     }
 
-    public List<SysDict> buildTree(List<SysDict> sysOrgs) {
+    public List<SysDict> selectChildNumListByParentId(long parentId,String code) {
+        return sysDictMapper.selectChildNumListByParentId(parentId,code);
+    }
+
+
+   public List<SysDict> buildTree(List<SysDict> sysDicts) {
         List<SysDict> res = new ArrayList<SysDict>();
 
-        List<SysDict> rootOrg = findRootOrg(sysOrgs);
-        findChildrenResource(sysOrgs, rootOrg);
+        List<SysDict> rootDict = findRootOrg(sysDicts);
+        findChildrenResource(sysDicts, rootDict);
 
         //构建id为0的虚拟节点
         SysDict zeroOrg = new SysDict();
@@ -41,22 +42,22 @@ public class SysDictServiceImpl extends BaseServiceImpl<SysDict> implements SysD
         zeroOrg.setParentId(-1L);
         zeroOrg.setCode("zero");
         zeroOrg.setName("组织机构");
-        zeroOrg.getChildren().addAll(sysOrgs);
+        zeroOrg.getChildren().addAll(rootDict);
 
         res.add(zeroOrg);
 
         return res;
     }
 
-    private List<SysDict> findRootOrg(List<SysDict> orgList) {
-        List<SysDict> rootOrgList = new ArrayList<SysDict>();
-        for (SysDict org : orgList) {
-            if (0 == org.getParentId()) {
-                rootOrgList.add(org);
+   private List<SysDict> findRootOrg(List<SysDict> dictList) {
+        List<SysDict> rootDictList = new ArrayList<SysDict>();
+        for (SysDict dict : dictList) {
+            if (0 == dict.getParentId()) {
+                rootDictList.add(dict);
             }
         }
-        orgList.remove(rootOrgList);
-        return rootOrgList;
+        dictList.remove(rootDictList);
+        return rootDictList;
     }
 
     public void findChildrenResource(List<SysDict> orgWithoutRoot, List<SysDict> rootList) {

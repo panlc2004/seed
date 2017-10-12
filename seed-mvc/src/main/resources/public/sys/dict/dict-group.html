@@ -2,7 +2,7 @@
     <czy-toolbar>
         <czy-toolbar-item>
             <span slot="label">名称</span>
-            <span slot="item"><el-input v-model="queryParam.like.name"></el-input></span>
+            <span slot="item"><el-input v-model="code"></el-input></span>
         </czy-toolbar-item>
         <czy-toolbar-btn>
             <el-button-group>
@@ -15,15 +15,14 @@
         <el-table-tree-column :expand-all="false" :remote="selectSubDept" parentKey="parentId"
                               levelKey="depth" childNumKey="childNum"
                               file-icon="fa fa-file" folder-icon="fa fa-folder"
-                              prop="name" label="名称"  >
+                              prop="code" label="编码">
         </el-table-tree-column>
-        <el-table-column prop="code" label="编码">
-        </el-table-column>
-        <el-table-column label="操作" width="130">
-            <template scope="scope" >
+        <el-table-column prop="name" label="名称"></el-table-column>
+        <el-table-column label="操作" width="150">
+            <template scope="scope">
                 <el-tooltip content="新增" placement="top" effect="light" :enterable="false">
                     <el-button size="mini" type="primary" icon="plus"
-                               @click="toAdd(scope.row)"></el-button>
+                               @click="toAddChild(scope.row)"></el-button>
                 </el-tooltip>
                 <el-tooltip content="修改" placement="top" effect="light" :enterable="false">
                     <el-button size="mini" type="warning" icon="edit"
@@ -36,6 +35,5 @@
             </template>
         </el-table-column>
     </el-table>
-
     <edit @save-success="search" ref="edit"></edit>
 </div>

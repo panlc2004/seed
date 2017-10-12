@@ -2,45 +2,23 @@ package com.czy.seed.mvc.sys.entity;
 
 import com.czy.seed.mvc.base.entity.IPrepare;
 
+import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Date;
 
 @Table(name = "SEED_SYS_DICT_ITEM")
 public class SysDictItem implements IPrepare {
+    @Id
     private Long id;
-
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
     private Long parentId;
+    private Long sysDictId;
     private String itemCode;
     private String value;
     private String memo;
-    private Long sysDictId;
-    private Date createDt;
-
-    public Date getCreateDt() {
-        return createDt;
-    }
-
-    public void setCreateDt(Date createDt) {
-        this.createDt = createDt;
-    }
-
-    public Long getCreateBy() {
-        return createBy;
-    }
-
-    public void setCreateBy(Long createBy) {
-        this.createBy = createBy;
-    }
-
+    private String name;
     private Long createBy;
+    private Date updateDt;
+    private Long updateBy;
 
     public Long getSysDictId() {
         return sysDictId;
@@ -50,7 +28,46 @@ public class SysDictItem implements IPrepare {
         this.sysDictId = sysDictId;
     }
 
+    public Date getUpdateDt() {
+        return updateDt;
+    }
 
+    public void setUpdateDt(Date updateDt) {
+        this.updateDt = updateDt;
+    }
+
+    public Long getUpdateBy() {
+        return updateBy;
+    }
+
+    public void setUpdateBy(Long updateBy) {
+        this.updateBy = updateBy;
+    }
+
+
+    public Long getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(Long createBy) {
+        this.createBy = createBy;
+    }
+
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
 
     public Long getParentId() {
         return parentId;

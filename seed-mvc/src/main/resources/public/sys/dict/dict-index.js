@@ -9,18 +9,11 @@ define(['text!sys/dict/dict-index.html'], function (Template) {
                 require(['sys/dict/dict-item'], resolve);
             }
         },
-        data:function(){
-            return{
-
-            }
-        },
         methods: {
             searchItem: function (groupRow) {
-                if(groupRow!==null){
-                    var item = this.$refs.item;
-                    item.dictId = groupRow.id;
-                    item.search();
-                }
+                var item = this.$refs.item;
+                item.cacheDictId(groupRow.id)
+                item.search();
             }
         }
     };

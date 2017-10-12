@@ -12,7 +12,13 @@
         T.*,
         (SELECT COUNT(0) FROM SEED_SYS_DICT SSD WHERE SSD.PARENT_ID =  T.ID) AS CHILD_NUM
         FROM SEED_SYS_DICT T
-        where T.PARENT_ID=#{parentId}
+        <where>
+            <if test="parentId != null">
+                and T.PARENT_ID = #{parentId}
+            </if>
+            <if test="code != null">
+                and  T.CODE = #{code}
+            </if>
+        </where>
     </select>
-
 </mapper>

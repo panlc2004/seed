@@ -1,6 +1,7 @@
 package com.czy.seed.mvc.sys.entity;
 
 import com.czy.seed.mvc.base.entity.IPrepare;
+import org.apache.ibatis.annotations.Param;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
@@ -10,7 +11,7 @@ import java.util.Date;
 import java.util.List;
 
 @Table(name = "SEED_SYS_DICT")
-public class SysDict implements IPrepare{
+public class SysDict implements IPrepare {
 
     private static final long serialVersionUID = -3036113094653530550L;
     @Id
@@ -24,23 +25,41 @@ public class SysDict implements IPrepare{
     private Long createBy;
     private Date updateDt;
     private Long updateBy;
-    private Long depth;
+    private int depth;
 
-
-    public Long getDepth() {
+    public int getDepth() {
         return depth;
     }
 
-    public void setDepth(Long depth) {
+    public void setDepth(int depth) {
         this.depth = depth;
     }
 
-    @Transient
+    @Transient   //标识数据库中没有的
     private int childNum;
-
     @Transient
-
     private List<SysDict> children;
+
+
+
+
+    public List<SysDict> getChildren() {
+        if (children == null) {
+            children = new ArrayList<SysDict>(0);
+        }
+        return children;
+    }
+
+
+
+
+    public int getChildNum() {
+        return childNum;
+    }
+
+    public void setChildNum(int childNum) {
+        this.childNum = childNum;
+    }
 
     public Long getId() {
         return id;
@@ -58,7 +77,7 @@ public class SysDict implements IPrepare{
         this.sysOrgId = sysOrgId;
     }
 
-    public Date getCreateDt() {
+     public Date getCreateDt() {
         return createDt;
     }
 
@@ -122,18 +141,5 @@ public class SysDict implements IPrepare{
         this.parentId = parentId;
     }
 
-    public List<SysDict> getChildren() {
-        if (children == null) {
-            children = new ArrayList<SysDict>(0);
-        }
-        return children;
-    }
-    public int getChildNum() {
-        return childNum;
-    }
-
-    public void setChildNum(int childNum) {
-        this.childNum = childNum;
-    }
 
 }
