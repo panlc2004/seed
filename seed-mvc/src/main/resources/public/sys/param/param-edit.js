@@ -3,25 +3,24 @@ define(['text!sys/param/param-edit.html'], function (Template) {
         template: Template,
         data: function () {
             return {
-                show: false,
-                puut:false,
-                entity: {},
+                entity:{},
+                show: false,    //编辑页面是否弹出
+                sysDeptList: [], //部门下拉数据
                 rules: {
-                    name: [
-                        {required: true, message: '请输入配置项名称'},
-                        {max: 50, message: '输入长度不能超过50字符'}
-                    ],
                     code: [
-                        {required: true, message: '请输入配置项编码'},
-                        //seed.validate.englishNumberUnderLine(1,50)
-                        {max: 300, message: '输入长度不能超过300字符'}
+                        {required: true, message: '请输入参数编码'},
+                        seed.validate.englishNumberUnderLine(0,50)
+                    ],
+                    name: [
+                        {required: true, message: '请输入参数名称'},
+                        {max: 50, message: '输入长度不能超过25字符'}
                     ],
                     value: [
-                        {required: true, message: '请输入配置项值'},
-                        {max: 500, message: '输入长度不能超过500字符'}
+                        {required: true, message: '请输入can'},
+                        {max: 100, message: '长度不能超过100字符'}
                     ],
                     memo: [
-                        {max: 2000, message: '输入长度不能超过2000字符'}
+                        seed.validate.chinese(6,100)
                     ]
                 }
             };
@@ -34,7 +33,7 @@ define(['text!sys/param/param-edit.html'], function (Template) {
             }
         },
         methods: {
-            open1:function () {
+            open1: function () {
 
             },
             open: function () {
@@ -47,19 +46,14 @@ define(['text!sys/param/param-edit.html'], function (Template) {
                 var _this = this;
                 this.$refs.editForm.validate(function (valid) {
                     if (valid) {
-                        _this.puut = true;
                         seed.ajax.postJson({
                             url: 'sys/param/save',
                             data: _this.entity,
                             success: function (data, status) {
                                 if (status) {
                                     _this.close();
-                                    _this.$emit("save-success");
+                                    _this.$emit("save-success")
                                 }
-                                _this.puut = false;
-                            },
-                            error:function(data,status){
-                                _this.puut = false;
                             }
                         })
                     } else {
@@ -67,10 +61,9 @@ define(['text!sys/param/param-edit.html'], function (Template) {
                     }
                 });
             }
-        },
-        created:function () {
-            // seed.validate.test();
         }
     };
     return component;
 })
+
+

@@ -11,7 +11,6 @@ import org.springframework.boot.autoconfigure.jdbc.XADataSourceAutoConfiguration
 
 @SpringBootApplication(exclude = {DataSourceAutoConfiguration.class, XADataSourceAutoConfiguration.class})
 public class DemoApplication {
-
     public static void main(String[] args) {
         SpringApplication.run(DemoApplication.class, args);
     }

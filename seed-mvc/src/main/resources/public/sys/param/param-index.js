@@ -1,3 +1,6 @@
+/**
+ * Created by PLC on 2017/6/3.
+ */
 define(['text!sys/param/param-index.html'], function (Template) {
     var component = {
         template: Template,
@@ -9,11 +12,7 @@ define(['text!sys/param/param-index.html'], function (Template) {
         mixins: [czyPageBar],
         data: function () {
             return {
-                pageData: null,
-                total: 0,
-                dialogVisible: false,
-                dialogVisible1: false,
-                url: 'sys/param/selectPageRelativeByParams',
+                url: 'sys/param/selectPageByParams',
                 queryParam: seed.queryParam.create()
             }
         },
@@ -23,7 +22,9 @@ define(['text!sys/param/param-index.html'], function (Template) {
             },
             toAdd: function () {
                 var edit = this.$refs.edit;
-                edit.entity = {};
+                edit.entity = {
+                    sysDeptId: ''
+                };
                 edit.open();
             },
             toEdit: function (entity) {
@@ -38,8 +39,10 @@ define(['text!sys/param/param-index.html'], function (Template) {
                     cancelButtonText: '取消',
                     type: 'error'
                 }).then(function () {
+                    var url = 'sys/param/deleteByPrimaryKey/' + entity.id;
+                    console.log(url);
                     seed.ajax.postJson({
-                        url: "sys/param/deleteByPrimaryKey/" + entity.id,
+                        url: url,
                         success: function (data, status) {
                             if (status) {
                                 _this.search();
@@ -50,14 +53,16 @@ define(['text!sys/param/param-index.html'], function (Template) {
                 });
             },
             delActive: function (entity) {
+                var button = this.$refs['ztbutton'];
                 var _this = this;
-                _this.$confirm('是否取消激活?', '提示', {
+                _this.$confirm('此操作将取消激活, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
-                    type: 'warning'
+                    type: 'error'
                 }).then(function () {
+                    var url = 'sys/param/deleteActive/' + entity.id;
                     seed.ajax.postJson({
-                        url: "sys/param/updateActiveByPrimaryKey/" + entity.id+"/"+entity.active,
+                        url: url,
                         success: function (data, status) {
                             if (status) {
                                 _this.search();
@@ -68,31 +73,34 @@ define(['text!sys/param/param-index.html'], function (Template) {
                 });
             },
             setActive: function (entity) {
+                var button = this.$refs['ztbutton'];
                 var _this = this;
-                debugger;
-                _this.$confirm('是否激活?', '提示', {
+                _this.$confirm('此操作将激活, 是否继续?', '提示', {
                     confirmButtonText: '确定',
-                    cancelButtonText: '取消',
-                    type: 'warning'
+                    cancelButtonText: '取消'
                 }).then(function () {
+                    var url = 'sys/param/updateActive/' + entity.id;
                     seed.ajax.postJson({
-                        url: "sys/param/updateActiveByPrimaryKey/" +  entity.id+"/"+entity.active,
+                        url: url,
                         success: function (data, status) {
                             if (status) {
                                 _this.search();
                             }
                         }
                     });
+                    button.type("success");
                 }).catch(function () {
-                });
-            }
+                })
         },
-        created: function () {
-            this.loadData();
+            gridSelect:function () {
+
+
+            }
         }
-    }
+    };
 
     return {
-        component:component
+        component: component         //返回组件
     }
+
 });
