@@ -6,9 +6,10 @@ import com.czy.seed.mybatis.base.mapper.BaseMapper;
 import com.czy.seed.mybatis.config.mybatis.annotations.AutoMapper;
 
 import java.util.List;
+import java.util.Map;
 
 @AutoMapper
 public interface SysLogMapper extends BaseMapper<SysLog>{
-    List<SysLog> selectListRelative(QueryParams params);
+    List<SysLog> selectExtendPageByParam(Map<String, Object> params);
 
 }

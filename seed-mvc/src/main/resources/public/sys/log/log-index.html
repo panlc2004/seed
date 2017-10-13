@@ -31,6 +31,6 @@
     </el-table>
 
     <el-pagination layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="sizeChange"
-                   @current-change="turnPage" :page-size="pageSize" :current-page="currentPage"></el-pagination>
+                   @current-change="handleCurrentChange" :page-size="pageSize" :current-page="currentPage"></el-pagination>
 
 </div>

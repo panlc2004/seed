@@ -30,6 +30,7 @@ var czyPageBar = {
         loadData: function () {
             var _this = this;
             _this.loading = true;
+            console.log(_this.url)
             $.ajax({
                 type: "POST",
                 contentType: "application/json;charset=utf-8",

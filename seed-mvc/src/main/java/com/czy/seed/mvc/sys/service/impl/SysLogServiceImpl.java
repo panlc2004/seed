@@ -1,6 +1,5 @@
 package com.czy.seed.mvc.sys.service.impl;
 
-import com.czy.seed.mvc.base.controller.BaseController;
 import com.czy.seed.mvc.base.service.impl.BaseServiceImpl;
 import com.czy.seed.mvc.sys.entity.SysLog;
 import com.czy.seed.mvc.sys.mapper.SysLogMapper;
@@ -13,7 +12,7 @@ import com.github.pagehelper.PageHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.List;
+import java.util.Map;
 
 @Service
 public class SysLogServiceImpl extends BaseServiceImpl<SysLog> implements SysLogService {
@@ -21,20 +20,17 @@ public class SysLogServiceImpl extends BaseServiceImpl<SysLog> implements SysLog
     @Autowired
     private SysLogMapper sysLogMapper;
 
-    public Page<SysLog> selectPageRelative(int pageNo, int pageLimit, final QueryParams params) {
+    public Page<SysLog> selectExtendPageByParam(int pageNo, int pageLimit, final Map<String, Object> params) {
         Page<SysLog> page = PageHelper.startPage(pageNo, pageLimit).doSelectPage(new ISelect() {
             @Override
             public void doSelect() {
-              sysLogMapper.selectListRelative(params);
+              sysLogMapper.selectExtendPageByParam(params);
             }
         });
         return page;
     }
 
-    @Override
-    public Page<SysLog> selectPageRelativeByParam(int pageNo, int pageLimit, Log log) {
-        return null;
-    }
+
 
 
 }

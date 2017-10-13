@@ -1,49 +1,54 @@
 define(['text!sys/log/log-index.html'], function (Template) {
     var component = {
         template: Template,
-        mixins: [czyPageBar],
         data: function () {
             return {
-                pageDate: {},
+                pageData: [],
                 log: {
-                    name: ' ',
-                    createDt: ' ',
-                    operation: ' '
+                    name: '',
+                    createDt: '',
+                    operation: ''
                 },
-                url: 'sys/log/selectPageRelative',
-                queryParam: seed.queryParam.create(),
+                pageSize: 10,
+                currentPage: 1,
+                total: 0,
+                currentPageNum: '1',
             }
         },
         methods: {
+            sizeChange:function (size) {
+                this.pageSize = size;
+                this.search();
+            },
             search: function () {
                 var _this = this;
-                debugger;
-                if (_this.log.name === '' || _this.log.name === undefined) {
-                    _this.log.name = ' ';
-                }
-                if (_this.log.createDt === '' || _this.log.createDt === undefined) {
-                    _this.log.createDt = ' ';
-                }
-                if (_this.log.operation === '' || _this.log.operation === undefined) {
-                    _this.log.operation = ' ';
-                }
-                var createDt=[];
-                if(_this.log.createDt!==" "){
-                    for(var i= 0;i<_this.log.createDt.length;i++)
-                    createDt.push(_this.log.createDt[i].getTime())
-                }
-                _this.log.createDt = createDt.join(',');
-                _this.url = 'sys/log/selectPageRelativeByParam/' + _this.log.name + '/' + _this.log.createDt + '/' + _this.log.operation
-                this.turnPage();
-                // if (_this.log.name == '' && _this.log.createDt == '' && _this.log.operation == '') {
-                //     _this.url = 'sys/log/selectPageRelative';
-                // } else {
-                //     console.log(_this.find);
-                //     _this.url = 'sys/log/slecetPageRelativeByParams/'+/' + _this.log;
-                //     this.turnPage();
-                // }
+                var _begin = "2017-11-12 10:10:10";
+                var _end = "2017-11-12 10:10:10";
+                seed.ajax.post({
+                    url: 'sys/log/selectExtendPageByParam/' + _this.currentPage + "/" + _this.pageSize,
+                    data: {
+                        name: _this.log.name,
+                        begin: _begin,
+                        end: _end,
+                        operation:_this.log.operation
+                    },
+                    success: function (response) {
+                        _this.pageData = response.data.page;
+                        _this.total = Number(response.data.total);
+
+                    }
+                })
             },
 
+            handleCurrentChange: function (pageNum) {
+                this.currentPageNum = pageNum;
+                this.currentPage = pageNum == undefined ? 1 : pageNum;
+                this.search();
+            }
+
+        },
+        created: function () {
+            this.handleCurrentChange();
         }
     };
     return {

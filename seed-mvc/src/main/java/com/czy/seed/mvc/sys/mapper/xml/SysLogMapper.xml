@@ -13,8 +13,8 @@
         <result column="NAME" property="name"/>
     </resultMap>
 
-    <select id="selectListRelative" resultMap="BaseResultMap"
-            parameterType="com.czy.seed.mybatis.base.QueryParams">
+    <select id="selectExtendPageByParam" resultMap="BaseResultMap"
+            parameterType="java.util.Map">
         select
         <trim prefix=" " suffix=" " suffixOverrides=",">
             SEED_SYS_LOG.ID,
@@ -28,6 +28,17 @@
         </trim>
         from SEED_SYS_LOG
         LEFT JOIN SEED_SYS_USER ON SEED_SYS_LOG.CREATE_BY = SEED_SYS_USER.ID
+        <where>
+            <if test="name != null">
+                AND SEED_SYS_USER.NAME = name
+            </if>
+            <if test="begin != null">
+                AND   BETWEEN begin AND end
+            </if>
+            <if test="operation != null">
+                AND SEED_SYS_LOG.OPERATION = operation
+            </if>
+        </where>
         ORDER BY SEED_SYS_LOG.ID DESC
     </select>
 </mapper>
