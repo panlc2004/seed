@@ -5,6 +5,7 @@ import com.czy.seed.mybatis.base.mapper.BaseMapper;
 import com.czy.seed.mybatis.config.mybatis.annotations.AutoMapper;
 
 @AutoMapper
-public interface SysParamsMapper extends BaseMapper<SysParam> {
-
+public interface SysParamMapper extends BaseMapper<SysParam> {
+     int updateActive(Long id);
+     int deleteActive(Long id);
 }

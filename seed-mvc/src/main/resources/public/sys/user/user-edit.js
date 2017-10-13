@@ -8,7 +8,7 @@ define(['text!sys/user/user-edit.html'], function (Template) {
                 entity: {
                     sysDeptId: ''
                 },     //保存表单提交数据
-                rules: {
+                    rules: {
                     sysDeptId: [
                         {required: true, message: '请选择用户部门'},
                         {type:"number", max: 50, message: '输入长度不能超过50字符'}

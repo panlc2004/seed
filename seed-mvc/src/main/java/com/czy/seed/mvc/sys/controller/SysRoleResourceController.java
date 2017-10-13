@@ -1,6 +1,9 @@
 package com.czy.seed.mvc.sys.controller;
 
+import com.czy.seed.mvc.base.controller.BaseController;
+import com.czy.seed.mvc.sys.entity.SysResource;
 import com.czy.seed.mvc.sys.entity.SysRoleResource;
+import com.czy.seed.mvc.sys.service.SysResourceService;
 import com.czy.seed.mvc.sys.service.SysRoleResourceService;
 import com.czy.seed.mvc.util.Res;
 import com.czy.seed.mybatis.base.QueryParams;
@@ -10,14 +13,23 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
-@RestController
 @RequestMapping("/sys/roleResource")
-public class SysRoleResourceController {
+@RestController
+public class SysRoleResourceController extends BaseController<SysRoleResource> {
 
     @Autowired
     private SysRoleResourceService sysRoleResourceService;
+    @Autowired
+    private SysResourceService sysResourceService;
+
+    @RequestMapping("selectResources/{roleId}")
+    public Res selectResources(@PathVariable("roleId") long roleId) {
+        return Res.ok(sysRoleResourceService.selectResources(roleId));
+    }
 
     @RequestMapping("/selectResourceForRole/{roleId}")
     public Res selectResourceForRole(@PathVariable long roleId) {

@@ -4,28 +4,32 @@ define(['text!sys/role/role-edit.html'], function (Template) {
         data: function () {
             return {
                 show: false,
+                disabled: false,
                 entity: {},
                 rules: {
-                    orgName: [
-                        {required: true, message: '请输入组织名称'},
-                        {max: 50, message: '输入长度不能超过50字符'}
+                    name: [
+                        {required: true, message: '请输入角色名称'},
+                        {max: 50, message: '输入长度不能超过50字符'},
+                        seed.validate.chineseEnglishNumber(1, 50)
                     ],
-                    orgCode: [
-                        {required: true, message: '请输入组织编码'},
-                        seed.validate.englishNumberUnderLine(1,50)
+                    code: [
+                        {required: true, message: '请输入角色编码'},
+                        seed.validate.number(1, 50, 100)
                     ],
                     memo: [
-                        {max: 600, message: '输入长度不能超过500字符'}
+                        {max: 1000, message: '输入长度不能超过1000字符'}
                     ]
                 }
             };
         },
+        watch: {
+            show: function (val, oldVal) {
+                if (!val) {
+                    this.$refs['editForm'].resetFields();
+                }
+            }
+        },
         methods: {
-            open1:function () {
-                // this.$nextTick(function() {
-                //     alert(document.querySelector('.v-modal').parentNode.tagName);
-                // });
-            },
             open: function () {
                 this.show = true;
             },
@@ -44,6 +48,10 @@ define(['text!sys/role/role-edit.html'], function (Template) {
                                     _this.close();
                                     _this.$emit("save-success")
                                 }
+                                _this.disabled = false;
+                            },
+                            error: function (data, status) {
+                                _this.disabled = false;
                             }
                         })
                     } else {
@@ -52,9 +60,6 @@ define(['text!sys/role/role-edit.html'], function (Template) {
                 });
             }
         },
-        created:function () {
-            // seed.validate.test();
-        }
     };
     return component;
 })

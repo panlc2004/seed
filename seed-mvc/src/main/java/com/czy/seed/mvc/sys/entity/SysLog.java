@@ -7,7 +7,7 @@ import javax.persistence.Table;
 import java.io.Serializable;
 import java.util.Date;
 
-@Table(name="SYS_LOG")
+@Table(name="SEED_SYS_LOG")
 public class SysLog extends BaseEntity implements Serializable {
 
     private static final long serialVersionUID = -5605619995509261468L;

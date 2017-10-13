@@ -1,0 +1,18 @@
+<el-dialog title="角色资源配置" :visible.sync="show">
+
+    <el-tree
+            :data="resources"
+            show-checkbox
+            node-key="id"
+            ref="tree"
+            :default-expanded-keys="resources.checkIds"
+            :default-checked-keys="resources.checkIds"
+            :props="defaultProps">
+    </el-tree>
+
+    <div slot="footer">
+        <el-button type="primary" size="small" @click="getCheckedKeys">确认</el-button>
+        <el-button size="small" @click="close">取消</el-button>
+    </div>
+
+</el-dialog>
