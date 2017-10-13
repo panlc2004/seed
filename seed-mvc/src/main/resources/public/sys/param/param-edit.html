@@ -1,0 +1,22 @@
+
+    <el-dialog title="系统参数设置信息" :visible.sync="show" :modal-append-to-body="false" :close-on-click-modal="false"
+               @open="open1">
+        <el-form label-position="right" label-width="80px" :model="entity" :rules="rules" ref="editForm">
+            <el-form-item label="配置项名称" prop="name">
+                <el-input v-model="entity.name" size="small"></el-input>
+            </el-form-item>
+            <el-form-item label="配置项编码" prop="code">
+                <el-input v-model="entity.code" size="small"></el-input>
+            </el-form-item>
+            <el-form-item label="配置项值" prop="value">
+                <el-input v-model="entity.value" size="small"></el-input>
+            </el-form-item>
+            <el-form-item label="备注" prop="memo">
+                <el-input v-model="entity.memo" type="textarea" :rows="10" size="small"></el-input>
+            </el-form-item>
+        </el-form>
+        <div slot="footer">
+            <el-button type="primary" size="small" @click="save" :disabled="puut">提交</el-button>
+            <el-button size="small" @click="close">取消</el-button>
+        </div>
+    </el-dialog>
