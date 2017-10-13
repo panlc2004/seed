@@ -22,7 +22,7 @@ var czyPageBar = {
             this.currentPage = 1;
             this.loadData();
         },
-        refresh: function (param) {
+        refresh: function (params) {
             this.param = buildQueryParams(params);
             this.currentPage = this.currentPageNum;
             this.loadData();
@@ -36,6 +36,7 @@ var czyPageBar = {
                 url: _this.url + "/" + _this.currentPage + "/" + _this.pageSize,
                 data: JSON.stringify(_this.param),
                 success: function (response) {
+                    console.log(response);
                     _this.pageData = response.data.page;
                     _this.total = Number(response.data.total);
                 },

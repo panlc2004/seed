@@ -1,5 +1,6 @@
 package com.czy.seed.mvc.sys.controller;
 
+import com.czy.seed.mvc.base.controller.BaseController;
 import com.czy.seed.mvc.sys.entity.SysResource;
 import com.czy.seed.mvc.sys.service.SysResourceService;
 import com.czy.seed.mvc.util.Res;
@@ -14,7 +15,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/sys/resource")
-public class SysResourceController {
+public class SysResourceController extends BaseController<SysResource>{
 
     @Autowired
     private SysResourceService sysResourceService;
