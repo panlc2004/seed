@@ -10,6 +10,7 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Objects;
 
 @Service
 public class SysDeptServiceImpl extends BaseServiceImpl<SysDept> implements SysDeptService {
@@ -67,7 +68,7 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDept> implements SysD
             SysDept resource = iterator.next();
             boolean flag = false;   //当为真时，表示当前iterator已经被识别为子节点
             for (SysDept parent : rootList) {
-                if (resource.getParentId() == parent.getId()) {
+                if (Objects.equals(resource.getParentId(), parent.getId())) {
                     parent.getChildren().add(resource);
                     children.add(resource);
                     flag = true;

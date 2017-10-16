@@ -1,5 +1,6 @@
 package com.czy.seed.mvc.sys.controller;
 
+import com.czy.seed.mvc.annotation.AutoLog;
 import com.czy.seed.mvc.base.controller.BaseController;
 import com.czy.seed.mvc.base.service.BaseService;
 import com.czy.seed.mvc.sys.entity.SysDept;
@@ -28,6 +29,7 @@ public class SysParamController extends BaseController<SysParam> {
      * @param active 是否激活
      * @return Res
      */
+    @AutoLog("修改用户激活状态")
     @RequestMapping("/updateActiveByPrimaryKey/{id}/{active}")
     public Res updateActiveByPrimaryKey(@PathVariable long id, @PathVariable long active) {
         sysParamService.updateActiveByPrimaryKey(id, active);

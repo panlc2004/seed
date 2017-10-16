@@ -12,6 +12,6 @@ public interface ILoginUserTool {
 
     SecurityUser getLoginUser();
 
-    public List<UserAuthority> getLoginUserRoles();
+     List<UserAuthority> getLoginUserRoles();
 
 }

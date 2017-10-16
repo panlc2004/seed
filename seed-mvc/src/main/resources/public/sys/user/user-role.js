@@ -1,4 +1,4 @@
-define(['text!sys/user/user-role.html', 'css!sys/user/user-role.css'], function (Template) {
+ define(['text!sys/user/user-role.html', 'css!sys/user/user-role.css'], function (Template) {
     var component = {
         template: Template,
         data: function () {

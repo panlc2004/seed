@@ -3,15 +3,16 @@
     <el-tree
             :data="resources"
             show-checkbox
-            :default-checked-keys="resources.checkIds"
             node-key="id"
             ref="tree"
-            highlight-current
+            :default-expanded-keys="resources.checkIds"
+            :default-checked-keys="resources.checkIds"
             :props="defaultProps">
     </el-tree>
 
     <div slot="footer">
-        <el-button size="small" @click="close">取消</el-button>
         <el-button type="primary" size="small" @click="getCheckedKeys">确认</el-button>
+        <el-button size="small" @click="close">取消</el-button>
     </div>
+
 </el-dialog>

@@ -69,7 +69,7 @@ public class SysResourceServiceImpl extends BaseServiceImpl<SysResource> impleme
             for (SysResource par : parentResources) {
                 boolean have = false;
                 for (SysResource full : fullResources) {
-                    if (par.getId() == full.getId()) {
+                    if (Objects.equals(par.getId(), full.getId())) {
                         have = true;
                         break;
                     }
@@ -158,7 +158,7 @@ public class SysResourceServiceImpl extends BaseServiceImpl<SysResource> impleme
             SysResource resource = iterator.next();
             boolean flag = false;   //当为真时，表示当前iterator已经被识别为子节点
             for (SysResource parentResource : rootResourceList) {
-                if (resource.getParentId() == parentResource.getId()) {
+                if (Objects.equals(resource.getParentId(), parentResource.getId())) {
                     parentResource.getChildren().add(resource);
                     children.add(resource);
                     flag = true;
