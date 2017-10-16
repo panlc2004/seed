@@ -21,10 +21,10 @@ public class TestEntity implements Serializable {
 
     private String name;
 
-    @One2One(columns = "id=id")
+    @One2One(columns = "id=testId")
     private One one;
 
-    @One2One(columns = "id=test_id")
+    @One2One(columns = "id=id")
     private One one1;
 
     @One2Many(columns = "name=name")

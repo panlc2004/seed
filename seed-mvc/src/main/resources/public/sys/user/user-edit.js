@@ -11,7 +11,7 @@ define(['text!sys/user/user-edit.html'], function (Template) {
                     rules: {
                     sysDeptId: [
                         {required: true, message: '请选择用户部门'},
-                        {max: 50, message: '输入长度不能超过50字符'}
+                        {type:"number", max: 50, message: '输入长度不能超过50字符'}
                     ],
                     name: [
                         {required: true, message: '请输入用户姓名'},
