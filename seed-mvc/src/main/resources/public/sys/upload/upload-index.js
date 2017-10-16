@@ -4,43 +4,38 @@ define(['text!sys/upload/upload-index.html'], function (Template) {
 
         data: function () {
             return {
-                fileList: []
-            }
+                fileList: [],
+                url: 'sys/attachment/selectPageByParams',
+                queryParam: seed.queryParam.create()
+
+            };
         },
+        mixins: [czyPageBar],
         methods: {
+            downLoad: function (entity) {
+                debugger;
+                window.open("sys/attachment/downLoadFile?id="+entity.id);
+                // var _this = this;
+                // seed.ajax.postJson({
+                //     url: "sys/attachment/downLoadFile" ,
+                //       data: entity,
+                //     success: function (data, status) {
+                //         if (status) {
+                //          //   _this.search();
+                //         }
+                //     }
+                // });
+            },
             handleRemove: function (file, fileList) {
-                console.log(fileList.url);
                 console.log(file, fileList);
             },
             handlePreview: function (file) {
-                console.log(this.fileList.url);
-                var _this = this;
-                this.$refs.editForm.validate(function (valid) {
-                    if (valid) {
-                        seed.ajax.postJson({
-                            url: 'sys/role/save',
-                            data: _this.entity,
-                            success: function (data, status) {
-                                if (status) {
-                                    _this.close();
-                                    _this.$emit("save-success")
-                                }
-                                _this.disabled = false;
-                            },
-                            error: function (data, status) {
-                                _this.disabled = false;
-                            }
-                        })
-                    } else {
-                        return false;
-                    }
-                });
                 console.log(file);
-
             }
         }
         //todo
     };
+
     return {
         component: component
     }

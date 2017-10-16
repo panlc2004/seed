@@ -18,7 +18,6 @@ public class SysDeptServiceImpl extends BaseServiceImpl<SysDept> implements SysD
     @Autowired
     private SysDeptMapper sysOrgMapper;
 
-
     public List<SysDept> selectChildNumListByParentId(long parentId) {
         return sysOrgMapper.selectChildNumListByParentId(parentId);
     }

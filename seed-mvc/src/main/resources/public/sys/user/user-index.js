@@ -5,7 +5,7 @@ define(['text!sys/user/user-index.html'], function (Template) {
             'edit': function (resolve) {
                 require(['sys/user/user-edit'], resolve);
             },
-            "role": function (resolve) {
+            "role":function (resolve) {
                 require(['sys/user/user-role'], resolve);
             }
         },
@@ -37,20 +37,19 @@ define(['text!sys/user/user-index.html'], function (Template) {
                 _this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
-                    type: 'warning'
+                    type: 'error'
                 }).then(function () {
                     seed.ajax.postJson({
-                        url: "sys/user/deleteByPrimaryKey/" + entity.id,
+                        url: 'sys/user/deleteByPrimaryKey/' + entity.id,
                         success: function (data, status) {
                             if (status) {
                                 _this.search();
                             }
                         }
-                    });
-                }).catch(function () {
-                });
+                    })
+                }).catch(function () {});
             },
-            setRole: function (row) {
+            setRole:function (row) {
                 var role = this.$refs.role;
                 role.open(row.id);
             }

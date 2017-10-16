@@ -16,7 +16,6 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.sql.DataSource;
-import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -81,7 +80,8 @@ public class MySqlTest {
         Assert.assertTrue(id == testEntity1.getId());
     }
 
-    @Ignore
+    //    @Ignore
+    @Test
     public void testSelectListByParams() {
         QueryParams queryParams = new QueryParams(TestEntity.class);
         queryParams.orderBy("id").asc().orderBy("name").desc();
@@ -89,9 +89,10 @@ public class MySqlTest {
         QueryParams.Criteria criteria = queryParams.createCriteria();
         QueryParams.Criteria or = queryParams.or();
         criteria.andEqualTo("name", "123");
-        criteria.andLike("name", "%et%");
+//        criteria.andLike("name", "%et%");
         criteria.andBetween("id", 10, 13);
-        criteria.andCondition("1=-1");
+//        criteria.andCondition("1=-1");
+        or.andEqualTo("name", "test");
         List<TestEntity> testEntities = mySqlMapper.selectListByParams(queryParams);
         System.out.println(testEntities);
     }
@@ -165,7 +166,7 @@ public class MySqlTest {
         queryParams.orderBy("id").asc().orderBy("name").desc();
 //        QueryParams.Criteria or = queryParams.or();
         QueryParams.Criteria criteria = queryParams.createCriteria();
-        criteria.andLike("name", "%et%").andCondition("ONE_one.id = 1");
+//        criteria.andLike("name", "%et%").andCondition("ONE_one.id = 1");
 //        or.andEqualTo("id", 12);
         List<TestEntity> testEntities = mySqlMapper.selectListRelativeByParams(queryParams);
         System.out.println(testEntities);

@@ -1,11 +1,29 @@
 <div>
+
     <el-upload
             class="upload-demo"
-            action="https://jsonplaceholder.typicode.com/posts/"
+            ref="upload"
+            action="sys/attachment/upLoadFile"
             :on-preview="handlePreview"
             :on-remove="handleRemove"
+            :show-file-list="false"
             :file-list="fileList">
         <el-button size="small" type="primary">点击上传</el-button>
         <div slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
     </el-upload>
+
+    <el-table :data="pageData" border stripe highlight-current-row>
+        <el-table-column prop="showName" label="文件名称"></el-table-column>
+        <el-table-column label="操作" width="200">
+            <template scope="scope">
+                <el-tooltip content="下载" placement="top" effect="light" :enterable="false">
+                    <el-button size="mini" type="primary" icon="edit" @click="downLoad(scope.row)"></el-button>
+                </el-tooltip>
+            </template>
+        </el-table-column>
+    </el-table>
+
+
+    <el-pagination layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="sizeChange"
+                   @current-change="turnPage" :page-size="pageSize" :current-page="currentPage"></el-pagination>
 </div>
