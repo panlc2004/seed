@@ -9,10 +9,7 @@ import com.czy.seed.mvc.util.Res;
 import com.czy.seed.mybatis.base.QueryParams;
 import com.github.pagehelper.Page;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.HashMap;
@@ -50,12 +47,14 @@ public class BaseController<T> {
     }
 
     @RequestMapping("/selectRelativeByPrimaryKey/{id}")
+    @ResponseBody
     public Res selectRelativeByPrimaryKey(@PathVariable long id) {
         T record = service.selectRelativeByPrimaryKey(id);
         return Res.ok(record);
     }
 
     @RequestMapping("/selectPageByParams/{pageNum}/{pageSize}")
+    @ResponseBody
     public Res selectPageByParams(@PathVariable int pageNum, @PathVariable int pageSize, @RequestBody Param param) {
         QueryParams queryParams = param.toQueryParams(entityClass);
         Page<T> page = service.selectPageByParams(pageNum, pageSize, queryParams);
@@ -67,6 +66,7 @@ public class BaseController<T> {
     }
 
     @RequestMapping("/selectPageRelativeByParams/{pageNum}/{pageSize}")
+    @ResponseBody
     public Res selectPageRelativeByParams(@PathVariable int pageNum, @PathVariable int pageSize, @RequestBody Param param) {
         QueryParams queryParams = param.toQueryParams(entityClass);
         Page<T> page = service.selectPageRelativeByParams(pageNum, pageSize, queryParams);
@@ -78,6 +78,7 @@ public class BaseController<T> {
     }
 
     @RequestMapping("/selectListByParams")
+    @ResponseBody
     public Res selectListByParams(@RequestBody Param param) {
         QueryParams queryParams = param.toQueryParams(entityClass);
         List<T> list = service.selectListByParams(queryParams);
@@ -85,6 +86,7 @@ public class BaseController<T> {
     }
 
     @RequestMapping("/selectListRelativeByParams")
+    @ResponseBody
     public Res selectListRelativeByParams(@RequestBody Param param) {
         QueryParams queryParams = param.toQueryParams(entityClass);
         List<T> list = service.selectListRelativeByParams(queryParams);
@@ -92,6 +94,7 @@ public class BaseController<T> {
     }
 
     @RequestMapping("/insert")
+    @ResponseBody
     public Res insert(T record) {
         service.insert(record);
         return Res.ok(record);
@@ -103,18 +106,21 @@ public class BaseController<T> {
     }
 
     @RequestMapping("/updateSelectiveByPrimaryKey")
+    @ResponseBody
     public Res updateSelectiveByPrimaryKey(T record) {
         service.updateSelectiveByPrimaryKey(record);
         return Res.ok(record);
     }
 
     @RequestMapping("/updateByPrimaryKey")
+    @ResponseBody
     public Res updateByPrimaryKey(T record) {
         service.updateByPrimaryKey(record);
         return Res.ok(record);
     }
 
     @RequestMapping("/updateByParams")
+    @ResponseBody
     public Res updateByParams(T record, @RequestBody Param param) {
         QueryParams queryParams = param.toQueryParams(entityClass);
         int num = service.updateByParams(record, queryParams);
@@ -122,6 +128,7 @@ public class BaseController<T> {
     }
 
     @RequestMapping("/updateSelectiveByParams")
+    @ResponseBody
     public Res updateSelectiveByParams(T record, @RequestBody Param param) {
         QueryParams queryParams = param.toQueryParams(entityClass);
         int num = service.updateSelectiveByParams(record, queryParams);
@@ -129,12 +136,14 @@ public class BaseController<T> {
     }
 
     @RequestMapping("/deleteByPrimaryKey/{id}")
+    @ResponseBody
     public Res deleteByPrimaryKey(@PathVariable Long id) {
         int num = service.deleteByPrimaryKey(id);
         return Res.ok(num);
     }
 
     @RequestMapping("/deleteByParams")
+    @ResponseBody
     public Res deleteByParams(@RequestBody Param param) {
         QueryParams queryParams = param.toQueryParams(entityClass);
         int num = service.deleteByParams(queryParams);
@@ -142,6 +151,7 @@ public class BaseController<T> {
     }
 
     @RequestMapping("/save")
+    @ResponseBody
     public Res save(@RequestBody T record) {
 
         if (EntityUtil.getIdValule(record) == null) {

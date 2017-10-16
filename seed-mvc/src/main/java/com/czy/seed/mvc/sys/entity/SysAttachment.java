@@ -4,20 +4,20 @@ import com.czy.seed.mvc.base.entity.IPrepare;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
-import javax.persistence.Transient;
 import java.util.Date;
 
-@Table(name="SEED_SYS_ATTACHMENT")
+@Table(name = "SEED_SYS_ATTACHMENT")
 public class SysAttachment implements IPrepare {
+    private static final long serialVersionUID = -8162845099603516758L;
     @Id
     private Long id;
-    private Long createBy;
     private Date createDt;
-    private Long updateBy;
+    private Long createBy;
     private Date updateDt;
+    private Long updateBy;
     private Long sysOrgId;
     private Long sysDeptId;
-    private int isTemp;
+    private Integer isTemp;
     private String tableName;
     private Long tableId;
     private String savePath;
@@ -26,7 +26,46 @@ public class SysAttachment implements IPrepare {
     private String fileSuffix;
     private String businessCode;
 
-    @Transient
+    public Long getId() {
+        return id;
+    }
+
+    public void setId(Long id) {
+        this.id = id;
+    }
+
+    public Date getCreateDt() {
+        return createDt;
+    }
+
+    public void setCreateDt(Date createDt) {
+        this.createDt = createDt;
+    }
+
+    public Long getCreateBy() {
+        return createBy;
+    }
+
+    public void setCreateBy(Long createBy) {
+        this.createBy = createBy;
+    }
+
+    public Date getUpdateDt() {
+        return updateDt;
+    }
+
+    public void setUpdateDt(Date updateDt) {
+        this.updateDt = updateDt;
+    }
+
+    public Long getUpdateBy() {
+        return updateBy;
+    }
+
+    public void setUpdateBy(Long updateBy) {
+        this.updateBy = updateBy;
+    }
+
     public Long getSysOrgId() {
         return sysOrgId;
     }
@@ -43,51 +82,11 @@ public class SysAttachment implements IPrepare {
         this.sysDeptId = sysDeptId;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
-    }
-
-    public Long getCreateBy() {
-        return createBy;
-    }
-
-    public void setCreateBy(Long createBy) {
-        this.createBy = createBy;
-    }
-
-    public Date getCreateDt() {
-        return createDt;
-    }
-
-    public void setCreateDt(Date createDt) {
-        this.createDt = createDt;
-    }
-
-    public Long getUpdateBy() {
-        return updateBy;
-    }
-
-    public void setUpdateBy(Long updateBy) {
-        this.updateBy = updateBy;
-    }
-
-    public Date getUpdateDt() {
-        return updateDt;
-    }
-
-    public void setUpdateDt(Date updateDt) {
-        this.updateDt = updateDt;
-    }
-
-    public int getIsTemp() {
+    public Integer getIsTemp() {
         return isTemp;
     }
 
-    public void setIsTemp(int isTemp) {
+    public void setIsTemp(Integer isTemp) {
         this.isTemp = isTemp;
     }
 
