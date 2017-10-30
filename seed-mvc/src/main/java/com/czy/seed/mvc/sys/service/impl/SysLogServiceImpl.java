@@ -3,9 +3,7 @@ package com.czy.seed.mvc.sys.service.impl;
 import com.czy.seed.mvc.base.service.impl.BaseServiceImpl;
 import com.czy.seed.mvc.sys.entity.SysLog;
 import com.czy.seed.mvc.sys.mapper.SysLogMapper;
-import com.czy.seed.mvc.sys.model.Log;
 import com.czy.seed.mvc.sys.service.SysLogService;
-import com.czy.seed.mybatis.base.QueryParams;
 import com.github.pagehelper.ISelect;
 import com.github.pagehelper.Page;
 import com.github.pagehelper.PageHelper;
@@ -20,6 +18,7 @@ public class SysLogServiceImpl extends BaseServiceImpl<SysLog> implements SysLog
     @Autowired
     private SysLogMapper sysLogMapper;
 
+    @Override
     public Page<SysLog> selectExtendPageByParam(int pageNo, int pageLimit, final Map<String, Object> params) {
         Page<SysLog> page = PageHelper.startPage(pageNo, pageLimit).doSelectPage(new ISelect() {
             @Override
