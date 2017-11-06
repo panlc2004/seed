@@ -17,6 +17,7 @@ public class SysDictItem implements IPrepare {
     private String memo;
     private String name;
     private Long createBy;
+    private Date createDt;
     private Date updateDt;
     private Long updateBy;
 
@@ -51,6 +52,14 @@ public class SysDictItem implements IPrepare {
 
     public void setCreateBy(Long createBy) {
         this.createBy = createBy;
+    }
+
+    public Date getCreateDt() {
+        return createDt;
+    }
+
+    public void setCreateDt(Date createDt) {
+        this.createDt = createDt;
     }
 
     public Long getId() {
