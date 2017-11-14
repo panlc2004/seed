@@ -16,6 +16,13 @@
             },
             post: function (options) {
                 var defaults = {type: "POST"};
+                this.request(options, defaults);
+            },
+            get: function (options) {
+                var defaults = {type: "GET"};
+                this.request(options, defaults);
+            },
+            request: function (options, defaults) {
                 var callbackOption = {
                     beforeSend: function (XMLHttpRequest) {
                         if (options.beforeSend && typeof options.beforeSend == 'function') {
@@ -244,7 +251,7 @@
              */
             float: function (min, max, decimal) {
                 var _decimal = 2;
-                if(decimal) {
+                if (decimal) {
                     _decimal = decimal;
                 }
                 var exp = '^((([1-9]\\d{' + min + ',' + (max - 1) + '})|[0]?)(\\.\\d{1,' + _decimal + '})?)$';

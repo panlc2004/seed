@@ -44,7 +44,6 @@ var main = new Vue({
             },
             //机构树点击事件
             handleNodeClick: function (node) {
-                console.log(node);
             },
             //渲染图标
             renderContent: function (createElement, param) {
@@ -78,7 +77,6 @@ var main = new Vue({
                         this.loadTree();
                     },
                     function (failure) {
-                        console.log(this.data);
                     }
                 )
             },

@@ -7,7 +7,10 @@ import com.czy.seed.mvc.util.ILoginUserTool;
 import com.czy.seed.mvc.util.Res;
 import com.czy.seed.mybatis.base.QueryParams;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
 import java.util.List;
@@ -48,9 +51,18 @@ public class SysResourceController extends BaseController<SysResource> {
         return Res.ok(sysResource.getId().toString());
     }
 
-    @RequestMapping("/deleteByPrimary/{id}")
-    public Res deleteByPrimary(@PathVariable long id) {
-        sysResourceService.deleteByPrimaryKey(id);
+    /**
+     * @param id
+     * @return
+     */
+    @RequestMapping("deleteAllSubMenusById/{id}")
+    public Res deleteAllSubMenusById(@PathVariable Long id) {
+        QueryParams queryParams = new QueryParams(SysResource.class);
+        QueryParams.Criteria criteria = queryParams.createCriteria();
+        criteria.andEqualTo("id", id);
+        QueryParams.Criteria or = queryParams.or();
+        or.andEqualTo("parentId", id);
+        sysResourceService.deleteByParams(queryParams);
         return Res.ok();
     }
 
