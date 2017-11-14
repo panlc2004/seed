@@ -7,6 +7,7 @@ import com.czy.seed.mvc.util.ILoginUserTool;
 import com.czy.seed.mvc.util.Res;
 import com.czy.seed.mybatis.base.QueryParams;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -56,6 +57,22 @@ public class SysDeptController extends BaseController<SysDept> {
     public SysDept loadData(long id) {
         return sysDeptService.selectByPrimaryKey(id);
     }
+
+    /** 删除当前部门及期子部门
+     * @param id
+     * @return
+     */
+    @RequestMapping("deleteAllSubDeptById/{id}")
+    public Res deleteAllSubDeptById(@PathVariable Long id) {
+        QueryParams queryParams = new QueryParams(SysDept.class);
+        QueryParams.Criteria criteria = queryParams.createCriteria();
+        criteria.andEqualTo("id", id);
+        QueryParams.Criteria or = queryParams.or();
+        or.andEqualTo("parentId", id);
+        sysDeptService.deleteByParams(queryParams);
+        return Res.ok();
+    }
+
 
     @RequestMapping("/deleteOrg")
     public Res deleteOrg(long id) {

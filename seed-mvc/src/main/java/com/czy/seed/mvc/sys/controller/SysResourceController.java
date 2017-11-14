@@ -51,7 +51,7 @@ public class SysResourceController extends BaseController<SysResource> {
         return Res.ok(sysResource.getId().toString());
     }
 
-    /**
+    /** 删除当前资源及期子资源
      * @param id
      * @return
      */

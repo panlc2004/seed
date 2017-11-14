@@ -1,9 +1,10 @@
 define(['text!sys/dept/dept-index.html'], function (Template) {
     var component = {
         template: Template,
+        mixins: [czyPageBar],
         components: {
             'edit': function (resolve) {
-                require(['sys/org/org-edit'], resolve);
+                require(['sys/dept/dept-edit'], resolve);
             }
         },
         data: function () {
@@ -40,11 +41,33 @@ define(['text!sys/dept/dept-index.html'], function (Template) {
             },
             toEdit: function (entity) {
                 var edit = this.$refs.edit;
+                debugger;
                 edit.entity = $.extend({}, entity);
                 edit.open();
             },
-            del: function () {
-
+            del: function (entity) {
+                var _this = this;
+                _this.$confirm('此操作将敏同时删除所有子级数据, 是否继续?', '提示', {
+                    confirmButtonText: '确定',
+                    cancelButtonText: '取消',
+                    type: 'error'
+                }).then(function () {
+                    var url = 'sys/dept/deleteAllSubDeptById/' + entity.id
+                    seed.ajax.postJson({
+                        url: url,
+                        success: function (data, status) {
+                            debugger;
+                            if (status) {
+                                _this.$message({
+                                    type: 'success',
+                                    message: '操作成功!'
+                                });
+                                _this.search();
+                            }
+                        }
+                    });
+                }).catch(function () {
+                });
             }
         },
         created: function () {
@@ -52,8 +75,6 @@ define(['text!sys/dept/dept-index.html'], function (Template) {
             var _this = this;
             this.selectListByParentId(0, function (response) {
                 _this.deptData = response.data;
-                console.log(_this.deptData)
-
             });
         }
     };

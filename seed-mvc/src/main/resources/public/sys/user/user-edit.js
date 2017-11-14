@@ -12,7 +12,7 @@ define(['text!sys/user/user-edit.html'], function (Template) {
                     rules: {
                     sysDeptId: [
                         {required: true, message: '请选择用户部门'},
-                        {type:"number", max: 50, message: '输入长度不能超过50字符'}
+                        {max: 50, message: '输入长度不能超过50字符'}
                     ],
                     name: [
                         {required: true, message: '请输入用户姓名'},
@@ -22,7 +22,7 @@ define(['text!sys/user/user-edit.html'], function (Template) {
                         seed.validate.number(0, 60)
                     ],
                     email: [
-                        {type: "email", message: '请输入邮箱'},
+                        {type: "email", message: '邮箱格式不正确'},
                         {max: 100, message: '长度不能超过100字符'}
                     ],
                     username: [

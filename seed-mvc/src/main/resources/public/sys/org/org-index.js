@@ -39,7 +39,7 @@ define(['text!sys/org/org-index.html'], function (Template) {
                         if(status) {
                             _this.$message({
                                 type: 'success',
-                                message: '删除成功!'
+                                message: '操作成功!'
                             });
                             _this.search();
                         }

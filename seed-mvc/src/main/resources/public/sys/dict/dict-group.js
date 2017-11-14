@@ -70,6 +70,10 @@ define(['text!sys/dict/dict-group.html'], function (Template) {
                         url: url,
                         success: function (data, status) {
                             if (status) {
+                                _this.$message({
+                                    type: 'success',
+                                    message: '操作成功!'
+                                });
                                 _this.search();
                             }
                         }

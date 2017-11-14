@@ -43,6 +43,10 @@ define(['text!sys/role/role-index.html'], function (Template) {
                         url: "sys/role/deleteByPrimaryKey/" + entity.id,
                         success: function (data, status) {
                             if (status) {
+                                _this.$message({
+                                    type: 'success',
+                                    message: '操作成功!'
+                                });
                                 _this.search();
                             }
                         }

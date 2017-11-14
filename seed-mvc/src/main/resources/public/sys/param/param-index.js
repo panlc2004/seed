@@ -91,6 +91,10 @@ define(['text!sys/param/param-index.html'], function (Template) {
                         url: "sys/param/deleteByPrimaryKey/" + entity.id,
                         success: function (data, status) {
                             if (status) {
+                                _this.$message({
+                                    type: 'success',
+                                    message: '操作成功!'
+                                });
                                 _this.search();
                             }
                         }
