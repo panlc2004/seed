@@ -12,6 +12,8 @@
     <script src="lib/vue/vue-router.js"></script>
     <script src="lib/elementui/1.4.2/index.js"></script>
     <link rel="stylesheet" href="lib/elementui/1.4.2/theme-default/index.css">
+    <link rel="stylesheet" href="lib/awesome/css/font-awesome.min.css">
+
 
 </head>
 
@@ -51,7 +53,7 @@
     }
 
     .login-infp {
-        color:#f40;
+        color: #f40;
     }
 </style>
 
@@ -59,28 +61,31 @@
 
 <div class="login-box">
 
-    <el-form class="login-form" :model="ruleForm" :rules="rules" ref="ruleForm" action="j_spring_security_check" method="post">
-        <el-form-item class="login-infp">
-            <!--<div th:if="${param.logout}">
-                <i class="el-icon-circle-check"/>您已注销成功
-            </div>
-            <div th:if="${param.error}">
-                <i class="el-icon-circle-check"/>用户名或密码错
-            </div>-->
-        </el-form-item>
+    <el-form class="login-form" :model="ruleForm" :rules="rules" ref="ruleForm" action="j_spring_security_check"
+             method="post">
         <el-form-item prop="username">
             <el-input placeholder="请输入账号" v-model="ruleForm.username" name="username">
-                <template slot="prepend"><i class="el-icon-edit"></i></template>
+                <template slot="prepend"><i class="fa fa-user-o" style="width: 12px"></i></template>
             </el-input>
         </el-form-item>
         <el-form-item prop="password">
             <el-input placeholder="请输入密码" type="password" v-model="ruleForm.password" name="password">
-                <template slot="prepend"><i class="el-icon-edit"></i></template>
+                <template slot="prepend"><i class="fa fa-key" style="width: 12px"></i></template>
             </el-input>
         </el-form-item>
+        <!--<el-form-item prop="password">-->
+            <!--<el-col :span="14">-->
+                <!--<el-input placeholder="请输入验证码" v-model="ruleForm.verifyCode" name="verifyCode">-->
+                    <!--<template slot="prepend"><i class="fa fa-keyboard-o" style="width: 12px"></i></template>-->
+                <!--</el-input>-->
+            <!--</el-col>-->
+            <!--<el-col :span="8">-->
+                <!--<img src="auth/captcha?t=1">-->
+            <!--</el-col>-->
+        <!--</el-form-item>-->
         <el-form-item>
             <div class="login-input">
-                <el-button class="login-btn" type="primary" native-type="submit" >
+                <el-button class="login-btn" type="primary" native-type="submit">
                     登&nbsp;&nbsp;录
                 </el-button>
             </div>
@@ -96,8 +101,9 @@
         data: function () {
             return {
                 ruleForm: {
-                    username: 'suadmin',
-                    password: '000000'
+                    username: '',
+                    password: '',
+                    verifyCode: ''
                 },
                 rules: {
                     username: [

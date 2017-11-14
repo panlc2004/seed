@@ -28,13 +28,11 @@ public class SeedSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private SysUserDetailsService sysUserDetailsService;
 
-//    private final String LOGIN_URL = "/auth/";
-
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
                 .authorizeRequests()
-                .antMatchers("/j_spring_security_check").permitAll()
+                .antMatchers("/j_spring_security_check","/captcha").permitAll()
                 .anyRequest().authenticated() //任何请求,登录后可以访问
 
                 //登录配置
@@ -57,6 +55,16 @@ public class SeedSecurityConfig extends WebSecurityConfigurerAdapter {
                 //允许页面加载在iframe中
                 .headers().frameOptions().disable();
 
+        //验证码过滤器
+//        http.addFilterBefore(seedVerificationCodeFilter(), UsernamePasswordAuthenticationFilter.class);
+
+    }
+
+    @Bean
+    public SeedVerificationCodeFilter seedVerificationCodeFilter() throws Exception {
+        SeedVerificationCodeFilter seedVerificationCodeFilter = new SeedVerificationCodeFilter();
+        seedVerificationCodeFilter.setAuthenticationManager(authenticationManager());
+        return seedVerificationCodeFilter;
     }
 
     @Override
