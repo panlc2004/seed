@@ -10,8 +10,7 @@ define(['text!sys/dept/dept-index.html'], function (Template) {
         data: function () {
             return {
                 url: 'sys/dept/selectPageByParams',
-                deptData: [],
-                queryParam: seed.queryParam.create()
+                queryParam: seed.queryParam.create(),
             }
         },
         methods: {
@@ -34,14 +33,18 @@ define(['text!sys/dept/dept-index.html'], function (Template) {
                     }
                 })
             },
-            toAdd: function () {
+            toAdd: function (entity) {
+                var addParam = {};
+                if(entity != null) {
+                    addParam.depth = parseInt(entity.depth) + 1;
+                    addParam.parentId = entity.id;
+                }
                 var edit = this.$refs.edit;
-                edit.entity = {};
+                edit.entity = addParam;
                 edit.open();
             },
             toEdit: function (entity) {
                 var edit = this.$refs.edit;
-                debugger;
                 edit.entity = $.extend({}, entity);
                 edit.open();
             },
@@ -52,11 +55,8 @@ define(['text!sys/dept/dept-index.html'], function (Template) {
                     cancelButtonText: '取消',
                     type: 'error'
                 }).then(function () {
-                    var url = 'sys/dept/deleteAllSubDeptById/' + entity.id
-                    seed.ajax.postJson({
-                        url: url,
-                        success: function (data, status) {
-                            debugger;
+                    var url = 'sys/dept/deleteAllSubDeptById/' + entity.id;
+                    $.get(url, function (data, status) {
                             if (status) {
                                 _this.$message({
                                     type: 'success',
@@ -65,7 +65,7 @@ define(['text!sys/dept/dept-index.html'], function (Template) {
                                 _this.search();
                             }
                         }
-                    });
+                    );
                 }).catch(function () {
                 });
             }
@@ -74,7 +74,7 @@ define(['text!sys/dept/dept-index.html'], function (Template) {
             //查找一级部门
             var _this = this;
             this.selectListByParentId(0, function (response) {
-                _this.deptData = response.data;
+                _this.pageData = response.data;
             });
         }
     };

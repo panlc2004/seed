@@ -30,20 +30,21 @@ var czyPageBar = {
         loadData: function () {
             var _this = this;
             _this.loading = true;
-            console.log(_this.url)
             $.ajax({
                 type: "POST",
                 contentType: "application/json;charset=utf-8",
                 url: _this.url + "/" + _this.currentPage + "/" + _this.pageSize,
                 data: JSON.stringify(_this.param),
                 success: function (response) {
-                    console.log(response);
                     _this.pageData = response.data.page;
                     _this.total = Number(response.data.total);
                 },
                 error: function (response) {
-                    seed.msg.error("未知异常，请联系管理员");
                     _this.loading = false;
+                    _this.$message({
+                        type: 'error',
+                        message: '未知异常，请联系管理员!'
+                    });
                 }
             });
         },
