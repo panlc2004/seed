@@ -85,7 +85,7 @@ public class MySqlTest {
     public void testSelectListByParams() {
         QueryParams queryParams = new QueryParams(TestEntity.class);
         queryParams.orderBy("id").asc().orderBy("name").desc();
-        queryParams.selectProperties("name");
+        queryParams.selectProperties("name","id");
         QueryParams.Criteria criteria = queryParams.createCriteria();
         QueryParams.Criteria or = queryParams.or();
         criteria.andEqualTo("name", "123");
