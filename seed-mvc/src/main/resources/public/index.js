@@ -136,15 +136,27 @@ seedMainPanel = new Vue({
     computed: {
         logo: function () {
             if(this.collapse) {
-                return 'logo';
+                return appName_simple;
             } else {
-                return 'logo-long'
+                return appName_full;
             }
         }
     },
     methods: {
-        show: function () {
-            alert(1)
+        //退出登录
+        logout: function () {
+            var _this = this;
+            this.$confirm('确认退出吗?', '提示', {
+                type: 'warning'
+            }).then(
+                function () {
+                    // sessionStorage.removeItem('user');
+                    $.get("logout", function (data,status) {
+                        if(status) {
+                            window.location.href = "login";
+                        }
+                    });
+                });
         },
         getMenu: function () {
             $.get("sys/resource/findResourceTreeForLoginUser?_" + $.now(), function (o) {
