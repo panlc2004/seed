@@ -1,5 +1,6 @@
 package com.czy.seed.mvc.auth;
 
+import com.czy.seed.mvc.conf.SeedConfigProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
@@ -16,6 +17,10 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.AuthenticationEntryPoint;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
+
 
 @Configuration
 @EnableConfigurationProperties
@@ -28,11 +33,23 @@ public class SeedSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private SysUserDetailsService sysUserDetailsService;
 
+    @Autowired
+    private SeedConfigProperties seedConfigProperties;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
+        String[] urlPermit = seedConfigProperties.getUrlPermit();
+        List<String> permitUrlList = new LinkedList<>();
+        permitUrlList.add("/j_spring_security_check");
+        permitUrlList.add("/captcha");
+        if (urlPermit != null && urlPermit.length > 0) {
+            permitUrlList.addAll(Arrays.asList(urlPermit));
+        }
+        String[] permits = new String[permitUrlList.size()];
+        permitUrlList.toArray(permits);
         http
                 .authorizeRequests()
-                .antMatchers("/j_spring_security_check","/captcha").permitAll()
+                .antMatchers(permits).permitAll()
                 .anyRequest().authenticated() //任何请求,登录后可以访问
 
                 //登录配置
