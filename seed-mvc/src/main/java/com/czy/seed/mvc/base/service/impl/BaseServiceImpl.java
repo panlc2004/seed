@@ -147,11 +147,13 @@ public class BaseServiceImpl<T> implements BaseService<T> {
     }
 
     private void beforeUpdate(T record) {
-        SecurityUser loginUser = loginUserTool.getLoginUser();
-        if (loginUser != null) {
-            EntityUtil.setPreparedValue(record, UPDATE_BY, loginUser.getId());
+        if (record instanceof IPrepare) {
+            SecurityUser loginUser = loginUserTool.getLoginUser();
+            if (loginUser != null) {
+                EntityUtil.setPreparedValue(record, UPDATE_BY, loginUser.getId());
+            }
+            EntityUtil.setPreparedValue(record, UPDATE_DT, new Date());
         }
-        EntityUtil.setPreparedValue(record, UPDATE_DT, new Date());
     }
 
     public int deleteByPrimaryKey(long id) {
