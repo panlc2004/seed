@@ -10,11 +10,60 @@ Target Server Type    : MYSQL
 Target Server Version : 50155
 File Encoding         : 65001
 
-Date: 2017-11-14 16:47:58
+Date: 2017-12-04 19:03:59
 */
 
 SET FOREIGN_KEY_CHECKS=0;
 
+-- ----------------------------
+-- Table structure for `seed_sys_attachment`
+-- ----------------------------
+DROP TABLE IF EXISTS `seed_sys_attachment`;
+CREATE TABLE `seed_sys_attachment` (
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `CREATE_BY` bigint(20) NOT NULL,
+  `CREATE_DT` datetime NOT NULL,
+  `UPDATE_BY` bigint(20) DEFAULT NULL,
+  `UPDATE_DT` datetime DEFAULT NULL,
+  `SYS_ORG_ID` bigint(20) NOT NULL COMMENT '组织机构ID',
+  `SYS_DEPT_ID` bigint(20) NOT NULL COMMENT '部门id',
+  `IS_TEMP` tinyint(4) NOT NULL DEFAULT '1' COMMENT '附件是否为临时附件：1.临时附件;2.正式附件',
+  `TABLE_NAME` varchar(100) DEFAULT NULL COMMENT '附件业务数据表名称',
+  `TABLE_ID` bigint(20) DEFAULT NULL COMMENT '附件业务数据id',
+  `SAVE_PATH` varchar(300) NOT NULL COMMENT '附件保存路径',
+  `SAVE_NAME` varchar(300) NOT NULL COMMENT '附件保存名称',
+  `SHOW_NAME` varchar(300) NOT NULL COMMENT '附件展示名称',
+  `FILE_SUFFIX` varchar(50) NOT NULL COMMENT '附件后缀',
+  `BUSINESS_CODE` varchar(50) NOT NULL DEFAULT 'DEFAULT' COMMENT '附件业务类型',
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of seed_sys_attachment
+-- ----------------------------
+
+-- ----------------------------
+-- Table structure for `seed_sys_data_rule`
+-- ----------------------------
+DROP TABLE IF EXISTS `seed_sys_data_rule`;
+CREATE TABLE `seed_sys_data_rule` (
+  `ID` bigint(20) NOT NULL AUTO_INCREMENT,
+  `CREATE_BY` bigint(20) NOT NULL,
+  `CREATE_DT` datetime NOT NULL,
+  `UPDATE_BY` bigint(20) DEFAULT NULL,
+  `UPDATE_DT` datetime DEFAULT NULL,
+  `RULE_NAME` varchar(300) NOT NULL COMMENT '规则名称',
+  `RULE_OWNER_TYPE` tinyint(4) NOT NULL COMMENT '规则类型：1.针对个人的数据访问规则。2.针对部门的数据访问规则。3.针对组织的数据访问规则。4.针对角色的数据访问规则',
+  `RULE_OWNER` varchar(300) NOT NULL COMMENT '规则适用对象（为用户/组织/部门的id或角色编码）,多个对象间用","分隔',
+  `RULE_CONTENT_TYPE` tinyint(4) DEFAULT NULL COMMENT '规则类型：1.针对个人的数据访问规则。2.针对部门的数据访问规则。3.针对组织的数据访问规则。4.针对角色的数据访问规则',
+  `RULE_CONTENT` varchar(300) NOT NULL COMMENT '规则内容:值可能为用户/组织/部门的id,多个对象间用","分隔',
+  `DESCRIPTION` varchar(1000) NOT NULL COMMENT '规则描述',
+  PRIMARY KEY (`ID`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+-- ----------------------------
+-- Records of seed_sys_data_rule
+-- ----------------------------
 
 -- ----------------------------
 -- Table structure for `seed_sys_dept`
@@ -33,7 +82,7 @@ CREATE TABLE `seed_sys_dept` (
   `NAME` varchar(60) NOT NULL,
   `MEMO` varchar(1000) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=19 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of seed_sys_dept
@@ -60,12 +109,14 @@ CREATE TABLE `seed_sys_dict` (
   `PARENT_ID` bigint(20) NOT NULL DEFAULT '0' COMMENT '父级字典项ID,0表示没有父级字典项',
   `DEPTH` int(11) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of seed_sys_dict
 -- ----------------------------
 INSERT INTO `seed_sys_dict` VALUES ('4', '1', '2017-06-13 16:02:29', '1', '2017-06-14 13:32:05', '9', '0', '1', 'sex', '性别', '354365', '0', null);
+INSERT INTO `seed_sys_dict` VALUES ('5', '1', '2017-12-04 15:16:43', null, null, '1', '1', '1', '1234', '123', '41234', '0', '0');
+INSERT INTO `seed_sys_dict` VALUES ('7', '1', '2017-12-04 15:23:23', null, null, '1', '1', '1', '134', '234', '234', '5', '1');
 
 -- ----------------------------
 -- Table structure for `seed_sys_dict_item`
@@ -81,19 +132,19 @@ CREATE TABLE `seed_sys_dict_item` (
   `SYS_DICT_ID` bigint(20) NOT NULL,
   `LOGIC_DEL` int(11) NOT NULL DEFAULT '1' COMMENT '逻辑删除状态：1：未删除；2：删除',
   `PARENT_ID` bigint(20) NOT NULL DEFAULT '0' COMMENT '父级数据值项ID，默认值为0，表示无父级数据',
-  `ITEM_CODE` varchar(100) NOT NULL,
-  `VALUE` varchar(300) NOT NULL,
-  `MEMO` varchar(2000) DEFAULT NULL,
-  `NAME` varchar(500) NOT NULL,
+  `VALUE` varchar(300) NOT NULL COMMENT '字典项值',
+  `NAME` varchar(100) NOT NULL COMMENT '字典项名称',
+  `MEMO` varchar(2000) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=14 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of seed_sys_dict_item
 -- ----------------------------
-INSERT INTO `seed_sys_dict_item` VALUES ('3', '1', '2017-06-13 18:53:41', '1', '2017-06-14 13:34:25', '2', '0', '1', '0', '1234', '1324', '1341', '');
-INSERT INTO `seed_sys_dict_item` VALUES ('10', '1', '2017-06-13 19:08:01', '1', '2017-06-14 13:32:16', '3', '0', '1', '0', '1341', '123412341234', '23412341234', '');
-INSERT INTO `seed_sys_dict_item` VALUES ('13', '1', '2017-06-14 13:34:34', null, null, '1', '0', '1', '0', '1234', '1234', '1234', '');
+INSERT INTO `seed_sys_dict_item` VALUES ('3', '1', '2017-06-13 18:53:41', '1', '2017-06-14 13:34:25', '2', '0', '1', '0', '1324', '', '1341');
+INSERT INTO `seed_sys_dict_item` VALUES ('10', '1', '2017-06-13 19:08:01', '1', '2017-06-14 13:32:16', '3', '0', '1', '0', '123412341234', '', '23412341234');
+INSERT INTO `seed_sys_dict_item` VALUES ('13', '1', '2017-06-14 13:34:34', null, null, '1', '0', '1', '0', '1234', '', '1234');
+INSERT INTO `seed_sys_dict_item` VALUES ('14', '1', '2017-12-04 15:04:45', '1', '2017-12-04 15:16:21', '1', '4', '1', '0', '12341', '1234', '123');
 
 -- ----------------------------
 -- Table structure for `seed_sys_log`
@@ -153,7 +204,7 @@ CREATE TABLE `seed_sys_org` (
   `ORG_NAME` varchar(200) NOT NULL,
   `MEMO` varchar(2000) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of seed_sys_org
@@ -172,7 +223,7 @@ CREATE TABLE `seed_sys_param` (
   `ACTIVE` tinyint(4) NOT NULL DEFAULT '1' COMMENT '是否激活：1：激活；0：不激活',
   `MEMO` varchar(2000) DEFAULT NULL COMMENT '备注',
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=29 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of seed_sys_param
@@ -199,7 +250,7 @@ CREATE TABLE `seed_sys_resource` (
   `DEPTH` int(11) DEFAULT NULL,
   `ICON` varchar(50) DEFAULT NULL COMMENT '菜单图标',
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=35 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of seed_sys_resource
@@ -212,6 +263,7 @@ INSERT INTO `seed_sys_resource` VALUES ('6', '0', '1', '1', '2017-09-11 21:41:12
 INSERT INTO `seed_sys_resource` VALUES ('7', '0', '1', '0', '2017-09-10 16:29:13', null, null, '1', 'sys_role', '角色管理', 'sys/role/role-index.html', '999', null, null);
 INSERT INTO `seed_sys_resource` VALUES ('8', '0', '1', '0', '2017-09-10 16:29:17', null, null, '1', 'sys_dict', '数据字典', 'sys/dict/dict-index.html', '999', null, null);
 INSERT INTO `seed_sys_resource` VALUES ('9', '0', '1', '0', '2017-09-10 16:29:21', null, null, '1', 'sys_attachment', '组织部门管理', 'sys/dept/dept-index.html', '999', null, null);
+INSERT INTO `seed_sys_resource` VALUES ('10', '1', '6', '1', '2017-11-20 12:02:22', null, null, '3', 'addTest', '新增', 'a', '999', '1', null);
 
 -- ----------------------------
 -- Table structure for `seed_sys_role`
@@ -229,7 +281,7 @@ CREATE TABLE `seed_sys_role` (
   `NAME` varchar(100) NOT NULL COMMENT '角色名称',
   `MEMO` varchar(2000) DEFAULT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of seed_sys_role
@@ -282,12 +334,12 @@ CREATE TABLE `seed_sys_user` (
   `ACCOUNT_EXPIRED_TIME` datetime DEFAULT NULL COMMENT '账号过期时间',
   `ENABLED` tinyint(1) DEFAULT NULL COMMENT '账号是否可用',
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of seed_sys_user
 -- ----------------------------
-INSERT INTO `seed_sys_user` VALUES ('1', '1', '2017-09-11 23:07:33', '1', '2017-09-12 22:49:40', '1', '1', '超级管理员', 'seedadmin', '$2a$10$6FsiWKQJ7TUmZD9o9tHxve3QqDOvY87FdHVIg49VbtCeIJbbHcR5i', '1', '', 'admin@seed.com', '0', null, null, '0');
+INSERT INTO `seed_sys_user` VALUES ('1', '1', '2017-09-11 23:07:33', '1', '2017-09-12 22:49:40', '1', '1', '超级管理员', 'seedadmin', '$2a$10$6FsiWKQJ7TUmZD9o9tHxve3QqDOvY87FdHVIg49VbtCeIJbbHcR5i', '1', null, 'admin@seed.com', '0', null, null, '0');
 
 -- ----------------------------
 -- Table structure for `seed_sys_user_role`
@@ -297,30 +349,13 @@ CREATE TABLE `seed_sys_user_role` (
   `ID` bigint(20) NOT NULL AUTO_INCREMENT,
   `CREATE_BY` bigint(20) NOT NULL,
   `CREATE_DT` datetime NOT NULL,
-  `UPDATE_BY` bigint(20) DEFAULT NULL,
-  `UPDATE_DT` datetime DEFAULT NULL,
   `SYS_ORG_ID` bigint(20) NOT NULL COMMENT '组织机构id',
-  `SYS_DEPT_ID` bigint(20) NOT NULL COMMENT '部门id',
   `SYS_USER_ID` bigint(20) NOT NULL COMMENT '用户id',
   `SYS_ROLE_ID` bigint(20) NOT NULL COMMENT '角色id',
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=30 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=38 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of seed_sys_user_role
 -- ----------------------------
-INSERT INTO `seed_sys_user_role` VALUES ('6', '0', '2017-09-17 21:11:41', null, null, '0', '0', '22', '2');
-INSERT INTO `seed_sys_user_role` VALUES ('7', '0', '2017-09-17 21:11:44', null, null, '0', '0', '10', '1');
-INSERT INTO `seed_sys_user_role` VALUES ('8', '0', '2017-09-17 21:11:41', null, null, '0', '0', '10', '3');
-INSERT INTO `seed_sys_user_role` VALUES ('15', '0', '2017-09-17 21:11:41', null, null, '0', '0', '13', '1');
-INSERT INTO `seed_sys_user_role` VALUES ('16', '0', '2017-09-17 21:11:41', null, null, '0', '0', '13', '2');
-INSERT INTO `seed_sys_user_role` VALUES ('17', '0', '2017-09-17 21:11:41', null, null, '0', '0', '2', '1');
-INSERT INTO `seed_sys_user_role` VALUES ('18', '0', '2017-09-17 21:11:41', null, null, '0', '0', '2', '2');
-INSERT INTO `seed_sys_user_role` VALUES ('19', '0', '2017-09-17 21:11:41', null, null, '0', '0', '21', '1');
-INSERT INTO `seed_sys_user_role` VALUES ('20', '0', '2017-09-17 21:11:41', null, null, '0', '0', '21', '2');
-INSERT INTO `seed_sys_user_role` VALUES ('21', '0', '2017-09-17 21:11:41', null, null, '0', '0', '24', '4');
-INSERT INTO `seed_sys_user_role` VALUES ('22', '0', '2017-09-17 21:11:41', null, null, '0', '0', '24', '8');
-INSERT INTO `seed_sys_user_role` VALUES ('23', '0', '2017-09-17 21:11:41', null, null, '0', '0', '24', '9');
-INSERT INTO `seed_sys_user_role` VALUES ('24', '0', '2017-09-17 21:11:41', null, null, '0', '0', '23', '3');
-INSERT INTO `seed_sys_user_role` VALUES ('25', '0', '2017-09-17 21:11:41', null, null, '0', '0', '23', '4');
-INSERT INTO `seed_sys_user_role` VALUES ('29', '0', '2017-09-17 21:11:41', null, null, '0', '0', '1', '1');
+INSERT INTO `seed_sys_user_role` VALUES ('37', '1', '2017-12-04 14:34:42', '1', '1', '1');
