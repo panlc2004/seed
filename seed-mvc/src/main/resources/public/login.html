@@ -18,10 +18,18 @@
 </head>
 
 <style type="text/css">
+
+    body {
+        background: url("image/login_background.jpg") no-repeat;
+        background-size: cover;
+        max-height: 100%;
+        max-width: 100%;
+    }
+
     .login-box {
         width: 295px;
-        height: 300px;
-        padding: 13px 14px 15px;
+        height: 250px;
+        padding: 43px 14px 15px;
         top: 25%;
         left: 55%;
         right: 30%;
@@ -58,10 +66,8 @@
 </style>
 
 <body>
-
 <div class="login-box">
-
-    <el-form class="login-form" :model="ruleForm" :rules="rules" ref="ruleForm" action="j_spring_security_check"
+    <el-form class="login-form" :model="ruleForm" :rules="rules" ref="ruleForm" action="signIn"
              method="post">
         <el-form-item prop="username">
             <el-input placeholder="请输入账号" v-model="ruleForm.username" name="username">
@@ -74,18 +80,18 @@
             </el-input>
         </el-form-item>
         <!--<el-form-item prop="password">-->
-            <!--<el-col :span="14">-->
-                <!--<el-input placeholder="请输入验证码" v-model="ruleForm.verifyCode" name="verifyCode">-->
-                    <!--<template slot="prepend"><i class="fa fa-keyboard-o" style="width: 12px"></i></template>-->
-                <!--</el-input>-->
-            <!--</el-col>-->
-            <!--<el-col :span="8">-->
-                <!--<img src="auth/captcha?t=1">-->
-            <!--</el-col>-->
+        <!--<el-col :span="14">-->
+        <!--<el-input placeholder="请输入验证码" v-model="ruleForm.verifyCode" name="verifyCode">-->
+        <!--<template slot="prepend"><i class="fa fa-keyboard-o" style="width: 12px"></i></template>-->
+        <!--</el-input>-->
+        <!--</el-col>-->
+        <!--<el-col :span="8">-->
+        <!--<img src="auth/captcha?t=1">-->
+        <!--</el-col>-->
         <!--</el-form-item>-->
         <el-form-item>
             <div class="login-input">
-                <el-button class="login-btn" type="primary" native-type="submit">
+                <el-button class="login-btn" type="primary" @click="login">
                     登&nbsp;&nbsp;录
                 </el-button>
             </div>
@@ -96,7 +102,7 @@
 </body>
 
 <script type="text/javascript">
-    new Vue({
+    var login = new Vue({
         el: '.login-box',
         data: function () {
             return {
@@ -116,6 +122,24 @@
                     ]
                 }
             };
+        },
+        methods: {
+            login: function () {
+                var _this = this;
+                $.post('signIn', {username: _this.ruleForm.username, password: _this.ruleForm.password},function (response) {
+                    if(response.code == 200) {
+                        var indexUrl;
+                        debugger
+                        var loginUrl = window.location.href;
+                        if(loginUrl.indexOf("login.html") > 0) {
+                            indexUrl = loginUrl.replace("login.html","#/")
+                        } else {
+                            indexUrl = loginUrl.replace("login_page","#/")
+                        }
+                        window.location.href = indexUrl;
+                    }
+                })
+            }
         }
     });
 </script>

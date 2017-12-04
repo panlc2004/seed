@@ -153,7 +153,7 @@ seedMainPanel = new Vue({
                     // sessionStorage.removeItem('user');
                     $.get("logout", function (data,status) {
                         if(status) {
-                            window.location.href = "login";
+                            window.location.href = "login_page";
                         }
                     });
                 });

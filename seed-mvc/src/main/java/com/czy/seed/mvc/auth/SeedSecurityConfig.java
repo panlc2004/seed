@@ -1,5 +1,6 @@
 package com.czy.seed.mvc.auth;
 
+import com.czy.seed.mvc.auth.constant.AuthConstants;
 import com.czy.seed.mvc.conf.SeedConfigProperties;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnClass;
@@ -30,6 +31,10 @@ import java.util.List;
 @EnableWebSecurity
 public class SeedSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    /**
+     * 登陆地址
+     */
+
     @Autowired
     private SysUserDetailsService sysUserDetailsService;
 
@@ -40,8 +45,10 @@ public class SeedSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         String[] urlPermit = seedConfigProperties.getUrlPermit();
         List<String> permitUrlList = new LinkedList<>();
-        permitUrlList.add("/j_spring_security_check");
+        permitUrlList.add(AuthConstants.LOGIN_PROCESSING_URL);
         permitUrlList.add("/captcha");
+        permitUrlList.add("/" + AuthConstants.LOGIN_PAGE_HTML);
+        permitUrlList.add("/" + AuthConstants.LOGIN_AJAX_URL);
         if (urlPermit != null && urlPermit.length > 0) {
             permitUrlList.addAll(Arrays.asList(urlPermit));
         }
@@ -53,7 +60,10 @@ public class SeedSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest().authenticated() //任何请求,登录后可以访问
 
                 //登录配置
-                .and().formLogin().loginPage("/login.html").loginProcessingUrl("/j_spring_security_check").permitAll()
+                .and().formLogin()
+                .loginPage(AuthConstants.LOGIN_PAGE_URL)
+//                .loginProcessingUrl(AuthConstants.LOGIN_PROCESSING_URL)
+                .permitAll()
                 .successHandler(loginSuccessHandler())    ////登录成功后可使用loginSuccessHandler()存储用户信息
 //                .failureHandler()
 
@@ -91,7 +101,7 @@ public class SeedSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("**/js/**", "**/css/**", "/lib/**", "/common/**",
+        web.ignoring().antMatchers("**/js/**", "**/css/**", "/lib/**", "/common/**", "/image/**",
                 "/title.js");
     }
 
