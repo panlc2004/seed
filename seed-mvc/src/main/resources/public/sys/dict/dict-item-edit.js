@@ -11,16 +11,16 @@ define(['text!sys/dict/dict-item-edit.html'], function (Template) {
                     sysDictId: ''
                 },     //保存表单提交数据
                 rules: {
-                    itemCode: [
-                        {required: true, message: '请选择编码'},
-                        seed.validate.englishNumberUnderLine(1, 300),
-                    ],
                     value: [
-                        {required: true, message: '请输入值'},
-                        {max: 60, message: '输入长度不能超过150字符'}
+                        {required: true, message: '请输入字典项值'},
+                        seed.validate.englishNumberUnderLine(1, 300)
+                    ],
+                    name: [
+                        {required: true, message: '请输入字典项名称'},
+                        {max: 50, message: '输入长度不能超过50字符'}
                     ],
                     memo: [
-                        {max: 60, message: '输入长度不能超过150字符'}
+                        {max: 1000, message: '输入长度不能超过1000字符'}
                     ]
                 }
             };
@@ -48,7 +48,7 @@ define(['text!sys/dict/dict-item-edit.html'], function (Template) {
                     if (valid) {
                         _this.disabled = true;
                         seed.ajax.postJson({
-                            url: 'sys/dictItem/insertItem',
+                            url: 'sys/dictItem/save',
                             data: _this.entity,
                             success: function (data, status) {
                                 _this.disabled = false;

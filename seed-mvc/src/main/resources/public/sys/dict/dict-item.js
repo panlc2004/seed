@@ -27,14 +27,13 @@ define(['text!sys/dict/dict-item.html'], function (Template) {
             },
 
             toAdd: function () {
-                var _this = this;
                 var edit = this.$refs.edit;
-                edit.open(_this.dictId);
+                edit.open(this.dictId);
             },
             toEdit: function (entity) {
                 var edit = this.$refs.edit;
                 edit.entity = $.extend({}, entity);
-                edit.open();
+                edit.open(this.dictId);
             },
 
             del: function (entity) {

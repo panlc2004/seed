@@ -2,11 +2,11 @@
            size="tiny">
     <el-form label-position="right" label-width="80px" :model="entity" :rules="rules" ref="editForm">
         </el-form-item>
-        <el-form-item label="编码" prop="itemCode">
-            <el-input v-model="entity.itemCode" size="small"></el-input>
-        </el-form-item>
-        <el-form-item label="值" prop="value">
+        <el-form-item label="字典项值" prop="value">
             <el-input v-model="entity.value" size="small"></el-input>
+        </el-form-item>
+        <el-form-item label="字典项名称" prop="name">
+            <el-input v-model="entity.name" size="small"></el-input>
         </el-form-item>
         <el-form-item label="备注" prop="memo">
             <el-input type="textarea" :rows="5" v-model="entity.memo" size="small"></el-input>

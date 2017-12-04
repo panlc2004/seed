@@ -12,7 +12,6 @@ public class SysDictItem implements IPrepare {
     private Long id;
     private Long parentId;
     private Long sysDictId;
-    private String itemCode;
     private String value;
     private String memo;
     private String name;
@@ -44,7 +43,6 @@ public class SysDictItem implements IPrepare {
     public void setUpdateBy(Long updateBy) {
         this.updateBy = updateBy;
     }
-
 
     public Long getCreateBy() {
         return createBy;
@@ -84,14 +82,6 @@ public class SysDictItem implements IPrepare {
 
     public void setParentId(Long parentId) {
         this.parentId = parentId;
-    }
-
-    public String getItemCode() {
-        return itemCode;
-    }
-
-    public void setItemCode(String itemCode) {
-        this.itemCode = itemCode;
     }
 
     public String getValue() {

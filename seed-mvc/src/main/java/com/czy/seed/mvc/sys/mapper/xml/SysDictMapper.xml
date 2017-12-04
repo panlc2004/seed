@@ -17,7 +17,7 @@
                 and T.PARENT_ID = #{parentId}
             </if>
             <if test="code != null">
-                and  T.CODE = #{code}
+                and  T.CODE like '%${code}%'
             </if>
         </where>
     </select>

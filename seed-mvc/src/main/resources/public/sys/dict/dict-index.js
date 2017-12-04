@@ -11,6 +11,7 @@ define(['text!sys/dict/dict-index.html'], function (Template) {
         },
         methods: {
             searchItem: function (groupRow) {
+                debugger
                 var item = this.$refs.item;
                 item.cacheDictId(groupRow.id)
                 item.search();
