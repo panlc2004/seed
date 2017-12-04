@@ -27,6 +27,7 @@
         <module>seed-mybatis</module>
         <module>seed-dependencies</module>
         <module>demo</module>
+
     </modules>
 
 </project>
