@@ -102,6 +102,18 @@
 </body>
 
 <script type="text/javascript">
+
+    String.prototype.startWith=function(str){
+        var reg=new RegExp("^"+str);
+        return reg.test(this);
+    }
+
+    String.prototype.endWith=function(str){
+        var reg=new RegExp(str+"$");
+        return reg.test(this);
+    }
+
+
     var login = new Vue({
         el: '.login-box',
         data: function () {
@@ -131,10 +143,16 @@
                         var indexUrl;
                         debugger
                         var loginUrl = window.location.href;
-                        if(loginUrl.indexOf("login.html") > 0) {
+                        while (loginUrl.endWith("#")) {
+                            loginUrl = loginUrl.substring(0, length(loginUrl));
+                        }
+
+                        if(loginUrl.endWith("login.html") && loginUrl.indexOf("login.html") > 0) {
                             indexUrl = loginUrl.replace("login.html","#/")
-                        } else {
+                        } else if(loginUrl.endWith("login_page")){
                             indexUrl = loginUrl.replace("login_page","#/")
+                        } else {
+                            indexUrl = loginUrl.replace("login.html","")
                         }
                         window.location.href = indexUrl;
                     }
