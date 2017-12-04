@@ -39,6 +39,6 @@
     <el-pagination layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="sizeChange"
                    @current-change="turnPage" :page-size="pageSize" :current-page="currentPage"></el-pagination>
 
-    <edit @save-success="search" ref="edit"></edit>
-    <role @save-success="search" ref="role"></role>
+    <edit @save-success="search" ref="edit" ></edit>
+    <role @role-save="search" ref="role"></role>
 </div>

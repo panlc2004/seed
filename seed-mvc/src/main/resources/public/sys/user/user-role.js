@@ -1,4 +1,4 @@
- define(['text!sys/user/user-role.html', 'css!sys/user/user-role.css'], function (Template) {
+define(['text!sys/user/user-role.html', 'css!sys/user/user-role.css'], function (Template) {
     var component = {
         template: Template,
         data: function () {
@@ -25,13 +25,12 @@
                     roleIds: _this.userRoles
                 };
                 $.ajax({
-                    type: "POST",
-                    contentType: "application/json;charset=utf-8",
-                    dataType: "json",
+                    type: 'post',
                     url: 'sys/userRole/saveUserRole',
-                    data: JSON.stringify(param),
+                    data: param,
                     success: function (response) {
-
+                        _this.close();
+                        _this.$emit('role-save')
                     }
                 })
             },
@@ -47,9 +46,11 @@
                 seed.ajax.post({
                     url: 'sys/user/selectRoleInfo/' + _this.userId,
                     success: function (response) {
+                        //渲染所有角色
                         _this.allRoles = response.data.allRoles;
+                        //渲染已有角色
                         response.data.userRoles.forEach(function (item) {
-                            _this.userRoles.push(item.id);
+                            _this.userRoles.push(item.sysRoleId);
                         })
                     }
                 })

@@ -6,8 +6,8 @@ import com.czy.seed.mvc.util.Res;
 import com.czy.seed.mybatis.base.QueryParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
@@ -37,8 +37,8 @@ public class SysUserRoleController {
     }
 
     @RequestMapping("/saveUserRole")
-    public Res saveUserRole(@RequestBody List<SysUserRole> userRoleList) {
-        sysAccountRoleService.saveUserRole(userRoleList);
+    public Res saveUserRole(@RequestParam long userId, @RequestParam(value = "roleIds[]", required = false) List<Long> roleIds) {
+        sysAccountRoleService.saveUserRole(userId, roleIds);
         return Res.ok();
     }
 

@@ -52,7 +52,7 @@ public class SysUserController extends BaseController<SysUser> {
         List<SysRole> allRoles = sysRoleService.selectListByParams(allroleQueryParams);
         //查询已有角色
         QueryParams userRoleQueryParams = new QueryParams(SysUserRole.class);
-        userRoleQueryParams.selectProperties("id", "name");
+        userRoleQueryParams.selectProperties("sysRoleId");
         QueryParams.Criteria userRoleCriteria = userRoleQueryParams.createCriteria();
         userRoleCriteria.andEqualTo("sysUserId", userId);
         List<SysUserRole> userRoles = sysUserRoleService.selectListByParams(userRoleQueryParams);

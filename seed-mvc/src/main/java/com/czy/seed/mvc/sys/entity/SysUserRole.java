@@ -14,8 +14,6 @@ public class SysUserRole implements IPrepare {
     private Long id;
     private Date createDt;
     private Long createBy;
-    private Date updateDt;
-    private Long updateBy;
     private Long sysOrgId;
     private Long sysUserId;
     private Long sysRoleId;
@@ -45,22 +43,6 @@ public class SysUserRole implements IPrepare {
 
     public void setCreateBy(Long createBy) {
         this.createBy = createBy;
-    }
-
-    public Date getUpdateDt() {
-        return updateDt;
-    }
-
-    public void setUpdateDt(Date updateDt) {
-        this.updateDt = updateDt;
-    }
-
-    public Long getUpdateBy() {
-        return updateBy;
-    }
-
-    public void setUpdateBy(Long updateBy) {
-        this.updateBy = updateBy;
     }
 
     public Long getSysOrgId() {
