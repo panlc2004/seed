@@ -28,7 +28,7 @@
 
     .login-box {
         width: 295px;
-        height: 250px;
+        height: 300px;
         padding: 43px 14px 15px;
         top: 25%;
         left: 55%;
@@ -44,7 +44,7 @@
     }
 
     .login-input {
-        margin-top: 30px;
+        margin-top: 20px;
     }
 
     .login-btn {
@@ -63,6 +63,11 @@
     .login-infp {
         color: #f40;
     }
+
+    .login-errorInfo {
+        color: #f40;
+        text-align: center;
+    }
 </style>
 
 <body>
@@ -79,22 +84,23 @@
                 <template slot="prepend"><i class="fa fa-key" style="width: 12px"></i></template>
             </el-input>
         </el-form-item>
-        <!--<el-form-item prop="password">-->
-        <!--<el-col :span="14">-->
-        <!--<el-input placeholder="请输入验证码" v-model="ruleForm.verifyCode" name="verifyCode">-->
-        <!--<template slot="prepend"><i class="fa fa-keyboard-o" style="width: 12px"></i></template>-->
-        <!--</el-input>-->
-        <!--</el-col>-->
-        <!--<el-col :span="8">-->
-        <!--<img src="auth/captcha?t=1">-->
-        <!--</el-col>-->
-        <!--</el-form-item>-->
+        <el-form-item prop="verifyCode">
+            <el-col :span="14">
+                <el-input placeholder="请输入验证码" v-model="ruleForm.verifyCode" name="verifyCode">
+                    <template slot="prepend"><i class="fa fa-keyboard-o" style="width: 12px"></i></template>
+                </el-input>
+            </el-col>
+            <el-col :span="8">
+                <img :src="captchaUrl" @click="captchaRefresh" style="width: 100px;height: 35px;margin-left: 22px; cursor: pointer">
+            </el-col>
+        </el-form-item>
         <el-form-item>
             <div class="login-input">
                 <el-button class="login-btn" type="primary" @click="login">
                     登&nbsp;&nbsp;录
                 </el-button>
             </div>
+            <div class="login-errorInfo">{{errorInfo}}</div>
         </el-form-item>
     </el-form>
 </div>
@@ -103,13 +109,13 @@
 
 <script type="text/javascript">
 
-    String.prototype.startWith=function(str){
-        var reg=new RegExp("^"+str);
+    String.prototype.startWith = function (str) {
+        var reg = new RegExp("^" + str);
         return reg.test(this);
     }
 
-    String.prototype.endWith=function(str){
-        var reg=new RegExp(str+"$");
+    String.prototype.endWith = function (str) {
+        var reg = new RegExp(str + "$");
         return reg.test(this);
     }
 
@@ -118,6 +124,8 @@
         el: '.login-box',
         data: function () {
             return {
+                captchaUrl:'',
+                errorInfo: '',
                 ruleForm: {
                     username: '',
                     password: '',
@@ -126,38 +134,64 @@
                 rules: {
                     username: [
                         {required: true, message: '请填写账号', trigger: 'blur'},
-                        {min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur'}
+                        {max: 30, message: '账号不能超过30 个字符', trigger: 'blur'}
                     ],
                     password: [
                         {required: true, message: '请填写密码', trigger: 'blur'},
-                        {min: 6, max: 20, message: '长度在 6 到 20 个字符', trigger: 'blur'}
+                        {max: 30, message: '密码不能超过30 个字符', trigger: 'blur'}
+                    ],
+                    verifyCode: [
+                        {required: true, message: '请输入验证码', trigger: 'blur'},
+                        {max: 10, message: '验证码不能超过10个字符', trigger: 'blur'}
                     ]
                 }
             };
         },
         methods: {
+            captchaRefresh:function () {
+                this.captchaUrl = 'captcha?t=' + new Date().getTime();
+            },
             login: function () {
                 var _this = this;
-                $.post('signIn', {username: _this.ruleForm.username, password: _this.ruleForm.password},function (response) {
-                    if(response.code == 200) {
+                _this.$refs.ruleForm.validate(function (valid) {
+                    if (valid) {
+                        _this.doLogin();
+                    }
+                });
+            },
+            doLogin: function () {
+                var _this = this;
+                $.post('signIn', {
+                    username: _this.ruleForm.username,
+                    password: _this.ruleForm.password,
+                    verifyCode: _this.ruleForm.verifyCode
+                }, function (response) {
+                    if (response.code == 200) {
                         var indexUrl;
-                        debugger
                         var loginUrl = window.location.href;
                         while (loginUrl.endWith("#")) {
                             loginUrl = loginUrl.substring(0, length(loginUrl));
                         }
 
-                        if(loginUrl.endWith("login.html") && loginUrl.indexOf("login.html") > 0) {
-                            indexUrl = loginUrl.replace("login.html","#/")
-                        } else if(loginUrl.endWith("login_page")){
-                            indexUrl = loginUrl.replace("login_page","#/")
+                        if (loginUrl.endWith("login.html") && loginUrl.indexOf("login.html") > 0) {
+                            indexUrl = loginUrl.replace("login.html", "#/")
+                        } else if (loginUrl.endWith("login_page")) {
+                            indexUrl = loginUrl.replace("login_page", "#/")
                         } else {
-                            indexUrl = loginUrl.replace("login.html","")
+                            indexUrl = loginUrl.replace("login.html", "")
                         }
                         window.location.href = indexUrl;
                     }
+                    if (response.code == 401) {
+                        _this.errorInfo = response.msg
+                        _this.$refs.ruleForm.resetFields();
+                        _this.captchaRefresh();
+                    }
                 })
             }
+        },
+        created:function () {
+            this.captchaRefresh();
         }
     });
 </script>

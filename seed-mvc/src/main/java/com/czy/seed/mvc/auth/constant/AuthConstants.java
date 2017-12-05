@@ -11,6 +11,12 @@ public class AuthConstants {
     public static final String VERIFY_CODE = "verifyCode";
 
     /**
+     * 验证码生成时间
+     */
+    public static final String VERIFY_CODE_GEN_TIME = "verifyCodeGenTime";
+
+
+    /**
      * 登陆地址
      */
 //    public static final String LOGIN_PROCESSING_URL = "/j_spring_security_check";
