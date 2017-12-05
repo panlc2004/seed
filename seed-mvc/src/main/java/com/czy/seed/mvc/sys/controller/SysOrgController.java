@@ -12,7 +12,13 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/sys/org")
 public class SysOrgController extends BaseController<SysOrg> {
 
+/**
+ * 校验示例
+ */
 
-
+//    @RequestMapping("save2")
+//    public Res save2(@Valid SysOrg record) throws BindException {
+//        return Res.ok();
+//    }
 
 }

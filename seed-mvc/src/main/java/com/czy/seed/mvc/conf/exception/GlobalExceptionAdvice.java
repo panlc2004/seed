@@ -35,6 +35,12 @@ public class GlobalExceptionAdvice {
         return Res.error("required_parameter_is_not_present");
     }
 
+    /**
+     * 参数校验异常处理，参数带有@Valid的方法，如果未通过校验，
+     * 会抛出MethodArgumentNotValidException异常
+     * @param e
+     * @return
+     */
     @ResponseStatus(HttpStatus.BAD_REQUEST)
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public Res handleMethodArgumentNotValidException(MethodArgumentNotValidException e) {

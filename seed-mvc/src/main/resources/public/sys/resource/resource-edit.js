@@ -18,8 +18,7 @@ define(['text!sys/resource/resource-edit.html'], function (Template) {
                     ],
                     url: [
                         {required: true, message: '请输入资源标识'},
-                        {max: 50, message: '输入长度不能超过50字符'},
-                        seed.validate.englishNumberUnderLine(1, 50)
+                        {max: 50, message: '输入长度不能超过50字符'}
                     ],
                     types: [
                         {required: true, message: '请选择类型'},
