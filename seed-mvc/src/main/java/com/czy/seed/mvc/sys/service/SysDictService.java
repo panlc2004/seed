@@ -11,4 +11,5 @@ public interface SysDictService extends BaseService<SysDict> {
     List<SysDict> selectChildNumListByParentId(long parentId, String code);
 
 
+    void deleteChildByPrimaryKey(long id);
 }

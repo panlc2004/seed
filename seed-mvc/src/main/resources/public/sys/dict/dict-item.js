@@ -17,34 +17,57 @@ define(['text!sys/dict/dict-item.html'], function (Template) {
             }
         },
         methods: {
-            search: function () {
-                var querpParam = {equalTo: {'sysDictId': this.dictId}};
-                this.reload(querpParam);
+            search: function (parentId) {
+                if(parentId == undefined) {
+                    parentId = 0;
+                }
+                var _this = this;
+                this.selectListByParentId(parentId, _this.dictId, function (response) {
+                    _this.pageData = response.data;
+                })
             },
-
             cacheDictId: function (dictId) {
                 this.dictId = dictId;
             },
-
             toAdd: function () {
                 var edit = this.$refs.edit;
                 edit.entity = {};
                 edit.open(this.dictId);
+            },
+            toAddChild: function (entity) {
+                var edit = this.$refs.edit;
+                edit.entity = {
+                    depth: entity.depth + 1,
+                    parentId: entity.id
+                };
+                edit.open(this.dictId);
+            },
+            selectSubItem: function (row, callback) {
+                this.selectListByParentId(row.id, this.dictId, function (response) {
+                    callback(response.data);
+                })
+            },
+            selectListByParentId: function (parentId, sysDictId, callback) {
+                seed.ajax.postJson({
+                    url: 'sys/dictItem/selectListByParentId/' + parentId + "/" + sysDictId,
+                    success: function (response) {
+                        callback(response);
+                    }
+                })
             },
             toEdit: function (entity) {
                 var edit = this.$refs.edit;
                 edit.entity = $.extend({}, entity);
                 edit.open(this.dictId);
             },
-
             del: function (entity) {
                 var _this = this;
-                _this.$confirm('此操作将永久删除该数据, 是否继续?', '提示', {
+                _this.$confirm('此操作将永久删除该数据及其子级数据, 是否继续?', '提示', {
                     confirmButtonText: '确定',
                     cancelButtonText: '取消',
                     type: 'warning'
                 }).then(function () {
-                    var url = 'sys/dictItem/deleteByPrimaryKey/' + entity.id
+                    var url = 'sys/dictItem/deleteChildByPrimaryKey/' + entity.id
                     seed.ajax.postJson({
                         url: url,
                         success: function (data, status) {

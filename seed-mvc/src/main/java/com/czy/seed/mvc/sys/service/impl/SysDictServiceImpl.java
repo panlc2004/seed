@@ -1,12 +1,14 @@
 package com.czy.seed.mvc.sys.service.impl;
 
 import com.czy.seed.mvc.base.service.impl.BaseServiceImpl;
-import com.czy.seed.mvc.sys.entity.SysDept;
 import com.czy.seed.mvc.sys.entity.SysDict;
+import com.czy.seed.mvc.sys.entity.SysDictItem;
 import com.czy.seed.mvc.sys.mapper.SysDictMapper;
 import com.czy.seed.mvc.sys.service.SysDictService;
+import com.czy.seed.mybatis.base.QueryParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -26,6 +28,7 @@ public class SysDictServiceImpl extends BaseServiceImpl<SysDict> implements SysD
         return buildTree(sysDicts);
     }
 
+    @Override
     public List<SysDict> selectChildNumListByParentId(long parentId,String code) {
         return sysDictMapper.selectChildNumListByParentId(parentId,code);
     }
@@ -82,6 +85,46 @@ public class SysDictServiceImpl extends BaseServiceImpl<SysDict> implements SysD
         if (subList.size() > 0 && children.size() > 0) {
             findChildrenResource(subList, children);
         }
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public void deleteChildByPrimaryKey(long id) {
+        deleteByPrimaryKey(id);
+        QueryParams queryParams = new QueryParams(SysDictItem.class);
+        QueryParams.Criteria criteria = queryParams.createCriteria();
+        criteria.andEqualTo("parentId", id);
+        List<SysDict> childItems = selectListByParams(queryParams);
+        deleteChild(childItems);
+    }
+
+    /**
+     * 递归删除子级数据
+     * @param sysDicts
+     */
+    private void deleteChild(List<SysDict> sysDicts) {
+        if (sysDicts == null || sysDicts.size() == 0) {
+            return;
+        }
+        List<Long> ids = new ArrayList<>();
+        for (SysDict sysDict : sysDicts) {
+            ids.add(sysDict.getId());
+        }
+
+        //查找下级数据
+        QueryParams queryParams = new QueryParams(SysDictItem.class);
+        QueryParams.Criteria criteria = queryParams.createCriteria();
+        criteria.andIn("parentId", ids);
+        List<SysDict> sysDictChildItems = selectListByParams(queryParams);
+
+        //删除本级数据
+        QueryParams delParams = new QueryParams(SysDictItem.class);
+        QueryParams.Criteria delCriteria = delParams.createCriteria();
+        delCriteria.andIn("id", ids);
+        deleteByParams(delParams);
+
+        //删除子级数据
+        deleteChild(sysDictChildItems);
     }
 
 }

@@ -65,7 +65,7 @@ define(['text!sys/dict/dict-group.html'], function (Template) {
                     cancelButtonText: '取消',
                     type: 'error'
                 }).then(function () {
-                    var url = 'sys/dict/deleteByPrimaryKey/' + entity.id
+                    var url = 'sys/dict/deleteChildByPrimaryKey/' + entity.id
                     seed.ajax.postJson({
                         url: url,
                         success: function (data, status) {

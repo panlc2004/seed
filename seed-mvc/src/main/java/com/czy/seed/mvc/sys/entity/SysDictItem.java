@@ -4,7 +4,10 @@ import com.czy.seed.mvc.base.entity.IPrepare;
 
 import javax.persistence.Id;
 import javax.persistence.Table;
+import javax.persistence.Transient;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Table(name = "SEED_SYS_DICT_ITEM")
 public class SysDictItem implements IPrepare {
@@ -23,6 +26,13 @@ public class SysDictItem implements IPrepare {
     private Date updateDt;
     private Long updateBy;
     private Integer orderNum;
+    private int depth;
+
+
+    @Transient   //标识数据库中没有的
+    private int childNum;
+    @Transient
+    private List<SysDict> children;
 
     public Long getSysDictId() {
         return sysDictId;
@@ -110,5 +120,32 @@ public class SysDictItem implements IPrepare {
 
     public void setOrderNum(Integer orderNum) {
         this.orderNum = orderNum;
+    }
+
+    public int getDepth() {
+        return depth;
+    }
+
+    public void setDepth(int depth) {
+        this.depth = depth;
+    }
+
+    public int getChildNum() {
+        return childNum;
+    }
+
+    public void setChildNum(int childNum) {
+        this.childNum = childNum;
+    }
+
+    public List<SysDict> getChildren() {
+        if (children == null) {
+            children = new ArrayList<SysDict>(0);
+        }
+        return children;
+    }
+
+    public void setChildren(List<SysDict> children) {
+        this.children = children;
     }
 }

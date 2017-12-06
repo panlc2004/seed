@@ -38,6 +38,17 @@ public class SysDictController extends BaseController<SysDict> {
     }
 
     /**
+     * 删除数据及期所有子级数据
+     * @param id
+     * @return
+     */
+    @RequestMapping("/deleteChildByPrimaryKey/{id}")
+    public Res deleteChildByPrimaryKey(@PathVariable long id) {
+        sysDictService.deleteChildByPrimaryKey(id);
+        return Res.ok();
+    }
+
+    /**
      * 查询本组织下的所有部门
      * @return
      */

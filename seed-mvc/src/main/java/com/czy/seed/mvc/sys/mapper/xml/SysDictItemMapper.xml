@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.czy.seed.mvc.sys.mapper.SysDictItemMapper">
+
+    <resultMap id="ChildNumResultMap" extends="BaseResultMap" type="com.czy.seed.mvc.sys.entity.SysDictItem">
+        <result column="CHILD_NUM" property="childNum"/>
+    </resultMap>
+
+    <select id="selectChildNumListByParentId" resultMap="ChildNumResultMap">
+        SELECT
+        T.*,
+        (SELECT COUNT(0) FROM SEED_SYS_DICT_ITEM SSD WHERE SSD.PARENT_ID = T.ID) AS CHILD_NUM
+        FROM SEED_SYS_DICT_ITEM T
+        <where>
+            <if test="parentId != null">
+                and T.PARENT_ID = #{parentId}
+            </if>
+            <if test="sysDictId != null">
+                and T.SYS_DICT_ID = #{sysDictId}
+            </if>
+        </where>
+        ORDER BY T.ORDER_NUM ASC
+    </select>
+</mapper>
