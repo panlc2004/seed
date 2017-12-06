@@ -10,7 +10,7 @@ Target Server Type    : MYSQL
 Target Server Version : 50155
 File Encoding         : 65001
 
-Date: 2017-12-04 19:03:59
+Date: 2017-12-06 16:08:26
 */
 
 SET FOREIGN_KEY_CHECKS=0;
@@ -103,20 +103,18 @@ CREATE TABLE `seed_sys_dict` (
   `VERSION` int(11) NOT NULL DEFAULT '1' COMMENT '逻辑删除状态：1.未删除；2.删除',
   `SYS_ORG_ID` bigint(20) NOT NULL,
   `LOGIC_DEL` int(11) NOT NULL DEFAULT '1' COMMENT '逻辑删除状态：1：未删除；2：删除',
+  `PARENT_ID` bigint(20) NOT NULL DEFAULT '0' COMMENT '父级字典项ID,0表示没有父级字典项',
   `CODE` varchar(100) NOT NULL,
   `NAME` varchar(50) NOT NULL,
   `MEMO` varchar(2000) DEFAULT NULL,
-  `PARENT_ID` bigint(20) NOT NULL DEFAULT '0' COMMENT '父级字典项ID,0表示没有父级字典项',
-  `DEPTH` int(11) DEFAULT NULL,
+  `DEPTH` int(11) DEFAULT NULL COMMENT '层级',
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of seed_sys_dict
 -- ----------------------------
-INSERT INTO `seed_sys_dict` VALUES ('4', '1', '2017-06-13 16:02:29', '1', '2017-06-14 13:32:05', '9', '0', '1', 'sex', '性别', '354365', '0', null);
-INSERT INTO `seed_sys_dict` VALUES ('5', '1', '2017-12-04 15:16:43', null, null, '1', '1', '1', '1234', '123', '41234', '0', '0');
-INSERT INTO `seed_sys_dict` VALUES ('7', '1', '2017-12-04 15:23:23', null, null, '1', '1', '1', '134', '234', '234', '5', '1');
+INSERT INTO `seed_sys_dict` VALUES ('4', '1', '2017-06-13 16:02:29', '1', '2017-06-14 13:32:05', '9', '0', '1', '0', 'sex', '性别', '354365', null);
 
 -- ----------------------------
 -- Table structure for `seed_sys_dict_item`
@@ -135,16 +133,16 @@ CREATE TABLE `seed_sys_dict_item` (
   `VALUE` varchar(300) NOT NULL COMMENT '字典项值',
   `NAME` varchar(100) NOT NULL COMMENT '字典项名称',
   `MEMO` varchar(2000) DEFAULT NULL COMMENT '备注',
+  `ORDER_NUM` int(11) DEFAULT '0' COMMENT '排序号',
+  `DEPTH` int(11) DEFAULT NULL COMMENT '层级',
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=26 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of seed_sys_dict_item
 -- ----------------------------
-INSERT INTO `seed_sys_dict_item` VALUES ('3', '1', '2017-06-13 18:53:41', '1', '2017-06-14 13:34:25', '2', '0', '1', '0', '1324', '', '1341');
-INSERT INTO `seed_sys_dict_item` VALUES ('10', '1', '2017-06-13 19:08:01', '1', '2017-06-14 13:32:16', '3', '0', '1', '0', '123412341234', '', '23412341234');
-INSERT INTO `seed_sys_dict_item` VALUES ('13', '1', '2017-06-14 13:34:34', null, null, '1', '0', '1', '0', '1234', '', '1234');
-INSERT INTO `seed_sys_dict_item` VALUES ('14', '1', '2017-12-04 15:04:45', '1', '2017-12-04 15:16:21', '1', '4', '1', '0', '12341', '1234', '123');
+INSERT INTO `seed_sys_dict_item` VALUES ('14', '1', '2017-12-04 15:04:45', '1', '2017-12-04 15:16:21', '1', '4', '1', '0', '2', '女', null, '2', null);
+INSERT INTO `seed_sys_dict_item` VALUES ('15', '1', '2017-12-05 17:52:58', null, null, '1', '4', '1', '0', '1', '男', null, '1', null);
 
 -- ----------------------------
 -- Table structure for `seed_sys_log`
@@ -250,20 +248,20 @@ CREATE TABLE `seed_sys_resource` (
   `DEPTH` int(11) DEFAULT NULL,
   `ICON` varchar(50) DEFAULT NULL COMMENT '菜单图标',
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=11 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of seed_sys_resource
 -- ----------------------------
 INSERT INTO `seed_sys_resource` VALUES ('1', '0', '0', '0', '2017-09-10 16:28:51', null, null, '2', 'sys', '系统管理', '', '999', null, null);
-INSERT INTO `seed_sys_resource` VALUES ('2', '0', '1', '0', '2017-09-10 16:28:55', null, null, '1', 'sys_org', '机构管理', 'sys/org/org-index.html', '999', null, 'el-icon-star-off');
-INSERT INTO `seed_sys_resource` VALUES ('3', '0', '1', '0', '2017-09-10 16:28:57', null, null, '1', 'sys_param', '系统参数设置', 'sys/param/param-index.html', '999', null, null);
-INSERT INTO `seed_sys_resource` VALUES ('4', '0', '1', '0', '2017-09-10 16:28:59', null, null, '1', 'sys_resource', '菜单管理', 'sys/resource/resource-index.html', '999', null, null);
-INSERT INTO `seed_sys_resource` VALUES ('6', '0', '1', '1', '2017-09-11 21:41:12', null, null, '1', 'sys_user', '用户管理', 'sys/user/user-index.html', '999', null, null);
-INSERT INTO `seed_sys_resource` VALUES ('7', '0', '1', '0', '2017-09-10 16:29:13', null, null, '1', 'sys_role', '角色管理', 'sys/role/role-index.html', '999', null, null);
-INSERT INTO `seed_sys_resource` VALUES ('8', '0', '1', '0', '2017-09-10 16:29:17', null, null, '1', 'sys_dict', '数据字典', 'sys/dict/dict-index.html', '999', null, null);
-INSERT INTO `seed_sys_resource` VALUES ('9', '0', '1', '0', '2017-09-10 16:29:21', null, null, '1', 'sys_attachment', '组织部门管理', 'sys/dept/dept-index.html', '999', null, null);
-INSERT INTO `seed_sys_resource` VALUES ('10', '1', '6', '1', '2017-11-20 12:02:22', null, null, '3', 'addTest', '新增', 'a', '999', '1', null);
+INSERT INTO `seed_sys_resource` VALUES ('2', '0', '1', '0', '2017-09-10 16:28:55', null, null, '1', 'sys_org', '机构管理', 'sys/org/org-index.html', '999', '1', 'el-icon-star-off');
+INSERT INTO `seed_sys_resource` VALUES ('3', '0', '1', '0', '2017-09-10 16:28:57', null, null, '1', 'sys_param', '系统参数设置', 'sys/param/param-index.html', '999', '1', null);
+INSERT INTO `seed_sys_resource` VALUES ('4', '0', '1', '0', '2017-09-10 16:28:59', null, null, '1', 'sys_resource', '菜单管理', 'sys/resource/resource-index.html', '999', '1', null);
+INSERT INTO `seed_sys_resource` VALUES ('6', '0', '1', '1', '2017-09-11 21:41:12', null, null, '1', 'sys_user', '用户管理', 'sys/user/user-index.html', '999', '1', null);
+INSERT INTO `seed_sys_resource` VALUES ('7', '0', '1', '0', '2017-09-10 16:29:13', null, null, '1', 'sys_role', '角色管理', 'sys/role/role-index.html', '999', '1', null);
+INSERT INTO `seed_sys_resource` VALUES ('8', '0', '1', '0', '2017-09-10 16:29:17', null, null, '1', 'sys_dict', '数据字典', 'sys/dict/dict-index.html', '999', '1', null);
+INSERT INTO `seed_sys_resource` VALUES ('9', '0', '1', '0', '2017-09-10 16:29:21', null, null, '1', 'sys_attachment', '组织部门管理', 'sys/dept/dept-index.html', '999', '1', null);
+INSERT INTO `seed_sys_resource` VALUES ('11', '1', '1', '1', '2017-12-05 10:36:44', '1', '2017-12-05 10:37:02', '1', 'LOG_QUERY', '日志查询', 'sys/log/log-index.html', '999', '1', null);
 
 -- ----------------------------
 -- Table structure for `seed_sys_role`
@@ -297,19 +295,20 @@ CREATE TABLE `seed_sys_role_resource` (
   `SYS_ROLE_ID` bigint(20) NOT NULL,
   `SYS_RESOURCE_ID` bigint(20) NOT NULL,
   PRIMARY KEY (`ID`)
-) ENGINE=InnoDB AUTO_INCREMENT=222 DEFAULT CHARSET=utf8;
+) ENGINE=InnoDB AUTO_INCREMENT=254 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
 -- Records of seed_sys_role_resource
 -- ----------------------------
-INSERT INTO `seed_sys_role_resource` VALUES ('214', '1', '1');
-INSERT INTO `seed_sys_role_resource` VALUES ('215', '1', '2');
-INSERT INTO `seed_sys_role_resource` VALUES ('216', '1', '3');
-INSERT INTO `seed_sys_role_resource` VALUES ('217', '1', '4');
-INSERT INTO `seed_sys_role_resource` VALUES ('218', '1', '6');
-INSERT INTO `seed_sys_role_resource` VALUES ('219', '1', '7');
-INSERT INTO `seed_sys_role_resource` VALUES ('220', '1', '8');
-INSERT INTO `seed_sys_role_resource` VALUES ('221', '1', '9');
+INSERT INTO `seed_sys_role_resource` VALUES ('245', '1', '1');
+INSERT INTO `seed_sys_role_resource` VALUES ('246', '1', '2');
+INSERT INTO `seed_sys_role_resource` VALUES ('247', '1', '3');
+INSERT INTO `seed_sys_role_resource` VALUES ('248', '1', '4');
+INSERT INTO `seed_sys_role_resource` VALUES ('249', '1', '6');
+INSERT INTO `seed_sys_role_resource` VALUES ('250', '1', '7');
+INSERT INTO `seed_sys_role_resource` VALUES ('251', '1', '8');
+INSERT INTO `seed_sys_role_resource` VALUES ('252', '1', '9');
+INSERT INTO `seed_sys_role_resource` VALUES ('253', '1', '11');
 
 -- ----------------------------
 -- Table structure for `seed_sys_user`
