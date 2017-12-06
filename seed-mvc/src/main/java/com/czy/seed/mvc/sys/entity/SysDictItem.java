@@ -8,6 +8,9 @@ import java.util.Date;
 
 @Table(name = "SEED_SYS_DICT_ITEM")
 public class SysDictItem implements IPrepare {
+
+    private static final long serialVersionUID = -6217382604447725238L;
+
     @Id
     private Long id;
     private Long parentId;
@@ -19,6 +22,7 @@ public class SysDictItem implements IPrepare {
     private Date createDt;
     private Date updateDt;
     private Long updateBy;
+    private Integer orderNum;
 
     public Long getSysDictId() {
         return sysDictId;
@@ -98,5 +102,13 @@ public class SysDictItem implements IPrepare {
 
     public void setMemo(String memo) {
         this.memo = memo;
+    }
+
+    public Integer getOrderNum() {
+        return orderNum;
+    }
+
+    public void setOrderNum(Integer orderNum) {
+        this.orderNum = orderNum;
     }
 }

@@ -68,7 +68,7 @@ public class Param {
         if (this.getOrderBy() != null) {
             this.getOrderBy().putAll(orderBy);
         } else {
-            this.setOrderBy(new LinkedHashMap<String, String>());
+            this.setOrderBy(orderBy);
         }
     }
 

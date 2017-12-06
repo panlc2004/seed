@@ -28,6 +28,7 @@ define(['text!sys/dict/dict-item.html'], function (Template) {
 
             toAdd: function () {
                 var edit = this.$refs.edit;
+                edit.entity = {};
                 edit.open(this.dictId);
             },
             toEdit: function (entity) {

@@ -35,6 +35,10 @@ public class BaseController<T> {
         return model;
     }
 
+    public void appendParamsBeforeSelect(Param param) {
+
+    }
+
     private String getViewName(String className) {
         for (int i = 0; i < className.length(); i++) {
             if (i > 0 && Character.isUpperCase(className.charAt(i)) == true) {
@@ -56,6 +60,7 @@ public class BaseController<T> {
     @RequestMapping("/selectPageByParams/{pageNum}/{pageSize}")
     @ResponseBody
     public Res selectPageByParams(@PathVariable int pageNum, @PathVariable int pageSize, @RequestBody Param param) {
+        appendParamsBeforeSelect(param);
         QueryParams queryParams = param.toQueryParams(entityClass);
         Page<T> page = service.selectPageByParams(pageNum, pageSize, queryParams);
         Map<String, Object> pageInfo = new HashMap<String, Object>();
@@ -68,6 +73,7 @@ public class BaseController<T> {
     @RequestMapping("/selectPageRelativeByParams/{pageNum}/{pageSize}")
     @ResponseBody
     public Res selectPageRelativeByParams(@PathVariable int pageNum, @PathVariable int pageSize, @RequestBody Param param) {
+        appendParamsBeforeSelect(param);
         QueryParams queryParams = param.toQueryParams(entityClass);
         Page<T> page = service.selectPageRelativeByParams(pageNum, pageSize, queryParams);
         Map<String, Object> pageInfo = new HashMap<String, Object>();
@@ -80,6 +86,7 @@ public class BaseController<T> {
     @RequestMapping("/selectListByParams")
     @ResponseBody
     public Res selectListByParams(@RequestBody Param param) {
+        appendParamsBeforeSelect(param);
         QueryParams queryParams = param.toQueryParams(entityClass);
         List<T> list = service.selectListByParams(queryParams);
         return Res.ok(list);
@@ -88,6 +95,7 @@ public class BaseController<T> {
     @RequestMapping("/selectListRelativeByParams")
     @ResponseBody
     public Res selectListRelativeByParams(@RequestBody Param param) {
+        appendParamsBeforeSelect(param);
         QueryParams queryParams = param.toQueryParams(entityClass);
         List<T> list = service.selectListRelativeByParams(queryParams);
         return Res.ok(list);

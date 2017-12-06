@@ -41,7 +41,6 @@ define(['text!sys/dict/dict-item-edit.html'], function (Template) {
                 this.show = false;
             },
             save: function () {
-                debugger;
                 var _this = this;
                 _this.entity.sysDictId = _this.dictId;
                 this.$refs.editForm.validate(function (valid) {
