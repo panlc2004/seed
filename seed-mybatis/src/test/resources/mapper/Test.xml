@@ -3,7 +3,7 @@
 
 <mapper namespace="com.czy.seed.mybatis.mapper.MySqlMapper">
 
-    <resultMap id="BaseResultMap1" types="com.czy.seed.mybatis.entity.TestEntity">
+    <resultMap id="BaseResultMap1" type="com.czy.seed.mybatis.entity.TestEntity">
         <id column="ID" property="id"/>
         <result column="NAME" property="name"/>
         <association property="one" column="ID" javaType="com.czy.seed.mybatis.entity.One">
@@ -30,7 +30,7 @@
     </select>
 
 
-    <resultMap id="BaseResultMap2" types="com.czy.seed.mybatis.entity.TestEntity">
+    <resultMap id="BaseResultMap2" type="com.czy.seed.mybatis.entity.TestEntity">
         <id column="ID" property="id"/>
         <result column="NAME" property="name"/>
         <collection property="one" ofType="com.czy.seed.mybatis.entity.One">
