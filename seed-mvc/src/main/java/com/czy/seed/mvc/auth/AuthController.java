@@ -86,10 +86,10 @@ public class AuthController {
         else if (!verifyCode.equalsIgnoreCase(cachedVerifyCode)) {
             res = new CaptchaValidateInfo(false, error);
         } else {
-            //校验时间是否过期：30秒
+            //校验时间是否过期：2分钟
+            int checkLimit = 120000;
             Long now = System.currentTimeMillis();
             //超时时间
-            int checkLimit = 30000;
             if (now - verifyCodeGenTime > checkLimit) {
                 res = new CaptchaValidateInfo(false, timeout);
             }

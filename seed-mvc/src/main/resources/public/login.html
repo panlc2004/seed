@@ -75,23 +75,36 @@
     <el-form class="login-form" :model="ruleForm" :rules="rules" ref="ruleForm" action="signIn"
              method="post">
         <el-form-item prop="username">
-            <el-input placeholder="请输入账号" v-model="ruleForm.username" name="username">
+            <el-input placeholder="请输入账号"
+                      v-model="ruleForm.username"
+                      name="username"
+                      autofocus="autofocus"
+                      @keyup.enter.native="login">
                 <template slot="prepend"><i class="fa fa-user-o" style="width: 12px"></i></template>
             </el-input>
         </el-form-item>
         <el-form-item prop="password">
-            <el-input placeholder="请输入密码" type="password" v-model="ruleForm.password" name="password">
+            <el-input placeholder="请输入密码"
+                      type="password"
+                      v-model="ruleForm.password"
+                      name="password"
+                      @keyup.enter.native="login">
                 <template slot="prepend"><i class="fa fa-key" style="width: 12px"></i></template>
             </el-input>
         </el-form-item>
         <el-form-item prop="verifyCode">
             <el-col :span="14">
-                <el-input placeholder="请输入验证码" v-model="ruleForm.verifyCode" name="verifyCode">
+                <el-input ref="verifyCode"
+                          placeholder="请输入验证码"
+                          v-model="ruleForm.verifyCode"
+                          name="verifyCode"
+                          @keyup.enter.native="login">
                     <template slot="prepend"><i class="fa fa-keyboard-o" style="width: 12px"></i></template>
                 </el-input>
             </el-col>
             <el-col :span="8">
-                <img :src="captchaUrl" @click="captchaRefresh" style="width: 100px;height: 35px;margin-left: 22px; cursor: pointer">
+                <img :src="captchaUrl" @click="captchaRefresh"
+                     style="width: 100px;height: 35px;margin-left: 22px; cursor: pointer">
             </el-col>
         </el-form-item>
         <el-form-item>
@@ -124,7 +137,7 @@
         el: '.login-box',
         data: function () {
             return {
-                captchaUrl:'',
+                captchaUrl: '',
                 errorInfo: '',
                 ruleForm: {
                     username: '',
@@ -148,8 +161,11 @@
             };
         },
         methods: {
-            captchaRefresh:function () {
+            captchaRefresh: function () {
                 this.captchaUrl = 'captcha?t=' + new Date().getTime();
+                var verifyCode = this.$refs.verifyCode;
+                debugger;
+                verifyCode.focus();
             },
             login: function () {
                 var _this = this;
@@ -190,7 +206,7 @@
                 })
             }
         },
-        created:function () {
+        created: function () {
             this.captchaRefresh();
         }
     });
