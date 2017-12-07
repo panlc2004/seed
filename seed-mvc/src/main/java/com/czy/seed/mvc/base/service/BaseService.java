@@ -28,6 +28,13 @@ public interface BaseService<T> {
 
     Page<T> selectPageByParams(int pageNo, int pageLimit, final QueryParams params);
 
+    /**
+     * 目前在有一对多的情况下不能使用，只适应于One2One查询
+     * @param pageNo
+     * @param pageLimit
+     * @param params
+     * @return
+     */
     Page<T> selectPageRelativeByParams(int pageNo, int pageLimit, final QueryParams params);
 
     int updateByPrimaryKey(T record);

@@ -70,6 +70,13 @@ public class BaseController<T> {
         return Res.ok(pageInfo);
     }
 
+    /**
+     * 目前在有一对多的情况下不能使用，只适应于One2One查询
+     * @param pageNum
+     * @param pageSize
+     * @param param
+     * @return
+     */
     @RequestMapping("/selectPageRelativeByParams/{pageNum}/{pageSize}")
     @ResponseBody
     public Res selectPageRelativeByParams(@PathVariable int pageNum, @PathVariable int pageSize, @RequestBody Param param) {
