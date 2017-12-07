@@ -70,18 +70,18 @@ public class BaseController<T> {
         return Res.ok(pageInfo);
     }
 
-    @RequestMapping("/selectPageRelativeByParams/{pageNum}/{pageSize}")
-    @ResponseBody
-    public Res selectPageRelativeByParams(@PathVariable int pageNum, @PathVariable int pageSize, @RequestBody Param param) {
-        appendParamsBeforeSelect(param);
-        QueryParams queryParams = param.toQueryParams(entityClass);
-        Page<T> page = service.selectPageRelativeByParams(pageNum, pageSize, queryParams);
-        Map<String, Object> pageInfo = new HashMap<String, Object>();
-        pageInfo.put("total", page.getTotal());
-        pageInfo.put("pages", page.getPages());
-        pageInfo.put("page", page);
-        return Res.ok(pageInfo);
-    }
+//    @RequestMapping("/selectPageRelativeByParams/{pageNum}/{pageSize}")
+//    @ResponseBody
+//    public Res selectPageRelativeByParams(@PathVariable int pageNum, @PathVariable int pageSize, @RequestBody Param param) {
+//        appendParamsBeforeSelect(param);
+//        QueryParams queryParams = param.toQueryParams(entityClass);
+//        Page<T> page = service.selectPageRelativeByParams(pageNum, pageSize, queryParams);
+//        Map<String, Object> pageInfo = new HashMap<String, Object>();
+//        pageInfo.put("total", page.getTotal());
+//        pageInfo.put("pages", page.getPages());
+//        pageInfo.put("page", page);
+//        return Res.ok(pageInfo);
+//    }
 
     @RequestMapping("/selectListByParams")
     @ResponseBody
@@ -99,6 +99,33 @@ public class BaseController<T> {
         QueryParams queryParams = param.toQueryParams(entityClass);
         List<T> list = service.selectListRelativeByParams(queryParams);
         return Res.ok(list);
+    }
+
+    @RequestMapping("/selectOneByParams")
+    @ResponseBody
+    public Res selectOneByParams(@RequestBody Param param) {
+        appendParamsBeforeSelect(param);
+        QueryParams queryParams = param.toQueryParams(entityClass);
+        T record = service.selectOneByParams(queryParams);
+        return Res.ok(record);
+    }
+
+    @RequestMapping("/selectOneRelativeByParams")
+    @ResponseBody
+    public Res selectOneRelativeByParams(@RequestBody Param param) {
+        appendParamsBeforeSelect(param);
+        QueryParams queryParams = param.toQueryParams(entityClass);
+        T record = service.selectOneRelativeByParams(queryParams);
+        return Res.ok(record);
+    }
+
+    @RequestMapping("/selectCountByParams")
+    @ResponseBody
+    public Res selectCountByParams(@RequestBody Param param) {
+        appendParamsBeforeSelect(param);
+        QueryParams queryParams = param.toQueryParams(entityClass);
+        int count = service.selectCountByParams(queryParams);
+        return Res.ok(count);
     }
 
     @RequestMapping("/insert")

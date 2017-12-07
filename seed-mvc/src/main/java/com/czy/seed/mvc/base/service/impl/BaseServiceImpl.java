@@ -40,6 +40,7 @@ public class BaseServiceImpl<T> implements BaseService<T> {
         return mapper;
     }
 
+    @Override
     public int insert(T record) {
         beforeInsert(record);
         return getMapper().insert(record);
@@ -57,6 +58,7 @@ public class BaseServiceImpl<T> implements BaseService<T> {
         }
     }
 
+    @Override
     public int insertList(List<T> recordList) {
         return insertList(recordList, defaultBatchOperateLimit);
     }
@@ -78,30 +80,37 @@ public class BaseServiceImpl<T> implements BaseService<T> {
         return res;
     }
 
+    @Override
     public T selectByPrimaryKey(long id) {
         return getMapper().selectByPrimaryKey(id);
     }
 
+    @Override
     public T selectRelativeByPrimaryKey(long id) {
         return getMapper().selectRelativeByPrimaryKey(id);
     }
 
+    @Override
     public List<T> selectListByParams(QueryParams params) {
         return getMapper().selectListByParams(params);
     }
 
+    @Override
     public List<T> selectListRelativeByParams(QueryParams params) {
         return getMapper().selectListRelativeByParams(params);
     }
 
+    @Override
     public T selectOneByParams(QueryParams params) {
         return getMapper().selectOneByParams(params);
     }
 
+    @Override
     public T selectOneRelativeByParams(QueryParams params) {
         return getMapper().selectOneRelativeByParams(params);
     }
 
+    @Override
     public Page<T> selectPageByParams(int pageNo, int pageLimit, final QueryParams params) {
         Page<T> page = PageHelper.startPage(pageNo, pageLimit).doSelectPage(new ISelect() {
             @Override
@@ -112,35 +121,40 @@ public class BaseServiceImpl<T> implements BaseService<T> {
         return page;
     }
 
-    public Page<T> selectPageRelativeByParams(int pageNo, int pageLimit, final QueryParams params) {
-        Page<T> page = PageHelper.startPage(pageNo, pageLimit).doSelectPage(new ISelect() {
-            @Override
-            public void doSelect() {
-                selectListRelativeByParams(params);
-            }
-        });
-        return page;
-    }
+//    public Page<T> selectPageRelativeByParams(int pageNo, int pageLimit, final QueryParams params) {
+//        Page<T> page = PageHelper.startPage(pageNo, pageLimit).doSelectPage(new ISelect() {
+//            @Override
+//            public void doSelect() {
+//                selectListRelativeByParams(params);
+//            }
+//        });
+//        return page;
+//    }
 
+    @Override
     public int selectCountByParams(QueryParams params) {
         return getMapper().selectCountByParams(params);
     }
 
+    @Override
     public int updateByPrimaryKey(T record) {
         beforeUpdate(record);
         return getMapper().updateByPrimaryKey(record);
     }
 
+    @Override
     public int updateSelectiveByPrimaryKey(T record) {
         beforeUpdate(record);
         return getMapper().updateSelectiveByPrimaryKey(record);
     }
 
+    @Override
     public int updateByParams(T record, QueryParams params) {
         beforeUpdate(record);
         return getMapper().updateByParams(record, params);
     }
 
+    @Override
     public int updateSelectiveByParams(T record, QueryParams params) {
         beforeUpdate(record);
         return getMapper().updateSelectiveByParams(record, params);
@@ -156,10 +170,12 @@ public class BaseServiceImpl<T> implements BaseService<T> {
         }
     }
 
+    @Override
     public int deleteByPrimaryKey(long id) {
         return getMapper().deleteByPrimaryKey(id);
     }
 
+    @Override
     public int deleteByParams(QueryParams params) {
         return getMapper().deleteByParams(params);
     }
