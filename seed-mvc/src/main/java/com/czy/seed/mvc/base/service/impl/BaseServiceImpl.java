@@ -121,15 +121,16 @@ public class BaseServiceImpl<T> implements BaseService<T> {
         return page;
     }
 
-//    public Page<T> selectPageRelativeByParams(int pageNo, int pageLimit, final QueryParams params) {
-//        Page<T> page = PageHelper.startPage(pageNo, pageLimit).doSelectPage(new ISelect() {
-//            @Override
-//            public void doSelect() {
-//                selectListRelativeByParams(params);
-//            }
-//        });
-//        return page;
-//    }
+    @Override
+    public Page<T> selectPageRelativeByParams(int pageNo, int pageLimit, final QueryParams params) {
+        Page<T> page = PageHelper.startPage(pageNo, pageLimit).doSelectPage(new ISelect() {
+            @Override
+            public void doSelect() {
+                selectListRelativeByParams(params);
+            }
+        });
+        return page;
+    }
 
     @Override
     public int selectCountByParams(QueryParams params) {

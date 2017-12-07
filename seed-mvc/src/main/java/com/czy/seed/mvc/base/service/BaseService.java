@@ -28,7 +28,7 @@ public interface BaseService<T> {
 
     Page<T> selectPageByParams(int pageNo, int pageLimit, final QueryParams params);
 
-//    Page<T> selectPageRelativeByParams(int pageNo, int pageLimit, final QueryParams params);
+    Page<T> selectPageRelativeByParams(int pageNo, int pageLimit, final QueryParams params);
 
     int updateByPrimaryKey(T record);
 

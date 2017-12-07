@@ -1,0 +1,34 @@
+<div>
+    <czy-toolbar>
+        <czy-toolbar-item>
+            <span slot="label">上传用户</span>
+            <span slot="item"><el-input placeholder="选输入用户名/可不填"></el-input></span>
+        </czy-toolbar-item>
+
+        <czy-toolbar-item>
+            <span slot="label">上传时间</span>
+            <span slot="item">
+           <el-date-picker type="datetimerange" placeholder="选择时间范围/可不选">
+           </el-date-picker>
+                </el-date-picker></span>
+        </czy-toolbar-item>
+
+        <czy-toolbar-btn>
+            <el-button type="primary" icon="search" size="small" @click="search">查询</el-button>
+        </czy-toolbar-btn>
+    </czy-toolbar>
+
+    <el-table :data="pageData" border stripe highlight-current-row>
+        <el-table-column prop="name" label="上传用户"></el-table-column>
+        <el-table-column prop="createDt" label="上传时间"></el-table-column>
+        <el-table-column prop="createDt" label="文件名称"></el-table-column>
+        <el-table-column prop="createDt" label="存放路径"></el-table-column>
+        <el-table-column prop="createDt" label="业务编码"></el-table-column>
+        <el-table-column prop="createDt" label="存储类型"></el-table-column>
+        <!--<el-table-column prop="createDt" label="存储状态"></el-table-column>-->
+    </el-table>
+
+    <el-pagination layout="total, sizes, prev, pager, next, jumper" :total="total" @size-change="sizeChange"
+                   @current-change="turnPage" :page-size="pageSize" :current-page="currentPage"></el-pagination>
+
+</div>

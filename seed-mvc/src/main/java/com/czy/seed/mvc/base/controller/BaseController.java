@@ -70,18 +70,18 @@ public class BaseController<T> {
         return Res.ok(pageInfo);
     }
 
-//    @RequestMapping("/selectPageRelativeByParams/{pageNum}/{pageSize}")
-//    @ResponseBody
-//    public Res selectPageRelativeByParams(@PathVariable int pageNum, @PathVariable int pageSize, @RequestBody Param param) {
-//        appendParamsBeforeSelect(param);
-//        QueryParams queryParams = param.toQueryParams(entityClass);
-//        Page<T> page = service.selectPageRelativeByParams(pageNum, pageSize, queryParams);
-//        Map<String, Object> pageInfo = new HashMap<String, Object>();
-//        pageInfo.put("total", page.getTotal());
-//        pageInfo.put("pages", page.getPages());
-//        pageInfo.put("page", page);
-//        return Res.ok(pageInfo);
-//    }
+    @RequestMapping("/selectPageRelativeByParams/{pageNum}/{pageSize}")
+    @ResponseBody
+    public Res selectPageRelativeByParams(@PathVariable int pageNum, @PathVariable int pageSize, @RequestBody Param param) {
+        appendParamsBeforeSelect(param);
+        QueryParams queryParams = param.toQueryParams(entityClass);
+        Page<T> page = service.selectPageRelativeByParams(pageNum, pageSize, queryParams);
+        Map<String, Object> pageInfo = new HashMap<String, Object>();
+        pageInfo.put("total", page.getTotal());
+        pageInfo.put("pages", page.getPages());
+        pageInfo.put("page", page);
+        return Res.ok(pageInfo);
+    }
 
     @RequestMapping("/selectListByParams")
     @ResponseBody
