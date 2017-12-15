@@ -13,7 +13,7 @@ define(['text!sys/dict/dict-item-edit.html'], function (Template) {
                 rules: {
                     value: [
                         {required: true, message: '请输入字典项值'},
-                        seed.validate.englishNumberUnderLine(1, 300)
+                        {max: 100, message: '输入长度不能超过100字符'}
                     ],
                     name: [
                         {required: true, message: '请输入字典项名称'},

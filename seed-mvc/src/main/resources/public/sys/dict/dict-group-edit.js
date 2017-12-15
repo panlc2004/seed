@@ -12,8 +12,7 @@ define(['text!sys/dict/dict-group-edit.html'], function (Template) {
                 rules: {
                     code: [
                         {required: true, message: '请选择编码'},
-                        seed.validate.englishNumberUnderLine(1, 300),
-                        {max: 50, message: '输入长度不能超过100字符'}
+                        {max: 100, message: '输入长度不能超过100字符'}
                     ],
                     name: [
                         {required: true, message: '请输入名称'},
