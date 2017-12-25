@@ -101,8 +101,20 @@ public class SeedSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     public void configure(WebSecurity web) throws Exception {
-        web.ignoring().antMatchers("**/js/**", "**/css/**", "/lib/**", "/common/**", "/image/**",
-                "/title.js");
+        String[] webSecurityIgnore = seedConfigProperties.getWebSecurityIgnore();
+        List<String> ignoreList = new LinkedList<>();
+        String[] defaultIgnore = new String[]{"**/js/**", "**/css/**", "/lib/**", "/common/**", "/image/**",
+                "/title.js"};
+
+        ignoreList.addAll(Arrays.asList(defaultIgnore));
+        if (webSecurityIgnore != null && webSecurityIgnore.length > 0) {
+            ignoreList.addAll(Arrays.asList(webSecurityIgnore));
+        }
+
+        String[] permits = new String[ignoreList.size()];
+        ignoreList.toArray(permits);
+
+        web.ignoring().antMatchers(permits);
     }
 
 //    @Autowired
