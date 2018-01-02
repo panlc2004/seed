@@ -131,11 +131,12 @@ seedMainPanel = new Vue({
         pageTables: [],
         activeName: '0',
         transition: '',  //加载动画
-        tabRouterPath: {}  //tab页对应的路由
+        tabRouterPath: {},  //tab页对应的路由,
+        activeMenu:{}   //当前激活的菜单
     },
     computed: {
         logo: function () {
-            if(this.collapse) {
+            if (this.collapse) {
                 return appName_simple;
             } else {
                 return appName_full;
@@ -151,8 +152,8 @@ seedMainPanel = new Vue({
             }).then(
                 function () {
                     // sessionStorage.removeItem('user');
-                    $.get("logout", function (data,status) {
-                        if(status) {
+                    $.get("logout", function (data, status) {
+                        if (status) {
                             window.location.href = "login_page";
                         }
                     });
@@ -213,17 +214,19 @@ seedMainPanel = new Vue({
         },
         findMenuByUrl: function (url) {
             var _this = this;
-            var menu;
-            menu = this.findMenu(_this.menuList, url);
-            return menu;
+            this.findMenu(_this.menuList, url);
+            if(JSON.stringify(_this.activeMenu) != '{}') {
+                return _this.activeMenu;
+            }
         },
         findMenu: function (item, url) {
             var _this = this;
             for (var i = 0; i < item.length; i++) {
                 if (item[i].types == 2) {
-                    return _this.findMenu(item[i].children, url)
+                    _this.findMenu(item[i].children, url)
                 } else if (item[i].types == 1 && item[i].url == url) {
-                    return item[i];
+                    _this.activeMenu = item[i];
+                    break;
                 }
             }
         },
