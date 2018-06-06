@@ -5,6 +5,7 @@ import com.czy.seed.mvc.sys.entity.SysUserRole;
 import com.czy.seed.mvc.sys.service.SysAccountRoleService;
 import com.czy.seed.mybatis.base.QueryParams;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -14,6 +15,7 @@ public class SysAccountRoleServiceImpl extends BaseServiceImpl<SysUserRole> impl
 
 
     @Override
+    @Transactional
     public void saveUserRole(long userId, List<Long> roleIds) {
         //删除所有已有角色
         QueryParams queryParams = new QueryParams(SysUserRole.class);
@@ -28,8 +30,8 @@ public class SysAccountRoleServiceImpl extends BaseServiceImpl<SysUserRole> impl
                 sysUserRole.setSysUserId(userId);
                 sysUserRole.setSysRoleId(roleId);
                 sysUserRoleList.add(sysUserRole);
+                insert(sysUserRole);
             }
-            super.insertList(sysUserRoleList);
         }
 
     }

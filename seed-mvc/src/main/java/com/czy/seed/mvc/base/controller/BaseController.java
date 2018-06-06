@@ -142,10 +142,10 @@ public class BaseController<T> {
         return Res.ok(record);
     }
 
-    public Res insertList(List<T> records) {
-        int num = service.insertList(records);
-        return Res.ok(num);
-    }
+//    public Res insertList(List<T> records) {
+//        int num = service.insertList(records);
+//        return Res.ok(num);
+//    }
 
     @RequestMapping("/updateSelectiveByPrimaryKey")
     @ResponseBody

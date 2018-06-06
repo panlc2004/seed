@@ -10,7 +10,7 @@ public interface BaseService<T> {
 
     int insert(T record);
 
-    int insertList(List<T> recordList);
+//    int insertList(List<T> recordList);
 
     T selectByPrimaryKey(long key);
 
