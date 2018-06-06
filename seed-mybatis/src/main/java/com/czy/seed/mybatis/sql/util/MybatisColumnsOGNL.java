@@ -94,7 +94,6 @@ public abstract class MybatisColumnsOGNL {
 
     public static boolean idIsNull(Object parameter) throws IllegalAccessException, IntrospectionException, InvocationTargetException {
         if ("seed".equals(idGenModel)) {
-            System.out.println(123123);
             if (parameter == null) {
                 throw new IllegalArgumentException("record can't be null!");
             } else {
