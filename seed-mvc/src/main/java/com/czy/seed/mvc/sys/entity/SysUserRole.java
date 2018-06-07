@@ -3,6 +3,7 @@ package com.czy.seed.mvc.sys.entity;
 import com.czy.seed.mvc.base.entity.IPrepare;
 import com.czy.seed.mybatis.config.mybatis.annotations.One2One;
 
+import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Date;
 
@@ -11,6 +12,7 @@ public class SysUserRole implements IPrepare {
 
     private static final long serialVersionUID = 4511028982475620265L;
 
+    @Id
     private Long id;
     private Date createDt;
     private Long createBy;
