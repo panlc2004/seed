@@ -10,7 +10,12 @@ public interface BaseService<T> {
 
     int insert(T record);
 
-//    int insertList(List<T> recordList);
+    /**
+     * 只对mysql/sqlserver数据库生效
+     * @param recordList
+     * @return
+     */
+    int insertList(List<T> recordList);
 
     T selectByPrimaryKey(long key);
 
