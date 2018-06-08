@@ -58,27 +58,32 @@ public class BaseServiceImpl<T> implements BaseService<T> {
         }
     }
 
-//    @Override
-//    public int insertList(List<T> recordList) {
-//        return insertList(recordList, defaultBatchOperateLimit);
-//    }
-//
-//    public int insertList(List<T> recordList, int batchOperateLimit) {
-//        for (T record : recordList) {
-//            beforeInsert(record);
-//        }
-//        int res = 0;
-//        int i = 0;
-//        int per = recordList.size() / batchOperateLimit;
-//        while (i < per) {
-//            res += getMapper().insertList(recordList.subList(i * batchOperateLimit, (i + 1) * batchOperateLimit));
-//            i++;
-//        }
-//        if (per * batchOperateLimit != recordList.size()) {
-//            res += getMapper().insertList(recordList.subList(per * batchOperateLimit, recordList.size()));
-//        }
-//        return res;
-//    }
+    /**
+     * 只对mysql/sqlserver数据库生效
+     * @param recordList
+     * @return
+     */
+    @Override
+    public int insertList(List<T> recordList) {
+        return insertList(recordList, defaultBatchOperateLimit);
+    }
+
+    public int insertList(List<T> recordList, int batchOperateLimit) {
+        for (T record : recordList) {
+            beforeInsert(record);
+        }
+        int res = 0;
+        int i = 0;
+        int per = recordList.size() / batchOperateLimit;
+        while (i < per) {
+            res += getMapper().insertList(recordList.subList(i * batchOperateLimit, (i + 1) * batchOperateLimit));
+            i++;
+        }
+        if (per * batchOperateLimit != recordList.size()) {
+            res += getMapper().insertList(recordList.subList(per * batchOperateLimit, recordList.size()));
+        }
+        return res;
+    }
 
     @Override
     public T selectByPrimaryKey(long id) {
