@@ -6,6 +6,7 @@ import com.czy.seed.mvc.sys.entity.SysDept;
 import com.czy.seed.mvc.sys.entity.SysResource;
 import com.czy.seed.mvc.sys.mapper.SysResourceMapper;
 import com.czy.seed.mvc.sys.service.SysResourceService;
+import com.czy.seed.mvc.util.LoginUserTool;
 import com.czy.seed.mybatis.base.QueryParams;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -17,6 +18,8 @@ public class SysResourceServiceImpl extends BaseServiceImpl<SysResource> impleme
 
     @Autowired
     private SysResourceMapper sysResourceMapper;
+    @Autowired
+    private LoginUserTool loginUserTool;
 
     public List<SysResource> selectChildNumListByParentId(long parentId) {
         return sysResourceMapper.selectChildNumListByParentId(parentId);
@@ -27,8 +30,9 @@ public class SysResourceServiceImpl extends BaseServiceImpl<SysResource> impleme
     }
 
     public List<SysResource> findResourceTreeForLoginUser() {
-        String roleIds = "(1)";
+        String roleIds = getRoleIds(loginUserTool.getLoginUserRoles());
         List<SysResource> resources = sysResourceMapper.findResourceForLoginUser(roleIds);   //查询用户所有菜单
+
         //关联查询所有菜单的父级菜单
         List<SysResource> fullResourceList = findFullResources(resources, resources);
         return buildTree(fullResourceList);
