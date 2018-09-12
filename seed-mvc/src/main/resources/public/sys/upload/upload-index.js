@@ -13,7 +13,6 @@ define(['text!sys/upload/upload-index.html'], function (Template) {
         mixins: [czyPageBar],
         methods: {
             downLoad: function (entity) {
-                debugger;
                 window.open("sys/attachment/downLoadFile?id="+entity.id);
                 // var _this = this;
                 // seed.ajax.postJson({
